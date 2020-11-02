@@ -1,0 +1,36 @@
+
+<table cellspacing="0" cellpadding="0" class="list_type01" summary="과정관리"><!-- list_type01 Start -->
+	<caption>과정관리</caption>
+	<colgroup>
+		<col width="10%" />
+		<col width="*%" />		
+		<col width="10%" />
+		<col width="25%" />
+		<col width="10%" />
+		<col width="10%" />
+	</colgroup>
+	<thead>
+		<tr>
+			<th scope="col">NO</th>
+			<th scope="col">메뉴구분</th>
+			<th scope="col">대표메뉴</th>
+			<th scope="col">링크</th>
+			<th scope="col">순서</th>
+			<th scope="col">확인</th>
+		</tr>
+	</thead>
+	<tbody>
+		
+		#foreach($ul in $univLinkList)
+		<tr>
+			<td>$velocityCount</td>
+			<td><a href="javascript:popLinkRegist('$!ul.link_id');" class="_popup_type1">$!ul.link_gubun_nm</a></td>
+			<td><a href="javascript:popLinkRegist('$!ul.link_id');" class="_popup_type1">$!ul.link_name</a></td>
+			<td class="t_left"><a href="$!ul.link_url" target="_blank">$!ul.link_url</a></td>
+			<td>$!ul.link_order</td>
+			<td>$!ul.deadlink_err_code</td>
+		</tr>
+		#end
+		
+	</tbody>
+</table><!-- list_type01 End -->

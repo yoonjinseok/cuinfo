@@ -1,0 +1,131 @@
+<table cellspacing="0" cellpadding="0" class="list_type01" summary="스케쥴관리"><!-- list_type01 Start -->
+	<caption>스케쥴관리</caption>
+	<colgroup>
+		<col width="20%%" />
+		<col width="20%%" />
+		<col width="20%%" />
+		<col width="20%%" />
+		<col width="20%%" />
+	</colgroup>
+	<thead>
+		<tr>
+			<th scope="col">학교명</th>
+			<th scope="col">수집건수</th>
+			<th scope="col">서비스건수</th>
+			<th scope="col">동영상건수</th>
+			<th scope="col">관련자료건수</th>
+		</tr>
+	</thead>
+	<tbody>
+		#foreach($list in $statsList)
+		<tr>
+			<td>$list.univName</td>
+			<td><a href="javascript:goMetaPage('$list.univName');">$list.totalCnt</a></td>
+			<td>$list.serviceCnt</td>
+			<td>$list.vodCnt</td>
+			<td>$list.fileCnt</td>
+		</tr>
+		#end
+		
+		#*
+		#set($cnt = $statsList.size() + 1)
+		#if($cnt < $showCnt)
+		#foreach($blank in [$cnt..$showCnt])
+		<tr>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+		</tr>
+		#end
+		#end
+		*#
+		<tr>
+			<td colspan="5" align="right">
+				<input type="button" value="차트보기" onclick="showChart()"/>
+			</td>
+		</tr>
+	</tbody>
+</table><!-- list_type01 End -->
+
+
+<script>
+google.load('visualization', '1', {packages: ['corechart']});
+	function drawVisualization() {
+	  // Create and populate the data table.
+	  var data = google.visualization.arrayToDataTable([
+	    ['Year', '수집건수','서비스건수','동영상건수','관련자료건수']
+	  #if($statsList)
+	    #foreach($stt in $statsList)
+	    	#if($!stt.univName != "합계")
+	    	,['$!stt.univName', $!{stt.totalCnt}, $!{stt.serviceCnt}, $!{stt.vodCnt}, $!{stt.fileCnt}]
+	    	#end
+	    #end
+	 #end
+	  ]);
+
+	// Create and draw the visualization.
+	  new google.visualization.BarChart(document.getElementById('chart_div')).
+	      draw(data,
+	           {'isStacked': true,	           
+	            width:710, height:400,
+	            fontName: "Verdana", 
+	    		fontSize: "12", 	           
+	            //vAxis: {fontName: "Verdana", fontSize: "12px"},
+	            //hAxis: {title: "유형별 건수",fontName: "Verdana", fontSize: "12px"},
+	            title: "학교별 등록 통계",
+	            colors: ['#4169e1', '#f08080', '#8fbc8f', '#ba55d3'],
+	            chartArea:{left:"24%",top:50,width:"60%",height:"100%"}
+	           }
+	      );
+	 }
+	google.setOnLoadCallback(drawVisualization);
+
+
+
+
+#*
+	google.load('visualization', '1', {packages: ['corechart']});
+	function drawVisualization() {
+	  // Create and populate the data table.
+	  var data = google.visualization.arrayToDataTable([
+	    
+	  	['x'
+	  #foreach($list in $univList)
+	  	#if($velocityCount < $univList.size()),'$list'#end
+	  #end
+	  	]
+	  	,['수집건수'
+	  #foreach($list in $totalList)
+	  	#if($velocityCount < $totalList.size()),$list#end
+	  #end
+	  	]
+	  	,['서비스건수'
+	  #foreach($list in $serviceList)
+	  	#if($velocityCount < $serviceList.size()),$list#end
+	  #end
+	  	]
+	  	,['동영상건수'
+	  #foreach($list in $vodList)
+	  	#if($velocityCount < $vodList.size()),$list#end
+	  #end
+	  	]
+	  	,['관련자료건수'
+	  #foreach($list in $fileList)
+	  	#if($velocityCount < $fileList.size()),$list#end
+	  #end
+	  	]
+	  ]);
+	
+	  // Create and draw the visualization.
+	  new google.visualization.LineChart(document.getElementById('chart_div')).draw(data, {curveType: "function",
+              width: 700, height: 500,
+              vAxis: {maxValue: 0}}
+      );
+	}
+	
+	google.setOnLoadCallback(drawVisualization);
+*#
+	
+</script>

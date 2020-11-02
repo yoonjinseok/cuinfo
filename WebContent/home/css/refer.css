@@ -1,0 +1,20 @@
+/* 선임12.9일 수정 */
+.serviceGuide{position:relative;padding:80px 0 0 0; width:765px; height:467px;background:url('/home/images/refer/serviceGuide_bg.gif') no-repeat center top;}
+.serviceGuide dl{width:598px; padding:0 0 0 81px; height:260px}
+.serviceGuide dt{font-size:16px; padding:5px 0 0 75px; font-weight:bold;  background:url('/home/images/refer/refer_icon.gif') no-repeat 46px 5px;width:440px;}
+.serviceGuide dd{color:#635242; font-size:14px; font-weight:bold; line-height:170%; padding:20px 0 0 75px}
+.serviceGuide .btn{text-align:right; padding:0 120px 0 0 }
+/***********************Sun Style ***********************/
+.bul {background:url('/home/images/bul/dot.gif') no-repeat left; margin:20px 0 0 0; padding:0 0 3px 10px}
+.bul02 {background:url('/home/images/bul/dot.gif') no-repeat left; margin:20px 0 0 0; padding:0 0 3px 10px;font-size:15px}
+.bul02 span{color:#437daa;text-decoration:underline;vertical-align:top}
+/*11.28수정시작*/
+.text1 {position:relative; float:right; display:inline-block; right:3px;  top:3px; color:#999999}
+*:first-child+html .text1{ float:right; display:inline-block; top:-7px; padding-bottom:-10px}
+/*11.28수정끝*/
+
+
+/*board 추가*/
+.table_type1 .th_pad_10 { padding:5px 0; background:#92afc5 !important}
+.table_type1 .th_ln_02 {line-height:15px !important; background-color:#82a5bf !important; font-size:11px !important;font-family:dotum !important;}
+.t_center { text-align:center;}

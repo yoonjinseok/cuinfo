@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="EUC-KR"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="BoardDao">
+	<typeAlias alias="board" type="com.cyberup.model.home.Board"/>
+	
+	<!-- 일반 게시판 쿼리 / 오성애 / 2011-10-04 -->	
+	<select id="selectList" resultClass="board"  parameterClass="map">
+		 SELECT DT.*
+		 FROM(
+	            SELECT
+	                   ROW_NUMBER () OVER (ORDER BY REG_DATE DESC) AS recNum, 
+	                   COUNT (*) OVER () totalCnt,
+	                   BOARD_ID as boardID, 
+	                   TITLE as title,
+	                   CONTENT_TYPE_ID as typeID,
+	                   CONTENT as boardContent,
+	                   ATTACH_UPFILE_GID as upfileGid,
+	                   EMAIL as email,
+	                   HITS_CNT as hitsCount,
+	                   REGISTER AS regID,
+	                   (SELECT ADMIN_NAME FROM CU_ADMIN A WHERE A.ADMIN_ID=B.REGISTER) AS regName,
+	                   REG_DATE as regDate,
+	                   CASE WHEN TRUNC(SYSDATE-REG_DATE)>1 THEN 'N' ELSE 'Y' END AS newYN
+	              FROM CU_BOARD B
+	              WHERE GUBUN_ID = #gubunID#
+				<isNotEmpty property="searchTitle" prepend="AND">		    	
+					title LIKE concat(concat('%',#searchTitle#),'%')
+		    	</isNotEmpty>
+		    	<isNotEmpty property="searchContent" prepend="AND">
+		    		DBMS_LOB.INSTR(boardContent, #searchContent#)>0
+		    	</isNotEmpty>
+		    	<isNotEmpty property="searchRegID" prepend="AND">
+			   	 	regID LIKE concat(concat('%',#searchRegID#),'%')
+		    	</isNotEmpty>
+		    	<isNotEmpty property="searchRegName" prepend="AND">
+			    	regName LIKE concat(concat('%',#searchRegName#),'%')
+		    	</isNotEmpty>
+	            ) DT 
+		 WHERE CEIL (recNum / #showCnt,javaType=Integer#) = #currPage,javaType=Integer#
+	</select>	
+	
+	<!-- 내용 보기 -->
+	<select id="selectInfo" resultClass="board"  parameterClass="long">
+		SELECT
+              BOARD_ID as boardID,
+              GUBUN_ID as gubunID,
+              TITLE as title,
+              CONTENT_TYPE_ID as typeID,
+              CONTENT as boardContent,
+              ATTACH_UPFILE_GID as upfileGid,
+              EMAIL as email,
+              NVL(HITS_CNT,0) as hitsCount,
+              REGISTER AS regID,
+              (SELECT ADMIN_NAME FROM CU_ADMIN A WHERE A.ADMIN_ID=B.REGISTER) AS regName,
+              REG_DATE AS regDate,
+              MODIFIER AS modID,
+              (SELECT ADMIN_NAME FROM CU_ADMIN A WHERE A.ADMIN_ID=B.MODIFIER) AS modName,
+              MOD_DATE AS modDate
+         FROM CU_BOARD B
+		 WHERE BOARD_ID = #boardID,javaType=long#
+	</select>	
+	
+	<!-- 게시판 내용 입력 -->
+	<insert id="insertInfo" parameterClass="board">
+		<selectKey resultClass="Integer" keyProperty="boardID">
+         SELECT SEQ_BOARD_ID.nextVal as boardID FROM dual
+        </selectKey>        
+		INSERT INTO CU_BOARD( 
+			BOARD_ID, GUBUN_ID, TITLE,
+            CONTENT_TYPE_ID, CONTENT,
+            EMAIL, HITS_CNT, ATTACH_UPFILE_GID, REGISTER, REG_DATE)
+		VALUES(
+			#boardID#, #gubunID#, #title#,
+			#typeID#, #boardContent#,
+			#email#, 1, #upfileGid#, #regID#, SYSDATE)
+	</insert>
+		
+	<!-- 내용 업데이트 -->	
+	<update id="updateInfo" parameterClass="board">
+		UPDATE CU_BOARD
+	   	SET TITLE 			  = #title#,	   		
+	    	CONTENT_TYPE_ID   = #typeID#,
+	        CONTENT 		  = #boardContent#,
+	        <isNotEqual property="upfileGid" compareValue="0">
+	        ATTACH_UPFILE_GID = #upfileGid#,
+	        </isNotEqual>
+	        EMAIL 			  = #email#,
+	        MODIFIER		  = #modID#,
+	        MOD_DATE 		  = SYSDATE
+		WHERE BOARD_ID = #boardID#
+	      AND GUBUN_ID = #gubunID#
+	</update>
+			
+	
+	<!-- 글 내용 클릭 시 hit수를 증가시킨다. -->
+	<update id="updateHitsCount" parameterClass="board">
+		UPDATE CU_BOARD
+	   	SET HITS_CNT  = HITS_CNT + 1
+		WHERE BOARD_ID = #boardID#
+	</update>	
+	
+	<delete id="deleteInfo"  parameterClass="long">
+		DELETE 
+		FROM CU_BOARD 
+		WHERE BOARD_ID = #boardID,javaType=long#
+	</delete>
+	
+	
+	<!-- 파일이 모두 삭제되었으면 부모테이블의 그룹 파일 값 NULL으로 세팅 -->	
+	<update id="initFileBoard" parameterClass="int">
+		UPDATE  CU_BOARD 
+				SET ATTACH_UPFILE_GID = NULL
+				WHERE ATTACH_UPFILE_GID = #upfileGid#
+				 	  
+	</update>
+	
+</sqlMap>

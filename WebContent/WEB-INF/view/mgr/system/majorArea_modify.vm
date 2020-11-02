@@ -1,0 +1,97 @@
+<head>
+	<title>대표학과분야 수정</title>
+	<script type="text/javascript" language="javascript">
+	function modify()
+	{
+		jQuery.post('majorArea_update.json', 
+				$("#modifyForm").formSerialize(), 
+				function(data) {
+        			if(data.errors == true)
+        			{
+        				eval(data.message);
+        			}
+        			else
+        			{
+						alert("수정되었습니다.");
+						opener.goPage();
+						window.close();
+        			}
+		});
+	}
+	
+	function del()
+	{
+		
+		if( confirm("해당 대표학과분야를 삭제하시겠습니까? \n삭제된 데이터는 복원하실수 없습니다." ))
+		{
+    		jQuery.post('majorArea_delete.json', 
+    				$("#modifyForm").formSerialize(), 
+    				function(data) {
+            			if(data.errors == true)
+            			{
+            				eval(data.message);
+            			}
+            			else
+            			{
+							alert("삭제되었습니다.");
+    						opener.search();
+    						window.close();
+            			}
+    		});
+		}
+	}
+	
+	</script>
+</head>
+<body>
+<div style="width:90%;padding-left:30px;padding-top:30px;">
+<form id="modifyForm" action="#" onsubmit="try{modify();}catch(e){alert(e);}return false;">
+<input type="hidden" id="classifyId" name="classifyId" value="$!reptClassificationList.classifyId"/>
+<h2>대표학과분야 수정</h2>	
+<table cellspacing="0" cellpadding="0" class="form_type01" summary="대표학과분야 관리"><!-- list_type01 Start -->
+	<caption>대표학과분야 관리</caption>
+	<colgroup>
+		<col width="15%" />
+		<col width="35%" />
+		<col width="15%" />
+		<col width="35%" />
+	</colgroup>
+	<tbody>
+		<tr>
+			<th scope="row">코드</th>
+			<td colspan="3">$!reptClassificationList.classifyId</td>
+		</tr>
+		<tr>
+			<th scope="row">학과분야</th>
+			<td colspan="3"><input type="text" maxlength="30" size="30" title="학과분야" name="classifyName" id="classifyName" value="$!reptClassificationList.classifyName"/></td>
+		</tr>
+		<tr>
+			<th scope="row">순서</th>
+			<td><input type="text" size="20" maxlength="3" title="순서" name="classifyOrder" id="classifyOrder"  maxlength="30" onkeyup="return numbersonly(this)" value="$!reptClassificationList.classifyOrder"/></td>			
+			<th scope="row">사용여부</th>
+			<td>
+				<label for="radio-1"><input type="radio" name="useYn" id="radio-1" value="Y" #if($!reptClassificationList.useYn == 'Y')checked="checked"#end/> 사용함</label>
+				<label for="radio-2"><input type="radio" name="useYn" id="radio-2" value="N" #if($!reptClassificationList.useYn == 'N')checked="checked"#end/> 사용하지 않음</label>
+			</td>
+		</tr>
+		<tr>
+			<th scope="row">등록정보</th>
+			<td>$!reptClassificationList.register ($datetimeformatter.print($!reptClassificationList.regDate, $!locale))</td>
+			<th scope="row">수정정보</th>
+			<td>#if("$!reptClassificationList.modifier" !="") $!reptClassificationList.modifier ($datetimeformatter.print($!reptClassificationList.modDate, $!locale)) #end</td>
+		</tr>
+		
+	</tbody>
+</table><!-- list_type01 End -->
+
+
+<div class="btn_box_type03">
+	<a href="javascript:modify();"><img src="/mgr/images/btn/save.gif" alt="저장" /></a>
+	<a href="javascript:del();"><img src="/mgr/images/btn/delete.gif" alt="삭제" /></a>
+	<a href="javascript:window.close();"><img src="/mgr/images/btn/cancel.gif" alt="취소" /></a>
+</div>
+
+</form>
+</div>
+</body>
+</html>

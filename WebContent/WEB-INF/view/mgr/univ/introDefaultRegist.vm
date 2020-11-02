@@ -1,0 +1,711 @@
+<head>
+	<title>학교정보관리</title>
+	
+<script type="text/javascript" language="javascript">
+	
+	
+	
+	$(document).ready(function(){
+	
+	
+		comboSelect();
+		showDiv();
+		
+		//zipCodeSet();
+		//phoneSet();
+		
+		
+	});
+	
+	function showDiv(){
+			if("$!univInfo.originalFilename_0" != "")
+				$("#file0").hide();
+			if("$!univInfo.originalFilename_1" != "")
+				$("#file1").hide();
+			if("$!univInfo.originalFilename_2" != "")
+				$("#file2").hide();
+			if("$!univInfo.originalFilename_3" != "")
+				$("#file3").hide();
+	}
+	
+	
+	//combo 박스의 값을 변경
+	function comboSelect()
+	{
+		$("#gubun_id").val('$univInfo.gubun_id');
+		$("#local_id").val('$univInfo.local_id');
+	}
+
+	//우편번호 값을 변경 000000 > 000-000 형식으로..
+	//하지만 model 의 형식이 Integer 이기 때문에 error 발생함.
+	
+	function phoneSet()
+	{
+		$("#univ_phone").keyup(function(event){
+		  	//alert(event.which);
+		  	if (event.which && (event.which  > 47 && event.which  < 58 || event.which == 8 || event.which == 45)) {
+			  	
+		  	} else {
+		    	alert('숫자만 입력가능합니다.');
+		    	event.preventDefault();
+		  	}
+		});
+	}
+
+	function submitContents(elClickedObj) {
+	   // 에디터의 내용이 textarea에 적용된다.
+	   if(oEditors[0])
+	   	oEditors[0].exec("UPDATE_CONTENTS_FIELD", []);
+	 
+	   // 에디터에 입력된 내용의 검증은 이곳에서
+	   // document.getElementById("ir1").value 값을 이용해서 처리한다.
+	 
+	   try{
+	       // 이 라인은 현재 사용 중인 폼에 따라 달라질 수 있다.
+	       elClickedObj.form.submit();
+	   }catch(e){}
+	}
+
+
+	//저장클릭시	
+	function modify()
+	{
+		//editor 의 내용을 textarea 에 적용
+		submitContents();
+		
+		if($("#form").formSerialize().indexOf("\'") != -1) {
+			alert("' 는 사용할 수 없습니다.\n    \" 를 사용해주세요.");
+			return;
+		}
+			
+		jQuery.post('univInfo_update.json', 
+				$("#form").formSerialize(),
+				function(data) {
+        			if(data.errors == true)
+        			{
+        				eval(data.message);
+        			}
+        			else
+        			{
+						alert("저장되었습니다.");
+						        
+						//부모창의 search() 호출
+						opener.goPage();
+					
+						window.close();
+						
+        			}
+		});
+		
+	}
+	
+	
+	//링크정보등록 클릭
+	function popLinkRegist(link_id){
+	
+		var univ_name 	= form.university_name.value;
+		var univ_id 	= form.university_id.value;
+	
+    	showWin('/mgr/univ/popLinkRegist.pop.action?university_name='+univ_name+'&university_id='+univ_id+'&link_id=' + link_id, 'regwin', 630, 400);
+    }
+    
+    function popChairman(universityId){
+    
+    	//이사장, 총(학)장 수정은 시스템 관리자만 가능하도록 한다. 20150420. 원대협 한상훈씨 요청
+		if($!adminInfo.authLevelId != 6){
+    		alert("시스템관리자만 수정 가능합니다.");
+		}else{
+	    	showWin('/mgr/univ/popChairman.pop.action?&universityId='+universityId, 'charmainWin', 280, 400);
+		}
+    }
+    
+    function popPrincipal(universityId){
+    	//이사장, 총(학)장 수정은 시스템 관리자만 가능하도록 한다. 20150420. 원대협 한상훈씨 요청
+		if($!adminInfo.authLevelId != 6){
+    		alert("시스템관리자만 수정 가능합니다.");
+		}else{
+	    	showWin('/mgr/univ/popPrincipal.pop.action?&universityId='+universityId, 'principalWin', 280, 400);
+		}
+    }
+	
+	
+	
+	function setUploadResult0(originalFilename,srcName,fileSize)
+	{
+		//alert(originalFilename + " : " + srcName + " : " + fileSize);
+		$("#uploadTB0").append('<div class="icon" id=\''+originalFilename+'\'><a href="javascript:download(\''+srcName+'\');">'+srcName+'</a><span>('+getFileSize(fileSize)+')</span><a href="javascript:delRow0(\''+srcName+'\');"><img src="/mgr/images/btn/btn_del.gif" /></a></div>');
+		$("#file0").hide(); 
+		
+		$("input[name=originalFilename_0]").val(originalFilename);
+		$("input[name=srcName_0]").val(srcName);
+		$("input[name=fileSize_0]").val(fileSize);
+	}
+
+	function delRow0(trId)
+	{
+		if(confirm("파일을 삭제 하시겠습니까?")){
+			var fileIndex = 0;
+			var updateYn = 1;
+    		if($("input[name=logo_upfile_gid]").val() == "" || $("input[name=logo_upfile_gid]").val() == "0"){
+    
+    			jQuery.post('/mgr/common/file_delete_id.json?srcName=' + trId, 
+        				function(data) {
+                			if(data.errors == true)
+                				eval(data.message);
+        		});
+    		} else {
+    
+        		jQuery.get('introDefault_File_delete.json', 
+        			$("#form").formSerialize() + "&fileIndex=" + fileIndex + "&updateYn=" + updateYn,
+        				function(data) {
+                			if(data.errors == true)
+                				eval(data.message);
+        		});
+    		}
+			$("#uploadTB0").find("div[id^="+trId+"]").remove();
+			
+			$("input[name=logo_upfile_gid]").val("");
+			$("input[name=originalFilename_0]").val("");
+			$("input[name=srcName_0]").val("");
+			$("input[name=fileSize_0]").val("");
+			
+			$("#file0").show(); 
+		}
+	}
+	
+	function setUploadResult1(originalFilename,srcName,fileSize)
+	{
+		$("#uploadTB1").append('<div class="icon" id=\''+srcName+'\'><a href="javascript:download(\''+srcName+'\');">'+originalFilename+'</a><span>('+getFileSize(fileSize)+')</span><a href="javascript:delRow1(\''+srcName+'\');"><img src="/mgr/images/btn/btn_del.gif" /></a></div>');
+		$("#file1").hide(); 
+		
+		$("input[name=originalFilename_1]").val(originalFilename);
+		$("input[name=srcName_1]").val(srcName);
+		$("input[name=fileSize_1]").val(fileSize);
+	}
+	
+	function delRow1(trId)
+	{
+		if(confirm("파일을 삭제 하시겠습니까?")){
+			var fileIndex = 1;
+			var updateYn = 1;
+    		if($("input[name=video_img_upfile_gid]").val() == "" || $("input[name=video_img_upfile_gid]").val() == "0"){
+    
+    			jQuery.post('/mgr/common/file_delete.json?srcName=' + trId, 
+        				function(data) {
+                			if(data.errors == true)
+                				eval(data.message);
+        		});
+    		} else {
+    
+        		jQuery.get('introDefault_File_delete.json', 
+        			$("#form").formSerialize() + "&fileIndex=" + fileIndex + "&updateYn=" + updateYn,
+        				function(data) {
+                			if(data.errors == true)
+                				eval(data.message);
+        		});
+    		}
+			$("#uploadTB1").find("div[id^="+trId+"]").remove();
+
+			$("input[name=video_img_upfile_gid]").val("");
+			$("input[name=originalFilename_1]").val("");
+			$("input[name=srcName_1]").val("");
+			$("input[name=fileSize_1]").val("");
+			
+			$("#file1").show(); 
+		}
+	}
+	
+	function setUploadResult2(originalFilename,srcName,fileSize)
+	{
+		$("#uploadTB2").append('<div class="icon" id=\''+srcName+'\'><a href="javascript:download(\''+srcName+'\');">'+originalFilename+'</a><span>('+getFileSize(fileSize)+')</span><a href="javascript:delRow2(\''+srcName+'\');"><img src="/mgr/images/btn/btn_del.gif" /></a></div>');
+		$("#file2").hide(); 
+		
+		$("input[name=originalFilename_2]").val(originalFilename);
+		$("input[name=srcName_2]").val(srcName);
+		$("input[name=fileSize_2]").val(fileSize);
+	}
+	
+	function delRow2(trId)
+	{
+		if(confirm("파일을 삭제 하시겠습니까?")){
+			var fileIndex = 2;
+			var updateYn = 1;
+    		if($("input[name=video_upfile_gid]").val() == "" || $("input[name=video_upfile_gid]").val() == "0"){
+    
+    			jQuery.post('/mgr/common/file_delete.json?srcName=' + trId, 
+        				function(data) {
+                			if(data.errors == true)
+                				eval(data.message);
+        		});
+    		} else {
+    
+        		jQuery.get('introDefault_File_delete.json', 
+        			$("#form").formSerialize() + "&fileIndex=" + fileIndex + "&updateYn=" + updateYn,
+        				function(data) {
+                			if(data.errors == true)
+                				eval(data.message);
+        		});
+    		}
+			$("#uploadTB2").find("div[id^="+trId+"]").remove();
+			
+			$("input[name=video_upfile_gid]").val("");
+			$("input[name=originalFilename_2]").val("");
+			$("input[name=srcName_2]").val("");
+			$("input[name=fileSize_2]").val("");
+
+			$("#file2").show();
+		} 
+	}
+	
+	function setUploadResult3(originalFilename,srcName,fileSize)
+	{
+	
+		//입학전형계획서 다중업로드로 수정
+		$("#uploadTB3").append('<div class="icon" id=\''+srcName+'\'><input type="hidden" id="upfileSrc" name="upfileSrc" value="'+srcName+'"/><a href="javascript:download(\''+srcName+'\');">'+originalFilename+'</a><span>('+getFileSize(fileSize)+')</span><a href="javascript:delRow(\''+srcName+'\');"><img src="/mgr/images/btn/btn_del.gif" /></a></div>');
+	
+		//alert("1: " +srcName +" 2: "+ originalFilename +" 3: "+ fileSize);
+		//return;
+	
+		/*
+		$("#uploadTB3").append('<div class="icon" id=\''+srcName+'\'><a href="javascript:download(\''+srcName+'\');">'+originalFilename+'</a><span>('+getFileSize(fileSize)+')</span><a href="javascript:delRow3(\''+srcName+'\');"><img src="/mgr/images/btn/btn_del.gif" /></a></div>');
+		$("#file3").hide(); 
+		
+		$("input[name=originalFilename_3]").val(originalFilename);
+		$("input[name=srcName_3]").val(srcName);
+		$("input[name=fileSize_3]").val(fileSize);
+		*/
+	}
+	
+	function delRow3(trId)
+	{
+		if(confirm("파일을 삭제 하시겠습니까?")){
+			var fileIndex = 3;
+			var updateYn = 1;
+    		if($("input[name=entermodel]").val() == "" || $("input[name=entermodel]").val() == "0"){
+    
+    			jQuery.post('/mgr/common/file_delete.json?srcName=' + trId, 
+        				function(data) {
+                			if(data.errors == true)
+                				eval(data.message);
+        		});
+    		} else {
+    
+        		jQuery.get('introDefault_File_delete.json', 
+        			$("#form").formSerialize() + "&fileIndex=" + fileIndex + "&updateYn=" + updateYn,
+        				function(data) {
+                			if(data.errors == true)
+                				eval(data.message);
+        		});
+    		}
+			$("#uploadTB3").find("div[id^="+trId+"]").remove();
+			
+			$("input[name=entermodel]").val("");
+			$("input[name=originalFilename_3]").val("");
+			$("input[name=srcName_3]").val("");
+			$("input[name=fileSize_3]").val("");
+
+			$("#file3").show();
+		} 
+	}
+	
+	//데드링크체크 [ university_id 를 인자값으로 넘겨야한다. ] 
+	function deadLinkCheck()
+	{
+	
+		jQuery.post('deadLinkCheck.ajax.action', 
+				{university_id:$("input[name=university_id]").val()}, 
+				function(data) {
+				
+					alert("데드 링크 체크가 완료되었습니다.");
+        			$("#list").html(data);
+		});
+	}
+	
+	//링크수정후 갱신만하기 위함.
+	function deadLinkCheck_list()
+	{
+		jQuery.post('deadLinkCheck_list.ajax.action', 
+				{university_id:$("input[name=university_id]").val()}, 
+				function(data) {
+        			$("#list").html(data);
+		});
+	}
+	
+	
+	//디비에 저장되기전 내용 다운로드
+    function download(srcName)
+	{
+		document.location.href = '/mgr/common/file_download.json?srcName=' + srcName;
+	}
+	//디비에 저장된후 내용 다운로드
+    function downloadDB(fileID)
+    {
+    	document.location.href = '/mgr/common/file_download_id.json?upfileId=' + fileID;
+    }
+    
+    
+    //미리보기
+    function preview()
+    {
+    	form.action = "/home/intro/overall_preview.sub.action?gnb=12";
+    	form.submit();
+    }
+    
+    //에디터 사진 업로드후 호출되는 함수
+    function setUploadImageResult(originalFilename, srcName, fileSize)
+    {
+           var sHTML = " <img src= '/mgr/common/file_download.json?srcName=" + srcName + "'> ";
+    oEditors[0].exec("PASTE_HTML", [sHTML]);
+    }
+    
+    
+    //저장되어있는 파일 삭제
+	function deleteFileDB(fileID)
+    {
+    	if(confirm("파일을 삭제하시겠습니까?")){
+			jQuery.post('/mgr/common/file_delete_id.json', 
+				'upfileId='+fileID, 
+				function(data) {
+        			if(data.errors == true)
+        			{
+        				eval(data.message);
+        			}
+        			else
+        			{
+						$("#uploadTB3").find("div[id^="+fileID+"]").remove();
+        			}
+				});
+    	}
+    }
+	
+</script>
+</head>			
+<body>
+<div style="width:90%;padding-left:30px;padding-top:30px;">
+	
+
+<form id="form" name="form" method="post" onsubmit="try{modify();}catch(e){alert(e);}return false;">
+<h2>기본정보(필수)
+	<a class="f_right" href="javascript:preview();"><img src="/mgr/images/btn/preview.gif" alt="미리보기" /></a>
+</h2>
+
+
+<!-- 미리보기 구분[1:기본정보,2:옵션정보]-->	
+<input type="hidden" name="previewGubn" 		value="1" />
+
+<input type="hidden" name="universityId" 		value="$!univInfo.university_id" />
+<input type="hidden" name="university_id" 		value="$!univInfo.university_id" />
+<input type="hidden" name="university_name" 	value="$!univInfo.univ_name" />
+
+<input type="hidden" name="video_img_upfile_gid" 	value="$!univInfo.video_img_upfile_gid" />
+<input type="hidden" name="video_upfile_gid" 	value="$!univInfo.video_upfile_gid" />
+<input type="hidden" name="logo_upfile_gid" 	value="$!univInfo.logo_upfile_gid" />
+<input type="hidden" name="entermodel" 			value="$!univInfo.entermodel" />
+
+<input type="hidden" name="originalFilename_0" 	value="$!univInfo.originalFilename_0" />
+<input type="hidden" name="srcName_0" 			value="$!univInfo.srcName_0" />
+<input type="hidden" name="fileSize_0" 			value="$!univInfo.fileSize_0" />
+
+<input type="hidden" name="originalFilename_1" 	value="$!univInfo.originalFilename_1" />
+<input type="hidden" name="srcName_1" 			value="$!univInfo.srcName_1" />
+<input type="hidden" name="fileSize_1" 			value="$!univInfo.fileSize_1" />
+
+<input type="hidden" name="originalFilename_2" 	value="$!univInfo.originalFilename_2" />
+<input type="hidden" name="srcName_2" 			value="$!univInfo.srcName_2" />
+<input type="hidden" name="fileSize_2" 			value="$!univInfo.fileSize_2" />
+
+<input type="hidden" name="originalFilename_3" 	value="$!univInfo.originalFilename_3" />
+<input type="hidden" name="srcName_3" 			value="$!univInfo.srcName_3" />
+<input type="hidden" name="fileSize_3" 			value="$!univInfo.fileSize_3" />
+
+<table cellspacing="0" cellpadding="0" class="form_type01" summary="과정관리"><!-- list_type01 Start -->
+	<caption>과정관리</caption>
+	<colgroup>
+		<col width="15%" />
+		<col width="35%" />
+		<col width="15%" />
+		<col width="35%" />
+	</colgroup>
+	<tbody>
+		<tr>
+			<th scope="row">대학명</th>
+			<td>$!univInfo.univ_name</td>
+			<th scope="row">코드</th>
+			<td>$!univInfo.university_id</td>
+		</tr>
+		<tr>
+			<th scope="row">구분</th>
+			<td>
+				<select id="gubun_id" name="gubun_id">
+					<option value="">선택</option>
+					#foreach($code in $gubunSelect)
+						<option value="$!code.codeId">$!code.codeName</option>
+					#end
+				</select>
+			</td>
+			<th scope="row">소재지</th>
+			<td>
+				<select id="local_id" name="local_id">
+					<option value="">선택</option>
+					#foreach($code in $localSelect)
+						<option value="$!code.codeId">$!code.codeName</option>
+					#end
+				</select>
+			</td>
+		</tr>
+		<tr id="chairman">
+			<th scope="row">이사장</th>
+			<td>
+				##<input type="text" size="10" name="chairman" value="$!univInfo.chairman" readonly onclick="popChairman($!univInfo.university_id)">
+				<input type="hidden" name="chairman" value="$!univInfo.chairman">
+				#set($row = $chairman.size()+1)
+				<table>
+					<tr>
+						<td bgcolor="#F7F7F7" >학년도</td>
+						<td bgcolor="#F7F7F7">&nbsp;&nbsp;&nbsp;이름</td>
+					</tr>
+					#if($chairman)
+						#foreach($list in $chairman)
+							<tr>
+								<td>
+									<input type="text" style="text-align:center" size="3" maxlength="4" value=#if($list.length() < 4)""#else"$!list.substring(0,4)"#end readonly onclick="popChairman($!univInfo.university_id)">
+								</td>
+								<td>
+									<input type="text" style="text-align:center" size="5" maxlength="4" value=#if($list.length() < 4)""#else"$!list.substring(4)"#end readonly onclick="popChairman($!univInfo.university_id)">&nbsp;&nbsp;&nbsp;
+								</td>
+							</tr>
+						#end
+					#else
+						<tr>
+							<td>
+								<input type="text" style="text-align:center" size="3" maxlength="4" readonly onclick="popChairman($!univInfo.university_id)">
+							</td>
+							<td>
+								<input type="text" style="text-align:center" size="5" maxlength="4" readonly onclick="popChairman($!univInfo.university_id)">&nbsp;&nbsp;&nbsp;
+							</td>
+						</tr>
+					#end
+				</table>
+			</td>
+			<th scope="row">총(학)장</th>
+			<td>
+				##<input type="text" size="10" name="principal" value="$!univInfo.principal" readonly onclick="popPrincipal($!univInfo.university_id)">
+				<input type="hidden" name="principal" value="$!univInfo.principal">
+				<table>
+					<tr>
+						<td bgcolor="#F7F7F7">학년도</td>
+						<td bgcolor="#F7F7F7">&nbsp;&nbsp;&nbsp;이름</td>
+					</tr>
+					#if($principal)
+						#foreach($list in $principal)
+							<tr>
+								<td>
+									<input type="text" style="text-align:center" size="3" maxlength="4" value="$!list.substring(0,4)" readonly onclick="popPrincipal($!univInfo.university_id)">
+								</td>
+								<td>
+									<input type="text" style="text-align:center" size="5" maxlength="4" value="$!list.substring(4)" readonly onclick="popPrincipal($!univInfo.university_id)">&nbsp;&nbsp;&nbsp;
+								</td>
+							</tr>
+						#end
+					#else
+						<tr>
+							<td>
+								<input type="text" style="text-align:center" size="3" maxlength="4" readonly onclick="popPrincipal($!univInfo.university_id)">
+							</td>
+							<td>
+								<input type="text" style="text-align:center" size="5" maxlength="4" readonly onclick="popPrincipal($!univInfo.university_id)">&nbsp;&nbsp;&nbsp;
+							</td>
+						</tr>
+					#end
+				</table>
+			</td>
+		</tr>
+		<tr>
+			<th scope="row">개교기념일</th>
+			<td>
+				<input type="text" size="10" name="supOpen" value="$!univInfo.supOpen">
+			</td>
+			<th scope="row">동법인학교</th>
+			<td>
+				<input type="text" size="20" name="sameCorp" value="$!univInfo.sameCorp">
+			</td>
+		</tr>
+		
+		<tr>
+			<th scope="row">핵심소개</th>
+			<td colspan="3"><input type="text" name="core_slogan" size="90" title="핵심소개" value="$!univInfo.core_slogan"/><br/>(사용자 메인에 표시될 내용으로 100자 이내로 작성바랍니다.)</td>
+		</tr>
+		<tr>
+			<th scope="row">대학로고</th>
+			<td colspan="3" id="uploadTB0">
+						
+						#if($univInfo.originalFilename_0)
+							<div  class="icon" id='$!univInfo.logo_upfile_gid'><a href="javascript:downloadDB('$!univInfo.logo_upfile_gid');">$!univInfo.originalFilename_0</a><span>(<script>document.write(getFileSize($!univInfo.fileSize_0))</script>)</span><a href="javascript:delRow0('$!univInfo.logo_upfile_gid');"><img src="/mgr/images/btn/btn_del.gif" /></a></div>
+						#end
+						
+					<div id="file0">
+						<iframe id="upload" name="upload" src="/mgr/common/file_write.ifm.action?eventHandler=setUploadResult0&confKey=att" width="100%" height="25" frameborder="0" scrolling="no" style="padding: 0;margin: 0"></iframe>
+					</div>
+					(사이즈 : 136 x 33 pixcel)	
+					<div><br/>※한개의 파일만 업로드 가능합니다. 등록된 파일을 삭제하시면 파일등록 버튼이 활성화 됩니다.		</div>	
+			</td>
+		</tr>
+		<tr>
+			<th scope="row">동영상섬네일</th>
+			<td colspan="3" id="uploadTB1">
+						
+						#if($univInfo.originalFilename_1)
+							<div  class="icon" id='$!univInfo.video_img_upfile_gid'><a href="javascript:downloadDB('$!univInfo.video_img_upfile_gid');">$!univInfo.originalFilename_1</a><span>(<script>document.write(getFileSize($!univInfo.fileSize_1))</script>)</span><a href="javascript:delRow1('$!univInfo.video_img_upfile_gid');"><img src="/mgr/images/btn/btn_del.gif" /></a>
+							<div><br/>※한개의 파일만 업로드 가능합니다. 등록된 파일을 삭제하시면 파일등록 버튼이 활성화 됩니다.</div>
+							</div>
+						#end
+						
+					
+					<div id="file1">
+						<iframe id="upload" name="upload" src="/mgr/common/file_write.ifm.action?eventHandler=setUploadResult1&confKey=att" width="100%" height="25" frameborder="0" scrolling="no" style="padding: 0;margin: 0"></iframe>
+					</div>				
+			</td>
+		</tr>
+		<tr>
+			<th scope="row">홍보동영상</th>
+			<td colspan="3" id="uploadTB2">
+				
+						
+						#if($univInfo.originalFilename_2)
+							<div  class="icon" id='$!univInfo.video_upfile_gid'><a href="javascript:downloadDB('$!univInfo.video_upfile_gid');">$!univInfo.originalFilename_2</a><span>(<script>document.write(getFileSize($!univInfo.fileSize_2))</script>)</span><a href="javascript:delRow2('$!univInfo.video_upfile_gid');"><img src="/mgr/images/btn/btn_del.gif" /></a>
+							<div>(파일 형식 : mp4 , 사이즈 : 260 x 185 pixcel, 비디오 코덱 : AVC / H.264  )</div>
+							<br/>※한개의 파일만 업로드 가능합니다. 등록된 파일을 삭제하시면 파일등록 버튼이 활성화 됩니다.
+							</div>
+						#end
+						
+					
+					<div id="file2">
+						<iframe id="upload" name="upload" src="/mgr/common/file_write.ifm.action?eventHandler=setUploadResult2&confKey=att" width="100%" height="25" frameborder="0" scrolling="no" style="padding: 0;margin: 0"></iframe>
+					</div>
+					
+			</td>
+		</tr>
+		<tr>
+			<th scope="row">입학전형시행계획</th>
+			<td colspan="3" id="uploadTB3">
+				#*
+						#if($!univInfo.originalFilename_3)
+							<div  class="icon" id='$!univInfo.entermodel'><a href="javascript:downloadDB('$!univInfo.entermodel');">$!univInfo.originalFilename_3</a><span>(<script>document.write(getFileSize($!univInfo.fileSize_3))</script>)</span><a href="javascript:delRow3('$!univInfo.entermodel');"><img src="/mgr/images/btn/btn_del.gif" /></a></div>
+						#end
+				*#
+						
+			    ##2014년도 업로드하기전 버튼 비활성화
+					<div id="file3">
+						#if($adminInfo.authLevelId != 3)
+							<iframe id="upload" name="upload" src="/mgr/common/file_write.ifm.action?eventHandler=setUploadResult3&confKey=att" width="100%" height="25" frameborder="0" scrolling="no" style="padding: 0;margin: 0"></iframe>
+						#else
+					
+						#end
+						
+					</div>
+			</td>
+			<script>
+			#if ($fileList.size()>0)
+			  #foreach($file in $fileList)
+			  	#if($adminInfo.authLevelId != 3)
+              		$("#uploadTB3").append('<div class="icon" id=\'$file.upfileId\'><a href="javascript:downloadDB(\'$file.upfileId\');">$file.upfileFilename</a><span>('+getFileSize($file.upfileSize)+')</span><a href="javascript:deleteFileDB(\'$file.upfileId\');"><img src="/mgr/images/btn/btn_del.gif" /></a></div>');
+			  	#else
+					$("#uploadTB3").append('<div class="icon" id=\'$file.upfileId\'><a href="javascript:downloadDB(\'$file.upfileId\');">$file.upfileFilename</a><span>('+getFileSize($file.upfileSize)+')</span></div>');
+				#end
+			  #end
+			#end
+			</script>
+		</tr>
+		<tr>
+			<th scope="row">우편번호</th>
+			<td colspan="3"><input type="text" id="univ_zipcode" name="univ_zipcode" size="10" title="우편번호" onkeyup="return numbersonly(this)" value="$!univInfo.univ_zipcode" maxlength="7"/></td>
+		</tr>
+		<tr>
+			<th scope="row">대표주소</th>
+			<td colspan="3"><input type="text" name="univ_address" size="60" title="대표주소" value="$!univInfo.univ_address"/></td>
+		</tr>
+		<tr>
+			<th scope="row">이메일</th>
+			<td colspan="3"><input type="text" name="univ_email" size="60" title="이메일" value="$!univInfo.univ_email"/></td>
+		</tr>
+		<tr>
+			<th scope="row">대표홈페이지</th>
+			<td colspan="3"><input type="text" name="univ_homepage" size="60" title="대표홈페이지" value="$!univInfo.univ_homepage"/></td>
+		</tr>
+		<tr>
+			<th scope="row">대표전화</th>
+			<td colspan="3"><input type="text" id="univ_phone" name="univ_phone" size="15" title="대표전화" value="$!univInfo.univ_phone" maxlength="13"/> (ex. 02-1234-5678)</td>
+		</tr>
+		<tr>
+			<th scope="row">FAX</th>
+			<td><input type="text" size="15" name="univ_fax" title="FAX" value="$!univInfo.univ_fax"/></td>
+			<th scope="row">입학상담 연락처</th>
+			<td><input type="text" size="15" name="univ_enter_phone" title="입학상담 연락처" value="$!univInfo.univ_enter_phone" maxlength="13"/></td>
+		</tr>
+		<tr>
+			<th scope="row">대학특징</th>
+			<td colspan="3">
+				<textarea name="univFeature" rows="5" style="width:100%;">$!univInfo.univFeature</textarea>
+			</td>
+		</tr>
+		<tr>
+			<th scope="row">성공수기 내용</th>
+			<td colspan="3">
+				<textarea id="successStory" name="successStory" rows="20" style="width:100%;">$!univInfo.successStory</textarea>
+				<script type= "text/javascript">
+                             var oEditors=[];
+                             nhn.husky.EZCreator.createInIFrame({
+                                 oAppRef: oEditors,
+                                 elPlaceHolder:"successStory",
+                                 sSkinURI: "/smarteditor/SmartEditor2Skin.html",
+                                 fCreator:"createSEditor2", htParams:{fOnBeforeUnload:function(){}}
+                             });
+                </script>
+				
+			</td>
+		</tr>
+		<tr>
+			<th scope="row">성공수기 링크</th>
+			<td colspan="3">
+				<input type="text" size="60" name="successLink" title="성공수기 링크" value="$!univInfo.successLink"/>
+			</td>
+		</tr>
+		<tr>
+			<th scope="row">등록정보</th>
+			<td>$!univInfo.register ($datetimeformatter.print($!univInfo.regDate, $locale))</td>
+			<th scope="row">수정정보</th>
+			<td>$!univInfo.modifier ($datetimeformatter.print($!univInfo.modDate, $locale))</td>
+		</tr>
+	</tbody>
+</table><!-- list_type01 End -->
+
+<div class="btn_box_type03">
+	<a href="javascript:modify();"><img src="/mgr/images/btn/save.gif" alt="저장" title="저장"/></a>
+	<a href="javascript:window.close();"><img src="/mgr/images/btn/cancel.gif" alt="취소" title="취소"/></a>
+</div>
+
+
+
+<h2>대학메뉴 링크정보(필수)</h2>
+
+<div class="list_top01">
+	<span>대표메뉴를 클릭하면 정보를 수정할 수 있습니다.</span><br/>
+	<span>링크 확인이 X 인 경우 잘못된 경로이니 다시 입력 후 데드링크 확인바랍니다.</span>
+</div>
+
+
+<div id="list">#parse('mgr/univ/deadLinkCheck.vm')</div>
+
+
+
+<div class="btn_box_type03">
+	<a href="javascript:popLinkRegist('');" class="_popup_type1"><img src="/mgr/images/btn/link.gif" alt="링크정보등록" /></a>
+	<a href="javascript:deadLinkCheck();" class="_popup_type1"><img src="/mgr/images/btn/dead_link.gif" alt="데드링크" /></a>
+</div>
+
+
+
+</form>
+</div>
+</body>
+</html>

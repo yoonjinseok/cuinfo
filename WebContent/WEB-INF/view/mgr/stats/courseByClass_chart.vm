@@ -1,0 +1,60 @@
+<head>
+	<title>학과분야별 등록 통계 그래프</title>
+</head>
+<body>
+<div style="width:90%;padding-left:30px;padding-top:30px;">
+<input type="hidden" name="searchPublicFlag" id="searchPublicFlag" value="Y"/>
+<h2>학과분야별 등록 통계 그래프</h2>
+<table border="0" width="700" height= "300" class="form_type01" >
+  <tr>
+	<td><div id="chart_div"></div></td>
+	<td><div id="chart_div2"></div></td>
+  </tr>
+</table>
+</div>
+
+<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+<script type="text/javascript">
+	google.load("visualization", "1", {packages:["corechart"]});
+	google.setOnLoadCallback(drawChart1);
+	google.setOnLoadCallback(drawChart2);
+	//alert("chart load");
+	 function drawChart1() {
+	 	//alert("drawChart view: + $!courseList.size()");
+		var data = new google.visualization.DataTable();
+		data.addColumn('string', '학교명');
+		data.addColumn('number', '강좌 등록 현황');
+		#if($courseList)
+    		data.addRows($courseList.size() + 1); 
+			
+    		#set($idx = 0)    		
+    		#foreach($ct in $courseList) 
+        		data.setValue($idx, 0 , "$ct.className");
+        		data.setValue($idx, 1 , $ct.regCnt);
+    			#set($idx = $idx + 1)
+    		#end
+		#end
+		var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
+		chart.draw(data, {width: 350, height: 300, title: '강좌 등록 현황'});
+		//alert("1");
+	}
+	function drawChart2() {
+		var data = new google.visualization.DataTable();
+		data.addColumn('string', '학교명');
+		data.addColumn('number', '강좌 등록 현황');
+		#if($courseList)
+    		data.addRows($courseList.size() + 1); 
+			
+    		#set($idx = 0)    		
+    		#foreach($ct in $courseList) 
+        		data.setValue($idx, 0 , "$ct.className");
+        		data.setValue($idx, 1 , $ct.serviceCnt);
+    			#set($idx = $idx + 1)
+    		#end
+		#end
+		var chart = new google.visualization.PieChart(document.getElementById('chart_div2'));
+		chart.draw(data, {width: 350, height: 300, title: '강좌 서비스 현황'});
+	}	
+</script>
+</body>
+

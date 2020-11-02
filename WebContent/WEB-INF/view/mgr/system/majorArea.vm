@@ -1,0 +1,137 @@
+<head>
+	<title>대표학과분야관리</title>
+	<script type="text/javascript" language="javascript">
+	function search()
+	{
+		goPage(1);
+	}
+	
+	function setRecordCnt(totalCnt, currPage, totalPage, showCnt)
+	{
+		$("#tCnt").text(totalCnt);
+		$("#cPage").text(currPage);
+		$("#tPage").text(totalPage);
+		
+		setPaging($("#pg"), totalCnt, showCnt, currPage);
+	}
+	
+	function goPage(page)
+	{
+		if(typeof(page) != "undefined")
+			$("#currPage").val(page);
+		jQuery.post('majorArea_list.ajax.action', 
+				$("#searchForm").formSerialize(), 
+				function(data) {
+        			$("#list").html(data);
+		});
+	}
+	
+	function modify(classifyId)
+	{
+		showWin('/mgr/system/majorArea_modify.pop.action?classifyId=' + classifyId, 'modwin', 800, 320);
+	}
+	
+	function reg()
+	{
+		showWin('/mgr/system/majorArea_write.pop.action', 'regwin', 800, 300);
+	}
+	
+	function chkNumber(obj) { 
+
+		var valRadio;
+
+ 		valRadio = $('input[name="radioClassify"]:checked').val();
+
+		if(valRadio=="Y"){
+			return true; 	
+		} else {
+			numbersonly(obj);
+			return true; 	
+  		}
+	}
+	function clsText(){
+
+		$("#classifyIdName").val("");
+		
+	}
+	
+	$(document).ready(function() {
+		search();
+    });
+	
+
+	</script>
+</head>
+
+<body>
+	
+	<!-- MainCopyBox  Start (페이지별 location 정보 표시.)-->
+	<div id="location_box">
+		<h3><img src="/mgr/images/system/title2.gif" alt="학과관리" /></h3>
+		<ul class="location">
+			<li><a href="/mgr/main.sub.action">Home</a></li>
+			<li><a href="/mgr/system/code.sub.action?gnb=51">시스템관리</a></li>
+			<li>대표학과관리</li>
+		</ul>
+	</div>
+	<!-- MainCopyBox  End -->
+
+	<h2>대표학과분야관리</h2>
+
+<ul class="tab_type1 num3">
+	<li class="tab1"><a href="/mgr/system/majorCode.sub.action?gnb=52">대표학과관리</a></li>
+	<li class="tab2 on"><a href="/mgr/system/majorArea.sub.action?gnb=52">학과분야관리</a></li>
+</ul>
+
+<form class="search_box01" id="searchForm" name="searchForm" action="#" onsubmit="try{search();}catch(e){alert(e);}return false;"><!-- box_type01 Start -->
+<input type="hidden" id="showCnt" name="showCnt" value="15"/>
+<input type="hidden" id="currPage" name="currPage" value="1"/>
+		
+	<fieldset class="inner">
+		<table cellspacing="0" cellpadding="0" summary="대표학과분야 검색" class="border_none_table">
+			<caption>대표학과분야 검색</caption>
+			<colgroup>
+				<col width="50%"/>
+				<col width="*%"/>
+			</colgroup>
+			<tbody>
+				<tr>
+        			<td>
+        				<label for="radio-1"><input type="radio" name="radioClassify" id="radio-1" value="Y" onclick="clsText()" checked/> 학과분야</label>
+						<label for="radio-2"><input type="radio" name="radioClassify" id="radio-2" value="N" onclick="clsText()" /> 코드</label>
+						<input type="text" size="20" id="classifyIdName" name="classifyIdName" title="학과분야" onkeyup="return chkNumber(this)"/>
+					</td>
+        			<td scope="row">
+						<label for="useYn">사용여부</label>
+						<select	id="useYn" name="useYn">
+							<option value="">전체</option>
+							<option value="Y">예</option>
+							<option value="N">아니오</option>
+						</select>
+					</td>
+					<td>
+						<a><input type="image" style="width:52px;height:21px;border:0px;" src="/mgr/images/btn/search.gif" alt="검색" /></a>
+					</td>	
+				</tr>
+			</tbody>
+		</table>
+		
+	</fieldset>
+</form><!-- box_type01 End -->
+
+
+<div class="list_top01">
+	<span>학과분야코드  클릭시 관리페이지로 이동합니다.</span>
+	<span class="f_right">total : <em id="tCnt">00</em>건(<em id="cPage">1</em>/<em id="tPage">10</em>page)</span>
+</div>
+
+<div id="list">#parse('mgr/system/majorArea_list.vm')</div>
+
+<div class="page_num">
+	<div id="pg" name="pg"></div>
+	<a class="f_right" href="javascript:reg();"><img src="/mgr/images/btn/class_position.gif" alt="등록" /></a>
+</div>
+
+
+</body>
+</html>

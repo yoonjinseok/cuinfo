@@ -1,0 +1,56 @@
+
+/*********************** layout ***********************/
+#Fwrap{ width:100%; z-index:9999;}
+.Ftop { width:100%; position:relative; height:64px; background:url(../images/bgTop.gif) repeat-x scroll left top;}
+.FtopL {height:64px; background:url(../images/bgLeft.gif) no-repeat scroll left top;}
+.FtopR {padding:11px 0 0 12px; width:23px;height:64px; position:absolute; top:0; right:0;_right:-1px; background:url(../images/bgRight.gif) no-repeat scroll right top;}
+.Fmid {background-color:#f7f6f6;}
+.FmidL {background:url(../images/bgMiddleLeft.gif) repeat-y scroll left top;}
+.FmidR {background:url(../images/bgMiddleRight.gif) repeat-y scroll right top;}
+.FconS {margin:0;  height:100%; background-color:#f0f0f0; margin:0 20px 0 20px;}
+.Fbot1 {width:100%; background:url(../images/bgBottom1.gif) repeat-x scroll left top; height:46px; float:right}
+.FbotL {background:url(../images/bgBottomLeft.gif) no-repeat scroll left top; height:46px;}
+.FbotR {background:url(../images/bgBottomRight.gif) no-repeat scroll right top; height:46px;}
+
+
+.Ftitle { float:left; margin:20px 0 0 45px; padding:2px 0 0 20px;  background:url(../images/pop_icon.gif) no-repeat; font-size:18px; color:#38547b; font-weight:bold; vertical-align:middle}
+.Fs_title {position:absolute; float:left; padding:3px 0 0 20px; margin:20px 0 0 25px;  background:url(../images/dot_icon1.gif) no-repeat; font-size:14px; color:#585756; font-weight:bold; vertical-align:middle;}
+.FconS dd{ padding:50px 15px 0 45px;}
+.Fclose1 {display:inline-block; background:#1b315a; text-align:right; color:#FFF; font-weight:bold; height:30px; width:100%;}
+.Fclose1 li{ padding:5px 5px 0 0}
+.Fimages {padding:10px 45px 0 0;text-align:right;}
+
+
+/*********************** popup2 ***********************/
+
+#Pwrap1{width:100%; background:#FFF; z-index:9999; }
+#Pbody1{border:#d49375 solid 3px; padding:4px 4px 4px 4px;}
+.Ptitle_bg{ background:url(../images/pop_titleBg.gif)  repeat-x; height:60px;}
+.Ptitle_1{background:url(../images/pop_title1.gif) no-repeat; top:0px; height:79px; padding:25px 0 0 30px; }
+.Ptitle_1 li{font-size:18px;  color:#FFF; font-weight:bold}
+.Ps_title_1{ background:url(../images/dot_icon.gif) no-repeat; top:0px; margin:30px 0 0 30px; padding:2px 0 0 25px}
+.Ps_title_1 li{font-size:14px; font-weight:bold}
+.Pclose {float:right; position:relative; top:-30px; padding:0 10px 0 0}
+.Pbot {background:#d49375; height:30px; text-align:right; color:#FFF; font-weight:bold;} 
+.bold { font-weight:bold}
+.Pbot li{padding:5px 5px 0 0} 
+.Pp_30 {padding:10px 10px 0 60px;}
+.Pp_40 { padding:20px 0 20px 0}
+
+/*2012.06.16 Ljh 추가*/
+/*********************** popup0 ***********************/
+
+#Pwrap0{width:100%; background:#FFFFFF; z-index:9999; }
+#Pbody0{border:#999999 solid 2px; padding:4px 4px 4px 4px;}
+.Ptitle_bg0{ background:url(../images/pop_titleBg.gif)  repeat-x; height:16px;}
+.Ptitle_0{top:0px; height:20px; padding:30px 0 0 30px; }
+.Ptitle_0 li{font-size:10px;  color:#888888; font-weight:bold}
+.Ps_title_0{ background:url(../images/dot_icon.gif) no-repeat; top:0px; margin:30px 0 0 30px; padding:2px 0 0 25px}
+.Ps_title_0 li{font-size:14px; font-weight:bold}
+.Pclose0 {float:right; position:relative; top:-30px; padding:0 10px 0 0}
+.Pbot0 {background:#999999; height:18px; text-align:right; color:#f0f0f0; font-weight:bold;} 
+.bold0 { font-weight:bold}
+.Pbot0 li{padding:1px 5px 0 0} 
+.Pp0_30 {padding:0px 0px 0 1px;}
+.Pp0_40 { padding:5px 0 0 0}
+

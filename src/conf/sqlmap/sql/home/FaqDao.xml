@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="EUC-KR"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="FaqDao">
+	<typeAlias alias="faq" type="com.cyberup.model.home.Faq"/>
+	
+	<select id="selectSection" resultClass="list">
+        SELECT CODE_NAME, CODE_ID
+		  FROM CU_COM_CODE
+		 WHERE CODE_GROUP = '44'
+	</select>
+	
+	<select id="selectList" resultClass="faq"  parameterClass="map">
+		WITH DATA1 AS(
+					SELECT ROW_NUMBER () OVER (ORDER BY A.REG_DATE DESC) as recNum,
+						   COUNT (*) OVER () totalCnt,
+						   FAQ_ID as faqId,
+	      				   SECTION_ID as sectionId,
+	      				   (SELECT CODE_NAME FROM CU_COM_CODE WHERE CODE_ID = SECTION_ID) as sectionName,
+					       QUESTION,
+					       ANSWER,
+					       HITS_CNT as hitsCnt,
+					       FAQ_ORDER as faqOrder,
+					       A.USE_YN as useYn,
+					       A.UPFILE_GID as upfileGid,
+					       NVL(A.REGISTER,'') AS REGISTER,
+					       B.ADMIN_NAME as adminName,
+					       A.REG_DATE as regDate,
+					       NVL(A.MODIFIER,'') AS MODIFIER,
+					       A.MOD_DATE as modDate
+	 				  FROM CU_FAQ A, CU_ADMIN B
+	 				 WHERE 'X' = 'X'
+	 				   AND A.REGISTER = B.ADMIN_ID
+	 				  <isNotEmpty property="faqContent" prepend="AND"> 
+		 				  <isEqual property="selectRadio1" compareValue="1">
+		 				   QUESTION LIKE concat(concat('%',#faqContent#),'%') 
+		 				  </isEqual>
+		 				  <isEqual property="selectRadio1" compareValue="2">
+		 				   ANSWER LIKE concat(concat('%',#faqContent#),'%')
+		 				  </isEqual>
+		 				  <isEqual property="selectRadio1" compareValue="3"> 
+		 				  (
+		 				   QUESTION LIKE concat(concat('%',#faqContent#),'%') 
+		 				   OR
+		 				   ANSWER LIKE concat(concat('%',#faqContent#),'%')
+		 				   )
+		 			  </isEqual>
+	 				  </isNotEmpty>
+	
+	 				  <isNotEmpty property="faqWriter" prepend="AND">   	
+		 				  <isEqual property="selectRadio2" compareValue="1">
+		 				  	B.ADMIN_NAME LIKE concat(concat('%',#faqWriter#),'%') 
+		 				  </isEqual>
+		 				  <isEqual property="selectRadio2" compareValue="2">
+		 				  	A.REGISTER = #faqWriter#
+		 				  </isEqual> 				 
+					   </isNotEmpty>
+					   <isNotEqual property="sectionId" compareValue="0">
+						   <isNotEmpty property="sectionId" prepend="AND">
+						  		SECTION_ID = #sectionId#
+						   </isNotEmpty>
+					   </isNotEqual>
+					    <isNotEmpty property="searchCon1">ORDER BY</isNotEmpty>   
+		  				<dynamic> 
+			         		 <isEqual property="searchCon1" compareValue="1"> recNum </isEqual>
+					         <isEqual property="searchCon1" compareValue="2"> sectionId </isEqual>
+					         <isEqual property="searchCon1" compareValue="3"> QUESTION </isEqual>
+					         <isEqual property="searchCon1" compareValue="4"> hitsCnt</isEqual>
+					         <isEqual property="searchCon2" compareValue="1"> ASC </isEqual>
+					         <isEqual property="searchCon2" compareValue="2"> DESC </isEqual>
+				     	  </dynamic>	
+				     ),
+		   DATA2 AS (
+		             SELECT ROWNUM AS RNUM,
+		             		recNum,
+						    totalCnt,
+						    faqId,
+	      				    sectionId,
+	      				    sectionName,
+					        QUESTION,
+					        ANSWER,
+					        hitsCnt,
+					        faqOrder,
+					        useYn,
+					        upfileGid,
+					        REGISTER,
+					        adminName,
+					        regDate,
+					        MODIFIER,
+					        modDate
+					   FROM DATA1	
+					  )
+					  SELECT RNUM,
+		             		 recNum,
+						     totalCnt,
+						     faqId,
+	      				     sectionId,
+	      				     sectionName,
+					         QUESTION,
+					         ANSWER,
+					         hitsCnt,
+					         faqOrder,
+					         useYn,
+					         upfileGid,
+					         REGISTER,
+					         adminName,
+					         regDate,
+					         MODIFIER,
+					         modDate	            
+			            FROM DATA2
+			           WHERE RNUM > (#currPage,javaType=Integer#-1)*#showCnt,javaType=Integer# 
+			             AND RNUM &lt;= #currPage,javaType=Integer#*#showCnt,javaType=Integer#
+   
+	</select>
+	
+	<insert id="insertInfo" parameterClass="faq">
+		INSERT INTO  CU_FAQ
+                   (
+	                 FAQ_ID,
+	                 SECTION_ID,
+	                 UPFILE_GID,
+	                 QUESTION,
+	                 ANSWER,
+	                 HITS_CNT,
+	                 FAQ_ORDER,
+	                 USE_YN,
+	                 REGISTER,
+	                 REG_DATE
+                    ) 
+             VALUES (
+             			SEQ_FAQ_ID.NEXTVAL,
+               			#sectionId#,
+               			#upfileGid#,
+               			#question#,
+			<![CDATA[   #answer:CLOB#,   ]]>
+               			0,
+               			1,
+               			'Y',
+               			#register#,
+               			SYSDATE
+                     )
+	</insert>
+	
+	<select id="selectInfo" resultClass="faq"  parameterClass="int">
+		SELECT FAQ_ID as faqId,
+      		   SECTION_ID as sectionId,
+      		   (SELECT CODE_NAME FROM CU_COM_CODE WHERE CODE_ID = SECTION_ID) as sectionName,
+		       QUESTION as question,
+		       ANSWER as answer,
+		       HITS_CNT as hitsCnt,
+		       FAQ_ORDER as faqOrder,
+		       USE_YN as useYn,
+		       UPFILE_GID as upfileGid,
+		       NVL(A.REGISTER,'') AS REGISTER,
+		       NVL((SELECT ADMIN_NAME FROM CU_ADMIN WHERE ADMIN_ID = A.REGISTER),'') as registerName,
+		       REG_DATE as regDate,
+		       NVL(A.MODIFIER,'') AS MODIFIER,
+		       NVL((SELECT ADMIN_NAME FROM CU_ADMIN WHERE ADMIN_ID = A.MODIFIER),'') as modifierName,
+		       MOD_DATE as modDate
+ 	      FROM CU_FAQ A
+ 	     WHERE FAQ_ID = #faqId#
+	</select>
+	
+		<update id="updateInfo" parameterClass="faq">
+		UPDATE CU_FAQ
+		   SET SECTION_ID = #sectionId#,
+      	       QUESTION   = #question#,
+     <![CDATA[ ANSWER	  = #answer:CLOB#,   ]]>
+      	       MODIFIER   = #modifier#,
+			   MOD_DATE   = SYSDATE
+	 	WHERE FAQ_ID = #faqId,javaType=Integer#
+	</update>
+	
+	<!-- 글 내용 클릭 시 hit 수를 증가시킨다. -->
+	<update id="updateHitsCount" parameterClass="int">
+		UPDATE CU_FAQ
+	       SET HITS_CNT  = HITS_CNT + 1
+		 WHERE FAQ_ID = #faqId,javaType=Integer#
+	</update>	
+	
+	<delete id="deleteInfo"  parameterClass="int">
+		DELETE FROM CU_FAQ 
+		WHERE 
+		FAQ_ID = #faqId,javaType=Integer#
+	</delete>
+
+	<!-- 파일이 모두 삭제되었으면 부모테이블의 그룹 파일 값 NULL으로 세팅 -->	
+	<update id="initFileBoard" parameterClass="int">
+		UPDATE  CU_FAQ
+				SET UPFILE_GID = NULL
+				WHERE UPFILE_GID = #upfileGid#
+				 	  AND NOT EXISTS
+	</update>
+
+	<select id="univFaqList" resultClass="faq">
+		SELECT 
+	            univ_name univName
+	            ,(SELECT link_url FROM cu_univ_link WHERE university_id = A.university_id AND link_gubun_id = '164') univFaqLink 
+	            ,(SELECT getSip(link_url) FROM cu_univ_link WHERE university_id = A.university_id AND link_gubun_id = '164') as sip 
+	            ,(SELECT getUri(link_url) FROM cu_univ_link WHERE university_id = A.university_id AND link_gubun_id = '164') as uri 
+	            ,(SELECT getQri(link_url) FROM cu_univ_link WHERE university_id = A.university_id AND link_gubun_id = '164') as qri 
+	            ,(SELECT getSp(link_url) FROM cu_univ_link WHERE university_id = A.university_id AND link_gubun_id = '164') as sp 
+		FROM cu_univ_info A
+		where a.gubun_id in ('51','52','163')
+		ORDER BY univ_name
+	</select>
+	
+</sqlMap>

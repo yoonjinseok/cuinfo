@@ -1,0 +1,12 @@
+<ul class="overall_tab_list">
+	
+	#foreach($list in $univList)
+	<li>
+		<tr>
+			<td><input type="checkbox" name="unvi" value="$!list.sttUnivID" #if($!list.putState == 'N')disabled="disabled"#end></td>
+			<td><font #if($!list.putState == 'N')color="#808080"#end>$!list.univName </font></td>
+		</tr>		
+	</li>
+	#end
+	
+</ul>

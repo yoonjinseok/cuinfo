@@ -1,0 +1,135 @@
+<head>
+	<title>학교정보 관리</title>
+	<script type="text/javascript" language="javascript">
+		
+	$(document).ready(function() {
+		search();
+    });
+    
+	function search()
+	{
+		goPage(1);
+	}
+	
+	function setRecordCnt(totalCnt, currPage, totalPage, showCnt)
+	{
+		$("#tCnt").text(totalCnt);
+		$("#cPage").text(currPage);
+		$("#tPage").text(totalPage);
+		
+		setPaging($("#pg"), totalCnt, showCnt, currPage);
+	}
+	
+	function goPage(page)
+	{
+		if(typeof(page) != "undefined")
+			$("#currPage").val(page);
+		
+		if($("input[name=radio]:checked").val() == "code")
+		{
+			if(isNaN($("#text").val())){
+				alert("학교코드는 숫자만 입력해주세요.");			
+				return;
+			}
+		}
+		
+		
+		jQuery.post('univInfo_list.ajax.action', 
+				$("#searchForm").formSerialize(), 
+				function(data) {
+        			$("#list").html(data);
+		});
+	}
+	
+	function modify(universityId)
+	{
+		showWin('/mgr/univ/univInfo_modify.pop.action?universityId=' + universityId, 'modwin', 800, 400);
+	}
+	
+	function reg()
+	{
+		showWin('/mgr/univ/univInfo_write.pop.action', 'regwin', 800, 400);
+	}
+	
+	//기본정보(코드)클릭    
+    function popDefault(university_id){
+    	showWin('/mgr/univ/introDefaultRegist.pop.action?university_id=' + university_id, 'dwin', 1024, 768);
+    }
+    
+    //종합클릭
+    function popOverAll(university_id){
+    	showWin('/mgr/univ/introOverAllRegist.pop.action?university_id=' + university_id, 'owin', 800, 600);
+    }
+    
+    //인삿말,비전,홍보센터,오시는길 클릭
+    function popOption(university_id){
+    	showWin('/mgr/univ/introOptionRegist.pop.action?university_id=' + university_id, 'pwin', 1024, 768);
+    }
+    
+	</script>
+</head>
+<body>
+	
+	<!-- MainCopyBox  Start (페이지별 location 정보 표시.)-->
+	<div id="location_box">
+		<h3><img src="/mgr/images/univ/title1.gif" alt="학교정보관리" /></h3>
+		<ul class="location">
+			<li><a href="/mgr/main.sub.action">Home</a></li>
+			<li><a href="#">학교/학사관리</a></li>
+			<li>학교정보관리</li>
+		</ul>
+	</div>
+	<!-- MainCopyBox  End -->
+	
+<form class="search_box01" id="searchForm" name="searchForm" action="#" onsubmit="try{search();}catch(e){alert(e);}return false;"><!-- box_type01 Start -->
+<input type="hidden" id="showCnt" name="showCnt" value="15"/>
+<input type="hidden" id="currPage" name="currPage" value="1"/>
+	<fieldset class="inner">
+		<table cellspacing="0" cellpadding="0" summary="강의 검색" class="border_none_table">
+			<caption>강의 검색</caption>
+			<colgroup>
+				<col width="45%"/>
+				<col width="*%"/>
+			</colgroup>
+			<tbody>
+				<tr>
+					<td>
+						<label for="select-1">분류</label>
+						<select	id="gubunId" name="gubunId">
+							<option value="">전체</option>
+							#foreach($code in $codeList)
+							<option value="$!code.codeId" #if($!code.codeId == $!gubunId) selected #end>$!code.codeName</option>
+							#end
+						</select>
+					</td>
+					<td colspan="2">
+						<label for="radio-1"><input type="radio" name="radio" id="radio1" value="name" checked="checked"/> 학교명</label>
+						<label for="radio-2"><input type="radio" name="radio" id="radio2" value="code"/> 코드</label>
+						<input type="text" name="text" id="text" size="10" title="검색어입력"/>
+						<a><input type="image" style="width:52px;height:21px;border:0px;" src="/mgr/images/btn/search.gif" alt="검색" /></a>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</fieldset>
+</form><!-- box_type01 End -->
+
+
+
+
+<div class="list_top01">
+	<span>각 항목 클릭 시 관리 페이지로 이동합니다.</span>
+	<span class="f_right">total : <em id="tCnt">00</em>건(<em id="cPage">1</em>/<em id="tPage">10</em>page)</span>
+</div>
+
+<div id="list">#parse('mgr/univ/univInfo_list.vm')</div>
+
+<div class="page_num">
+	<div id="pg" name="pg"></div>
+	
+	<!-- <a class="f_right" href="javascript:reg();"><img src="/mgr/images/btn/enter.gif" alt="등록" /></a> -->
+	
+</div>
+
+</body>
+</html>

@@ -1,0 +1,159 @@
+<head>
+	<title>관리자정보관리</title>
+	<script type="text/javascript" language="javascript">
+	
+	function auth(adminId, authLevelId) {
+		showWin('/mgr/system/admin_auth.pop.action?adminId='+adminId+'&authLevelId='+authLevelId, 'admauth', 600, 650);
+	}
+	
+	function modify()
+	{
+		jQuery.post('admin_update.json', 
+				$("#modifyForm").formSerialize(), 
+				function(data) {
+        			if(data.errors == true)
+        			{
+        				eval(data.message);
+        			}
+        			else
+        			{
+						alert("수정되었습니다.");
+						opener.goPage();
+						window.close();
+        			}
+		});
+	}
+
+	
+	function del()
+	{
+		
+		if( confirm("해당 시스템 코드를 삭제하시겠습니까? \n삭제된 데이터는 복원하실수 없습니다." ))
+		{
+    		jQuery.post('admin_delete.json', 
+    				$("#modifyForm").formSerialize(), 
+    				function(data) {
+            			if(data.errors == true)
+            			{
+            				eval(data.message);
+            			}
+            			else
+            			{
+    						opener.search();
+    						window.close();
+            			}
+    		});
+		}
+	}
+	
+	
+	</script>
+</head>
+<body>
+<div style="width:90%;padding-left:30px;padding-top:30px;">
+<form id="modifyForm" action="#" onsubmit="try{modify();}catch(e){alert(e);}return false;">
+<h2>정보 수정</h2>	
+<input type="hidden" id="adminId" name="adminId" value="$!adminList.adminId"/>
+<input type="hidden" id="adminId" name="hideValue" value="$!adminList.adminPwd"/>
+<table cellspacing="0" cellpadding="0" class="form_type01" summary="관리자정보 관리"><!-- list_type01 Start -->
+	<caption>관리자정보 관리</caption>
+	<colgroup>
+		<col width="15%" />
+		<col width="5%" />
+		<col width="*%" />
+		<col width="15%" />
+		<col width="35%" />
+	</colgroup>
+	<tbody>
+		<tr>
+			<th scope="row">이름</th>
+			<td colspan="2"><input type="text" maxlength="30" size="30" title="이름" name="adminName" id="adminName" value="$!adminList.adminName"/></td>
+			<th scope="row">아이디</th>
+			<td>$!adminList.adminId</td>
+		</tr>
+		<tr>
+			<th scope="row">권한그룹</th>
+			<td colspan="2">
+				<select	id="authLevelId" name="authLevelId"">
+					#foreach($code in $codeList)
+					<option value="$!code.codeId">$!code.codeName</option>
+					#end
+				</select>
+				<script>
+					document.forms['modifyForm'].elements['authLevelId'].value = $!adminList.authLevelId ;
+				</script> 
+			</td>
+			<th scope="row">학교명</th>
+			<td>
+				$!adminList.universityName
+			</td>
+		</tr>
+		<tr>
+			<th scope="row">비밀번호</th>
+			<td colspan="2">
+				<input type="password" maxlength="60" size="30" title="비밀번호" name="adminPwd" id="adminPwd" />
+				<div class="m_t5">(4자리~15자리로 입력)</div>
+			</td>
+			<th scope="row">비밀번호 확인</th>
+			<td><input type="password" maxlength="60" size="30" title="비밀번호" name="adminPwd2" id="adminPwd2" /> <br/>
+			</td>
+		</tr>
+
+		<tr>
+			<th scope="row">소속</th>
+			<td colspan="2"><input type="text" maxlength="30" size="30" title="소속" name="adminCompany" id="adminCompany" value="$!adminList.adminCompany"/></td>
+			<th scope="row">부서</th>
+			<td><input type="text" maxlength="30" size="30" title="부서" name="adminDepart" id="adminDepart" value="$!adminList.adminDepart"/></td>
+		</tr>
+		<tr>
+			<th scope="row">직위</th>
+			<td colspan="2"><input type="text" maxlength="30" size="30" title="직위" name="adminPosition" id="adminPosition" value="$!adminList.adminPosition"/></td>
+			<th scope="row">직책</th>
+			<td><input type="text" maxlength="30" size="30" title="직책" name="adminDuty" id="adminDuty" value="$!adminList.adminDuty"/></td>
+		</tr>
+		<tr>
+			<th scope="row">게시연락처</th>
+			<td colspan="4"><input type="text" maxlength="20" size="30" title="게시연락처" name="adminPhone" id="adminPhone" value="$!adminList.adminPhone"/></td>
+		</tr>
+		<tr>
+			<th scope="row">이메일</th>
+			<td colspan="3"><input type="text" maxlength="200" size="30" title="이메일" name="adminEmail" id="adminEmail" value="$!adminList.adminEmail"/></td>
+		</tr>
+		<tr>
+			<th scope="row">허용아이피</th>
+			<td colspan="4">
+				<textarea id="acceptIp" name="acceptIp" title="허용아이피" rows="5" cols="70">$!adminList.acceptIp</textarea>
+				<div class="m_t5">아이피가 다중일 ','로 연결 바랍니다. 미입력 시 IP 제한없이 로그인 가능<br/>Ex) 255.255.255.1, 255.255.255.2</div>
+			</td>
+		</tr>
+		<tr>
+			<th scope="row">설명</th>
+			<td colspan="4"><input type="text" size="70" title="설명" name="adminDesc" id="adminDesc" value="$!adminList.adminDesc"/></td>
+		</tr>
+		<tr>
+			<th scope="row">사용여부</th>
+			<td colspan="4">
+				<label for="radio-1" class="m_r20"><input type="radio" name="useYn" id="radio-1" value="Y" #if($!adminList.useYn == 'Y')checked="checked"#end/> 사용함</label>
+				<label for="radio-2"><input type="radio" name="useYn" id="radio-2" value="N" #if($!adminList.useYn == 'N')checked="checked"#end/> 사용하지 않음</label>
+			</td>
+		</tr>
+		<tr>
+			<th scope="row">등록정보</th>
+			<td colspan="2">$!adminList.register ($datetimeformatter.print($!adminList.regDate, $!locale))</td>
+			<th scope="row">수정정보</th>
+			<td>#if("$!adminList.modifier" !="") $!adminList.modifier ($datetimeformatter.print($!adminList.modDate, $!locale)) #end</td>
+		</tr>
+	</tbody>
+</table><!-- list_type01 End -->
+
+<div class="btn_box_type03">
+	##<a href="javascript:auth('$!adminList.adminId','$!adminList.authLevelId');"><img src="/mgr/images/btn/auth.gif" alt="권한"/></a>
+	<a href="javascript:modify();"><img src="/mgr/images/btn/save.gif" alt="저장" /></a>
+	<a href="javascript:del();"><img src="/mgr/images/btn/delete.gif" alt="삭제" /></a>
+	<a href="javascript:window.close();"><img src="/mgr/images/btn/cancel.gif" alt="취소" /></a>
+</div>
+
+</form>
+</div>
+</body>
+</html>

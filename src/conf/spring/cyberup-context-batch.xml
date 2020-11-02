@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.0.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+    <context:component-scan base-package="com.cyberup" />
+	
+	<!-- DataSource/Transaction --> 
+	<tx:annotation-driven />
+	
+	<bean id="scheduleService" class="com.cyberup.service.course.ScheduleService"/>
+	<bean id="historyService" class="com.cyberup.service.course.HistoryService"/>
+	<bean id="responseHandlerImpl" class="com.cyberup.schedule.ResponseHandlerImpl"/>
+	<bean id="spHarvester" class="com.cyberup.schedule.SpHarvester"/>
+	
+	<bean id="rssHandler" class="com.cyberup.schedule.RssReader"/>
+	<bean id="rssHandler1" class="com.cyberup.schedule.RssReader"/>
+	<bean id="rssHandler2" class="com.cyberup.schedule.RssReader"/>
+	<bean id="linkCheckHandler" class="com.cyberup.schedule.DeadLinkCheckController"/>
+	
+	<bean id="kocwDistributor" class="com.cyberup.schedule.kocw.KocwDistributor"/>
+	<bean id="kocwDemolisher" class="com.cyberup.schedule.kocw.KocwDemolisher"/>
+	
+	<bean id="kocwHandlerJobDetail" class="org.springframework.scheduling.quartz.JobDetailBean">
+		<property name="jobClass" value="com.cyberup.schedule.kocw.KocwDistHandler"/>
+		<property name="jobDataAsMap">
+		    <map>
+		      <entry key="kocwDistributor" value-ref="kocwDistributor"/>
+		      <entry key="kocwDemolisher" value-ref="kocwDemolisher"/>
+		    </map>
+		  </property>
+	</bean>
+	
+	<!-- Rss -->
+	<bean id="rssHandlerJobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+	  <property name="targetObject" ref="rssHandler" />
+	  <property name="targetMethod" value="execute" />
+	  <property name="concurrent" value="false" />
+	</bean>
+
+	<bean id="rssTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+	    <property name="jobDetail" ref="rssHandlerJobDetail" />
+	    <!-- run every morning at 9 AM : 0 0 9 * * ?"  -->
+	    <property name="cronExpression" value="0 10 9 * * ?" />
+	    <property name="group" value="SPHarvester"/>
+	</bean>
+	<!-- Rss -->
+	
+	<!-- Rss1 -->
+	<bean id="rssHandlerJobDetail1" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+	  <property name="targetObject" ref="rssHandler1" />
+	  <property name="targetMethod" value="execute" />
+	  <property name="concurrent" value="false" />
+	</bean>
+
+	<bean id="rssTrigger1" class="org.springframework.scheduling.quartz.CronTriggerBean">
+	    <property name="jobDetail" ref="rssHandlerJobDetail1" />
+	    <property name="cronExpression" value="0 0 17 * * ?" />
+	    <property name="group" value="SPHarvester"/>
+	</bean>
+	<!-- Rss -->
+	
+	<!-- Rss2 -->
+	<bean id="rssHandlerJobDetail2" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+	  <property name="targetObject" ref="rssHandler2" />
+	  <property name="targetMethod" value="execute" />
+	  <property name="concurrent" value="false" />
+	</bean>
+
+	<bean id="rssTrigger2" class="org.springframework.scheduling.quartz.CronTriggerBean">
+	    <property name="jobDetail" ref="rssHandlerJobDetail2" />
+	    <property name="cronExpression" value="0 0 0 * * ?" />
+	    <property name="group" value="SPHarvester"/>
+	</bean>
+	<!-- Rss -->
+	
+	<!-- DeadLinkCheck -->
+	<bean id="linkCheckHandlerJobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+	  <property name="targetObject" ref="linkCheckHandler" />
+	  <property name="targetMethod" value="execute" />
+	  <property name="concurrent" value="false" />
+	</bean>
+
+	<bean id="linkCheckTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+	    <property name="jobDetail" ref="linkCheckHandlerJobDetail" />
+	    <!-- run every morning at 6 AM : 0 0 6 * * ?"  -->
+	    <property name="cronExpression" value="0 30 2 * * ?" />
+	    <property name="group" value="SPHarvester"/>
+	</bean>
+	<!-- DeadLinkCheck -->
+	
+	<bean id="spHandlerJobDetail" class="org.springframework.scheduling.quartz.JobDetailBean">
+		<property name="jobClass" value="com.cyberup.schedule.SpHandler"/>
+		<property name="jobDataAsMap">
+		    <map>
+		      <entry key="scheduleService" value-ref="scheduleService"/>
+		      <entry key="historyService" value-ref="historyService"/>
+		      <entry key="responseHandlerImpl" value-ref="responseHandlerImpl"/>
+		      <entry key="spHarvester" value-ref="spHarvester"/>
+		    </map>
+		  </property>
+	</bean>
+
+	<bean id="spHandlerCronTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+	    <property name="jobDetail" ref="spHandlerJobDetail" />
+	    <!-- run every morning at 6 AM : 0 0 6 * * ?"  -->
+	    <property name="cronExpression" value="0 0 2 * * ?" />
+	    <property name="group" value="SPHarvester"/>
+	</bean>
+	
+	<bean id="spManualHandlerJobDetail" class="org.springframework.scheduling.quartz.JobDetailBean">
+		<property name="jobClass" value="com.cyberup.schedule.ManualHandler"/>
+		<property name="jobDataAsMap">
+		    <map>
+		      <entry key="scheduleService" value-ref="scheduleService"/>
+		      <entry key="historyService" value-ref="historyService"/>
+		      <entry key="responseHandlerImpl" value-ref="responseHandlerImpl"/>
+		      <entry key="spHarvester" value-ref="spHarvester"/>
+		    </map>
+		  </property>
+	</bean>
+
+	<bean id="spManualHandlerCronTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+	    <property name="jobDetail" ref="spManualHandlerJobDetail" />
+	    <!-- run every morning at 6 AM : 0 0 6 * * ?"  -->
+	    <property name="cronExpression" value="10 * * * * ?" />
+	    <property name="group" value="SPHarvester"/>
+	</bean>
+	
+	<bean id="kocwHandlerCronTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+	    <property name="jobDetail" ref="kocwHandlerJobDetail" />
+	    <!-- run every morning at 6 AM : 0 0 6 * * ?"  -->
+	    <property name="cronExpression" value="0 0 6 * * ?" />
+	    <property name="group" value="KOCWDistributor"/>
+	</bean>
+	
+	<bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+	    <property name="triggers">
+	        <list>
+	            <ref bean="spHandlerCronTrigger" />
+	            <ref bean="spManualHandlerCronTrigger" />
+	            <ref bean="kocwHandlerCronTrigger" />
+	            <ref bean="rssTrigger" />
+	            <ref bean="rssTrigger1" />
+	            <ref bean="rssTrigger2" />
+	            <ref bean="linkCheckTrigger" />
+	        </list>
+	    </property>
+	</bean>
+	
+
+</beans>

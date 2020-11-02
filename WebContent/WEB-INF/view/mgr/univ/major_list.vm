@@ -1,0 +1,77 @@
+
+<table cellspacing="0" cellpadding="0" class="list_type01" summary="학과정보관리"><!-- list_type01 Start -->
+	<caption>학과정보관리</caption>
+	<colgroup>
+		<col width="5%" />
+		<col width="6%" />
+		<col width="*%" />
+		<col width="15%" />
+		<col width="6%" />
+		<col width="18%" />
+		<col width="10%" />
+		<col width="18%" />
+		<col width="5%" />
+	</colgroup>
+	<thead>
+		<tr>
+			<th scope="col" rowspan="2">NO</th>
+			<th scope="col" rowspan="2">학교코드</th>
+			<th scope="col" rowspan="2">학교명</th>
+			<th scope="col" rowspan="2">대표학과분야</th>
+			<th scope="col" colspan="2">대표학과</th>
+			<th scope="col" colspan="2">학교측학과</th>
+			<th scope="col" rowspan="2">사용여부</th>
+		</tr>
+		<tr>
+			<th scope="col" class="l_border">코드</th>
+			<th scope="col">학과명</th>
+			<th scope="col">코드</th>
+			<th scope="col">학과명</th>
+		</tr>
+		
+	</thead>
+	<tbody>
+		#foreach($dp in $univDeptList)
+		#if($currPage == 1)
+		#set($rn = ($totalCnt + 1) - (($currPage - 1) * $showCnt + $velocityCount))
+		#else
+		#set($rn = ($totalCnt + 2) - (($currPage - 1) * $showCnt + $velocityCount))
+		#end
+		<tr>
+			<td>$rn</td>
+			<td>$!dp.universityId</td>
+			<td class="t_left">$!dp.universityName</td>
+			<td>$!dp.classifyName</td>
+			<td>$!dp.deptId</td>
+			<td class="t_left">$!dp.deptName</td>
+			<td class="t_left"><a href="javascript:modify('$!dp.univDeptId',$!dp.universityId);">$!dp.univDeptId</a></td>
+			<td class="t_left">$!dp.univDeptName</td>
+			<td>$!dp.useYn</td>
+		</tr>
+		#end
+		
+		#set($cnt = $univDeptList.size() + 1)
+		#if($cnt < $showCnt)
+		#foreach($blank in [$cnt..$showCnt])
+		<tr>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+		</tr>
+		#end
+		#end
+
+	</tbody>
+</table><!-- list_type01 End -->
+
+<script>
+	#if($univDeptList)
+	setRecordCnt($totalCnt, $currPage, $totalPage, $showCnt);
+	#end
+</script>

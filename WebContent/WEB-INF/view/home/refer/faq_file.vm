@@ -1,0 +1,21 @@
+<table width="100%" cellspacing="0" cellpadding="0" summary="FAQ 이미지"><!-- list_type01 Start -->
+	<caption>FAQ 첨부파일</caption>
+	<colgroup>
+		<col width="100%" />
+	</colgroup>
+	<tbody>
+		<tr>
+			<td>
+				#if ($fileList.size()>0)
+				<table>
+				#foreach($fl in $fileList)
+					<tr id="$fl.upfileID">
+						<td><a href ="javascript:downloadDB('$!fl.upfileGid','$!fl.upfileID' );" style="background:#fbfbfb;border-bottom:solid 0px #C7C7C7; !important;">$!fl.orgFileName </a></td>
+					</tr>
+				#end
+				</table>
+				#end
+			</td>
+		</tr>
+	</tbody>
+</table>

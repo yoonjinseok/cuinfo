@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="EUC-KR"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="CodeDao">
+	<typeAlias alias="code" type="com.cyberup.model.system.Code"/>
+	
+	<select id="selectViewList" resultClass="code"  parameterClass="map">
+		SELECT   a.*
+		FROM 
+		(
+			SELECT ROW_NUMBER () OVER (ORDER BY case when A.CODE_GROUP is null then A.CODE_ID else A.CODE_GROUP end asc,
+      			A.CODE_GROUP desc, A.CODE_ORDER ASC) as recNum, COUNT (*) OVER () totalCnt,
+				A.CODE_ID as codeId, A.CODE_GROUP as codeGroup, B.CODE_NAME as codeGroupName, A.CODE_NAME as codeName
+				, A.CODE_VALUE as codeValue, A.CODE_ORDER as codeOrder, A.CODE_DESC as codeDesc
+				, A.USE_YN as useYn, A.CODE_REGISTER as codeRegister, A.CODE_REGDATE as codeRegdate
+				, A.CODE_MODIFIER as codeModifier, A.CODE_MODDATE as codeModdate,
+      			CASE WHEN A.CODE_GROUP IS NULL THEN A.CODE_ID ELSE A.CODE_GROUP END as groupOrder,
+      			CASE WHEN A.CODE_GROUP IS NULL THEN A.CODE_NAME ELSE B.CODE_NAME END as groupOrderName
+			FROM CU_COM_CODE A LEFT JOIN CU_COM_CODE B
+				ON A.CODE_GROUP = B.CODE_ID
+			WHERE 1=1
+			
+
+			<isNotEqual property="codeId" prepend="AND" compareValue="0">
+                A.CODE_ID =#codeId#
+            </isNotEqual>
+            <isNotEmpty property="codeName" prepend="AND">
+                A.CODE_NAME  LIKE concat(concat('%',#codeName#),'%')
+            </isNotEmpty>
+			<isNotEmpty property="codeGroup" prepend="AND">
+                CASE WHEN A.CODE_GROUP IS NULL THEN A.CODE_ID ELSE A.CODE_GROUP END =#codeGroup#
+            </isNotEmpty>
+      		<isNotEmpty property="codeGroupName" prepend="AND">
+                CASE WHEN A.CODE_GROUP IS NULL THEN A.CODE_NAME ELSE B.CODE_NAME END LIKE concat(concat('%',#codeGroupName#),'%')
+            </isNotEmpty>
+			<isNotEmpty property="useYn" prepend="AND">
+                A.USE_YN=#useYn#
+            </isNotEmpty>
+            
+		) A
+		WHERE CEIL (recNum / #showCnt,javaType=Integer#) = #currPage,javaType=Integer#
+		ORDER BY grouporder, codeGroup desc, codeOrder ASC
+		
+	</select>		
+		
+	<select id="selectGroupList" resultClass="code"  parameterClass="map">
+		SELECT CODE_ID as codeId, CODE_GROUP as codeGroup, CODE_NAME as codeName
+			, CODE_VALUE as codeValue, CODE_ORDER as codeOrder, CODE_DESC as codeDesc
+			, USE_YN as useYn, CODE_REGISTER as codeRegister, CODE_REGDATE as codeRegdate
+			, CODE_MODIFIER as codeModifier, CODE_MODDATE as codeModdate
+		FROM CU_COM_CODE
+		WHERE CODE_GROUP IS NULL
+			<isNotEmpty property="useYn" prepend="AND">
+                USE_YN=#useYn,javaType=string#
+            </isNotEmpty>
+	</select>
+	<select id="selectList" resultClass="code"  parameterClass="map">
+		SELECT A.CODE_ID as codeId, A.CODE_GROUP as codeGroup, GROUPTBL.CODE_NAME as codeGroupName, A.CODE_NAME as codeName
+			, A.CODE_VALUE as codeValue, A.CODE_ORDER as codeOrder, A.CODE_DESC as codeDesc
+			, A.USE_YN as useYn, A.CODE_REGISTER as codeRegister, A.CODE_REGDATE as codeRegdate
+			, A.CODE_MODIFIER as codeModifier, A.CODE_MODDATE as codeModdate
+		FROM CU_COM_CODE A LEFT JOIN CU_COM_CODE GROUPTBL
+				ON A.CODE_GROUP = GROUPTBL.CODE_ID
+		WHERE A.CODE_GROUP = #codeGroup#
+			<isNotEmpty property="useYn" prepend="AND">
+                A.USE_YN=#useYn,javaType=string#
+            </isNotEmpty>
+        ORDER BY A.CODE_GROUP, A.CODE_ORDER ASC
+	</select>
+	<select id="selectInfo" resultClass="code"  parameterClass="Integer">
+		SELECT A.CODE_ID as codeId, A.CODE_GROUP as codeGroup, GROUPTBL.CODE_NAME as codeGroupName, A.CODE_NAME as codeName
+			, A.CODE_VALUE as codeValue, A.CODE_ORDER as codeOrder, A.CODE_DESC as codeDesc
+			, A.USE_YN as useYn
+			, A.CODE_REGISTER as codeRegister, NVL(REGISTERTBL.ADMIN_NAME,'') as codeRegisterName, A.CODE_REGDATE as codeRegdate
+			, A.CODE_MODIFIER as codeModifier, NVL(MODIFIERTBL.ADMIN_NAME,'') as codeModifierName, A.CODE_MODDATE as codeModdate
+		FROM CU_COM_CODE A 
+				LEFT JOIN CU_COM_CODE GROUPTBL
+					ON A.CODE_GROUP = GROUPTBL.CODE_ID
+				LEFT JOIN CU_ADMIN REGISTERTBL
+		            ON A.CODE_REGISTER = REGISTERTBL.ADMIN_ID
+		        LEFT JOIN CU_ADMIN MODIFIERTBL
+		            ON A.CODE_MODIFIER = MODIFIERTBL.ADMIN_ID
+		WHERE A.CODE_ID = #codeId,javaType=Integer#
+	</select>
+	
+	<update id="updateInfo" parameterClass="code">
+		UPDATE CU_COM_CODE SET 
+			CODE_GROUP = #codeGroup#, CODE_NAME = #codeName# 
+			, CODE_VALUE = #codeValue#, CODE_ORDER = #codeOrder#, CODE_DESC = #codeDesc#
+			, USE_YN = #useYn#
+			, CODE_MODIFIER = #codeModifier#, CODE_MODDATE = SYSDATE
+		WHERE CODE_ID = #codeId,javaType=Integer#
+	</update>
+	
+	<insert id="insertInfo" parameterClass="code">
+		<selectKey resultClass="Integer" keyProperty="codeId">
+         SELECT SEQ_CODE_ID.nextVal as codeId FROM dual
+        </selectKey>
+        
+		INSERT INTO CU_COM_CODE 
+			(CODE_ID, CODE_GROUP, CODE_NAME
+			, CODE_VALUE, CODE_ORDER, CODE_DESC
+			, USE_YN, CODE_REGISTER, CODE_REGDATE)
+		 values(#codeId#, #codeGroup#, #codeName#
+			, #codeValue#, #codeOrder#, #codeDesc#
+			, #useYn#, #codeRegister#, SYSDATE)
+	</insert>
+	
+	<delete id="deleteInfo"  parameterClass="Integer">
+		DELETE FROM CU_COM_CODE 
+		WHERE 
+		CODE_ID = #codeId,javaType=Integer#
+	</delete>
+	
+	<select id="selectTableData" parameterClass="java.lang.String" resultClass="java.util.HashMap" remapResults="true">
+		$query$
+	</select>
+	
+	<insert id="insertTableData" parameterClass="java.lang.String">
+		$insertquery$
+	</insert>
+	
+	<update id="updateTableData" parameterClass="java.lang.String">
+		$updatequery$
+	</update>
+	
+	<delete id="deleteTableData" parameterClass="java.lang.String">
+		$deletequery$
+	</delete>
+
+</sqlMap>

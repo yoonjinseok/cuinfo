@@ -1,0 +1,174 @@
+<head>
+	<title>학과 내비게이션</title>
+	<link rel="stylesheet" type="text/css" href="/home/css/course.css" />
+	<script type="text/javascript" language="javascript">
+	
+	$(document).ready(function() {
+		//search();
+    });
+    
+	function search()
+	{
+		jQuery.post('curriculumList.ajax.action',  
+					$("#form").formSerialize(),
+					function(data) {
+        				$("#list").html(data);
+		});
+	}
+	
+	function viewDetail(courseId, title)
+	{
+	
+		//필요 변수 셋팅
+		$("#text").val(title);
+		$("#hidetext").val(title);
+		$("#courseId").val(courseId);
+		
+		//onsubmit 속성을 비워주어야 submit이 된다.
+		$("#form").attr("method","post");
+		$("#form").attr("onsubmit","");
+		$("#form").attr("action","/home/course/courseSearchView.sub.action?gnb=41");
+		$("#form").submit();
+		
+	}
+	
+	//유사강의검색
+	function viewDetail2(courseId, title)
+	{
+	
+		//필요 변수 셋팅
+		$("#text").val(title);
+		$("#hidetext").val(title);
+		$("#courseId").val(courseId);
+		$("#deptId").val("");
+		
+		//onsubmit 속성을 비워주어야 submit이 된다.
+		$("#form").attr("method","post");
+		$("#form").attr("onsubmit","");
+		$("#form").attr("action","/home/course/courseSearch.sub.action?gnb=41&pageType=1&checkbox3=2");
+		$("#form").submit();
+		
+	}
+	
+	</script>
+</head>
+	
+<body id="intro">
+
+	<p class="location">
+		<a href="">홈</a> <span>></span> <a href="">사이버대학안내</a> <span>></span> <a href="">대학소개</a> 
+	</p>
+	<h3><img src="/home/images/title/h3_sub_view.gif" alt="교과과정 보기" /></h3>
+		
+	
+	<div class="contentWrap">
+		<!--s:컨텐츠영역-->
+			<div class="main_copy m_b5">분야 및 학과를 선택하시면 해당되는 학과리스트가 나옵니다.</div>
+			<div class="main_copy m_b15">학과 리스트에서 해당학교의 학과를 선택하시면, 학과에 대한 전체 교육과정이 표시됩니다.</div>
+			<div class="path_major">
+				#foreach($list in $curriculumList)
+					#if($velocityCount == 1)
+					· <a href="$!list.univHomePage" target="_blank" onClick="dcsMultiTrack('DCS.dcssip','$!list.sip1','DCS.dcsuri','$!list.uri1','DCS.qry','$!list.qri1','WT.ti','Offsite Link - $!list.sp1','WT.sp','$!list.sp1')">$list.universityName</a><span>&gt;</span> <a target="_blank" href="$!list.linkurl" onClick="dcsMultiTrack('DCS.dcssip','$!list.sip2','DCS.dcsuri','$!list.uri2','DCS.qri','$!list.qri2','WT.ti','Offsite Link - $!list.universityName','WT.sp','$!list.sp2')">$!list.univdeptName</a>
+						#if($!list.linkurl)
+						<a target="_blank" href="$!list.linkurl" class="btn_info_major"><img src="/home/images/btn/btn_info_major.gif" alt="학과안내 페이지 바로가기" /></a>
+						#end
+					#end
+				#end
+			</div>
+			
+			<div id="list" class="univ_table m_l0">
+				<table cellspacing="0" cellpadding="0" summary="교과과정 보기"><!-- table_type1 st01 Start -->
+				<caption>교과과정 보기</caption>
+				<colgroup>
+					<col width="10%">
+					<col width="35%">
+					<col width="10%">
+					<col width="35%">
+					<col width="10%">
+				</colgroup>
+				<thead>
+					<tr>
+						<th scope="col" rowspan="2">학년</th>
+						<th scope="col" colspan="2">1학기</th>
+						<th scope="col" colspan="2">2학기</th>
+					</tr>
+					<tr class="row_top">
+						<th scope="col">교과목명</th>
+						<th scope="col">학점</th>
+						<th scope="col">교과목명</th>
+						<th scope="col">학점</th>
+					</tr>
+				</thead>
+				<tbody>
+					#if($curriculumList.size() > 0)
+					#foreach($list in $curriculumList)
+						#if($list.rn==$!list.cnt)
+							<tr class="line01">
+						#elseif($list.rn==1)
+							<tr class="line02">
+						#else
+							<tr>
+						#end
+						
+						#if($list.rn == 1)
+							<th class="line02" rowspan="$!list.cnt">$!list.grad</th>
+						#end
+						
+							<td class="t_left line02">
+								<p><a href="javascript:viewDetail('$!list.courseId1','$!list.title1');">$!list.title1</a></p>
+							</td>
+							<td>
+								#if($!list.title1) <a href="javascript:viewDetail2('$!list.courseId1','$!list.title1');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기" /></a> #end
+								#if($!list.credit1)
+								$!list.credit1
+									#else
+									&nbsp;
+								#end
+								
+							</td>
+							<td class="t_left">
+								<p><a href="javascript:viewDetail('$!list.courseId2','$!list.title2');">$!list.title2</a></p>
+							</td>
+							<td>
+								#if($!list.title2) <a href="javascript:viewDetail2('$!list.courseId2','$!list.title2');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기" /></a> #end
+								$!list.credit2
+							</td>
+						</tr>
+						#if($list.rn == $list.cnt)
+						#end
+					#end
+					#else
+					<tr>
+						<td colspan="5">검색 결과가 없습니다.</td>	
+					</tr>
+					<script>
+						alert("교과과정 준비중입니다.");
+						history.back();
+					</script>
+					#end
+				   </tbody>
+				</table>	
+			</div>
+			
+			<p class="m_b5"><img src="/home/images/course/txt_info_search.gif" alt="전체 사이버대학을 대상으로 유사강의 검색" /></p>
+			<br/>
+			<p class="m_b5" style="color:red;font-weight:bold;">
+			※ 교과과정은 “강의검색”에서 조회되는 강의를 통해 구성하였습니다.<br/> 
+   			&nbsp;&nbsp;&nbsp;&nbsp;실제 대학 교과과정과 차이가 있을 수 있으니, 정확한 내용은 해당 학교의 학과 홈페이지를 확인하시기 바랍니다. 	
+			</p>
+		<!--e:컨텐츠영역-->
+	</div>
+	
+	<form class="search_box01" id="form" name="form" action="#" onsubmit="try{search();}catch(e){alert(e);}return false;"><!-- box_type01 Start -->
+        <input type="hidden" id="courseId" name="courseId" />
+        <input type="hidden" id="hidetext" name="hidetext" />
+        <input type="hidden" id="text" name="text" />
+        <input type="hidden" id="deptId" name="deptId" value="$deptId" />
+	</form>
+
+	<div class="page_num">
+		<div id="pg" name="pg"></div>
+	</div>
+
+</body>
+</html>

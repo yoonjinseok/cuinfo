@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="EUC-KR"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="UnivCodeDao">
+	<typeAlias alias="univCode" type="com.cyberup.model.system.UnivCode"/>
+	
+	<select id="selectList" resultClass="univCode"  parameterClass="map">
+	SELECT   a.*
+            FROM 
+            (
+				SELECT ROW_NUMBER () OVER (ORDER BY UNIV_NAME asc) as recNum
+					, COUNT (*) OVER () totalCnt
+		            , A.UNIVERSITY_ID as universityId, UNIV_NAME as univName
+					, A.GUBUN_ID as gubunId, NVL(GUBNTBL.CODE_NAME,'') as gubunName
+					, A.LOCAL_ID as localId, NVL(LOCALTBL.CODE_NAME,'') as localName
+					, A.UNIV_ADDRESS as univAddress, A.UNIV_HOMEPAGE as univHomepage
+					, A.ACADEMY_ID as academyId
+					, A.USE_YN as useYn, A.REGISTER as register, A.REG_DATE as regDate
+					, A.MODIFIER as modifier, A.MOD_DATE as modDate
+					, NVL(REGISTERTBL.ADMIN_NAME,'') as registerName
+					, NVL(MODIFIERTBL.ADMIN_NAME,'') as modifierName
+				FROM CU_UNIV_INFO A 
+						LEFT JOIN CU_CTR_DATAPROVIDER B
+							ON A.UNIVERSITY_ID = B.UNIVERSITY_ID
+						LEFT JOIN CU_COM_CODE GUBNTBL
+						   	   ON A.GUBUN_ID = GUBNTBL.CODE_ID
+						LEFT JOIN CU_COM_CODE LOCALTBL
+						   	   ON A.LOCAL_ID = LOCALTBL.CODE_ID		
+						LEFT JOIN CU_ADMIN REGISTERTBL
+		                	ON A.REGISTER = REGISTERTBL.ADMIN_ID
+		                LEFT JOIN CU_ADMIN MODIFIERTBL
+		                	ON A.MODIFIER = MODIFIERTBL.ADMIN_ID					    
+				WHERE 1=1
+					<isNotEmpty property="useYn" prepend="AND">
+		                A.USE_YN=#useYn,javaType=string#
+		            </isNotEmpty>
+					<isNotEmpty property="univName" prepend="AND">
+		                A.UNIV_NAME LIKE concat(concat('%',#univName,javaType=string#),'%')
+		            </isNotEmpty>
+		            <isNotEqual property="gubunId" compareValue="0" prepend="AND">
+		            	A.GUBUN_ID = #gubunId,javaType=Integer# 
+		            </isNotEqual>
+		            <isEqual property="installDataProvider" compareValue="Y" prepend="AND">
+		                B.UNIVERSITY_ID IS NOT NULL
+		            </isEqual>
+		            <isEqual property="installDataProvider" compareValue="N" prepend="AND">
+		                B.UNIVERSITY_ID IS NULL
+		            </isEqual>
+	        ) a
+           WHERE CEIL (recNum / #showCnt,javaType=Integer#) = #currPage,javaType=Integer#
+        ORDER BY recNum ASC
+	</select>
+	
+		<select id="mgrSelectList" resultClass="univCode"  parameterClass="map">
+	SELECT   a.*
+            FROM 
+            (
+				SELECT ROW_NUMBER () OVER (ORDER BY A.REG_DATE DESC) as recNum
+					, COUNT (*) OVER () totalCnt
+		            , A.UNIVERSITY_ID as universityId, UNIV_NAME as univName
+					, A.GUBUN_ID as gubunId, NVL(GUBNTBL.CODE_NAME,'') as gubunName
+					, A.LOCAL_ID as localId, NVL(LOCALTBL.CODE_NAME,'') as localName
+					, A.UNIV_ADDRESS as univAddress, A.UNIV_HOMEPAGE as univHomepage
+					, A.ACADEMY_ID as academyId
+					, A.USE_YN as useYn, A.REGISTER as register, A.REG_DATE as regDate
+					, A.MODIFIER as modifier, A.MOD_DATE as modDate
+					, NVL(REGISTERTBL.ADMIN_NAME,'') as registerName
+					, NVL(MODIFIERTBL.ADMIN_NAME,'') as modifierName
+				FROM CU_UNIV_INFO A 
+						LEFT JOIN CU_COM_CODE GUBNTBL
+						   	   ON A.GUBUN_ID = GUBNTBL.CODE_ID
+						LEFT JOIN CU_COM_CODE LOCALTBL
+						   	   ON A.LOCAL_ID = LOCALTBL.CODE_ID		
+						LEFT JOIN CU_ADMIN REGISTERTBL
+		                	ON A.REGISTER = REGISTERTBL.ADMIN_ID
+		                LEFT JOIN CU_ADMIN MODIFIERTBL
+		                	ON A.MODIFIER = MODIFIERTBL.ADMIN_ID					    
+				WHERE 1=1
+					<isNotEmpty property="useYn" prepend="AND">
+		                A.USE_YN=#useYn,javaType=string#
+		            </isNotEmpty>
+					<isNotEmpty property="univName" prepend="AND">
+		                A.UNIV_NAME LIKE concat(concat('%',#univName,javaType=string#),'%')
+		            </isNotEmpty>
+		            <isNotEqual property="gubunId" compareValue="0" prepend="AND">
+		            	A.GUBUN_ID = #gubunId,javaType=Integer# 
+		            </isNotEqual>
+		            <isNotEqual property="localId" compareValue="0" prepend="AND">
+		            	A.LOCAL_ID = #localId,javaType=Integer# 
+		            </isNotEqual>	
+		            <isNotEmpty property="searchWord" prepend="AND">
+			            <isEqual property="selectRadio1" compareValue="1" >
+			            	A.UNIV_NAME LIKE concat(concat('%',#searchWord,javaType=string#),'%')
+			            </isEqual>
+			            <isEqual property="selectRadio1" compareValue="2" >
+			           		A.UNIVERSITY_ID = #searchWord,javaType=string#
+			            </isEqual>
+			            <isEqual property="selectRadio1" compareValue="3">
+			               A.ACADEMY_ID = #searchWord,javaType=string#
+			            </isEqual>
+		            </isNotEmpty>
+		            	            
+	        ) a
+           WHERE CEIL (recNum / #showCnt,javaType=Integer#) = #currPage,javaType=Integer#
+        ORDER BY recNum ASC
+	</select>
+	
+	
+	<select id="selectInfo" resultClass="univCode"  parameterClass="Integer">
+		SELECT UNIVERSITY_ID as universityId, UNIV_NAME as univName, GUBUN_ID as gubunId
+			, ACADEMY_ID as academyId
+			, UNIV_ADDRESS as univAddress, UNIV_HOMEPAGE as univHomepage
+			, A.LOCAL_ID as localId
+			, NVL((SELECT CODE_NAME FROM CU_COM_CODE WHERE CODE_ID = A.LOCAL_ID),'') as localName			
+			, A.USE_YN as useYn, A.REGISTER as register, A.REG_DATE as regDate
+			, A.MODIFIER as modifier, A.MOD_DATE as modDate
+			, NVL((SELECT ADMIN_NAME FROM CU_ADMIN WHERE ADMIN_ID = A.MODIFIER),'') as modifierName
+			, NVL((SELECT ADMIN_NAME FROM CU_ADMIN WHERE ADMIN_ID = A.REGISTER),'') as registerName		
+		FROM CU_UNIV_INFO A
+	   WHERE UNIVERSITY_ID = #universityId,javaType=Integer#
+	</select>
+	
+	<update id="updateInfo" parameterClass="univCode">
+		UPDATE CU_UNIV_INFO SET 
+			UNIV_NAME = #univName#, GUBUN_ID = #gubunId#, LOCAL_ID = #localId#
+			, ACADEMY_ID = #academyId#
+			, USE_YN = #useYn#, MODIFIER = #modifier#, MOD_DATE = SYSDATE
+		WHERE UNIVERSITY_ID = #universityId,javaType=Integer#
+	</update>
+	
+	<insert id="insertInfo" parameterClass="univCode">
+		<selectKey resultClass="Integer" keyProperty="universityId">
+         SELECT SEQ_UNIVERSITY_ID.nextVal as universityId FROM dual
+        </selectKey>
+        
+		INSERT INTO CU_UNIV_INFO 
+			(UNIVERSITY_ID, UNIV_NAME, GUBUN_ID
+			, ACADEMY_ID,LOCAL_ID
+			, USE_YN, REGISTER, REG_DATE
+			)
+		 values(#universityId#, #univName#, #gubunId#
+			, #academyId#, #localId#
+			, #useYn#, #register#, SYSDATE
+			)
+	</insert>
+	
+	<delete id="deleteInfo"  parameterClass="Integer">
+		DELETE FROM CU_UNIV_INFO 
+		WHERE 
+		UNIVERSITY_ID = #universityId,javaType=Integer#
+	</delete>
+
+</sqlMap>

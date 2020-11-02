@@ -1,0 +1,95 @@
+<!-- 입학금 수수료 -->
+<table cellspacing="0" cellpadding="0" class="table_type1 st01 st02 th_2line" summary="입학금 및 수업료 현황"><!-- table_type1 st01 Start -->
+	<caption>입학금 및 수업료 현황</caption>
+	<colgroup>
+		<col width="22%">
+		<col width="%">
+		<col width="%">
+		<col width="%">
+		##<col width="%">
+		<col width="%">
+		<col width="%">
+		<col width="%">
+	</colgroup>
+	<thead>
+		<tr>
+			<th scope="col" class="first bg02">학교명</th>
+			<th scope="col">전형료</th>
+			<th scope="col">입학금</th>
+			<th scope="col">학점당<br /> 수업료</th>
+			##<th scope="col">실습비</th>
+			<th scope="col">등록금</th>
+			<th scope="col">전년도<br /> 등록금</th>
+			<th scope="col">인상률(%)</th>
+		</tr>
+	</thead>
+	<tbody>		
+		#foreach($stt in $statisiticsList)
+			#if($velocityCount != $statisiticsList.size())
+		<tr>
+			<td>$!stt.UNIV_NAME</td>
+			<td>$!stt.APPLICATION_FEE</td>
+			<td>$!stt.ENTRANCE_FRE</td>
+			<td>$!stt.CREDIT</td>
+			##<td>$!stt.TRAINING_FEE</td>
+			<td>$!stt.TUITION</td>
+			<td>$!stt.PRE_TUTION</td>
+			<td>
+				#if($sttYear == "2012" && $!stt.UNIV_NAME == "건양사이버대학교")
+					-
+				#else
+				$!stt.HIKE
+				#end
+			</td>
+			
+		</tr>
+			#else		
+	</tbody>
+	<tfoot>
+		<tr>
+			<th>전체(평균)</th>
+			<th>$!stt.APPLICATION_FEE</th>
+			<th>$!stt.ENTRANCE_FRE</th>
+			<th>$!stt.CREDIT</td>
+			##<th>$!stt.TRAINING_FEE</th>
+			<th>$!stt.TUITION</th>
+			<th>$!stt.PRE_TUTION</th>
+			<th class="end">$!stt.HIKE</th>
+		</tr>
+			#end
+		#end
+	</tfoot>
+</table><!-- list_type01 End -->
+
+<div class="graphWrap" id="chart_div" style="display: none;">	
+</div>
+
+<script type="text/javascript">      
+	google.load('visualization', '1', {packages: ['corechart']});
+	function drawVisualization() {
+	  // Create and populate the data table.
+	  var data = google.visualization.arrayToDataTable([
+	    ['Year', '10대초', '20대초', '20대후', '30대', '40대', '50대', '60대']
+    	 ,['2012', 0, 0, 0, 0, 0, 0, 0]
+	  ]);
+
+	// Create and draw the visualization.
+	  new google.visualization.BarChart(document.getElementById('chart_div')).
+	      draw(data,
+	           {'isStacked': true,	           
+	            width:600, height:400,
+	            vAxis: {title: "년도별"},
+	            hAxis: {title: "백분율(%)"}
+	           }
+	      );
+	 }
+	
+	google.setOnLoadCallback(drawVisualization);
+
+
+ 
+	//$("#chart_div").toggle();
+</script>
+			
+			
+		

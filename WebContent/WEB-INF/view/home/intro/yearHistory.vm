@@ -1,0 +1,15 @@
+<head>
+	<title>사이버대학이란?</title>
+</head>
+<body>
+
+<p class="location">
+	<a href="/home/index.main.action">홈</a> <span>></span> <a href="/home/intro/summary.sub.action?gnb=11">사이버대학 안내</a> <span>></span> <a href="/home/intro/summary.sub.action?gnb=11">사이버대학이란?</a>
+</p>
+<dl>
+   <dd><img src="/home/images/intro/yearhistorycut.jpg"  alt="연혁" /></dd>
+</dl>
+
+</body>
+</html>
+

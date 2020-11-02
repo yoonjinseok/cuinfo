@@ -1,0 +1,152 @@
+<head>
+	<title></title>
+	<script>
+		$("#chkBtn").click(function(){
+			alert('start');
+		});
+
+		function openCourseClose(){
+
+			//alert($("div[id^=publicCourse]").hide());
+			
+			$("div[id^=publicCourse]").mouseleave(function(){
+				$("div[id^=publicCourse]").hide("fast");
+			});
+
+		}	
+		
+		function openCourse(no){
+
+			$("#publicCourse"+no).toggle('fast');
+			$("#publicCourse"+no).find("tr").css("line-height","30px");
+			$("#publicCourse"+no).find("a").css("line-height","30px");
+			$("#publicCourse"+no).find("tr:not(.subject):even").find("td:eq(0)").css("background","#F6F6F6");
+			$("#publicCourse"+no+" .subject").css("background","#FAF4DC");
+			
+			openCourseClose();
+		}
+		
+		function popupUniv(url){
+			
+			window.open(url);
+		}
+		
+	</script>
+	<style type="text/css">
+		/* 직업 직무 교육과정 페이지 -2018.08.23*/
+		.lectureInfoT{margin-bottom:10px;padding:23px 20px;border:1px solid #e1e1e1;}
+		.lectureInfoT p.title{padding-left:15px;color:#121212;font-size:16px;font-family:NGB;background:url('/home/images/intro/titBg.png') no-repeat left center;}
+		.txtBoxW > div{margin-top:10px;padding:13px 15px;background-color:#fdf9f5;}
+		.txtBoxW > div p{color:#454545;font-size:12px;font-family:NGB;line-height:20px;}
+		.lectContList_jobEdu{overflow:hidden;margin-top:25px;}
+		.lectContList_jobEdu:first-child{margin-top:0;}
+		.lectContList_jobEdu > ul {list-style: none;}
+		.lectContList_jobEdu > li {float:left;width:146px;height:101px;margin-left:30px;border:1px solid #d8d8d8;list-style: none;}
+		.lectContList_jobEdu > li:first-child{margin-left:0;}
+		.lectContList_jobEdu > li > p.eduTitle{display:table;width:100%;height:75px;color:#fff;font-size:12px;font-family:NGB;text-align:center;background:url('/home/images/intro/eduTitleBg.jpg') no-repeat center top; margin-top:0;    margin-bottom: -11px;}
+		.lectContList_jobEdu > li a{display:table-cell;padding:0 10px;vertical-align:middle;color:#fff;font-size:12px;font-family:NGB;overflow:hidden;}
+		.lectContList_jobEdu > li a:hover{text-decoration:none;}
+		.lectContList_jobEdu > li > p.university{height:26px;color:#515151;font-size:11px;font-family:NGB;background-color:#f2f2f2;line-height:26px;text-align:center;}
+		.lectContList_jobEdu > li > p.university img{margin-right:4px;vertical-align:middle;margin-top:-1px}
+	</style>
+</head>
+<body>
+<p class="location">
+	<a href="/home/index.main.action">홈</a> <span>></span> <a href="/home/intro/summary.sub.action?gnb=11">사이버대학 안내</a> <span>></span> <a href="/home/intro/characterization.sub.action?gnb=16">교육부지원사업</a>
+</p>
+
+<h3><img src="/home/images/title/title_56_3.gif" /></h3>
+
+<div id="rightContArea" class="rightContWrap">
+	<div id="lectureInfoT" class="lectureInfoT">
+		<!--직업직무 교육과정 안내 문구-->
+		<p class="title">직업&middot;직무 교육과정</p>
+		<div class="txtBoxW">
+			<div class="txtBox1">
+				<p>◦ 직업․직무 교육과정은 교육부「생애주기별 학습자 역량 강화 콘텐츠 개발」사업의 일환으로써 개발된 학습강좌이며, 일반 성인의<br> &nbsp; &nbsp; 직업 및 직무와 관련한 교육내용을 제공하고 있습니다.</p>
+				<p>◦ 교육과정은 교육부로부터 예산을 지원 받아 사이버대학교가 개발하여 운영하고 있습니다.</p>
+			</div>
+			<div class="txtBox2">
+				<p>◦ 직업․직무 교육과정에서 제공하는 강좌 및 학습에 따르는 모든 산출물의 저작권은 교육부, 한국교육학술정보원, 한국원격대학<br> &nbsp; &nbsp; 협의회와 교육과정 개발 사이버대학교가 공동 소유하고 있습니다.</p>
+			</div>
+		</div>
+	</div>
+	<div class="lectureInfoT">
+		<div><ul class="lineUp2"> </ul> </div>
+		<div class="lectureContentWrap">
+			<ul class="lectContList_jobEdu">
+				<li>
+					<p class="eduTitle"><a href="http://www.kocw.net/home/special/themeCourses.do?taxonCode=9901&m=p" target="_blank">시니어 케어<br />매니지먼트</a></p>
+					<p class="university"><span class="name"><img src="/home/images/intro/ky_logo.png" alt="건양사이버대학교">건양사이버대학교</span></p>
+				</li>
+				<li>
+					<p class="eduTitle"><a href="http://www.kocw.net/home/special/themeCourses.do?taxonCode=9916&m=p" target="_blank">시니어 디렉터<br />매니지먼트</a></p>
+					<p class="university"><span class="name"><img src="/home/images/intro/ky_logo.png" alt="건양사이버대학교">건양사이버대학교</span></p>
+				</li>
+				<li>
+					<p class="eduTitle"><a href="http://www.kocw.net/home/special/themeCourses.do?taxonCode=9902&m=p" target="_blank">세계시민으로서의<br/>문화다양성 역량 개발<br/>교육과정</a></p>
+					<p class="university"><span class="name"><img src="/home/images/intro/kh_logo.png" alt="경희사이버대학교">경희사이버대학교</span></p>
+				</li>
+				<li>
+					<p class="eduTitle"><a href="http://www.kocw.net/home/special/themeCourses.do?taxonCode=9903&m=p" target="_blank">SW 코딩교육<br /> 전문가 과정</a></p>
+					<p class="university"><span class="name"><img src="/home/images/intro/kr_logo.png" alt="고려사이버대학교">고려사이버대학교</span></p>
+				</li>
+			</ul>
+			<ul class="lectContList_jobEdu">
+				<li>
+					<p class="eduTitle"><a href="http://www.kocw.net/home/special/themeCourses.do?taxonCode=9909&m=p" target="_blank">LC<sup style="vertical-align: super">2</sup> 코칭 역량 개발<br /> 과정</a></p>
+					<p class="university"><span class="name"><img src="/home/images/intro/kr_logo.png" alt="고려사이버대학교">고려사이버대학교</span></p>
+				</li>
+				<li>
+					<p class="eduTitle"><a href="http://www.kocw.net/home/special/themeCourses.do?taxonCode=9904&m=p" target="_blank">웰빙 스마트팜<br />귀농귀촌과정</a></p>
+					<p class="university"><span class="name"><img src="/home/images/intro/kj_logo.png" alt="국제사이버대학교">국제사이버대학교</span></p>
+				</li>
+				<li>
+					<p class="eduTitle"><a href="http://www.kocw.net/home/special/themeCourses.do?taxonCode=9910&m=p" target="_blank">러브유어셀프, 뇌기반<br />감정코칭 전문가 양성과정</a></p>
+					<p class="university"><span class="name"><img src="/home/images/intro/gc_logo.png" alt="글로벌사이버대학교">글로벌사이버대학교</span></p>
+				</li>
+				<li>
+					<p class="eduTitle"><a href="http://www.kocw.net/home/special/themeCourses.do?taxonCode=9911&m=p" target="_blank">발달장애인 케어를<br /> 위한 50+ 시니어<br /> 지원인력 양성과정</a></p>
+					<p class="university"><span class="name"><img src="/home/images/intro/dc_logo.png" alt="대구사이버대학교">대구사이버대학교</span></p>
+				</li>
+			</ul>
+			<ul class="lectContList_jobEdu">
+				<li>
+					<p class="eduTitle"><a href="http://www.kocw.net/home/special/themeCourses.do?taxonCode=9905&m=p" target="_blank">60+ 액티브 시니어를<br />위한 '老-老 케어<br />서비스 전문가 양성'</a></p>
+					<p class="university"><span class="name"><img src="/home/images/intro/bs_logo.png" alt="부산디지털대학교">부산디지털대학교</span></p>
+				</li>
+				<li>
+					<p class="eduTitle"><a href="http://www.kocw.net/home/special/themeCourses.do?taxonCode=9912&m=p" target="_blank">'함께 키움' 가치실현<br />위한 아이돌봄<br /> 전문가 양성</a></p>
+					<p class="university"><span class="name"><img src="/home/images/intro/bs_logo.png" alt="부산디지털대학교">부산디지털대학교</span></p>
+				</li>
+				<li>
+					<p class="eduTitle"><a href="http://www.kocw.net/home/special/themeCourses.do?taxonCode=9913&m=p" target="_blank">일본 취업을 위한<br />일본어 6개월<br /> 마스터 과정</a></p>
+					<p class="university"><span class="name"><img src="/home/images/intro/cf_logo.png" alt="사이버한국외국어대학교">사이버한국외국어대학교</span></p>
+				</li>
+				<li>
+					<p class="eduTitle"><a href="http://www.kocw.net/home/special/themeCourses.do?taxonCode=9914&m=p" target="_blank">소상공인을 위한<br />소셜마켓<br /> IT역량 강화 교육과정</a></p>
+					<p class="university"><span class="name"><img src="/home/images/intro/is_logo.png" alt="서울사이버대학교">서울사이버대학교</span></p>
+				</li>
+			</ul>
+			<ul class="lectContList_jobEdu">
+				<li>
+					<p class="eduTitle"><a href="http://www.kocw.net/home/special/themeCourses.do?taxonCode=9906&m=p" target="_blank">SMT 산업 교육 과정</a></p>
+					<p class="university"><span class="name"><img src="/home/images/intro/yj_logo.png" alt="영진사이버대학교">영진사이버대학교</span></p>
+				</li>
+				<li>
+					<p class="eduTitle"><a href="http://www.kocw.net/home/special/themeCourses.do?taxonCode=9907&m=p" target="_blank">고령친화산업<br />전문인력양성을 위한 <br />시니어요가 교육과정</a></p>
+					<p class="university"><span class="name"><img src="/home/images/intro/wk_logo.png" alt="원광디지털대학교">원광디지털대학교</span></p>
+				</li><li>
+				<p class="eduTitle"><a href="http://www.kocw.net/home/special/themeCourses.do?taxonCode=9915&m=p" target="_blank">사물놀이 차세대<br /> 지도자 교육과정</a></p>
+				<p class="university"><span class="name"><img src="/home/images/intro/wk_logo.png" alt="원광디지털대학교">원광디지털대학교</span></p>
+			</li>
+				<li>
+					<p class="eduTitle"><a href="http://www.kocw.net/home/special/themeCourses.do?taxonCode=9908&m=p" target="_blank">4C 인재를 육성하는<br />코딩강사 양성과정</a></p>
+					<p class="university"><span class="name"><img src="/home/images/intro/hy_logo.png" alt="한양사이버대학교">한양사이버대학교</span></p>
+				</li>
+			</ul>
+		</div>
+	</div>
+	
+
+</body>

@@ -1,0 +1,449 @@
+<?xml version="1.0" encoding="EUC-KR"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="StatsDao">
+	<typeAlias alias="stats" type="com.cyberup.model.stats.Stats"/>
+	
+	<select id="getToday" resultClass="String">
+		select to_char(sysdate,'yyyy-mm-dd') from dual
+	</select>
+	
+	<select id="getPassday" resultClass="String">
+		select to_char(add_months(sysdate + 1,-6),'yyyy-mm-dd') from dual
+	</select>
+	
+	<select id="selectSumStaticsOfUniversity" resultClass="stats" parameterClass="map">
+		WITH data1
+	     AS (SELECT a.course_id courseId,
+	                b.lecture_id lectureId,
+	                a.reg_date regDate,
+	                a.term_year termYear,
+	                a.svc_status svcStatus,
+	                case when length(nvl(b.MOV_LOCATION,'')) > 0 then 1 else 0 end 
+	                   vodcnt,
+                   CASE
+                      WHEN LENGTH (NVL (c.LOCATION, '')) > 0 THEN 1
+                      ELSE 0
+                   END filecnt
+	           FROM CU_svc_course a 
+	           			left join CU_svc_lecture b 
+	           				on a.course_id = b.course_id
+	           			left join CU_svc_attfile c
+                            on b.lecture_id = c.relation_id
+                                and c.relation_type = 'L'
+	          WHERE 1=1
+	          AND NVL(A.DEL_YN,' ') != 'Y' 
+			AND NVL(A.IS_TEMP,' ') != 'Y'
+			<isNotEmpty property="universityId" prepend="AND">
+			a.UNIVERSITY_ID = #universityId#
+			</isNotEmpty>
+			<isNotEmpty property="startDate" prepend="AND">
+             TO_CHAR (a.reg_date, 'yyyymmdd') BETWEEN replace(#startDate#,'-','') AND replace(#endDate#,'-','')
+             </isNotEmpty>
+	          ),
+	     data2
+	     AS (SELECT courseId,
+	                COUNT (*) totalcnt,
+	                SUM (CASE WHEN svcStatus = 'A' OR svcStatus = 'T' OR svcStatus = 'S' THEN 1 ELSE 0 END) serviceCnt,
+	                SUM (vodcnt) vodcnt,
+	                SUM (filecnt) filecnt
+	           FROM data1
+	         GROUP BY courseId)
+         SELECT SUM (CASE WHEN totalcnt > 0 THEN 1 ELSE 0 END) totalCnt,
+                SUM (CASE WHEN servicecnt > 0 THEN 1 ELSE 0 END) serviceCnt,
+                SUM (CASE WHEN vodcnt > 0 THEN 1 ELSE 0 END) vodCnt,
+                SUM (CASE WHEN filecnt > 0 THEN 1 ELSE 0 END) fileCnt
+           FROM data2
+	</select>
+	<select id="selectManageStaticsOfUniversity" resultClass="java.util.HashMap" parameterClass="map">
+		SELECT SUM (CASE WHEN svc_Status = 'D' THEN 1 ELSE 0 END) readyCnt,
+			SUM (CASE WHEN svc_Status = 'R' THEN 1 ELSE 0 END) modCnt,
+			SUM (CASE WHEN svc_Status = 'M' THEN 1 ELSE 0 END) resumCnt,
+			SUM (CASE WHEN svc_Status = 'C' THEN 1 ELSE 0 END) commitCnt,
+			SUM (CASE WHEN svc_Status = 'A' OR svc_Status = 'T' OR svc_Status = 'S' THEN 1 ELSE 0 END) approveCnt,
+			SUM (CASE WHEN svc_Status = 'E' THEN 1 ELSE 0 END) holdCnt
+           FROM CU_svc_course a
+          WHERE NVL(A.DEL_YN,' ') != 'Y' 
+		AND NVL(A.IS_TEMP,' ') != 'Y'
+		<isNotEmpty property="universityId" prepend="AND">
+		a.UNIVERSITY_ID = #universityId#
+		</isNotEmpty>
+	</select>
+	
+	<select id="courseByType_list" resultClass="stats" parameterClass="stats">
+		WITH data1
+	     AS (SELECT a.type type,
+	                a.course_id courseId,
+	                b.lecture_id lectureId,
+	                a.reg_date regDate,
+	                a.term_year termYear,
+	                a.svc_status svcStatus,
+	                case when length(nvl(b.MOV_LOCATION,'')) > 0 then 1 else 0 end 
+	                   vodcnt,
+                   CASE
+                      WHEN LENGTH (NVL (c.LOCATION, '')) > 0 THEN 1
+                      ELSE 0
+                   END filecnt
+	           FROM CU_svc_course a
+	           			left join CU_svc_lecture b
+	           				on a.course_id = b.course_id
+	           			left join CU_svc_attfile c
+                            on b.lecture_id = c.relation_id
+                                and c.relation_type = 'L'
+	          WHERE 1=1
+	          AND NVL(A.DEL_YN,' ') != 'Y' 
+			AND NVL(A.IS_TEMP,' ') != 'Y'
+	          <isNotEmpty property="svcStatus">
+			AND svc_Status = #svcStatus#
+			</isNotEmpty>
+			<isNotEmpty property="universityName">
+             AND a.UNIVERSITY_ID IN (SELECT university_id
+                                       FROM CU_UNIV_INFO
+                                      WHERE univ_name LIKE '%'||#universityName#||'%')
+            </isNotEmpty>
+			<isNotEmpty property="departmentName">                                         
+             AND a.department LIKE '%'||#departmentName#||'%'
+             </isNotEmpty>
+            <isNotEmpty property="type">
+             AND a.TYPE = #type#
+             </isNotEmpty>
+            <isNotEmpty property="grants">
+             AND a.PUBLIC_YN = #grants#
+             </isNotEmpty>
+            <isNotEmpty property="termYearStart">
+             AND a.term_year BETWEEN #termYearStart# AND #termYearEnd#
+             </isNotEmpty>
+            <isNotEmpty property="startDate">
+             AND TO_CHAR (a.reg_date, 'yyyymmdd') BETWEEN replace(#startDate#,'-','') AND replace(#endDate#,'-','')
+             </isNotEmpty>
+	          ),
+	     data2
+	     AS (SELECT type,
+	                courseId,
+	                COUNT (*) totalcnt,
+	                SUM (CASE WHEN svcStatus = 'A' OR svcStatus = 'T' OR svcStatus = 'S' THEN 1 ELSE 0 END) serviceCnt,
+	                SUM (vodcnt) vodcnt,
+	                SUM (filecnt) filecnt
+	           FROM data1
+	         GROUP BY courseId, type),
+	     data3
+	     AS (SELECT type,
+	                SUM (CASE WHEN totalcnt > 0 THEN 1 ELSE 0 END) totalCnt,
+	                SUM (CASE WHEN servicecnt > 0 THEN 1 ELSE 0 END) serviceCnt,
+	                SUM (CASE WHEN vodcnt > 0 THEN 1 ELSE 0 END) vodCnt,
+	                SUM (CASE WHEN filecnt > 0 THEN 1 ELSE 0 END) fileCnt,
+	                GROUPING (type) GROUPING_ID
+	           FROM data2
+	         GROUP BY ROLLUP (type))
+		SELECT nvl(type,'합계') type,
+		       totalCnt,
+		       serviceCnt,
+		       vodCnt,
+		       fileCnt
+		  FROM data3
+		 WHERE GROUPING_ID IN ('0', '1')
+		ORDER BY type
+	</select>
+	<select id="courseByGrant_list" resultClass="stats" parameterClass="stats">
+		WITH data1
+	     AS (SELECT a.PUBLIC_YN grants,
+	                a.course_id courseId,
+	                b.lecture_id lectureId,
+	                a.reg_date regDate,
+	                a.term_year termYear,
+	                a.svc_status svcStatus,
+	                case when length(nvl(b.MOV_LOCATION,'')) > 0 then 1 else 0 end 
+	                   vodcnt,
+                   CASE
+                      WHEN LENGTH (NVL (c.LOCATION, '')) > 0 THEN 1
+                      ELSE 0
+                   END filecnt
+	           FROM CU_svc_course a
+	           			left join CU_svc_lecture b
+	           				on a.course_id = b.course_id
+	           		left join CU_svc_attfile c
+                            on b.lecture_id = c.relation_id
+                                and c.relation_type = 'L'
+	          WHERE 1=1
+	          AND NVL(A.DEL_YN,' ') != 'Y' 
+			AND NVL(A.IS_TEMP,' ') != 'Y'
+	          <isNotEmpty property="svcStatus">
+			AND svc_Status = #svcStatus#
+			</isNotEmpty>
+			<isNotEmpty property="universityName">
+             AND a.UNIVERSITY_ID IN (SELECT university_id
+                                       FROM CU_UNIV_INFO
+                                      WHERE univ_name LIKE '%'||#universityName#||'%')
+            </isNotEmpty>
+			<isNotEmpty property="departmentName">                                         
+             AND a.department LIKE '%'||#departmentName#||'%'
+             </isNotEmpty>
+            <isNotEmpty property="type">
+             AND a.TYPE = #type#
+             </isNotEmpty>
+            <isNotEmpty property="grants">
+             AND a.PUBLIC_YN = #grants#
+             </isNotEmpty>
+            <isNotEmpty property="termYearStart">
+             AND a.term_year BETWEEN #termYearStart# AND #termYearEnd#
+             </isNotEmpty>
+            <isNotEmpty property="startDate">
+             AND TO_CHAR (a.reg_date, 'yyyymmdd') BETWEEN replace(#startDate#,'-','') AND replace(#endDate#,'-','')
+             </isNotEmpty>
+	          ),
+	     data2
+	     AS (SELECT grants,
+	                courseId,
+	                COUNT (*) totalcnt,
+	                SUM (CASE WHEN svcStatus = 'A' OR svcStatus = 'T' OR svcStatus = 'S' THEN 1 ELSE 0 END) serviceCnt,
+	                SUM (vodcnt) vodcnt,
+	                SUM (filecnt) filecnt
+	           FROM data1
+	         GROUP BY courseId, grants),
+	     data3
+	     AS (SELECT grants,
+	                SUM (CASE WHEN totalcnt > 0 THEN 1 ELSE 0 END) totalCnt,
+	                SUM (CASE WHEN servicecnt > 0 THEN 1 ELSE 0 END) serviceCnt,
+	                SUM (CASE WHEN vodcnt > 0 THEN 1 ELSE 0 END) vodCnt,
+	                SUM (CASE WHEN filecnt > 0 THEN 1 ELSE 0 END) fileCnt,
+	                GROUPING (grants) GROUPING_ID
+	           FROM data2
+	         GROUP BY ROLLUP (grants))
+		SELECT nvl(grants,'합계') grants,
+		       totalCnt,
+		       serviceCnt,
+		       vodCnt,
+		       fileCnt
+		  FROM data3
+		 WHERE GROUPING_ID IN ('0', '1')
+		ORDER BY PUBLIC_YN
+	</select>
+	<select id="selectCourseByCCL_list" resultClass="stats" parameterClass="stats">
+		WITH data1
+	     AS (SELECT a.rights rights,
+	                a.course_id courseId,
+	                b.lecture_id lectureId,
+	                a.reg_date regDate,
+	                a.term_year termYear,
+	                a.svc_status svcStatus,
+	                case when length(nvl(b.MOV_LOCATION,'')) > 0 then 1 else 0 end 
+	                   vodcnt,
+                   CASE
+                      WHEN LENGTH (NVL (c.LOCATION, '')) > 0 THEN 1
+                      ELSE 0
+                   END filecnt
+	           FROM CU_svc_course a
+	           			left join CU_svc_lecture b
+	           				on a.course_id = b.course_id
+	           		left join CU_svc_attfile c
+                            on b.lecture_id = c.relation_id
+                                and c.relation_type = 'L'
+	          WHERE 1=1
+	          AND NVL(A.DEL_YN,' ') != 'Y' 
+			AND NVL(A.IS_TEMP,' ') != 'Y'
+	          <isNotEmpty property="svcStatus">
+			AND svc_Status = #svcStatus#
+			</isNotEmpty>
+			<isNotEmpty property="universityName">
+             AND a.UNIVERSITY_ID IN (SELECT university_id
+                                       FROM CU_UNIV_INFO
+                                      WHERE univ_name LIKE '%'||#universityName#||'%')
+            </isNotEmpty>
+			<isNotEmpty property="departmentName">                                         
+             AND a.department LIKE '%'||#departmentName#||'%'
+             </isNotEmpty>
+            <isNotEmpty property="type">
+             AND a.TYPE = #type#
+             </isNotEmpty>
+            <isNotEmpty property="grants">
+             AND a.PUBLIC_YN = #grants#
+             </isNotEmpty>
+            <isNotEmpty property="termYearStart">
+             AND a.term_year BETWEEN #termYearStart# AND #termYearEnd#
+             </isNotEmpty>
+            <isNotEmpty property="startDate">
+             AND TO_CHAR (a.reg_date, 'yyyymmdd') BETWEEN replace(#startDate#,'-','') AND replace(#endDate#,'-','')
+             </isNotEmpty>
+	          ),
+	     data2
+	     AS (SELECT rights,
+	                courseId,
+	                COUNT (*) totalcnt,
+	                SUM (CASE WHEN svcStatus = 'A' OR svcStatus = 'T' OR svcStatus = 'S' THEN 1 ELSE 0 END) serviceCnt,
+	                SUM (vodcnt) vodcnt,
+	                SUM (filecnt) filecnt
+	           FROM data1
+	         GROUP BY courseId, rights),
+	     data3
+	     AS (SELECT rights,
+	                SUM (CASE WHEN totalcnt > 0 THEN 1 ELSE 0 END) totalCnt,
+	                SUM (CASE WHEN servicecnt > 0 THEN 1 ELSE 0 END) serviceCnt,
+	                SUM (CASE WHEN vodcnt > 0 THEN 1 ELSE 0 END) vodCnt,
+	                SUM (CASE WHEN filecnt > 0 THEN 1 ELSE 0 END) fileCnt,
+	                GROUPING (rights) GROUPING_ID
+	           FROM data2
+	         GROUP BY ROLLUP (rights))
+		SELECT nvl(rights,'합계') rights,
+		       totalCnt,
+		       serviceCnt,
+		       vodCnt,
+		       fileCnt
+		  FROM data3
+		 WHERE GROUPING_ID IN ('0', '1')
+		ORDER BY rights
+	</select>
+	<select id="selectCourseByUniv_list" resultClass="stats" parameterClass="stats">
+		WITH data1
+	     AS (SELECT a.university_id universityId,
+	                a.course_id courseId,
+	                b.lecture_id lectureId,
+	                a.reg_date regDate,
+	                a.term_year termYear,
+	                a.svc_status svcStatus,
+	                case when length(nvl(b.MOV_LOCATION,'')) > 0 then 1 else 0 end 
+	                   vodcnt,
+                   CASE
+                      WHEN LENGTH (NVL (c.LOCATION, '')) > 0 THEN 1
+                      ELSE 0
+                   END filecnt
+	           FROM CU_svc_course a
+	           			left join CU_svc_lecture b
+	           				on a.course_id = b.course_id
+	           		left join CU_svc_attfile c
+                            on b.lecture_id = c.relation_id
+                                and c.relation_type = 'L'
+	          WHERE 1=1
+	          AND NVL(A.DEL_YN,' ') != 'Y' 
+			AND NVL(A.IS_TEMP,' ') != 'Y'
+	          <isNotEmpty property="svcStatus">
+			AND svc_Status = #svcStatus#
+			</isNotEmpty>
+			<isNotEmpty property="universityName">
+             AND a.UNIVERSITY_ID IN (SELECT university_id
+                                       FROM CU_UNIV_INFO
+                                      WHERE univ_name LIKE '%'||#universityName#||'%')
+            </isNotEmpty>
+			<isNotEmpty property="departmentName">                                         
+             AND a.department LIKE '%'||#departmentName#||'%'
+             </isNotEmpty>
+            <isNotEmpty property="type">
+             AND a.TYPE = #type#
+             </isNotEmpty>
+            <isNotEmpty property="grants">
+             AND a.PUBLIC_YN = #grants#
+             </isNotEmpty>
+            <isNotEmpty property="termYearStart">
+             AND a.term_year BETWEEN #termYearStart# AND #termYearEnd#
+             </isNotEmpty>
+            <isNotEmpty property="startDate">
+             AND TO_CHAR (a.reg_date, 'yyyymmdd') BETWEEN replace(#startDate#,'-','') AND replace(#endDate#,'-','')
+             </isNotEmpty>
+	          ),
+	     data2
+	     AS (SELECT universityId,
+	                courseId,
+	                COUNT (*) totalcnt,
+	                SUM (CASE WHEN svcStatus = 'A' OR svcStatus = 'T' OR svcStatus = 'S' THEN 1 ELSE 0 END) serviceCnt,
+	                SUM (vodcnt) vodcnt,
+	                SUM (filecnt) filecnt
+	           FROM data1
+	         GROUP BY courseId, universityId),
+	     data3
+	     AS (SELECT universityId,
+	                SUM (CASE WHEN totalcnt > 0 THEN 1 ELSE 0 END) totalCnt,
+	                SUM (CASE WHEN servicecnt > 0 THEN 1 ELSE 0 END) serviceCnt,
+	                SUM (CASE WHEN vodcnt > 0 THEN 1 ELSE 0 END) vodCnt,
+	                SUM (CASE WHEN filecnt > 0 THEN 1 ELSE 0 END) fileCnt,
+	                GROUPING (universityId) GROUPING_ID
+	           FROM data2
+	         GROUP BY ROLLUP (universityId))
+		SELECT nvl2(universityId,(select a.UNIV_NAME univName from CU_univ_info a where a.UNIVERSITY_ID = universityId) ,'합계') univName,
+		       totalCnt,
+		       serviceCnt,
+		       vodCnt,
+		       fileCnt
+		  FROM data3
+		 WHERE GROUPING_ID IN ('0', '1')
+		ORDER BY universityId
+	</select>
+	<select id="selectCourseByPeriod_list" resultClass="stats" parameterClass="stats">
+	WITH data1
+     AS (SELECT 
+     			<isEqual property="pageGubn" compareValue="1">
+     			to_char(a.reg_date,'yyyy') regDate,
+     			</isEqual>
+     			<isEqual property="pageGubn" compareValue="2">
+     			to_char(a.reg_date,'yyyymm') regDate,
+     			</isEqual>
+                a.course_id courseId,
+                b.lecture_id lectureId,
+                a.term_year termYear,
+                a.svc_status svcStatus,
+                case when length(nvl(b.MOV_LOCATION,'')) > 0 then 1 else 0 end 
+                   vodcnt,
+                   CASE
+                      WHEN LENGTH (NVL (c.LOCATION, '')) > 0 THEN 1
+                      ELSE 0
+                   END filecnt
+           FROM CU_svc_course a
+	           			left join CU_svc_lecture b
+	           				on a.course_id = b.course_id
+           		left join CU_svc_attfile c
+                            on b.lecture_id = c.relation_id
+                                and c.relation_type = 'L'
+          WHERE     1=1
+          	AND NVL(A.DEL_YN,' ') != 'Y' 
+			AND NVL(A.IS_TEMP,' ') != 'Y'
+		 	<isNotEmpty property="svcStatus">
+			AND svc_Status = #svcStatus#
+			</isNotEmpty>
+			<isNotEmpty property="universityName">
+             AND a.UNIVERSITY_ID IN (SELECT university_id
+                                       FROM CU_UNIV_INFO
+                                      WHERE univ_name LIKE '%'||#universityName#||'%')
+            </isNotEmpty>
+			<isNotEmpty property="departmentName">                                         
+             AND a.department LIKE '%'||#departmentName#||'%'
+             </isNotEmpty>
+            <isNotEmpty property="type">
+             AND a.TYPE = #type#
+             </isNotEmpty>
+            <isNotEmpty property="grants">
+             AND a.PUBLIC_YN = #grants#
+             </isNotEmpty>
+            <isNotEmpty property="termYearStart">
+             AND a.term_year BETWEEN #termYearStart# AND #termYearEnd#
+             </isNotEmpty>
+            <isNotEmpty property="startDate">
+             AND TO_CHAR (a.reg_date, 'yyyymmdd') BETWEEN replace(#startDate#,'-','') AND replace(#endDate#,'-','')
+             </isNotEmpty>
+			),
+		     data2
+		     AS (SELECT regDate,
+		                courseId,
+		                COUNT (*) totalcnt,
+		                SUM (CASE WHEN svcStatus = 'A' OR svcStatus = 'T' OR svcStatus = 'S' THEN 1 ELSE 0 END) serviceCnt,
+		                SUM (vodcnt) vodcnt,
+		                SUM (filecnt) filecnt
+		           FROM data1
+		         GROUP BY courseId, regDate),
+		     data3
+		     AS (SELECT regDate,
+		                SUM (CASE WHEN totalcnt > 0 THEN 1 ELSE 0 END) totalCnt,
+		                SUM (CASE WHEN servicecnt > 0 THEN 1 ELSE 0 END) serviceCnt,
+		                SUM (CASE WHEN vodcnt > 0 THEN 1 ELSE 0 END) vodCnt,
+		                SUM (CASE WHEN filecnt > 0 THEN 1 ELSE 0 END) fileCnt,
+		                GROUPING (regDate) GROUPING_ID
+		           FROM data2
+		         GROUP BY ROLLUP (regDate))
+		SELECT NVL (regDate, '합계') regDate,
+		       totalCnt,
+		       serviceCnt,
+		       vodCnt,
+		       fileCnt
+		  FROM data3
+		 WHERE GROUPING_ID IN ('0', '1')
+		ORDER BY regDate
+	</select>
+
+</sqlMap>

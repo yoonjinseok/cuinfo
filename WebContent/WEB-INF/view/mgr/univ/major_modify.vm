@@ -1,0 +1,164 @@
+<head>
+	<title>학과정보수정</title>
+	<script type="text/javascript" language="javascript">
+	function modify()
+	{
+	
+		if($("#modifyForm").formSerialize().indexOf("\'") != -1) {
+			alert("' 는 사용할 수 없습니다.\n    \" 를 사용해주세요.");
+			return;
+		}
+		
+		jQuery.post('major_update.json', 
+				$("#modifyForm").formSerialize(), 
+				function(data) {
+        			if(data.errors == true)
+        			{
+        				eval(data.message);
+        			}
+        			else
+        			{
+						alert("수정되었습니다.");
+						opener.goPage();
+						window.close();
+        			}
+		});
+	}
+	
+	function del()
+	{
+		
+		if( confirm("해당 학과정보를 삭제하시겠습니까? \n삭제된 데이터는 복원하실수 없습니다." ))
+		{
+    		jQuery.post('major_delete.json', 
+    				$("#modifyForm").formSerialize(), 
+    				function(data) {
+            			if(data.errors == true)
+            			{
+            				eval(data.message);
+            			}
+            			else
+            			{
+							alert("삭제되었습니다.");
+    						opener.search();
+    						window.close();
+            			}
+    		});
+		}
+	}
+	
+	function setDept()
+	{
+		
+		jQuery.post('major_write_select.ajax.action', 
+			$("#modifyForm").formSerialize(), 
+			function(data) {
+        			$("#select").html(data);
+					
+					if(document.forms['modifyForm'].elements['classifyId'].value == $!univDeptList.classifyId)
+						document.forms['modifyForm'].elements['deptId'].value = $!univDeptList.deptId ;
+					
+		});
+	}
+	
+	</script>
+</head>
+<body>
+<div style="width:90%;padding-left:30px;padding-top:30px;">
+<form id="modifyForm" action="#" onsubmit="try{modify();}catch(e){alert(e);}return false;">
+<h2>학과 정보 수정</h2>	
+<input type="hidden" id="universityId" name="universityId" value="$!univDeptList.universityId"/>
+<input type="hidden" id="univDeptId" name="univDeptId" value="$!univDeptList.univDeptId"/>
+<table cellspacing="0" cellpadding="0" class="form_type01" summary="학과정보관리"><!-- list_type01 Start -->
+	<caption>학과정보관리</caption>
+	<colgroup>
+		<col width="15%" />
+		<col width="5%" />
+		<col width="*%" />
+		<col width="15%" />
+		<col width="35%" />
+	</colgroup>
+	<tbody>
+		<tr>
+			<th scope="row">학교명</th>
+			<td colspan="2">$!univDeptList.universityName</td>
+			<th scope="row">학교코드</th>
+			<td>$!univDeptList.universityId</td>
+		</tr>
+		<tr>
+			<th scope="row">대표 학과</th>
+			<td >
+				<select	id="classifyId" name="classifyId" onChange="setDept();">
+					#foreach($code in $reptClassifyList)
+					<option value="$!code.classifyId">$!code.classifyName</option>
+					#end
+				</select>
+				<script>
+					document.forms['modifyForm'].elements['classifyId'].value = $!univDeptList.classifyId ;
+					setDept();
+				</script> 
+			</td>
+			<td colspan ="3">
+				<div id="select">#parse('mgr/univ/major_write_select.vm')</div>
+			</td>
+		</tr>
+		<tr>
+			<th scope="col" rowspan="2">학교측</th>
+			<th scope="row" class="b_right">코드</th>
+			<td colspan="3">$!univDeptList.univDeptId</td>
+			
+		</tr>
+		<tr>
+			<th scope="row" class="b_right">학과명</th>
+			<td colspan="3"><input type="text" size="30" id="univDeptName" name="univDeptName" maxlength="30" value="$!univDeptList.univDeptName" title="학과명"/></td>
+		</tr>
+		<tr>
+			<th scope="row">학과링크URL</th>
+			<td colspan ="4"><input type="text" size="50" id="univDeptDesc" name="univDeptDesc" value="$!univDeptList.univDeptDesc" title="비고"/></td>
+		</tr>
+		
+		<!--
+		<tr>
+			<th scope="row">인기학과 여부</th>
+			<td colspan="4">
+				<label for="radio11" class="m_r20"><input type="radio" name="popularYn" value="Y" #if($!univDeptList.popularYn == 'Y')checked="checked"#end/> Y</label>
+				<label for="radio22"><input type="radio" name="popularYn" value="N" #if($!univDeptList.popularYn != 'Y')checked="checked"#end/> N</label>
+			</td>
+		</tr>
+		-->
+		
+		<tr>
+			<th scope="row">추천학과 여부</th>
+			<td colspan="4">
+				<label for="radio11" class="m_r20"><input type="radio" name="recommendYn" id="recommendYn" value="Y" #if($!univDeptList.recommendYn == 'Y')checked="checked"#end/> Y</label>
+				<label for="radio22"><input type="radio" name="recommendYn" id="recommendYn" value="N" #if($!univDeptList.recommendYn != 'Y')checked="checked"#end/> N</label>
+			</td>
+		</tr>
+		
+		<tr>
+			<th scope="row">사용여부</th>
+			<td colspan="4">
+				<label for="radio-1" class="m_r20"><input type="radio" name="useYn" id="radio-1" value="Y" #if($!univDeptList.useYn == 'Y')checked="checked"#end/> 사용함</label>
+				<label for="radio-2"><input type="radio" name="useYn" id="radio-2" value="N" #if($!univDeptList.useYn == 'N')checked="checked"#end/> 사용하지 않음</label>
+			</td>
+		</tr>
+		<tr>
+			<th scope="row">등록정보</th>
+			<td colspan="2">$!univDeptList.register ($datetimeformatter.print($!univDeptList.regDate, $!locale))</td>
+			<th scope="row">수정정보</th>
+			<td>#if("$!univDeptList.modifier" !="") $!univDeptList.modifier ($datetimeformatter.print($!univDeptList.modDate, $!locale)) #end</td>
+		</tr>
+	</tbody>
+</table><!-- list_type01 End -->
+
+
+<div class="btn_box_type03">
+	<a href="javascript:modify();"><img src="/mgr/images/btn/save.gif" alt="저장" /></a>
+	<a href="javascript:del();"><img src="/mgr/images/btn/delete.gif" alt="삭제" /></a>
+	<a href="javascript:window.close();"><img src="/mgr/images/btn/cancel.gif" alt="취소" /></a>
+</div>
+
+</form>
+</div>
+</body>
+</html>

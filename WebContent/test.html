@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge" >
+<title>:::test.html:::</title>
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.2/themes/smoothness/jquery-ui.css">
+<script type="text/javascript" src="/micro/js/jquery-2.1.3.min.js"></script>
+<script type="text/javascript" src="/micro/js/jquery-ui.js"></script>
+<script>
+	$(window).ready(function(){
+		console.log("test ready");
+	});
+	
+	$(window).load(function(){
+		console.log("load");
+	});
+	
+	//창닫기 취소 가능
+	$(window).bind("beforeunload",function(){
+		return "CLOSE?";
+	});
+	
+	//창닫기 취소 불가
+	$(window).unload(function(){
+		$.post("/test2.html",{name:"redukyo"},function(data){
+			console.log(data);
+		})
+	});
+</script>
+</head>
+<body>
+	test.html
+</body>
+</html>

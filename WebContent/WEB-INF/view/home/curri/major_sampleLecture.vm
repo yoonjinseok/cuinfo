@@ -1,0 +1,15 @@
+#if($sampleList)
+<dl class="rank_box">
+	<dt>
+		<img src="/home/images/course/sample_movie.gif" alt="맛보기 강의">
+		##<a href="#" target="_blank" class="btn_more"><img alt="more" src="/home/images/btn/more2.gif"></a>
+	</dt>
+	#foreach($list in $sampleList)
+	<dd class="num$velocityCount"><a href="javascript:viewDetail('$!list.courseID','$!list.title')">$!list.title</a></dd>
+	#end
+	#set($cnt = $sampleList.size() + 1)
+    #if($cnt == 1)
+    	<br/><center>등록된 맛보기 강의가 없습니다.</center>
+    #end
+</dl>
+#end

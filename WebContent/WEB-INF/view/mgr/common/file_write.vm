@@ -1,0 +1,148 @@
+<head>
+<link href="/mgr/css/jquery.progressbar.css" rel="stylesheet" type="text/css">
+<script language="JAVAScript" src="/mgr/js/jquery.progressbar.js"></script>
+<style type="text/css">
+div.fakefile {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    z-index: 1;
+}
+
+input.file {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    text-align: right;
+    -moz-opacity:0 ;
+    filter:alpha(opacity: 0);
+    opacity: 0;
+    z-index: 2;
+    width:80px;
+    height:30px;
+}
+</style>
+<script type="text/javascript" language="javascript">
+	var fileSelector = '<input type="file" class="file" id="file" name="file" onchange="save()"/><div class="fakefile"><img src="/mgr/images/btn/find_file.gif"></div>';
+	
+	$(document).ready(function(){
+		if (typeof parent.$eventHandler != "function") {
+		      alert("$eventHandler(originalFilename, srcName, fileSize) 함수(파일 업로드 콜백)를 정의하세요.");
+		      return;
+		}
+		
+		showFileZone();
+		
+		$("#uploadForm").submit(function(){
+    		var options = {
+    			target:'#output',
+    			beforeSubmit:function(){
+    				hideFileZone();
+    				setUploadStatusBarOn(true);
+    			},
+    			success:function(){
+    				setUploadStatusBarOn(false);
+    				showFileZone();
+    				var result = jQuery.parseJSON($("#output").html());
+					eval(result.message);
+    			},
+    			url:'file_upload.do.action', 
+    			type:'post'
+    		};
+    		
+    		$(this).ajaxSubmit(options);
+    		return false;
+    	});
+	});
+	function save()
+	{
+		if($("#file").val() != '')
+		{
+			#**
+			var extension = $("#file").val().substring($("#file").val().lastIndexOf('.') + 1).toLowerCase();
+			if('$!sessionUploadConfig.acceptExts' != '')
+			{
+				if('$!sessionUploadConfig.acceptExts'.indexOf(extension) >= 0)
+				{
+					$("#uploadForm").submit();
+				}
+				else
+				{
+					alert('$!sessionUploadConfig.acceptExts 파일만 업로드 할 수 있습니다.');
+					document.location.reload();
+				}
+			}
+			else
+			{
+				$("#uploadForm").submit();
+			}
+			**#
+			$("#uploadForm").submit();
+		}
+	}
+	
+	function showFileZone()
+	{
+		$("#filezone").html(fileSelector);
+		$("#filezone").show();
+	}
+	function hideFileZone()
+	{
+		$("#filezone").hide();
+	}
+	
+	function setUploadStatusBarOn(bOn) {
+	    var objDIVUP = document.getElementById("DIV_FUL_UPLOAD_PROGRESS");
+
+	    if (bOn) {
+	      objDIVUP.style.display = "";
+	      startUploadStatusUpdater();
+	    } else {
+	      objDIVUP.style.display = "none";
+		  endUploadStatusUpdater();
+	    }
+	  }
+	
+	var uploadTimerID;
+	var statusing = false;
+	function startUploadStatusUpdater() {
+		$("#progressbar").reportprogress(0);
+		
+	    uploadTimerID = setInterval(updateUploadStatus, 50);
+	}
+	
+	function endUploadStatusUpdater(){
+		clearInterval(uploadTimerID);
+		statusing = false;
+	}
+	
+	function updateUploadStatus() {
+		if(statusing == false)
+		{
+			statusing = true;
+			
+			jQuery.post('file_status.json', 
+					function(data) {
+						$("#progressbar").reportprogress(data.status);
+				
+						if(data.status == 100)
+	        				endUploadStatusUpdater();
+						else
+							statusing = false;
+					});
+		}
+	}
+</script>
+</head>
+<body>
+	<form id="uploadForm" method="post" enctype="multipart/form-data">
+		<input type="hidden" id="eventHandler" name="eventHandler" value="$!eventHandler"/>
+		<input type="hidden" id="confKey" name="confKey" value="$!confKey"/>
+        <div id="DIV_FUL_UPLOAD_PROGRESS" style="display: none">
+          <div id="progressbar" style="width:100px;position: absolute;top: 0px;left:0px;"></div>
+        </div>
+    	<div id="filezone"></div>
+    </form>
+	<div id="output" style="display:none;">결과</div>
+</body>
+</html>

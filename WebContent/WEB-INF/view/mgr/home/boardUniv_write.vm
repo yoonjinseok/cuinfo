@@ -1,0 +1,163 @@
+<head>
+	<title>글 등록</title>
+	<link type="text/css" href="/css/jquery.datepicker.css" rel="stylesheet"/>
+	<script type="text/javascript" src="/js/jquery.ui.core.js"></script>
+	<script type="text/javascript" src="/js/jquery.ui.datepicker.js"></script>
+	<script type="text/javascript" src="/js/jquery.ui.datepicker-ko.js"></script>
+	<script type="text/javascript" language="javascript">
+	function save()
+	{
+		oEditors[0].exec("UPDATE_CONTENTS_FIELD", []);
+		
+		if($("#writeForm").formSerialize().indexOf("\'") != -1) {
+			alert("' 는 사용할 수 없습니다.\n    \" 를 사용해주세요.");
+			return;
+		}
+		
+		jQuery.post('boardUniv_save.json', 
+			$("#writeForm").formSerialize(), 
+			function(data) {
+    			if(data.errors == true)
+    			{
+    				eval(data.message);
+    			}
+    			else
+    			{
+					opener.search();
+					window.close();
+    			}
+		});
+	}	
+	
+    /*******************************
+    
+    	다중 파일 업로드 관련 함수
+    	
+    ********************************/
+    
+    //파일 업로드 시 
+    function setUploadResult(originalFilename, srcName, fileSize)
+    {
+     	$("#uploadTB").append('<div class="icon" id=\''+srcName+'\'><input type="hidden" id="upfileSrc" name="upfileSrc" value="'+srcName+'"/><a href="javascript:download(\''+srcName+'\');">'+originalFilename+'</a><span>('+getFileSize(fileSize)+')</span><a href="javascript:delRow(\''+srcName+'\');"><img src="/mgr/images/btn/btn_del.gif" /></a></div>');
+    }
+	function setUploadImageResult(originalFilename, srcName, fileSize)
+	{
+		var sHTML = "<img src='/mgr/common/file_download.json?srcName=" + srcName + "'>"; 
+        oEditors[0].exec("PASTE_HTML", [sHTML]); 
+	}
+    
+    //파일 삭제시 
+    function delRow(trId)
+    {
+    	jQuery.post('/mgr/common/file_delete.json?srcName=' + trId, 
+    			function(data) {
+        			if(data.errors == true)
+        				eval(data.message);
+					else
+					{
+						$("#uploadTB").find("div[id^="+trId+"]").remove();
+					}
+    	});
+    	
+    }
+	
+    function download(srcName)
+	{
+		document.location.href = '/mgr/common/file_download.json?srcName=' + srcName;
+	}
+	
+	//학교선택
+	function searchUniversity()
+	{
+		showWin('/mgr/system/univCodeSearch.pop.action', 'univwin', 800, 450);
+	}
+	//학교세팅
+	function setUniversity(universityId, universityName)
+	{
+		$("#univID").val(universityId);
+		$("#univName").val(universityName);
+	}
+
+	//달력 세팅
+	jQuery(document).ready(function () {		
+		showCalendar($('#startDT'));
+  		showCalendar($('#endDT'));
+	});
+	</script>
+</head>
+<body>
+<div style="width:90%;padding-left:30px;padding-top:30px;">
+<form id="writeForm" action="#" onsubmit="try{write();}catch(e){alert(e);}return false;">
+<h2>글 등록</h2>
+<input type="hidden" name="gubunID" id="gubunID" value="$!gID"/>
+<table cellspacing="0" cellpadding="0" class="form_type01" summary="게시판 글 등록"><!-- list_type01 Start -->
+	<caption>게시판관리</caption>
+	<colgroup>
+		<col width="15%" />
+		<col width="35%" />
+		<col width="15%" />
+		<col width="35%" />
+	</colgroup>
+	<tbody>
+		<tr>
+			<th scope="row">제목</th>
+
+			<td colspan="3"><input type="text" size="50" title="제목" name="title" id="title"/></td>
+		</tr>
+		<tr>
+			<th scope="row">이메일</th>
+			<td><input type="text" style="width:100%" title="email" name="email" id="email" value="$!admin.getAdminEmail()"/></td>
+			<th scope="row">작성자</th>
+			<td>$!admin.getUserName() ($!admin.getUserId())</td>
+		</tr>
+		<tr>
+			<th scope="row">파일선택</th>
+			<td colspan ="3" id="uploadTB">				
+				<iframe id="upload" name="upload" src="/mgr/common/file_write.ifm.action?confKey=att" width="100%" height="25" frameborder="0" scrolling="no" style="padding: 0;margin: 0"></iframe>
+			</td>
+		</tr>
+		<tr>
+			<th scope="row">내용</th>
+			<td colspan ="3">
+				<textarea rows="20" cols="96" id="boardContent" name="boardContent" title="내용"></textarea>
+				<script type="text/javascript">
+					var oEditors=[];
+					nhn.husky.EZCreator.createInIFrame({
+					    oAppRef: oEditors,
+					    elPlaceHolder:"boardContent",
+					    sSkinURI: "/smarteditor/SmartEditor2Skin.html",
+					    fCreator:"createSEditor2", htParams:{fOnBeforeUnload:function(){}}
+					});
+				</script>
+			</td>
+		</tr>
+		<tr>
+			<th scope="row">행사일</th>
+			<td colspan ="3"><input type="text" title="행사시작일" name="startDT" id="startDT"  size="10" maxlength="8" onChange="setDateFormat(this)" value=""> ~
+			<input type="text" title="행사종료일" name="endDT" id="endDT" size="10" maxlength="8" onChange="setDateFormat(this)" value=""></td>
+		</tr>
+		<tr>
+			<th scope="row">주관</th>
+			<td colspan ="3">				
+				#if($!admin.getUniversityId() !=0)## 대학담당자가 로그인했으면
+					<input type="hidden" size="20"  name="univID" id="univID" value="$!admin.getUniversityId()">
+					$!admin.getAdminCompany()	
+				#else
+					<input type="hidden" size="20"  name="univID" id="univID" value="$!board.univID">
+					<input type="text" size="20" title="주관학교" name="univName" id="univName" value="$!board.univName" onchange="if(this.value == '')$('#univID').val('');"/>
+					<a href="javascript:searchUniversity()"><img src="/mgr/images/btn/btn_seluniv.gif" alt="대학 선택"></a>
+				#end
+				</td>
+		</tr>
+	</tbody>
+</table><!-- list_type01 End -->
+
+<div class="btn_box_type03">
+	<a href="javascript:save();"><img src="/mgr/images/btn/save.gif" alt="저장" /></a>
+	<a href="javascript:window.close();"><img src="/mgr/images/btn/cancel.gif" alt="취소" /></a>
+</div>
+
+</form>
+</div>
+</body>
+</html>

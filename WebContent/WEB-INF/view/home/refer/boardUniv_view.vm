@@ -1,0 +1,61 @@
+<table cellspacing="0" cellpadding="0" class="table_type1 st01 m_b10" summary="게시판 보기"><!-- table_type1 st01 Start -->
+	<caption>게시판 보기</caption>
+	<colgroup>
+		<col width="10%" />
+		<col width="*%" />
+		<col width="10%" />
+		<col width="35%" />
+	</colgroup>
+	<thead>
+		<tr>
+			<th scope="col" colspan="4" class="title">$!board.title</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<th scope="row">조회수</th>
+			<td class="t_left">$board.hitsCount</td>
+			<th scope="row">등록일</th>
+			<td class="t_left">$datetimeformatter.print($!board.regDate, $locale)</td>
+		</tr>
+		<tr>
+			<th scope="row">행사일</th>
+			<td class="t_left">$!board.startDT.replace("-","/")
+				~ $!board.endDT.replace("-","/")
+			</td>
+			<th scope="row">주관</th>
+			<td class="t_left">
+				#if($!admin.getUniversityId() !=0) ## 대학담당자가 로그인했으면
+					<input type="hidden" size="20"  name="univID" id="univID" value="$!board.univID">
+					$!board.univName	
+				#else ##대학담당자가 아니면
+				<input type="hidden" size="20"  name="univID" id="univID" value="$!board.univID">
+				<input type="text" size="20" title="주관학교" name="univName" id="univName" value="$!board.univName" onchange="if(this.value == '')$('#univID').val('');"/>
+				<a href="javascript:searchUniversity()">대학교선택</a>
+				#end
+			</td>	
+		</tr>
+		<tr>
+			<th scope="row">첨부파일</th>
+			<td class="t_left" colspan="3">
+			#if ($fileList.size()>0)
+				#foreach($fl in $fileList)
+					<a href ="javascript:downloadDB('$!fl.upfileGid','$!fl.upfileID' );">$!fl.orgFileName </a>
+				#end
+			#end
+			</td>
+		</tr>
+		<tr>
+			<td colspan="4" class="text_box">
+				#if($board.typeID == 20) 
+					$htmlUtils.lineChange($!board.boardContent)
+				#else 
+					$!board.boardContent
+				#end
+			</td>
+		</tr>
+	</tbody>
+</table>
+<div class="btn_box_type03"><!-- page_num Start -->
+	<a href="javascript:goPage(document.searchForm.currPage.value)"><img src="/home/images/btn/list.gif" alt="목록" /></a>
+</div><!-- page_num End -->

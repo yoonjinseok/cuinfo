@@ -1,0 +1,49 @@
+@charset "utf-8";
+@import url('neo_basic.css'); /* 네오퍼블 기본설정 */
+@import url('neo_setup.css'); /* 사이트 세부설정 */
+@import url('neo_main.css'); /* 사이트 세부설정 */
+@import url('neo_layout.css'); /* 사이트 레이아웃설정 */
+
+
+/* NEOPUBL */
+
+html { height: 100%; }
+body { font-size: 12px; font-family: Dotum; color: #666; }
+body, div, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, h6, pre, form, fieldset, input, textarea, blockquote, th, td, p { margin: 0px; padding:0px; }
+table { border-collapse: collapse; border-spacing: 0px; }
+fieldset, img, abbr, acronym { border: 0px; }
+address, caption, cite, code, dfn, em, var { font-style: normal; font-weight: normal; }
+ol,ul { list-style: none; }
+caption { text-align: left; }
+q:before, q:after { content:''; }
+caption { display: none; }
+a { text-decoration: none; color: #454545; }
+hr { display: none; }
+input { vertical-align: middle; }
+
+TD {
+	COLOR: #555555; FONT-FAMILY: 돋음, 굴림, Arial,sans-serif,; FONT-SIZE: 9pt; LINE-HEIGHT: 170%
+}
+TH {
+	COLOR: #555555; FONT-FAMILY: 돋음, 굴림, Arial,sans-serif,; FONT-SIZE: 9pt; LINE-HEIGHT: 170%
+}
+INPUT {
+	COLOR: #555555; FONT-FAMILY: 돋음, 굴림, Arial,sans-serif,; FONT-SIZE: 9pt; LINE-HEIGHT: 145%
+}
+FORM {
+	COLOR: #555555; FONT-FAMILY: 돋음, 굴림, Arial,sans-serif,; FONT-SIZE: 9pt; LINE-HEIGHT: 145%
+}
+TEXTAREA {
+	COLOR: #555555; FONT-FAMILY: 굴림, 굴림,  굴림,굴림,; FONT-SIZE: 9pt; LINE-HEIGHT: 145%
+}
+PRE {
+	COLOR: #555555; FONT-FAMILY: 돋음, 굴림, Arial,sans-serif,; FONT-SIZE: 9pt; LINE-HEIGHT: 145%
+}
+p { font-family: 굴림; font-size: 11pt; line-height: 150% }
+
+SELECT {
+	COLOR: #555555; FONT-FAMILY: 돋음, 굴림, Arial,sans-serif,; FONT-SIZE: 8pt
+}
+OPTION {
+	FONT-FAMILY: 돋음, 굴림, Arial,sans-serif,; FONT-SIZE: 8pt
+}

@@ -1,0 +1,33 @@
+<a href="javascript:viewCurriculum();" class="btn_more">
+##	<img src="/home/images/btn/btn_subject_view.gif" alt="교과과정 보기" />
+</a>
+<table class="table_type03" cellspacing="0" cellpadding="0" summary="교과과정 보기"><!-- table_type1 st01 Start -->
+	<caption>교과과정 보기</caption>
+	<colgroup>
+		<col width="10%">
+		<col width="90%">
+	</colgroup>
+	<tbody>
+		
+	#if($deptDetailList.size() > 0)
+	#foreach($list in $deptDetailList)
+	<tr>
+		<th class="tit">$velocityCount</th>
+		<td class="cont end"><a href="javascript:selectItem('$list.univdeptName - $list.univName','$list.universityId','$list.univdeptId')">$list.univdeptName - $list.univName</a></td>
+	</tr>
+	#end
+	#else
+	<tr>
+		<td colspan="2" class="cont end">데이터가 없습니다.</td>
+	</tr>
+    	#if($deptDetailList)
+    	<script>
+    		alert("교과과정 준비중입니다.");
+    		history.back();
+    	</script>
+		#end
+	
+	#end
+						
+	</tbody>
+</table>

@@ -1,0 +1,36 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<script type="text/javascript" language="javascript">
+	function logout()
+	{
+		jQuery.post('logout.json', 
+				function(data) {
+        			if(data.errors == true)
+        			{
+        				eval(data.message);
+        			}
+        			else
+        			{
+        				document.location.href = 'form.sub.action';
+        			}
+		});
+	}
+</script>
+</head>
+<body> 
+<h2>ȸ��α��ΰ��</h2>
+<hr />	
+<table>
+		<tr>
+			<td class="span-2">�̸�:</td>
+			<td class="span-10 value">${memberVo.userName}</td>
+		</tr>
+		<tr>
+			<td class="span-2">���:</td>
+			<td class="span-10 value">${memberVo.userDegreeName}</td>
+		</tr>
+	</table>	
+<hr/>
+<a href="javascript:logout();">�α׾ƿ�</a>
+</body>
+</html>

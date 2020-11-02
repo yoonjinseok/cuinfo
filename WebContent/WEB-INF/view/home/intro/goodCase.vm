@@ -1,0 +1,411 @@
+<head>
+	<title></title>
+	<script>
+		$("#chkBtn").click(function(){
+			alert('start');
+		});
+		function openCourseClose(){
+			//alert($("div[id^=publicCourse]").hide());
+			
+			$("div[id^=publicCourse]").mouseleave(function(){
+				$("div[id^=publicCourse]").hide("fast");
+			});
+		}	
+		
+		function openCourse(no){
+			$("#publicCourse"+no).toggle('fast');
+			$("#publicCourse"+no).find("tr").css("line-height","30px");
+			$("#publicCourse"+no).find("a").css("line-height","30px");
+			$("#publicCourse"+no).find("tr:not(.subject):even").find("td:eq(0)").css("background","#F6F6F6");
+			$("#publicCourse"+no+" .subject").css("background","#FAF4DC");
+			
+			openCourseClose();
+		}
+		
+		function popupUniv(url){
+			
+			window.open(url);
+		}
+		
+	</script>
+</head>
+<body>
+	<p class="location">
+		<a href="/home/index.main.action">홈</a> <span>></span> <a href="/home/intro/summary.sub.action?gnb=11">사이버대학 안내</a> <span>></span> <a href="/home/intro/characterization.sub.action?gnb=16">교육부지원사업</a> 
+	</p>
+	<h3><img src="/home/images/title/title_56_2.gif" /></h3>
+	
+	<div class="contentWrap">
+		<!--s:컨텐츠영역-->
+		<dl class="feature">
+			<dt style="background:#ffffff;"><img src="/home/images/new/111.jpg"></dt>
+			
+			
+			<dd style="background:#ffffff;">&nbsp;&nbsp; 사이버대학의 교수-학습 우수사례 발굴 및 전파를 통한 교육역량 강화 및 교육책무성 제고를 위해 사이버대학 교육과정/<br>&nbsp;&nbsp;지원 부분 우수사례에 대해 2015년 9월 ~ 2015년 11월에 공모를 실시. 
+<br/>
+			&nbsp;&nbsp;&nbsp;이에 많은 사이버대학이 자체 검토를 통해 우수사례를 제출하여 평가를 실시, 3단계의 엄정한 평가를 거쳐 총 4개 대학의<br>&nbsp;&nbsp;교수학습지원 부분, 1개 대학의 교육과정 분야의 우수사례를 선정함.
+
+			</dd>
+			<br/>
+			<dd style="background:#ffffff;"><img src="/home/images/new/stitle2.gif">
+			<br>
+			 			 	&nbsp;&nbsp;&nbsp;&nbsp;<table id="table1" class="table_type1 st01 st02"  style="width:100%;">
+			 		<colgroup>
+			 			<col width="30%"/>
+			 			<col width="20%"/>
+						<col width="30%"/>
+						<col width="20%"/>
+		 			</colgroup>
+			 		<thead>
+			 		<tr>
+			 			<th style="backgrounnone repeat scroll 0 center rgba(0, 0, 0, 0);height:46px;" class="first" >시상</th>
+			 			<th>대학</th>
+						<th style="backgrounnone repeat scroll 0 center rgba(0, 0, 0, 0);height:46px;" class="first" >사례명</th>
+			 			<th>공모분야</th>
+		 			</tr>
+		 			<tr>
+			 		</tr>
+		 			</thead>
+		 			<tbody>
+		 			<tr>
+			 			<td>최우수상<br>(교육부장관상)</td>
+			 			<td>한양사이버대</td>
+						<td>지능형 온라인 시험평가시스템의 구축 및 운영</td>
+			 			<td>교수-학습지원</td>
+		 			</tr>
+					<tr>
+			 			<td>우수상<br>(교육부장관상)</td>
+			 			<td>서울사이버대</td>
+						<td>차세대 교수학습 시스템 SCU Learning WAVE</td>
+			 			<td>교수-학습지원</td>
+		 			</tr>
+					<tr>
+			 			<td>우수상<br>(교육부장관상)</td>
+			 			<td>경희사이버대</td>
+						<td>글로벌한국학 전공 교육과정</td>
+			 			<td>교육과정</td>
+		 			</tr>
+					<tr>
+			 			<td>특별상<br>(한국원격대학협의회장상)</td>
+			 			<td>서울사이버대</td>
+						<td>‘학습자발표-교수피드백’의 영상기반 온라인 토론수업 운영</td>
+			 			<td>교수-학습지원</td>
+		 			</tr>
+					<tr>
+			 			<td>특별상<br>(한국교육학술정보원장상)</td>
+			 			<td>영진사이버대</td>
+						<td>온라인 교육 맞춤형 수업컨설팅 : 강의녹화 및 운영분석</td>
+			 			<td>교수-학습지원</td>
+		 			</tr>
+			 		</tbody>
+	 			</table>
+			</dd>
+			<dd style="background:#ffffff;"><dd style="background:#ffffff;"><img src="/home/images/new/stitle3.gif"></dd>
+		</dl>	
+		
+		
+		
+		<div class="feature_list2  p_t30px">
+			
+			<!-- 2014 -->
+			
+			<!--<dl class="feature">
+				<dt><img src="/home/images/intro/body_stitle9.gif"></dt>
+			</dl>-->
+			
+			<dl>				<dd><a href="#" class="faq_q_box"><img src="/home/images/new/refer_cyber_03_1.gif"></a>		
+					<div>
+						<ul>
+							<!--<li class="p_l13 p_t10 t_right"><span style="color:#E85050;margin-right: 30px;"><b>※ 학과는 2014년 개설 예정</b></span><br/></li>-->
+							<li class="p_l20 p_t5">
+								
+								○ <b>개발배경</b><br/>
+								&nbsp;&nbsp;&nbsp;&nbsp;- 시험횟수와 유형의 다양성을 확보하여, 학사운영의 자율성 확보<br/>
+								&nbsp;&nbsp;&nbsp;&nbsp;- 교수자와 학습자의 요구사항을 적극적으로 반영하여, 편리하고 안정적인 시험시스템 독자 개발<br/>
+								&nbsp;&nbsp;&nbsp;&nbsp;- 다양한 사용자 환경을 고려하여, 공정하고 객관적인 시험운영을 위한 시스템 개발
+								
+							</li>
+							<li class="p_l20 p_t5">
+								<br/>
+								○ <b>지능형 온라인 시험평가시스템 주요 특징 </b><br/>								<br/>
+		
+								&nbsp;&nbsp;&nbsp;&nbsp;<img src="/home/images/intro/g_example1.gif">
+							</li>
+							<li class="p_l20 p_t5">
+								<br/><br/>
+								○ <b>지능형 온라인 시험평가시스템 구성</b><br/>								<br/>
+		
+								&nbsp;&nbsp;&nbsp;&nbsp;<img src="/home/images/intro/g_example2.gif">
+								<br/><br/>
+							</li>	
+						</ul>
+					</div>
+				</dd>
+			</dl>
+			
+			<dl>				<dd><a href="#" class="faq_q_box"><img src="/home/images/new/refer_cyber_03_2.gif"></a>		
+					<div>
+						<ul>
+							<!--<li class="p_l13 p_t10 t_right"><span style="color:#E85050;margin-right: 30px;"><b>※ 학과는 2014년 개설 예정</b></span><br/></li>-->
+							<li class="p_l20 p_t5">
+								
+								○ <b>개발배경</b><br/>
+								&nbsp;&nbsp;&nbsp;&nbsp;-  ‘교수-학습’을 원활하게 하고 교육의 질을 향상시키기 위해 서울사이버대학만의 시스템 지원 체계 및 시스템 개발 필요. <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;이를 위한 수년간의 연구를 통해 차세대 교수학습 시스템(SCU Learning WAVE)을 개발
+<br/>
+								<br/>
+								○ <b>시스템 주요내용</b><br/>
+								&nbsp;&nbsp;&nbsp;&nbsp;- 국제 이러닝 표준 규격의 도입 성공 사례<br/>
+
+							</li>
+							<li class="p_l13 p_t10 t_center">
+								<br/>
+								
+								<table cellspacing="0" cellpadding="0" class="table_type1 st01 st02" style="width:100%;">
+									<colgroup>
+										<col width="30`">
+										<col width="*">
+									</colgroup>
+									<thead>
+									<tr>
+										<th style="height:46px;" class="first" >구분</th>	
+										<th >적용 개요</th>		
+									</tr>	
+									</thead>
+									<tbody>
+										<tr>
+											<th>재사용성<br>(Reusability)
+</th>	
+											<td class="t_left">- 유닛(Unit) 관리로 수업 단위별 수업 맥락의 변경이 자유로움<br>
+												- 유닛의 조합만으로 새로운 콘텐츠 생성 용이<br>
+												- 콘텐츠 수정 등이 유닛 단위로 시행되어 유지보수 용이
+
+										</tr>
+										<tr>
+											<th>접근성<br>(Accessibility)
+
+</th>	
+											<td class="t_left">- 디바이스와 웹 브라우저 종류에 구애받지 않고, 해당 디바이스와 웹브라우저에 가장 최적화된 콘텐츠 자원 서비스 가능<br>
+												- “자막”도 하나의 콘텐츠 자원으로 별도 분리되어 다국어 자막 지원 용이<br>
+										</tr>
+										<tr>
+											<th>상호운용성<br>(Interoperability)</th>	
+											<td class="t_left">- 콘텐츠와 학습도구의 분리, 결합 가능<br>
+												- 타 플랫폼에 있는 다양한 서비스의 “학습도구화” 가능</tr>
+<tr>
+											<th>내구성<br>(Durability)</th>	
+											<td class="t_left">- 이러닝 표준화를 통해 콘텐츠를 자원별로 관리<br>
+												- 외부 환경과 IT기술의 변화에 신속한 대응 가능(예 : 모바일)<br>
+										</tr>
+									</tbody>
+								</table>
+																
+							</li>
+							<li class="p_l20 p_t5">
+								&nbsp;&nbsp;&nbsp;&nbsp;-  콘텐츠와 학습도구 결합을 통한 교수학습모형의 다양화 지원<br/>
+								<br/>
+								&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;▪ 교수학습모형은 수업의 핵심 활동에 따라 그 특징이 결정됨. 이 특정 활동이 중요하기 때문에 콘텐츠와 학습도구의 결합은<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;이러닝 교육에서 매우 중요한 기능임. 서울사이버대학 콘텐츠는 시스템적으로 콘텐츠의 변화(콘텐츠와 학습도구 결합, <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;해체)가 가능하여 고정된 형태가 아닌 분리 및 결합이 가능함. 
+<br/><br/>
+		
+								&nbsp;&nbsp;&nbsp;&nbsp;<img src="/home/images/intro/g_example3.gif"><br/><br/>
+								&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;▪ 이를 통해 다양한 수업 환경 및 목적에 맞게 콘텐츠를 다양하게 활용할 수 있음. 이러한 WAVE 시스템을 통해 단순히 내용을<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;전달하는 수준을 벗어나 운영까지 통합할 수 있는 코스웨어로 확장됨. 
+
+<br/><br/>
+								&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;▪ 이에 학습자들은 수업의 맥락을 유지하면서 다양한 학습 활동을 수행하여 학습효과 및 인지율을 극대화. 
+
+
+<br/><br/>
+								&nbsp;&nbsp;&nbsp;&nbsp;-  콘텐츠 자원 개발 및 관리의 첨단화<br/>
+								&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;▪ 객체 단위 기반의 콘텐츠 개발 및 관리에 대한 방법론을 수립하여 시스템으로 구현하였음. 이의 독창성과 우수성을 인정받아<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 현재 특허를 받음<br/> 
+								&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(1) 특허 제10-1089357호(객체단위 기반 학습 콘텐츠 개발 시스템)<br/> 
+								&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(2) 특허 제10-1302583호(객체단위 기반 학습 콘텐츠 관리 시스템 및 방법)
+<br/><br>
+								&nbsp;&nbsp;&nbsp;&nbsp;-  ASMD(Adaptive Source Multi Device) 구현<br/>
+								&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;▪ 단순히 다양한 기기에서 콘텐츠 구동 여부가 아닌 디바이스의 특성에 맞게 자원을 제공하는 것이 중요함. 이에 One Source <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Multi Use의 한계를 극복하고 효과적인 모바일 서비스를 위해 ASMD(Adaptive Source Multi Device) 개념을 시스템에 <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;구현하였음.
+
+
+
+<br/><br/>
+								&nbsp;&nbsp;&nbsp;&nbsp;<img src="/home/images/intro/g_example4.gif"><br/>
+
+							</li>
+							<li class="p_l20 p_t5">
+								&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;▪ 이를 통해 다음과 같은 모바일 서비스 제공이 가능함.<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(1) PC 콘텐츠와 모바일 콘텐츠는 형태가 달라도 그 내용은 항상 동일함<br/> 
+								&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(2) 콘텐츠는 디바이스의 특징에 따라 형태가 자동으로 변화하고 최적의 자원을 스스로 선택함							
+
+<br/><br/>
+
+								&nbsp;&nbsp;&nbsp;&nbsp;-  Ambient User Experience 제공<br/>
+								&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;▪ 가트너에서 선정한 “2016년 10대 전략 기술” 중 Ambient User Experience 기능(사용자의 경험이 한 가지 제품에만 국한<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;되지 않고 디바이스, 위치, 시간이 바뀌어도 항상 동일한 수준이 유지될 수 있도록 하는 것)을 제공. 
+<br/> 
+								&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;▪ 여러 자원이 결합된 이러닝 콘텐츠에서도 끊김 없는 학습 지원과 동일 구성, 기능 지원을 통해 학습자에게 일관된 학습경험을 <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;제공.
+								<br/> 
+								&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;▪ 이러한 독창적이고 우수한 기능을 인정받아 특허를 받음.<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(1) 특허 제10-1565139호(스마트 러닝을 위한 멀티채널용 학습자원 제공 방법)<br/> 
+								&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(2) 특허 제10-1565142호(학습자원 적응화에 기반하는 멀티채널 스마트 러닝 시스템)<br/>
+								</li>
+						</ul>
+					</div>
+				</dd>
+			</dl>
+			
+			<dl>				<dd><a href="#" class="faq_q_box"><img src="/home/images/new/refer_cyber_03_3.gif"></a>		
+					<div>
+						<ul>
+							<li class="p_l20 p_t5">
+								
+								○ <b>추진배경</b><br/>
+								&nbsp;&nbsp;&nbsp;&nbsp;글로벌한국학 전문가의 양성을 위해 경희사이버대학의 건학 이념을 실현하며, 국가 브랜드의 확산, ‘융합 한류’ 개발에 기여하기 <br>&nbsp;&nbsp;&nbsp;&nbsp;위해 글로벌한국학 전공 교육과정을 개발 및 운영<br/> 
+								
+								<br/>
+								
+								○ <b>우수사례</b><br/>
+								&nbsp;&nbsp;&nbsp;&nbsp;- 교육과정 개발<br/>
+     							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;▪ 역량기반 교육과정 개발의 절차에 따라 전공 학습 역량 도출하여 교과목 설정 <br/>
+ 								&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;▪ 수준별 교과목으로 계열화하여 교과 개설을 체계화
+<br/><br>
+								&nbsp;&nbsp;&nbsp;&nbsp;<img src="/home/images/intro/g_example5.gif"><br/><br/>
+ 								 								<br/>
+								&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;▪ 정규과정과 비정규 교육과정 운영 : 블랜디드 러닝으로 활발한 상호작용이 이뤄지는 정규 교육과정과 함께 <br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;스터디 특강 학술답사 현장학습 등 다양한 비정규 교육과정 운영
+								<br/><br>
+								&nbsp;&nbsp;&nbsp;&nbsp;<img src="/home/images/intro/g_example6.gif"><br/>
+								
+								<br/><br/>
+								&nbsp;&nbsp;&nbsp;&nbsp;- 사이버 대학원의 특성에 맞는 논문 지도 체제 운영<br/>
+     							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;▪ 해외 거주 학생 및 직장인 학생을 위해 화상세미나, 공개 발표, 개별 지도 상담 등을 통한 철저한 논문 지도 시스템을 <br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;통해 논문 지도 실시
+ <br/>
+							</li>
+ 							<li class="p_l20 p_t5">
+								<br/>
+								○ <b>성과 </b><br/>
+								&nbsp;&nbsp;&nbsp;&nbsp;- 국내외의 사회적 수요에 부응하는 우수 인력 양성<br/>
+								&nbsp;&nbsp;&nbsp;&nbsp;- 특화된 비정규교육과정 운영<br/>
+     							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;▪ 한국어 문화연구회 학술활동 총 206회 실시<br/>
+ 								&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;▪ 다양한 전문가 특강 실시<br/> 
+								&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;▪ 학술답사 및 해외 한국어교육 현장 탐방(싱가포르, 홍콩, 태국 등) 실시<br/> 	
+                                &nbsp;&nbsp;&nbsp;&nbsp;- 온라인 한국학 콘텐츠 공유 플랫폼 구축 및 우수 한국학 콘텐츠 제작&middot; 보급 								
+								<br/><br>
+								&nbsp;&nbsp;&nbsp;&nbsp;<img src="/home/images/intro/g_example7.gif"><br/>	
+							</li>
+						</ul>
+					</div>
+				</dd>
+			</dl>
+			<dl>				<dd><a href="#" class="faq_q_box"><img src="/home/images/new/refer_cyber_03_4.gif"></a>		
+					<div>
+						<ul>
+							<li class="p_l20 p_t5">
+								
+								○ <b>추진배경</b><br/>
+								&nbsp;&nbsp;&nbsp;&nbsp;사이버대학의 토론을 기반으로 한 교수와 학생의 공동참여형 상호작용 수업 모형 개발 필요<br/> 
+								
+								<br/>
+								
+								○ <b>주요내용</b><br/>
+								&nbsp;&nbsp;&nbsp;&nbsp;- 교육과정 개발<br/>
+     							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;▪ 학습자 참여형 토론수업은 소규모 강좌에 적합하며 이 사례의 경우 평균 40명 미만의 학생 수강.<br>
+								&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;서울사이버대학에서 2015년 국제무역물류학과의 ‘글로벌경영전략세미나’ 강의에 적용․시행함.
+ <br/>
+ 								&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;▪ 토론기반 온라인 수업운영을 위한 학습절차 6단계 설계 <br/><br>
+								&nbsp;&nbsp;&nbsp;&nbsp;<img src="/home/images/intro/g_example11.gif"><br/><br/>
+ 								 								<br/>
+																<img src="/home/images/intro/g_example12.gif"><br/>
+																<img src="/home/images/intro/g_example13.gif"><br/>
+																<img src="/home/images/intro/g_example14.gif"><br/>
+ 								 								<img src="/home/images/intro/g_example15.gif"><br/>
+ 								 								<img src="/home/images/intro/g_example16.gif"><br/>
+ 								 								<img src="/home/images/intro/g_example17.gif"><br/>
+ 								 								<br/>
+																
+								&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- 과목 수강을 완료한 학생들의 학습평가 결과를 보면 수업과정의 학습단계 중에서 사례학습, 학생발표, 교수피드백 등<br>
+								&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;영상을 통한 상호작용에 대한 학습 만족도와 선호도가 가장 높음.
+
+
+							 <br/>
+							</li>
+ 							<li class="p_l20 p_t5">
+								<br/>
+								○ <b>성과 </b><br/>
+								&nbsp;&nbsp;&nbsp;&nbsp;- 이 수업은 동시성과 비동시성의 토론과 학습 참여의 중간 형태로서, 오프라인 실시간 토론수업을 올나인의 특성에 맞게 적용.<br>
+ 								&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;성인 학습자가 일과 학습을 병행하며 토론 기반의 실질적 학습효과를 얻을 수 있는 사이버대학에 적합한 수업운영 사례
+<br/>
+								&nbsp;&nbsp;&nbsp;&nbsp;- ASEAN-ROK e-Learning Workshop에서 온라인 세미나 모델로 소개된 바 있으며 향후 온라인 토론기반 수업운영의 방향성<br>
+								&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;제시 
+<br/>
+     							
+								
+							</li>
+						</ul>
+					</div>
+				</dd>
+			</dl>
+			
+			<dl>				<dd><a href="#" class="faq_q_box"><img src="/home/images/new/refer_cyber_03_5.gif"></a>		
+					<div>
+						<ul>
+							
+							<li class="p_l20 p_t5">
+								
+								 ○<b> 추진배경</b><br/>
+								&nbsp;&nbsp;&nbsp;&nbsp;- 온라인 강의 경험이 없는 교수자의 강의 촬영 및 수업운영 어려움의 해소<br/>
+  								&nbsp;&nbsp;&nbsp;&nbsp;- 교수자의 자가분석과 강의녹화 및 운영분석을 통한 수업의 질 향상<br/>
+  								&nbsp;&nbsp;&nbsp;&nbsp;- 사이버대학 수업에 필요한 지식, 기술, 태도(습관어, 사투리 등)에 대한 교수자의 성찰과 수업에 관한 지원활동<br/>
+  								
+  							</li>
+							<li class="p_l20 p_t5">
+								<br/>
+								 ○<b> 교수지원 활동</b><br/>
+								
+								&nbsp;&nbsp;&nbsp;&nbsp;- 교수자의 전문성을 강화하기 위해 아래와 같이 ‘개강 전 단계’> ‘수업운영 단계’>‘종강 단계’로 나누어 각 단계별로 <br>
+								&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;세부 지원사항을 명시하여 모든 교수자에게 교수활동을 지원함<br>
+								&nbsp;&nbsp;&nbsp;&nbsp;- 그 중 신임교수자 및 희망교수자에 대하여 가장 핵심단계인 강의 촬영 모니터링과 수업운영 단계에서 보다 상세한 <br>
+								&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 프로그램과 전문인력의 참여를 지원함
+								
+								<br/><br>
+								&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="/home/images/intro/g_example8.jpg"><br/>
+								<br/><br/>
+								
+								
+								
+								&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>가. 강의녹화모니터링</b><br>
+								&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;○ 참여대상 : 신임 교수자, 해당학기 콘텐츠 개발 교수자 <br>
+								&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;○ 실시방법 <br> 
+								<br/>
+								&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="/home/images/intro/g_example10.gif"><br/>
+								&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- 교수방법, 행동특성의 2가지 측면에 대해 점검 및 모니터링 결과 기술 <br>
+								&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- 결과의 객관성 확보를 위하여 3명의 모니터링요원이 참여함 <br> 
+								
+								
+								<br/><br>
+								&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>나. 수업운영분석</b><br>
+								&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;○ 참여대상 : 강의녹화모니터링 참가 교수자, 강의평가 하위대상자 <br>
+								&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;○ 실시방법 <br>
+								&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="/home/images/intro/g_example10_1.gif"><br/>
+								<br/>
+								&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- 관리운영, 상호작용, 교수지원 등의 3가지 측면에서의 운영분석 및 장단점, 개선점 분석 <br>
+								&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- 총 2회의 수업운영분석표 및 운영분석결과서 작성을 통한 자기평가 <br>
+								&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- 수업 운영 계획에 따른 실시(과제, 토론, 시험 등) 1주 전 교수자 1:1 맞춤형 안내 서비스(메일링) 제공 <br>
+
+							</li>
+							<li class="p_l20 p_t5">
+								<br/>
+								 ○<b> 성과</b><br/>
+								&nbsp;&nbsp;&nbsp;&nbsp;- 강의 촬영 및 수업운영에 관한 기술 습득을 통한 사이버대학에서 필요한 교수역량 개발<br>
+								&nbsp;&nbsp;&nbsp;&nbsp;- 교수자 자신의 수업을 객관적인 입장에서 관찰, 분석하는 성찰기회 제공으로 수업개선 및 수업의 질 향상<br>
+								&nbsp;&nbsp;&nbsp;&nbsp;- 고품질의 강의 콘텐츠 제공 및 수업운영 전략 적용을 통한 학습자의 만족도와 학습효과 증진<br>
+								&nbsp;&nbsp;&nbsp;&nbsp;- 강의녹화 모니터링을 통한 강의 콘텐츠의 질 관리<br>
+
+
+  							</li>
+							
+								
+						</ul>
+					</div>
+				</dd>
+			</dl>
+			
+			
+			
+		</div>
+	</div>
+</body>

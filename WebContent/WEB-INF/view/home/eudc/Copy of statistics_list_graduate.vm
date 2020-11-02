@@ -1,0 +1,194 @@
+<!-- 학년도별 원격대학교  총 졸업생수  -->
+<table cellspacing="0" cellpadding="0" class="table_type1 st01 st02 th_2line" summary="학년도별 원격대학 총 졸업생 수"><!-- table_type1 st01 Start -->
+	<caption>직업별 등록생 비율 현황</caption>
+	<colgroup>
+		<col width="9%">
+		<col width="16%">
+		<col width="6%">
+		<col width="%">
+		<col width="%">
+		<col width="%">
+		<col width="%">
+		<col width="%">
+		<col width="%">
+		<col width="%">
+		<col width="%">
+		<col width="%">
+	</colgroup>
+	<thead>
+		<tr>
+			<th scope="col" rowspan="2" colspan="2" class="first bg02">구분(개교년도)</th>
+			<th scope="col" rowspan="2">2006 까지</th>
+			<th scope="col" colspan="9">총 졸업생 수(명)</th>
+		</tr>
+#set($newUniv = 0)
+#set($trCnt = 0)
+#set($tdCnt = 0)
+#set($gubun = 51)
+#set($rowSum = 0)
+#set($totalCnt = 0)
+#foreach($stt in $statisiticsList)
+			#if($newUniv != $!stt.STT_UNIV_ID)
+				#set($trCnt = $trCnt + 1)
+				#set($tdCnt = 0)
+				#set($rowSum = 0)
+			#end
+			#set($tdCnt = $tdCnt + 1)
+			#set($newUniv = $!stt.STT_UNIV_ID)
+		#if($trCnt == 1 && $tdCnt == 1)	
+		<tr>
+		#end
+## 년도 TITLE 작성
+#if($trCnt == 1)
+			<th scope="col">$!stt.YEAR</th>
+## 학사 행 작성
+#elseif($stt.STT_UNIV_ID != 0 && $stt.STT_UNIV_ID != -2 && $stt.STT_UNIV_ID != -3 && $stt.GUBUN_ID != 163)
+			
+			#if($trCnt == 2 && $tdCnt == 1)
+			<th scope="col">누계</th>		
+		</tr>			
+	</thead>
+	<tbody>
+		#end
+		
+		#if($tdCnt == 1)
+		<tr>	
+		#end		
+			#if($trCnt == 2 && $tdCnt == 1)
+			<td id="titilehs">학사</td>
+			#end
+			
+			
+			## 대학명, 편제정원
+			#if($tdCnt == 1)
+			<td>$!stt.UNIV_NAME</td>
+			<td>$!stt.UNDERNUM</td>
+			#end
+			
+			<td>$!stt.GRADUATE_CNT</td>
+			#set($rowSum = $rowSum + $!stt.GRADUATE_CNT_N)
+			
+			## 항 합계
+			#if("$!stt.TOTAL" != "")
+			#set($totalCnt = $!stt.TOTAL)
+			#end
+			#if($tdCnt == $!stt.COUNT)
+			<td>$!totalCnt</td>
+		</tr>
+			#end
+## 전문 학사 행 작성			
+#elseif($stt.GUBUN_ID == 163 && $stt.STT_UNIV_ID != -3 )
+		## 대학명, 편제정원
+		#if($tdCnt == 1)
+		<tr>
+			##전문대학 첫 아이디
+			#if($stt.UNIVERSITY_ID == 19)
+			<td rowspan="2">전문학사</td>
+			#end
+			<td>$!stt.UNIV_NAME</td>
+			<td>$!stt.FORMATION_CNT</td>
+		#end
+			
+		<td>$!stt.GRADUATE_CNT</td>
+		#set($rowSum = $rowSum + $!stt.GRADUATE_CNT_N)
+		
+		#if($tdCnt == $!stt.COUNT)
+			<td>$!stt.TOTAL</td>
+		</tr>
+		#end
+## 학사 합계 행 작성		
+#elseif($stt.STT_UNIV_ID == -2 )
+		#if($tdCnt == 1)
+			#set($sum1row = $!trCnt - 2)
+		<tr>
+			<td colspan="2">$sum1row 개 대학교</td>
+			<td>$!stt.FORMATION_CNT</td>
+		#end	
+		
+		<td>$!stt.GRADUATE_CNT</td>
+		#set($rowSum = $rowSum + $!stt.GRADUATE_CNT_N)
+		
+		#if($tdCnt == $!stt.COUNT)
+			<td>$!stt.TOTAL</td>
+		</tr>
+		#end
+## 전문 학사 합계 행 작성
+#elseif($stt.STT_UNIV_ID == -3 )
+		#if($tdCnt == 1)
+		<tr>
+			<td colspan="2">2 개 대학교</td>
+			<td>$!stt.FORMATION_CNT</td>
+		#end	
+		
+		<td>$!stt.GRADUATE_CNT</td>
+		#set($rowSum = $rowSum + $!stt.GRADUATE_CNT_N)
+		#if($tdCnt == $!stt.COUNT)
+			<td>$!stt.TOTAL</td>
+		</tr>
+		#end
+## 총 합계 행 설정		
+#else
+			
+			#if($stt.STT_ID == 0 && $tdCnt == 1)
+	</tbody>
+	<tfoot>
+		<tr>
+			<th colspan="2">합계</th>
+			<th>$!stt.FORMATION_CNT</th>
+			#end
+			
+			<th>$!stt.GRADUATE_CNT</th>
+			#set($rowSum = $rowSum + $!stt.GRADUATE_CNT_N)
+			
+			#if($velocityCount == $statisiticsList.size())
+			<th class="end">$!stt.TOTAL</th>
+		</tr>
+			#end
+			
+			
+	#end		
+#end	
+	</tfoot>	
+</table><!-- list_type01 End -->
+
+<script>	
+#set($rowCnt = $!trCnt - 6)
+ $("#titilehs").attr("rowspan", "$!rowCnt");
+
+	
+
+</script>
+
+<div class="graphWrap" id="chart_div" style="display: none;">	
+</div>
+
+<script type="text/javascript">      
+	google.load('visualization', '1', {packages: ['corechart']});
+	function drawVisualization() {
+	  // Create and populate the data table.
+	  var data = google.visualization.arrayToDataTable([
+	    ['Year', '10대초', '20대초', '20대후', '30대', '40대', '50대', '60대']
+    	 ,['2012', 0, 0, 0, 0, 0, 0, 0]
+	  ]);
+
+	// Create and draw the visualization.
+	  new google.visualization.BarChart(document.getElementById('chart_div')).
+	      draw(data,
+	           {'isStacked': true,	           
+	            width:600, height:400,
+	            vAxis: {title: "년도별"},
+	            hAxis: {title: "백분율(%)"}
+	           }
+	      );
+	 }
+	
+	google.setOnLoadCallback(drawVisualization);
+
+
+ 
+	//$("#chart_div").toggle();
+</script>
+			
+			
+			
+		

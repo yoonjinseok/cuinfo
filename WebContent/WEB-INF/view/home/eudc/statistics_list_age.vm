@@ -1,0 +1,160 @@
+<!-- 년령별 -->
+
+<table cellspacing="0" cellpadding="0" class="table_type1 st01 st02" summary="연령별 등록생 비율 현황"><!-- table_type1 st01 Start -->
+	<caption>연령별 등록생 비율 현황</caption>
+	<colgroup>
+		<col width="10%"><col width="12%"><col width="12%"><col width="12%"><col width="12%"><col width="12%"><col width="10%"><col width="10%"><col width="10%">
+	</colgroup>
+	<thead>
+		<tr>
+			<th scope="col" rowspan="2" class="first bg02">연도</th>
+			<th scope="col" rowspan="2">등록인원<br />(명)</th>
+			<th scope="col" colspan="7">연령별 등록생 분포 비율(%)</th>
+		</tr>
+		<tr>
+			<th scope="col">10대</th>
+			<th scope="col">20대초</th>
+			<th scope="col">20대후</th>
+			<th scope="col">30대</th>
+			<th scope="col">40대</th>
+			<th scope="col">50대</th>
+			<th scope="col">60대 이상</th>
+		</tr>
+	</thead>
+	<tbody>
+
+	
+		#if ($sttYear == '2017')
+		<tr>
+			<td>10</td>
+			<td>20</td>
+			<td>30</td>
+			<td>11</td>
+			<td>11</td>
+			<td>12</td>
+			<td>13</td>
+			<td>14</td>
+			<td>15</td>
+		</tr>
+		#elseif ($sttYear == '2016')
+		<tr>
+			<td>40</td>
+			<td>50</td>
+			<td>60</td>
+			<td>21</td>
+			<td>21</td>
+			<td>22</td>
+			<td>23</td>
+			<td>24</td>
+			<td>25</td>
+		</tr>
+		#else
+			#foreach($stt in $statisiticsList)
+			<tr>
+				<td>$!stt.STTYEAR</td>
+				<td>$!stt.AGETOTAL</td>
+				<td>$!stt.AGE10</td>
+				<td>$!stt.AGE20INITIAL</td>
+				<td>$!stt.AGE20AFTER</td>
+				<td>$!stt.AGE30</td>
+				<td>$!stt.AGE40</td>
+				<td>$!stt.AGE50</td>
+				<td>$!stt.AGE60</td>
+			</tr>
+			#end		
+	   
+		#end	
+	</tbody>
+</table><!-- list_type01 End -->
+
+<div class="graphWrap" id="chart_div1" style="text-indent: 100px; padding-top:30px;padding-bottom:10px; display: none;">	
+년도별
+</div>
+<!-- style="display: none; width:775px; text-align:center" -->
+<div class="graphWrap" id="chart_div" style="display: none;">	
+</div>
+<div class="graphWrap" id="chart_div2" style="padding-top:10px;text-align:center; display: none;">	
+백분율(%)
+</div>
+
+<script type="text/javascript">   
+
+   
+	google.load('visualization', '1', {packages: ['corechart']});
+	function drawVisualization() {
+	
+	//alert($sttYear);
+	
+	
+	alert($sttYear);
+	var aa = $sttYear
+	
+	alert(aa);
+	if (aa == 2017){
+			
+	  // Create and populate the data table.
+	  var data = google.visualization.arrayToDataTable([
+	    ['Year', '10대', '20대초', '20대후', '30대', '40대', '50대', '60대']
+
+	    ,['2017', 10, 20, 30, 40, 50, 60, 70]
+	    ,['2016', 10, 20, 30, 40, 50, 60, 70]
+	    ,['2015', 10, 20, 30, 40, 50, 60, 70]
+	  
+	  ]);
+
+	} else if (aa == 2016){
+	  // Create and populate the data table.
+	  var data = google.visualization.arrayToDataTable([
+	    ['Year', '10대', '20대초', '20대후', '30대', '40대', '50대', '60대']
+
+	    ,['2016', 10, 20, 30, 40, 50, 60, 70]
+	    ,['2015', 10, 20, 30, 40, 50, 60, 70]
+	    ,['2014', 10, 20, 30, 40, 50, 60, 70]
+	  
+	  ]);
+	
+	} else {
+	  // Create and populate the data table.
+	  var data = google.visualization.arrayToDataTable([
+	    ['Year', '10대', '20대초', '20대후', '30대', '40대', '50대', '60대']
+		#foreach($stt in $statisiticsList)
+	    ,['$!stt.STTYEAR', $!{stt.AGE10}, $!{stt.AGE20INITIAL}, $!{stt.AGE20AFTER}, $!{stt.AGE30}, $!{stt.AGE40}, $!{stt.AGE50}, $!{stt.AGE60}]
+	    #end
+	  ]);
+	  
+	}
+
+	//var formatter = new google.visualization.NumberFormat ({pattern:'#,###.##%'});
+	//data.formatter.format(data, 1);
+	// var formatter = new google.visualization.NumberFormat({prefix: '$'});  
+	//formatter.format(data, 1);
+	   
+	// Create and draw the visualization.
+	  new google.visualization.BarChart(document.getElementById('chart_div')).
+	      draw(data,
+	           {'isStacked': true,	           
+	            width:775, height:300,	
+	            fontName: "Verdana", 
+	    		fontSize: "12",           
+	            //vAxis: {fontName: "normal", fontSize: "11px"},
+	            //hAxis: {title: "백분율(%)", fontSize : "12", fontName : "Verdana", 
+	            // 	 titleTextStyle: {fontSize : "12", fontName : "Verdana"}},
+	            //title: "년도별",
+	            colors: ['#4A7BB4', '#F3693D', '#7F974D', '#8368A4', "#3CA7BB", "#E49F1A", "#476B8F"],
+	            legend: {textStyle: {fontSize : "11", fontName : "Verdana"}},
+	            chartArea:{left:"15%",top:5,width:"70%",height:"90%"}
+	           }
+	      );
+	 }
+	// format:'#,###%', writing-mode: 'tb-rl',
+ 	//  var options = {cht: 'bvs', chco: colors, max: 100};
+	//is3D: true,allowHtml: true, showRowNumber: true, //chartArea:{left:20,top:0,width:"50%",height:"75%"}
+	google.setOnLoadCallback(drawVisualization);
+
+	#if('$!statisiticsList' != '' || $!statisiticsList.size() != 0)
+		$("#chart_div").toggle();
+		$("#chart_div1").toggle();
+		$("#chart_div2").toggle();
+	#end
+</script>
+		

@@ -1,0 +1,23 @@
+#if(!$successStory)
+	<!-- 학교가 선택되지 않았을경우 이미지를 보여준다.  -->
+	<center class="p_t10 p_b10">
+	<img src="/home/images/intro/no_school.gif" />
+	</center>
+	
+#else
+<div class="oh">
+	<h4 id="univName" class="type1">$univName 성공수기</h4>
+	#if($!successLink.length() > 0)
+		<a href="$!successLink" target="_blank" class="fr"><img src="/home/images/btn/btn_success_view_more.gif" alt="대학 성공후기 페이지 바로가기" /></a>
+	#end
+</div>
+
+<br/>
+	#if($!successStory.length()  > 5)
+		$!successStory
+	#else
+	<center>
+		<b>등록된 성공수기가 없습니다.</b>
+	</center>
+	#end
+#end

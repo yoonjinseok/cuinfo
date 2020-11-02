@@ -1,0 +1,76 @@
+<head>
+	<title>학과 내비게이션</title>
+	<link rel="stylesheet" type="text/css" href="/home/css/course.css" />
+	<script type="text/javascript" language="javascript">
+	
+	$(document).ready(function() {
+		search();
+    });
+    
+	function search()
+	{
+		jQuery.post('deptDetailList.ajax.action',  
+					$("#form").formSerialize(),
+					function(data) {
+        				$("#list").html(data);
+		});
+	}
+	
+	function selectItem(text,universityId,univdeptId){
+		$("#universityId").val(universityId);
+		$("#univdeptId").val(univdeptId);
+		$("#selectItem").text(text);
+		$("#text").val(text);
+		
+		viewCurriculum();
+	}
+	
+	//커리큘럼보기 클릭시
+	function viewCurriculum(){
+		if($("#universityId").val() == "" || $("#univdeptId").val() == ""){
+			alert("선택된 내용이 없습니다.");
+			return;
+		} 
+		$("#form").attr("method","post");
+		$("#form").attr("onsubmit","");
+		$("#form").attr("action","/home/curri/curriculum.sub.action?gnb=31");
+		$("#form").submit();
+	}
+	
+	</script>
+</head>
+	
+<body id="intro">
+	
+	
+	<p class="location">
+			<a href="">홈</a> <span>></span> 
+			<a href="">사이버대학안내</a> <span>></span> 
+			<a href="">교과과정 보기</a> 
+	</p>
+	<h3><img src="/home/images/title/h3_sub_view.gif" alt="교과과정 보기" /></h3>	
+	
+	<div class="contentWrap">
+			<!--s:컨텐츠영역-->
+				<div class="main_copy m_b5">분야 및 학과를 선택하면, 해당되는 학과리스트가 나옵니다. </div>
+				<div class="main_copy">학과 리스트에서 해당학교의 학과를 선택하시면, 학과에 대한 전체 커리큐럼이 표시됩니다. </div>
+				<div class="feature02"><img src="/home/images/course/txt_subject_view.gif" alt="학교별 과정 목록" /></div>
+				<div class="bul m_b5 m_t0"><b id="selectItem">#if($!param.text != "")$!param.text #else 선택하세요.#end</b></div>
+				<div id="list" class="tbl_wrap03">#parse('home/curri/deptDetailList.vm')</div>
+			<!--e:컨텐츠영역-->
+		</div>
+	
+	
+    <div class="univ_table m_l20" >
+		
+    	<form class="search_box01" id="form" name="form" action="#" onsubmit="try{search();}catch(e){alert(e);}return false;"><!-- box_type01 Start -->
+            <input type="hidden" id="text" name="text" value="$!param.text" />
+            <input type="hidden" id="deptId" name="deptId" value="$!param.deptId" />
+            <input type="hidden" id="universityId" name="universityId" value="$!param.universityId"/>
+            <input type="hidden" id="univdeptId" name="univdeptId" />
+			<input type="hidden" id="cnt" name="cnt" value="$!param.cnt"/>
+    	</form>
+    </div>
+
+</body>
+</html>

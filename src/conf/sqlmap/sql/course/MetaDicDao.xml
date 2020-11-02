@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="EUC-KR"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="MetaDicDao">
+	<typeAlias alias="metaDic" type="com.cyberup.model.course.MetaDic"/>
+	
+	<select id="selectList" resultClass="metaDic"  parameterClass="map">
+		SELECT METADIC_ID as metadicId, COLL_TYPE as collType, ELEMENT as element
+			, ELEMENT_NAME as elementName, ELEMENT_DESC as elementDesc, MANDATORY_YN as mandatoryYn
+			, DEFAULT_VAL as defaultVal, RECOMMEND_YN as recommendYn, REPEAT_YN as repeatYn
+			, DISP_ORDER as dispOrder, INPUT_TYPE as inputType, INPUT_RULE as inputRule
+			, LANG_YN as langYn, LONG_YN as longYn
+		FROM CU_COM_METADIC
+		WHERE COLL_TYPE = #collType,javaType=String#
+		ORDER BY DISP_ORDER ASC
+	</select>
+	
+	<select id="selectInfo" resultClass="metaDic"  parameterClass="Integer">
+		SELECT METADIC_ID as metadicId, COLL_TYPE as collType, ELEMENT as element
+			, ELEMENT_NAME as elementName, ELEMENT_DESC as elementDesc, MANDATORY_YN as mandatoryYn
+			, DEFAULT_VAL as defaultVal, RECOMMEND_YN as recommendYn, REPEAT_YN as repeatYn
+			, DISP_ORDER as dispOrder, INPUT_TYPE as inputType, INPUT_RULE as inputRule
+			, LANG_YN as langYn, LONG_YN as longYn
+		FROM CU_COM_METADIC
+			WHERE METADIC_ID = #metadicId,javaType=Integer#
+	</select>
+	
+	<update id="updateInfo" parameterClass="metaDic">
+		UPDATE CU_COM_METADIC SET 
+			ELEMENT = #element#
+			, ELEMENT_NAME = #elementName#, ELEMENT_DESC = #elementDesc#, MANDATORY_YN = #mandatoryYn#
+			, DEFAULT_VAL = #defaultVal#, RECOMMEND_YN = #recommendYn#, REPEAT_YN = #repeatYn#
+			, DISP_ORDER = #dispOrder#, INPUT_TYPE = #inputType#, INPUT_RULE = #inputRule#
+			, LANG_YN = #langYn#, LONG_YN = #longYn#
+		WHERE METADIC_ID = #metadicId,javaType=Integer#
+	</update>
+	
+	<insert id="insertInfo" parameterClass="metaDic">
+		<selectKey resultClass="Integer" keyProperty="metadicId">
+         SELECT SEQ_METADIC_ID.nextVal as metadicId FROM dual
+        </selectKey>
+        
+		INSERT INTO CU_COM_METADIC 
+			(METADIC_ID, COLL_TYPE, ELEMENT
+			, ELEMENT_NAME, ELEMENT_DESC, MANDATORY_YN
+			, DEFAULT_VAL, RECOMMEND_YN, REPEAT_YN
+			, DISP_ORDER, INPUT_TYPE, INPUT_RULE
+			, LANG_YN, LONG_YN)
+		 values(#metadicId#, #collType#, #element#
+			, #elementName#, #elementDesc#, #mandatoryYn#
+			, #defaultVal#, #recommendYn#, #repeatYn#
+			, #dispOrder#, #inputType#, #inputRule#
+			, #langYn#, #longYn#)
+	</insert>
+	
+	<delete id="deleteInfo"  parameterClass="Integer">
+		DELETE FROM CU_COM_METADIC 
+		WHERE 
+			METADIC_ID = #metadicId,javaType=Integer#
+	</delete>
+
+</sqlMap>

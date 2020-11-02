@@ -1,0 +1,304 @@
+<head>
+	<title>학과 내비게이션</title>
+	<link rel="stylesheet" type="text/css" href="/home/css/course.css" />
+	<script type="text/javascript" language="javascript">
+	
+	$(document).ready(function() {
+		//search();
+    });
+    function viewDetail(title)
+	{
+		
+		
+		//필요 변수 셋팅
+		$("#text").val(title);
+		$("#deptId").val("40102");
+		$("#univId").val("28");
+		
+		//onsubmit 속성을 비워주어야 submit이 된다.
+		$("#form").attr("method","post");
+		$("#form").attr("onsubmit","");
+		$("#form").attr("action","/home/course/courseSearch3View.sub2.action?gnb=41");
+		$("#form").submit();
+		
+	}
+    	//유사강의검색
+	function viewDetail2(courseId, title)
+	{
+	
+		//필요 변수 셋팅
+		$("#text").val(title);
+		$("#hidetext").val(title);
+		$("#courseId").val(courseId);
+		$("#deptId").val("");
+		
+		//onsubmit 속성을 비워주어야 submit이 된다.
+		$("#form").attr("method","post");
+		$("#form").attr("onsubmit","");
+		$("#form").attr("action","/home/course/courseSearch2.sub2.action?gnb=41&pageType=1&checkbox3=2");
+		$("#form").submit();
+		
+	}
+	</script>
+</head>
+	
+<body id="intro">
+
+	<p class="location">
+		<a href="">홈</a> <span>&gt;</span> <a href="">학과/교과과정</a> <span>&gt;</span> <a href="">교과과정 보기</a> 
+	</p>
+	<h3><img src="/home/images/title/h3_sub_view.gif" alt="교과과정 보기"></h3>
+		
+	
+	<div class="contentWrap">
+		<!--s:컨텐츠영역-->
+			
+			<div class="path_major">
+				<a>한양사이버대학원</a><span>&gt;</span>
+				<a>경영대학원</a><span>&gt;</span>
+				<a>그린텍MBA</a>
+				<a target="_blank" href="http://gs.hycu.ac.kr/lesinfo/?dept=40102" class="btn_info_major"><img src="/home/images/btn/btn_info_major.gif" alt="학과안내 페이지 바로가기"></a>
+																																																																																																												</div>
+			
+			<div id="list" class="univ_table m_l0">
+				<table cellspacing="0" cellpadding="0" summary="교과과정 보기"><!-- table_type1 st01 Start -->
+				<caption>교과과정 보기</caption>
+				<colgroup>
+					<col width="20%">
+					<col width="40%">
+					<col width="20%">
+				</colgroup>
+				<thead>
+					<tr>
+						<th scope="col">학기</th>
+						<th scope="col">교과목명</th>
+						<th scope="col">학점</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr class="line02">
+						<th class="line02" rowspan="5">1</th>
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('지속가능경영론');"><p>지속가능경영론</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','기술경영');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>
+					<tr>
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('환경경영전략');"><p>환경경영전략</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','환경경영전략');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>																		
+					<tr>
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('온실가스감축기술');"><p>온실가스감축기술</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','온실가스감축기술');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>
+					<tr>
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('대기환경과기후변화');"><p>대기환경과기후변화</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','대기환경과기후변화');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>
+					<tr class="line01">
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('사회적책임과경영');"><p>사회적책임과경영</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','사회적책임과경영');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>
+					
+					<tr class="line02">
+						<th class="line02" rowspan="5">2</th>
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('기후변화경제학');"><p>기후변화경제학</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','기후변화경제학');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>
+					<tr>
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('첨단환경기술');"><p>첨단환경기술</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','첨단환경기술');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>
+					<tr>
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('전과정평가');"><p>전과정평가</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','전과정평가');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>
+					<tr>
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('그린IT&스마트그리드');"><p>그린IT&스마트그리드</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','그린IT&스마트그리드');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>
+					<tr class="line01">
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('글로벌경영정책과전략');"><p>글로벌경영정책과전략</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','글로벌경영정책과전략');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>
+					
+					<tr class="line02">
+						<th class="line02" rowspan="7">3</th>
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('논문연구');"><p>논문연구</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','논문연구');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 0
+						</td>
+					</tr>
+					<tr>
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('환경기술사업화세미나');"><p>환경기술사업화세미나</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','환경기술사업화세미나');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>
+					<tr>
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('환경회계학');"><p>환경회계학</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','환경회계학');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>																			
+					<tr>
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('신재생에너지론');"><p>신재생에너지론</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','신재생에너지론');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>
+					<tr>
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('청정생산시스템');"><p>청정생산시스템</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','청정생산시스템');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>
+					<tr>
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('SCM과로지스틱스');"><p>SCM과로지스틱스</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','SCM과로지스틱스');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>
+					<tr class="line01">
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('전략적경영정보론');"><p>전략적경영정보론</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','전략적경영정보론');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>
+					
+					
+					<tr class="line02">
+						<th class="line02" rowspan="6">4</th>
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('논문연구');"><p>논문연구</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','논문연구');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 0
+						</td>
+					</tr>
+					<tr>
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('환경컨설팅세미나');"><p>환경컨설팅세미나</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','환경컨설팅세미나');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>
+					<tr>
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('녹색금융시장론');"><p>녹색금융시장론</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','녹색금융시장론');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>																			
+					
+					<tr>
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('녹색기술과글로벌경제');"><p>녹색기술과글로벌경제</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','녹색기술과글로벌경제');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>
+					<tr>
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('자본시장과기업재무');"><p>자본시장과기업재무</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','자본시장과기업재무');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>
+					<tr class="line01">
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('혁신과벤처경영');"><p>혁신과벤처경영</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','혁신과벤처경영');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>
+					
+					<tr class="line02">
+						<th class="line02">5</th>
+						<td class="t_left line02" colspan="2">
+							<p>졸업논문/혹은 논문대체 과목</p>
+						</td>
+					</tr>
+					
+				</tbody>
+				</table>	
+			</div>
+			
+			<p class="m_b5"><img src="/home/images/course/txt_info_search.gif" alt="전체 사이버대학을 대상으로 유사강의 검색"></p>
+			<br>
+			
+		<!--e:컨텐츠영역-->
+	</div>
+
+	
+	<form class="search_box01" id="form" name="form" action="#" onsubmit="try{search();}catch(e){alert(e);}return false;"><!-- box_type01 Start -->
+        <input type="hidden" id="courseId" name="courseId" />
+        <input type="hidden" id="hidetext" name="hidetext" />
+        <input type="hidden" id="text" name="text" />
+        <input type="hidden" id="deptId" name="deptId" value="" />
+        <input type="hidden" id="univId" name="univId" value="" />
+	</form>
+
+	<div class="page_num">
+		<div id="pg" name="pg"></div>
+	</div>
+
+</body>
+</html>

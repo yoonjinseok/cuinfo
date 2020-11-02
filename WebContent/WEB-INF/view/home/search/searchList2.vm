@@ -1,0 +1,43 @@
+	<ul class="list_type1 m_b20">
+		#foreach($list in $boardsList)
+		<li>
+			<a href="javascript:viewDetail2('$!list.gubn','$!list.id')"><em class="f_12">
+				
+				[ 
+				#if($!list.gubn == "1")
+					대학게시판
+				#elseif($!list.gubn == "2")
+					게시판
+				#elseif($!list.gubn == "3")
+					FAQ
+				#end 
+				]</em>$!list.title</a>
+			<span class="date">등록일 : $dateformatter.print($!list.regDate, $locale)</span>
+			<span class="none normal">
+				##$htmlUtils.lineChange($!list.content)
+			</span>
+		</li>
+		#end
+		
+		#set($cnt2 = $boardsList.size())
+		#if($cnt2 == 0)
+		#set($tCnt2 = 0)
+		<li>
+			<a href="#">검색결과가 없습니다.</a>
+			<span class="date"></span>
+			<span class="none normal"></span>
+		</li>
+		#end
+	</ul>
+	
+	
+	<script>
+	$("#searchListCnt2").text($tCnt2);
+	#if($boardsList && $boardsList.size() != 0 && $gubn == 2)
+		$(document).ready(function() {
+			setRecordCnt2($totalCnt2, $currPage2, $totalPage2, $showCnt2);
+	    });
+	#end
+	</script>
+	
+	

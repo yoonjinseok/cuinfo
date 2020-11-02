@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="EUC-KR"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="LectureDao">
+	<typeAlias alias="lecture" type="com.cyberup.model.course.Lecture"/>
+	
+	<select id="selectList" resultClass="lecture"  parameterClass="Integer">
+		SELECT A.LECTURE_ID as lectureId, A.COURSE_ID as courseId, A.LECTURE_IDENTIFIER as lectureIdentifier
+			, A.MASTER as master, A.MOV_LOCATION as movLocation
+			, A.TITLE as title, A.KEYWORD as keyword, A.ORDERS as orders
+			, A.GROUPS as groups, A.REGISTER as register, A.REG_DATE as regDate
+			, A.MODIFIER as modifier, A.MOD_DATE as modDate
+			, B.KEM_VAL as description, C.KEM_VAL as subtitle
+		FROM CU_SVC_LECTURE A
+				LEFT JOIN CU_SVC_LECTURE_KEM_L B
+				ON A.LECTURE_ID = A.LECTURE_ID AND A.LECTURE_ID = B.COLLTYPE_ID AND B.METADIC_ID = 55
+				LEFT JOIN CU_SVC_LECTURE_KEM C
+				ON A.LECTURE_ID = A.LECTURE_ID AND A.LECTURE_ID = B.COLLTYPE_ID AND B.METADIC_ID = 53
+		WHERE 
+			COURSE_ID = #courseId#
+		ORDER BY GROUPS ASC, ORDERS ASC
+	</select>
+	
+	<select id="selectListOfUniv" resultClass="lecture"  parameterClass="map">
+		SELECT A.LECTURE_ID as lectureId, A.COURSE_ID as courseId, A.LECTURE_IDENTIFIER as lectureIdentifier
+			, A.MASTER as master, A.MOV_LOCATION as movLocation
+			, A.TITLE as title, A.KEYWORD as keyword, A.ORDERS as orders
+			, A.GROUPS as groups, A.REGISTER as register, A.REG_DATE as regDate
+			, A.MODIFIER as modifier, A.MOD_DATE as modDate
+		FROM CU_SVC_LECTURE A
+		where lecture_id IN (select lecture_id from CU_SVC_LECTURE where course_id IN (select course_id from CU_SVC_COURSE where university_id=#universityId#))
+	</select>
+	
+	<select id="selectInfo" resultClass="lecture"  parameterClass="map">
+		SELECT A.LECTURE_ID as lectureId, A.COURSE_ID as courseId, A.LECTURE_IDENTIFIER as lectureIdentifier
+			, A.MASTER as master, A.MOV_LOCATION as movLocation
+			, A.TITLE as title, A.KEYWORD as keyword, A.ORDERS as orders
+			, A.GROUPS as groups, A.REGISTER as register, A.REG_DATE as regDate
+			, A.MODIFIER as modifier, A.MOD_DATE as modDate
+			, B.KEM_VAL as description, C.KEM_VAL as subtitle
+		FROM CU_SVC_LECTURE A
+				LEFT JOIN CU_SVC_LECTURE_KEM_L B
+				ON A.LECTURE_ID = B.LECTURE_ID AND A.LECTURE_ID = B.COLLTYPE_ID AND B.METADIC_ID = 55
+				LEFT JOIN CU_SVC_LECTURE_KEM C
+				ON A.LECTURE_ID = C.LECTURE_ID AND A.LECTURE_ID = C.COLLTYPE_ID AND C.METADIC_ID = 53
+		WHERE 
+			<isNotEqual property="lectureId" compareValue="0">
+			A.LECTURE_ID = #lectureId,javaType=Integer#
+			</isNotEqual>
+			<isEqual property="lectureId" compareValue="0">
+			A.COURSE_ID = #courseId#
+			AND A.LECTURE_IDENTIFIER = #lectureIdentifier#
+			</isEqual>
+	</select>
+	
+	<update id="updateInfo" parameterClass="lecture">
+		UPDATE CU_SVC_LECTURE SET 
+			MASTER = #master#, MOV_LOCATION = #movLocation#
+			TITLE = #title#, KEYWORD = #keyword#, ORDERS = #orders#
+			, GROUPS = #groups#
+			, MODIFIER = #modifier#, MOD_DATE = SYSDATE
+		WHERE 
+			<isNotEqual property="lectureId" compareValue="0">
+			LECTURE_ID = #lectureId,javaType=Integer#
+			</isNotEqual>
+			<isEqual property="lectureId" compareValue="0">
+			COURSE_ID = #courseId#
+			AND LECTURE_IDENTIFIER = #lectureIdentifier#
+			</isEqual>
+	</update>
+	<update id="updateLocation" parameterClass="map">
+		UPDATE CU_SVC_LECTURE SET 
+			MOV_LOCATION = #movLocation#
+		WHERE LECTURE_ID = #lectureId,javaType=Integer#
+	</update>
+	
+	<select id="selectKey" resultClass="integer">
+		SELECT SEQ_LECTURE_ID.nextVal as lectureId FROM dual
+	</select>
+	<insert id="insertInfo" parameterClass="lecture">
+		INSERT INTO CU_SVC_LECTURE 
+		(LECTURE_ID, COURSE_ID, LECTURE_IDENTIFIER
+			, MASTER, MOV_LOCATION
+			, TITLE, KEYWORD, ORDERS
+			, GROUPS, REGISTER, REG_DATE
+			, MODIFIER, MOD_DATE)
+		 values(#lectureId#, #courseId#, #lectureIdentifier#
+		 	, #master#, #movLocation#
+			, #title#, #keyword#, #orders#
+			, #groups#, #register#, SYSDATE
+			, #register#, SYSDATE)
+	</insert>
+	
+	<delete id="deleteInfo"  parameterClass="map">
+		DELETE FROM CU_SVC_LECTURE 
+		WHERE 
+			<isNotEqual property="lectureId" compareValue="0">
+			LECTURE_ID = #lectureId,javaType=Integer#
+			</isNotEqual>
+			<isEqual property="lectureId" compareValue="0">
+			COURSE_ID = #courseId#
+			AND LECTURE_IDENTIFIER = #lectureIdentifier#
+			</isEqual>
+	</delete>
+	
+	<delete id="deleteListByCourseId"  parameterClass="map">
+		DELETE FROM CU_SVC_LECTURE 
+		WHERE 
+			COURSE_ID = #courseId#
+	</delete>
+
+</sqlMap>

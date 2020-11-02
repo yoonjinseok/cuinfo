@@ -1,0 +1,54 @@
+@charset"utf-8";
+
+.header{position:relative;margin:0 0 55px 0;}
+.header h1{position:absolute;left:0px;top:30px;font-size:24px;text-decoration:none;letter-spacing:-1px;}
+body#type01 .header h1 a{color:#ffff66;}
+body#type01 .header h1 a:hover{color:#ff99ff;}
+.header h1 .b{font-size:36px;}
+.header h1 .m{font-size:30px;}
+.header h1 .s{font-size:18px;}
+.header .header_link{text-align:right;margin:5px 0 30px 0;}
+.header .header_link li{display:inline;padding:0 0 0 18px;font-size:11px;}
+
+.gnb{padding:0 0 0 10px;margin:0 0 0 250px;}
+.gnb ul{position:relative;}
+.gnb li{display:inline;padding:0 20px 0 20px;}
+
+.gnb li a{margin:0 10px;font-weight:bold;font-size:16px;}
+body#type01 .gnb li.on a{color:#ffff66;}
+
+.gnb li div{position:absolute;top:25px;display:none;padding:5px 0 0 15px;border-radius:5px;border:solid 1px #444;background:#333;}
+.gnb li.on div{display:block;}
+.gnb li #gnb_sub1{left:25px;}
+.gnb li #gnb_sub2{left:25px;}
+.gnb li #gnb_sub3{left:25px;}
+.gnb li #gnb_sub4{left:25px;}
+.gnb li #gnb_sub5{left:410px;}
+.gnb li #gnb_sub6{left:655px;}
+.gnb li #gnb_sub7{left:800px;}
+body#type01 .gnb li.on div a{color:#ffffbb;font-weight:normal;margin:0 15px 5px 0;font-size:12px;display:inline-block;}
+body#type01 .gnb li.on div a:hover{margin:0 15px 5px 0;text-decoration:underline;}
+
+
+#container{margin:0 20px 20px 0;overflow:hidden;position:relative;}
+#container .main_sitemap li{float:left;padding:5px 53px 15px 5px;}
+#container .main_sitemap li a{display:block;font-weight:bold;margin:0 0 15px 0;font-size:18px;}
+#container .main_sitemap li div a{margin:0 0 7px 0;font-weight:normal;font-size:14px;}
+
+.snb{float:left;width:200px;margin:0 -200px 0 0;}
+.snb h1{margin:0 0 15px 0;font-size:24px;color:#ffffaa;}
+.snb ul{display:none;}
+.snb ul li{margin:0 0 7px 0;font-size:14px;}
+body#type01 .snb ul li a{color:#ffffcc;}
+
+.contents{margin:0 0 0 200px;position:relative;}
+.contents .location_box{position:relative;margin:0 0 30px 0;} * html .contents .location_box{height:100px;}
+.contents .location_box p{padding:20px;margin:0 0 20px 0;background:#111;border:solid 3px #333;color:#aaa;}
+.contents .location_box h1{padding:0 0 10px 5px;border-bottom:solid 2px #aaa;font-size:16px;}
+.contents .location_box .location{position:absolute;right:5px;bottom:15px;text-align:right;}
+.contents .location_box .location li{display:inline;}
+
+.footer{clear:both;padding:20px 0 30px 0;text-align:center;border-top:solid 2px #ddd;}
+.footer p{margin:0 0 10px 0;}
+
+

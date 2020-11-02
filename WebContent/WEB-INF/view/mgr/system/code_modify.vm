@@ -1,0 +1,112 @@
+<head>
+	<title>시스템코드관리</title>
+	<script type="text/javascript" language="javascript">
+	function modify()
+	{
+		jQuery.post('code_update.json', 
+				$("#modifyForm").formSerialize(), 
+				function(data) {
+        			if(data.errors == true)
+        			{
+        				eval(data.message);
+        			}
+        			else
+        			{
+						alert("수정되었습니다.");
+						opener.goPage();
+						window.close();
+        			}
+		});
+	}
+
+	
+	function del()
+	{
+		
+		if( confirm("해당 시스템 코드를 삭제하시겠습니까? \n삭제된 데이터는 복원하실수 없습니다." ))
+		{
+    		jQuery.post('code_delete.json', 
+    				$("#modifyForm").formSerialize(), 
+    				function(data) {
+            			if(data.errors == true)
+            			{
+            				eval(data.message);
+            			}
+            			else
+            			{
+							alert("삭제되었습니다.");
+    						opener.search();
+    						window.close();
+            			}
+    		});
+		}
+	}
+	
+	</script>
+</head>
+<body>
+<div style="width:90%;padding-left:30px;padding-top:30px;">
+<form id="modifyForm" action="#" onsubmit="try{modify();}catch(e){alert(e);}return false;">
+<h2>정보 수정</h2>	
+
+<div class="list_top01">
+	<span>그룹코드일 경우 그룹코드를 입력하지 않음</span>
+</div>
+
+<input type="hidden" id="codeId" name="codeId" value="$!codeList.codeId"/>
+<table cellspacing="0" cellpadding="0" class="form_type01" summary="시스템코드 관리"><!-- list_type01 Start -->
+	<caption>시스템코드 관리</caption>
+	<colgroup>
+		<col width="15%" />
+		<col width="35%" />
+		<col width="15%" />
+		<col width="35%" />
+	</colgroup>
+	<tbody>
+		<tr>
+			<th scope="row">코드</th>
+			<td>$!codeList.codeId</td>
+			<th scope="row">그룹코드</th>
+			<td><input type="text" size="30" title="그룹코드" name="codeGroup" id="codeGroup" value="$!codeList.codeGroup"/></td>
+		</tr>
+		<tr>
+			<th scope="row">코드명</th>
+			<td colspan="3"><input type="text" maxlength="30" size="30" title="코드명" name="codeName" id="codeName" value="$!codeList.codeName"/></td>
+		</tr>
+		<tr>
+			<th scope="row">코드값</th>
+			<td colspan="3"><input type="text" maxlength="30" size="30" title="코드값" name="codeValue" id="codeValue" value="$!codeList.codeValue"/></td>
+		</tr>
+		<tr>
+			<th scope="row">설명</th>
+			<td colspan="3"><input type="text" maxlength="100" size="70" title="설명" name="codeDesc" id="codeDesc" value="$!codeList.codeDesc"/></td>
+		</tr>
+		<tr>
+			<th scope="row">순서</th>
+			<td><input type="text" maxlength="10" size="10" title="순서" name="codeOrder" id="codeOrder" maxlength="30" onkeyup="return numbersonly(this)" value="$!codeList.codeOrder" /></td>
+			
+			<th scope="row">사용여부</th>
+			<td>
+				<label for="radio-1"><input type="radio" name="useYn" id="radio-1" value="Y" #if($!codeList.useYn == 'Y')checked="checked"#end/> 사용함</label>
+				<label for="radio-2"><input type="radio" name="useYn" id="radio-2" value="N" #if($!codeList.useYn == 'N')checked="checked"#end/> 사용하지 않음</label>
+			</td>
+		</tr>
+		<tr>
+			<th scope="row">등록정보</th>
+			<td>$!codeList.codeRegister ($datetimeformatter.print($!codeList.codeRegdate, $!locale))</td>
+			<th scope="row">수정정보</th>
+			<td>#if("$!codeList.codeModifier" !="") $!codeList.codeModifier ($datetimeformatter.print($!codeList.codeModdate, $!locale)) #end</td>
+		</tr>
+	</tbody>
+</table><!-- list_type01 End -->
+
+<div class="btn_box_type03">
+	<a href="javascript:modify();"><img src="/mgr/images/btn/save.gif" alt="저장" /></a>
+	<a href="javascript:del();"><img src="/mgr/images/btn/delete.gif" alt="삭제" /></a>
+	<a href="javascript:window.close();"><img src="/mgr/images/btn/cancel.gif" alt="취소" /></a>
+</div>
+
+</form>
+</div>
+</body>
+</html>

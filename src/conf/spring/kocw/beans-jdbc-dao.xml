@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	     xmlns:aop="http://www.springframework.org/schema/aop"
+   		 xmlns:p="http://www.springframework.org/schema/p"     
+	     xmlns:tx="http://www.springframework.org/schema/tx" 
+	     xmlns:context="http://www.springframework.org/schema/context"
+	     xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+           http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd
+           http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.0.xsd 
+           http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+	
+	<description>KOCW JDBC DAO BEANS</description>
+	
+	<context:annotation-config />  
+	
+	<bean id="namedParameterJdbcTemplate" class="org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate" >
+		<constructor-arg>
+			<ref bean="dcollection"/>
+		</constructor-arg>
+	</bean>
+	
+	<bean id="kocwTransactionTemplate" class="org.springframework.transaction.support.TransactionTemplate" 
+			p:transactionManager-ref="transactionManager"/>
+	
+	<bean id="kemValidator" class="net.kocw.tools.validator.KemValidator">
+		<property name="enableGeneralValidate" value="true" />
+		<property name="enableMetaMetadataValidate" value="true" />
+		<property name="enableTechnicalValidate" value="true" />
+		<property name="enableRightsValidate" value="false" />
+		<property name="generalValidator" ref="generalValidator" />
+		<property name="metaMetadataValidator" ref="metaMetadataValidator" />
+		<property name="technicalValidator" ref="technicalValidator" />
+		<property name="rightsValidator" ref="rightsValidator" />
+	</bean>
+	
+	<bean id="generalValidator" class="net.kocw.tools.validator.GeneralValidator">
+		<property name="enableIdentifierValidate" value="true" />
+		<property name="enableTitleValidate" value="true" />
+	</bean>
+	
+	<bean id="metaMetadataValidator" class="net.kocw.tools.validator.MetaMetadataValidator">
+		<property name="enableIdentifierValidate" value="true" />
+	</bean>
+	
+	<bean id="technicalValidator" class="net.kocw.tools.validator.TechnicalValidator">
+		<property name="enableSizeValidate" value="false" />
+		<property name="enableFormatValidate" value="false" />
+		<property name="enableLocationValidate" value="true" />
+	</bean>
+	
+	<bean id="rightsValidator" class="net.kocw.tools.validator.RightsValidator">
+	</bean>
+	
+	<bean id="kemDao" class="net.kocw.core.metadata.dao.KemDaoImpl"
+		p:dataSource-ref="kocwDataSource"
+		p:oracleLobHandler-ref="oracleLobHandler"
+		p:transactionTemplate-ref="kocwTransactionTemplate"
+		p:kemValidator-ref="kemValidator"
+	/>
+	
+	<bean id="metadataDao" class="net.kocw.core.metadata.dao.MetadataDaoImpl"
+		p:dataSource-ref="kocwDataSource"
+	/>
+	
+	<bean id="identifyDao" class="net.kocw.oai.dao.IdentifyDaoImpl"
+		p:dataSource-ref="kocwDataSource"
+	/>
+	
+	<bean id="setDao" class="net.kocw.oai.dao.SetDaoImpl"
+		p:dataSource-ref="kocwDataSource"
+	/>
+	
+	<bean id="serviceOrgDao" class="net.kocw.oai.dao.ServiceOrgDaoImpl"
+		p:dataSource-ref="kocwDataSource"
+	/>
+	
+	<bean id="metadataFormatDao" class="net.kocw.oai.dao.MetadataFormatDaoImpl"
+		p:dataSource-ref="kocwDataSource"
+	/>
+	
+	<!--bean id="metadataTempDao" class="net.kocw.management.dao.MetadataTempDaoImpl"
+		p:jdbcTemplate-ref="namedParameterJdbcTemplate"
+	/-->
+	
+	<bean id="metadataTempDao" class="net.kocw.management.dao.MetadataTempDaoImpl"
+		p:dataSource-ref="kocwDataSource"
+	/>
+	
+	<bean id="institutionDao" class="net.kocw.management.dao.InstitutionDaoImpl"
+		p:dataSource-ref="dcollection"
+	/>
+	
+	<bean id="organizationDao" class="net.kocw.management.dao.OrganizationDaoImpl"
+		p:dataSource-ref="kocwDataSource"
+		p:transactionTemplate-ref="kocwTransactionTemplate"
+	/>
+	
+	<bean id="transferDao" class="net.kocw.management.dao.TransferDaoImpl"
+		p:dataSource-ref="kocwDataSource"
+	/>
+	
+	<bean id="userinfoKocwdpMapDao" class="net.kocw.management.dao.UserinfoKocwdpMapDaoImpl"
+		p:dataSource-ref="kocwDataSource"
+	/>
+	
+	<bean id="oaiRequestHistoryDao" class="net.kocw.oai.dao.OaiRequestHistoryDaoImpl"
+		p:dataSource-ref="kocwDataSource"
+	/>
+		
+	<bean id="schemaTransferDao" class="net.kocw.oai.dao.SchemaTransferDaoImpl"
+		p:dataSource-ref="kocwDataSource"
+	/>
+	
+	<bean id="transferHistoryDao" class="net.kocw.management.dao.TransferHistoryDaoImpl"
+		p:dataSource-ref="kocwDataSource"
+	/>
+	
+	<bean id="batchUploadDao" class="net.kocw.management.dao.BatchUploadDaoImpl"
+		p:dataSource-ref="kocwDataSource"
+	/>
+	
+	<bean id="managerDao" class="net.kocw.management.dao.ManagerDaoImpl"
+		p:dataSource-ref="kocwDataSource"
+		p:transactionTemplate-ref="kocwTransactionTemplate"
+	/>
+	
+	<bean id="taxonomyDao" class="net.kocw.core.taxonomy.dao.TaxonomyDaoImpl"
+		p:dataSource-ref="kocwDataSource"
+	/>
+	
+	<bean id="metadataMgtDao" class="net.kocw.management.dao.MetadataMgtDaoImpl"
+		p:dataSource-ref="kocwDataSource"
+		p:oracleLobHandler-ref="oracleLobHandler"
+		p:transactionTemplate-ref="kocwTransactionTemplate"
+	/>
+	
+	<bean id="questionDao" class="net.kocw.management.dao.QuestionDaoImpl"
+		p:dataSource-ref="kocwDataSource"
+	/>
+	
+	<bean id="noticeDao" class="net.kocw.management.dao.NoticeDaoImpl"
+		p:dataSource-ref="kocwDataSource"
+	/> 
+	 
+	<bean id="commentDao" class="net.kocw.management.dao.CommentDaoImpl"
+		p:dataSource-ref="kocwDataSource"
+	/> 
+	
+	<bean id="commonCodeDao" class="net.kocw.management.dao.CommonCodeDaoImpl"
+		p:dataSource-ref="kocwDataSource"
+		p:transactionTemplate-ref="kocwTransactionTemplate"
+	/>
+	
+	<bean id="universityDao" class="net.kocw.management.dao.UniversityDaoImpl"
+		p:dataSource-ref="kocwDataSource"
+	/>
+	
+	<bean id="deadlinkDao" class="net.kocw.management.dao.DeadlinkDaoImpl"
+		p:dataSource-ref="kocwDataSource"
+	/> 
+	 
+	<bean id="dataQualityDao" class="net.kocw.management.dao.DataQualityDaoImpl"
+		p:dataSource-ref="kocwDataSource" 
+		p:transactionTemplate-ref="kocwTransactionTemplate"
+	/>  
+	<bean id="rssFeedConfigDao" class="net.kocw.management.dao.RssFeedConfigDaoImpl"
+		p:dataSource-ref="kocwDataSource"
+	/>
+	<bean id="statisticsDao" class="net.kocw.management.dao.StatisticsDaoImpl"
+		p:dataSource-ref="kocwDataSource"
+	/>
+	
+	<bean id="rissStatisticsDao" class="net.kocw.management.dao.RissStatisticsDaoImpl"
+		p:dataSource-ref="rissDataSource"
+	/>	 
+	 
+	<bean id="openlabDao" class="net.kocw.management.dao.OpenlabDaoImpl"
+		p:dataSource-ref="kocwDataSource"
+	/>
+	
+</beans>

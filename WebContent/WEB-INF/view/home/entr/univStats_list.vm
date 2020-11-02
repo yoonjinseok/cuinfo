@@ -1,0 +1,91 @@
+
+<table cellspacing="0" cellpadding="0" class="table_type1 st01" summary="대학 정보 현황 관리"><!-- list_type01 Start -->
+	<caption>대학 정보 현황 관리</caption>
+	<colgroup>
+		<col width="20%" />
+		<col width="*%" />
+	</colgroup>
+	<thead>
+		<tr>
+			<th scope="col">대학명</th>
+			<th scope="col">현황정보</th>
+		</tr>
+	</thead>
+    <input type="hidden" id="urlpattern1" name="urlpattern1" value="$academyinfoLinkList.get(0).infoUrlpattern"/>
+    <input type="hidden" id="urlpattern2" name="urlpattern2" value="$academyinfoLinkList.get(1).infoUrlpattern"/>
+    <input type="hidden" id="urlpattern3" name="urlpattern3" value="$academyinfoLinkList.get(2).infoUrlpattern"/>
+    <input type="hidden" id="urlpattern4" name="urlpattern4" value="$academyinfoLinkList.get(3).infoUrlpattern"/>
+    <input type="hidden" id="urlpattern5" name="urlpattern5" value="$academyinfoLinkList.get(4).infoUrlpattern"/>
+    <input type="hidden" id="urlpattern6" name="urlpattern6" value="$academyinfoLinkList.get(5).infoUrlpattern"/>
+    <input type="hidden" id="urlpattern7" name="urlpattern7" value="$academyinfoLinkList.get(6).infoUrlpattern"/>
+    <input type="hidden" id="urlpattern8" name="urlpattern8" value="$academyinfoLinkList.get(7).infoUrlpattern"/>
+    <input type="hidden" id="urlpattern9" name="urlpattern9" value="$academyinfoLinkList.get(8).infoUrlpattern"/>
+    <input type="hidden" id="urlpattern10" name="urlpattern10" value="$academyinfoLinkList.get(9).infoUrlpattern"/>
+    <input type="hidden" id="urlpattern11" name="urlpattern11" value="$academyinfoLinkList.get(10).infoUrlpattern"/>
+	#set($infoName1  = $academyinfoLinkList.get(0).infoName)
+	#set($infoName2  = $academyinfoLinkList.get(1).infoName)
+	#set($infoName3  = $academyinfoLinkList.get(2).infoName)
+	#set($infoName4  = $academyinfoLinkList.get(3).infoName)
+	#set($infoName5  = $academyinfoLinkList.get(4).infoName)
+	#set($infoName6  = $academyinfoLinkList.get(5).infoName)
+	#set($infoName7  = $academyinfoLinkList.get(6).infoName)
+	#set($infoName8  = $academyinfoLinkList.get(7).infoName)
+	#set($infoName9  = $academyinfoLinkList.get(8).infoName)
+	#set($infoName10  = $academyinfoLinkList.get(9).infoName)
+	#set($infoName11  = $academyinfoLinkList.get(10).infoName)
+	
+	#set($classType = 2)
+	#foreach($univ in $univList)
+		#if($classType==1) #set($classType = 2) #else #set($classType = 1) #end
+		
+		<tbody class="logo #if($classType==2) even1 #end"><!-- 개발하실때 tbody로 루프돌리세요! -->
+			<tr>
+				<th rowspan="2">
+					
+					#if("$!univ.logo_upfile_gid" !="0")
+						<a class="btn" href="../../home/intro/overall.sub.action?gnb=12&university_id=$!univ.university_id">
+						##<img src="/home/refer/board_File_download.json?fileGid=$!univ.logo_upfile_gid&fileID=1" alt="logo" />
+						<img src="/mgr/common/file_download_id.json?upfileId=$!univ.logo_upfile_gid" alt="logo" />
+                        </a>
+					#end
+
+				</th>
+				
+				<td>
+					#if(!$!univ.academy_id)
+    					대학 정보 현황이 없습니다.
+    				#end
+    				
+    				#if($!univ.university_id !='19' && $!univ.university_id !='20')
+					<dl>
+						<dt class="f_left"><img src="/home/images/icon/important.gif" alt="주요" /></dt>
+						<dd><a class="p_r0" href="javascript:popupUrl(1, '$!univ.academy_id');">$infoName1</a></dd>
+						<dd><a href="javascript:popupUrl(2, '$!univ.academy_id');">$infoName2</a></dd>
+						<dd><a href="javascript:popupUrl(3, '$!univ.academy_id');">$infoName3</a></dd>
+						<dd><a href="javascript:popupUrl(4, '$!univ.academy_id');">$infoName4</a></dd>
+						<dd><a href="javascript:popupUrl(5, '$!univ.academy_id');">$infoName5</a></dd>
+						<dd><a href="javascript:popupUrl(6, '$!univ.academy_id');">$infoName6</a></dd>
+					</dl>
+					#elseif($!univ.university_id =='19' || $!univ.university_id =='20')
+						대학 정보 현황이 없습니다.
+					#end
+				</td>
+			</tr>
+			<tr>
+				<td class="none">
+					#if($!univ.university_id !='19' && $!univ.university_id !='20')
+					<dl>
+						<dt class="f_left"><img src="/home/images/icon/detail.gif" alt="상세" /></dt>
+						<dd><a class="p_r0" href="javascript:popupUrl(7, '$!univ.academy_id');">$infoName7</a></dd>
+						<dd><a href="javascript:popupUrl(8, '$!univ.academy_id');">$infoName8</a></dd>
+						<dd><a href="javascript:popupUrl(9, '$!univ.academy_id');">$infoName9</a></dd>
+						<dd><a href="javascript:popupUrl(10, '$!univ.academy_id');">$infoName10</a></dd>
+						<dd><a href="javascript:popupUrl(11, '$!univ.academy_id');">$infoName11</a></dd>	
+					</dl>
+					#end
+                </td>				
+    		</tr>	
+    	</tbody>
+	#end
+</table><!-- list_type01 End -->
+<div class="main_right">* 학교명의 가나다순으로 정렬합니다.</div>

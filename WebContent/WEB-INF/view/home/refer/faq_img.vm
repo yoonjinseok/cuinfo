@@ -1,0 +1,5 @@
+#foreach($next in $step.SelectSection)
+	<img src="/home/refer/faq_File_download.json?fileGid=$!next.upfileGid&fileID=$!next.upfileID" alt="FAQ 이미지" />
+#end
+
+

@@ -1,0 +1,28 @@
+
+<ul class="list_type1">
+#foreach($dp in $univDeptList)
+<li>
+	<a href="javascript:goLecture('$!dp.universityId', '$!dp.univDeptId', '$!dp.deptId','$!dp.univDeptName');">$!dp.univDeptName</a>
+    <span class="block">학교 : $!dp.universityName</span>
+	<span>분류 : $!dp.classifyName</span> 
+    <span>열람횟수 : $!dp.clicksCnt</span>
+</li>
+#end
+
+#set($cnt = $univDeptList.size() + 1)
+#if($cnt == 1)
+
+	<li>
+		<center>검색 결과가 없습니다.</center>
+	</li>
+#end
+
+</ul>
+
+<script>
+	#if($cnt != 1)
+    	#if($univDeptList)
+    	setRecordCnt($totalCnt, $currPage, $totalPage, $showCnt);
+    	#end
+	#end
+</script>

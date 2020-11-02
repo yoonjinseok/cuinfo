@@ -1,0 +1,119 @@
+<head>
+	<title>FAQ 수정</title>
+	<script type="text/javascript" language="javascript">
+	
+	function modify()
+	{
+		oEditors[0].exec("UPDATE_CONTENTS_FIELD", []);
+		
+		if($("#modifyForm").formSerialize().indexOf("\'") != -1) {
+			alert("' 는 사용할 수 없습니다.\n    \" 를 사용해주세요.");
+			return;
+		}
+			
+		jQuery.post('faq_update.json', 
+				$("#modifyForm").formSerialize(), 
+				function(data) {
+        			if(data.errors == true)
+        			{
+        				eval(data.message);
+        			}
+        			else
+        			{
+						alert("수정되었습니다.");
+						opener.search();
+						window.close();
+        			}
+		});
+	}
+	
+	function del(){
+		var cofirm = confirm("게시물을  삭제하시겠습니까?");
+    	if(cofirm){
+    		jQuery.get('faq_delete.json', 
+				$("#modifyForm").formSerialize(),
+				function(data) {
+        			if(data.errors == true)
+        			{
+        				eval(data.message);
+        			}else{						
+						opener.search();
+						window.close();
+					}
+				});
+    	}
+	}
+	
+	function setUploadImageResult(originalFilename, srcName, fileSize)
+	{
+		var sHTML = "<img src='/mgr/common/file_download.json?srcName=" + srcName + "'>"; 
+        oEditors[0].exec("PASTE_HTML", [sHTML]); 
+	}
+	</script>
+</head>
+<body>
+<div style="width:90%;padding-left:30px;padding-top:30px;">
+<form id="modifyForm" action="#" onsubmit="try{write();}catch(e){alert(e);}return false;">
+<input type="hidden" name="upfileGid" id="upfileGid" value="$!upFileGid"/>
+<input type="hidden" name="faqId" id="faqId" value="$!faq.faqId"/>
+<h2>FAQ 수정</h2>
+<table cellspacing="0" cellpadding="0" class="form_type01" summary="FAQ 수정"><!-- list_type01 Start -->
+	<caption>FAQ수정</caption>
+	<colgroup>
+		<col width="5%" />
+		<col width="35%" />
+		<col width="5%" />
+		<col width="35%" />
+	</colgroup>
+	<tbody>
+		<tr>
+			<th scope="row">제목</th>
+			<td colspan ="3"><input type="text" size="85" title="제목" name="question" id="question" value="$!faq.question" maxlength="100" /> 
+		</tr>
+		<tr>
+			<th scope="row">분류</th>
+			<td colspan ="3">
+				<select	id="sectionId" name="sectionId" title="분류" >
+					#foreach($code in $codeList )
+					<option value="$!code.codeId" #if($!code.codeId == $!faq.sectionId ) selected #end>$!code.codeName</option>
+					#end							
+				</select>
+			</td> 
+		</tr>
+		
+		<tr>
+			<th scope="row">조회수</th>	
+			<td colspan ="3">$!faq.hitsCnt</td>
+		</tr>
+		<tr>
+			<th scope="row">내용</th>
+            <td colspan ="3">
+				<textarea rows="20" cols="96" id="answer" name="answer"  title="내용"></textarea>
+				<div id="tempContent" style="display:none;">$!faq.answer</div>
+				<script type="text/javascript">
+					var oEditors=[];
+					nhn.husky.EZCreator.createInIFrame({
+					    oAppRef: oEditors,
+					    elPlaceHolder:"answer",
+					    sSkinURI: "/smarteditor/SmartEditor2Skin.html",
+					    fCreator:"createSEditor2", 
+						htParams:{fOnBeforeUnload:function(){}}, 
+						fOnAppLoad:function(){oEditors[0].exec("PASTE_HTML", [$('#tempContent').html()]); }
+					});
+				</script>
+			</td>
+		</tr>
+	</tbody>
+</table><!-- list_type01 End -->
+
+
+<div class="btn_box_type03">
+	<a href="javascript:modify();"><img src="/mgr/images/btn/save.gif" alt="저장" /></a>
+	<a href="javascript:del();"><img src="/mgr/images/btn/delete.gif" alt="삭제" /></a>
+	<a href="javascript:window.close();"><img src="/mgr/images/btn/cancel.gif" alt="취소" /></a>
+</div>
+
+</form>
+</div>
+</body>
+</html>

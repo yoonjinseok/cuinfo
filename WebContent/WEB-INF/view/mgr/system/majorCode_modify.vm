@@ -1,0 +1,114 @@
+<head>
+	<title>대표학과수정</title>
+	<script type="text/javascript" language="javascript">
+	function modify()
+	{
+		jQuery.post('majorCode_update.json', 
+				$("#modifyForm").formSerialize(), 
+				function(data) {
+        			if(data.errors == true)
+        			{
+        				eval(data.message);
+        			}
+        			else
+        			{
+						alert("수정되었습니다.");
+						opener.goPage();
+						window.close();
+        			}
+		});
+	}
+	
+	function del()
+	{
+		
+		if( confirm("해당 대표학과를 삭제하시겠습니까? \n삭제된 데이터는 복원하실수 없습니다." ))
+		{
+    		jQuery.post('majorCode_delete.json', 
+    				$("#modifyForm").formSerialize(), 
+    				function(data) {
+            			if(data.errors == true)
+            			{
+            				eval(data.message);
+            			}
+            			else
+            			{
+							alert("삭제되었습니다.");
+    						opener.search();
+    						window.close();
+            			}
+    		});
+		}
+	}
+	
+	</script>
+</head>
+<body>
+<div style="width:90%;padding-left:30px;padding-top:30px;">
+<form id="modifyForm" action="#" onsubmit="try{modify();}catch(e){alert(e);}return false;">
+<input type="hidden" id="deptId" name="deptId" value="$!reptDeptList.deptId"/>
+<h2>대표학과 수정</h2>	
+<table cellspacing="0" cellpadding="0" class="form_type01" summary="대표학과 관리"><!-- list_type01 Start -->
+	<caption>대표학과 관리</caption>
+	<colgroup>
+		<col width="15%" />
+		<col width="35%" />
+		<col width="15%" />
+		<col width="*%" />
+	</colgroup>
+	<tbody>
+		<tr>
+			<th scope="row">코드</th>
+			<td colspan="3">$!reptDeptList.deptId</td>
+		</tr>
+		<tr>
+			<th scope="row">학과명</th>
+			<td colspan="3"><input type="text" maxlength="50" size="70" title="학과명" name="deptName" id="deptName" value="$!reptDeptList.deptName"/></td>
+		</tr>
+		<tr>
+			<th scope="row">학과분야</th>
+			<td colspan="3">
+    			<select	id="classifyId" name="classifyId">
+    				#foreach($code in $reptClassifyList)
+    				<option value="$!code.classifyId">$!code.classifyName</option>
+    				#end
+    			</select>
+				<script>
+					document.forms['modifyForm'].elements['classifyId'].value = $!reptDeptList.classifyId ;
+				</script> 
+			</td>
+		</tr>
+		<tr>
+			<th scope="row">설명</th>
+			<td colspan="3"><input type="text" maxlength="200" size="70" title="설명" name="classifyDesc" id="classifyDesc" value="$!reptDeptList.classifyDesc"/></td>			
+		</tr>
+		<tr>
+			<th scope="row">순서</th>
+			<td><input type="text" size="20" maxlength="3" title="순서" name="deptOrder" id="deptOrder"  maxlength="30" onkeyup="return numbersonly(this)" value="$!reptDeptList.deptOrder"/></td>			
+			<th scope="row">사용여부</th>
+			<td>
+				<label for="radio-1"><input type="radio" name="useYn" id="radio-1" value="Y" #if($!reptDeptList.useYn == 'Y')checked="checked"#end/> 사용함</label>
+				<label for="radio-2"><input type="radio" name="useYn" id="radio-2" value="N" #if($!reptDeptList.useYn == 'N')checked="checked"#end/> 사용하지 않음</label>
+			</td>
+		</tr>
+		<tr>
+			<th scope="row">등록정보</th>
+			<td>$!reptDeptList.register ($datetimeformatter.print($!reptDeptList.regDate, $!locale))</td>
+			<th scope="row">수정정보</th>
+			<td>#if("$!reptDeptList.modifier" !="") $!reptDeptList.modifier ($datetimeformatter.print($!reptDeptList.modDate, $!locale)) #end</td>
+		</tr>
+		
+	</tbody>
+</table><!-- list_type01 End -->
+
+
+<div class="btn_box_type03">
+	<a href="javascript:modify();"><img src="/mgr/images/btn/save.gif" alt="저장" /></a>
+	<a href="javascript:del();"><img src="/mgr/images/btn/delete.gif" alt="삭제" /></a>
+	<a href="javascript:window.close();"><img src="/mgr/images/btn/cancel.gif" alt="취소" /></a>
+</div>
+
+</form>
+</div>
+</body>
+</html>

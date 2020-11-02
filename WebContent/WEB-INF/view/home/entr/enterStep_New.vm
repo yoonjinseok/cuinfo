@@ -1,0 +1,43 @@
+<head>
+	<title>입학 구분 및 절차</title>
+</head>
+<body>
+
+<p class="location">
+	<a href="/home/index.main.action">홈</a> <span>></span> <a href="/home/entr/enterStep_New.sub.action?gnb=211">입학안내</a> <span>></span> <a href="/home/entr/enterStep_New.sub.action?gnb=211">입학 구분 및 절차</a>
+</p>
+<h3><img src="/home/images/entr/title1.gif" alt="사이버대학이란?" /></h3>
+
+#*
+<div class="feature"><img src="/home/images/intro/guidenew_title1.gif" alt="신입학/편입학 안내" /></div>
+<p class="t_center"><img src="/home/images/intro/guidenew_text1.gif" alt="신입생은 대학(교) 1학년으로 입학하여 소정의 교육과정을 이수하면 학위와 총장명의 졸업증을 수여받을 수 있습니다.
+편입생은 대학교 2, 3학년으로 편입이 가능하고 소정의 교육과정을 이수하면 학위와 총장명의 졸업증을 수여받을 수 있습니다. 
+  ※ 1학년의 경우 신입생이기 때문에 편입학이 불가능합니다.    " /></p>
+
+<br/>
+<br/>
+*#
+
+<dl class="feature3">
+  <dt><img src="/home/images/entr/enterstep_title1.gif" alt="신인생/편입생 안내" /></dt>
+  	<dd>신입생은 대학 1학년으로 입학하여 소정의 교육과정을 이수하면 학위와 총장명의 졸업장을 수여 받을 수 있습니다.
+	<br/>편입생은 대학 2, 3학년으로 편입이 가능하고, 소정의 교육과정을 이수하면 학위와 총장명의 졸업장을 수여 받을 수 있습니다.<br/>
+	※ 신입생/편입생에 대한 자세한 정보는 각 대학의 홈페이지를 참조하시기 바랍니다.
+	</dd> 
+  <dt><img src="/home/images/entr/enterstep_title3.gif" alt="지원자격" /></dt>
+  <dd>
+  	- 고등학교 졸업(예정)자 및 초 중등 교육법시행령에 의하여 동등 이상의 학력이 있다고 인정된 자
+  </dd> 
+  <dt><img src="/home/images/entr/enterstep_title4.gif" alt="신•편입학 입학 절차" /></dt>
+  <dd>※ 각 학교마다 입학 절차는 다를 수 있으니 정확한 안내는 각 학교 홈페이지에서 확인 바랍니다.</dd> 
+</dl>
+
+<ul  class="m_t20">
+  <li><img src="/home/images/entr/enterstep_img1.gif" alt="모집요강확인 및 입학원서 작성" /></li>
+</ul>
+
+
+</body>
+</html>
+ 
+

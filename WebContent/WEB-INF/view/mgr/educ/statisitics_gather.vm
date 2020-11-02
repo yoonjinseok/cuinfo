@@ -1,0 +1,227 @@
+<head>
+	<title>통계문서 등록</title>
+	
+	<link href="/mgr/css/jquery.progressbar.css" rel="stylesheet" type="text/css">
+	<script language="JAVAScript" src="/mgr/js/jquery.progressbar.js"></script>
+	<script type="text/javascript" language="javascript">
+	
+
+    jQuery(document).ready(function () {		
+		showCalendar($('#deadline'));
+
+		$("#termState").change(function() {
+			if($(this).val() == "Y") {
+				$("#sttYear").attr("disabled", false);
+				$("#sttMonth").attr("disabled", false);    		
+		    } else {
+		    	$("#sttYear").val("");
+				$("#sttMonth").val("");
+		    	$("#sttYear").attr("disabled", true);
+				$("#sttMonth").attr("disabled", true);
+		    }
+		});	
+
+		$("#all").attr("class","on");
+		
+    });
+
+    function searchUnivList(gubunId, sttID)
+	{
+		
+		jQuery.post('statisitics_univList.ajax.action', 
+		{gubunID:gubunId, sttID:sttID}, 
+		function(data) {
+     				$("#list").html(data);
+     				
+			$(".tab_type2 a").removeClass();
+		
+			if(gubunId == '0')
+				$(".tab_type2 .tab1 a").addClass("on");
+			else if(gubunId == '51')
+				$(".tab_type2 .tab2 a").addClass("on");
+			else if(gubunId == '52')
+				$(".tab_type2 .tab3 a").addClass("on");						
+				
+			$("#info").html("<center class='p_t10 p_b10'><img src='/home/images/intro/no_school.gif' /></center>");
+			
+			$("#list a").each(function(){
+				$(this).click(function(){
+					$("#list a").removeClass();
+					$(this).attr("class","on");
+				});
+			});
+		});
+		
+	}
+
+    //대학교 전체 선택
+    function allChk() {
+    	$("[name=unvi]").each(function(){  
+        	if(!$(this).attr("disabled"))  
+    			$(this).attr("checked",true);
+    	});    	
+    }
+
+    //대학교 재수집 요청
+    function doReqGather() {
+        var chkCnt = 0;
+        var univIDs = "";
+        var comma = "";
+    	$("[name=unvi]").each(function(){    
+    		if($(this).attr("checked")) {
+    			chkCnt++;
+    			univIDs += comma + $(this).val();
+    			comma = ",";
+        	}
+    	})
+    	
+    	if(chkCnt <= 0) {
+    		alert("요청하려고 하는 대학교를 선택하여 주세요.");
+        } else if(confirm("선택한 대학교를 재수집 요청하시겠습니까?")){
+        	$("[name=univIDs]").val(univIDs);
+        	jQuery.post('statisitics_reqGather.json', 
+        			$("#writeForm").formSerialize(), 
+        			function(data) {
+            			if(data.errors == true)
+            			{
+            				eval(data.message);
+            			} 
+            			else 
+                		{
+                			alert("재요청 성공하였습니다."); 
+                			searchUnivList('0','$!sttID');           			
+                			opener.goReload();
+                    	}
+        		});
+        }	
+    }
+    
+    //선택된 대학교 파일 다운
+    function selUnivDown() {
+        var chkCnt = 0;
+        var univIDs = "";
+        var comma = "";
+    	$("[name=unvi]").each(function(){    
+    		if($(this).attr("checked")) {
+    			chkCnt++;
+    			univIDs += comma + $(this).val();
+    			comma = ",";
+        	}
+    	})
+    	
+    	if(chkCnt <= 0) {
+    		alert("다운하려고 하는 대학교를 선택하여 주세요.");
+        } else {
+        	$("[name=univIDs]").val(univIDs);  
+
+        	pct=0;
+		    handle=0;
+        	$("#progressbar").reportprogress(0);
+            handle=setInterval("update()",chkCnt * 10);
+	            
+        	jQuery.post('statisitics_selUnivDown.json', 
+        			$("#writeForm").formSerialize(), 
+        			function(data) {
+            				pct = 99;
+            				$("#progressbar").hide();
+            				$("#progressbar_tb").hide();
+            				document.location.href = 'statisitics_univDown.json?zipPath=' + data.zipPath + "&zipName=" + data.zipName ;
+        		});
+        }
+    }
+
+    var pct=0;
+    var handle=0;
+    function update(){        
+    		$("#progressbar").show();
+    		$("#progressbar_tb").show();
+            $("#progressbar").reportprogress(++pct);
+            if(pct==100){
+                 clearInterval(handle);
+                 $("#progressbar").hide();
+                 $("#progressbar_tb").hide();
+            }
+    }
+
+
+		
+	</script>
+</head>
+<body>
+<div style="width:90%;padding-left:30px;padding-top:30px;">
+<!-- onsubmit="try{write();}catch(e){alert(e);}return false;" -->
+<form id="writeForm" action="#" >
+<input type="hidden" name="srcFileName" id="srcFileName" value=""/>
+<input type="hidden" name="orgFileName" id="orgFileName" value=""/>
+<input type="hidden" name="fileSize" id="fileSize" value=""/>
+<input type="hidden" name="gatherState" id="gatherState" value="N"/>
+<input type="hidden" name="sttID" id="sttID" value="$!sttID"/>
+<input type="hidden" name="univIDs" id="univIDs" value=""/>
+
+
+<ul class="tab_type2">
+	<li class="tab1"><a id="all" href="javascript:searchUnivList('0','$!sttID')">전체</a> </li>
+	<li class="tab2"><a href="javascript:searchUnivList('51','$!sttID')">사이버대학(4년제)</a> </li>
+	<li class="tab3"><a href="javascript:searchUnivList('52','$!sttID')">사이버대학(2년제)</a> </li>
+</ul>
+
+<table id="progressbar_tb" style="display: none; position:absolute; left:60%; top:10%; width: 300px;">
+<tr>
+	<td>다운로드중:</td>
+	<td><div   id="progressbar" style="display: none;" > </div></td>	
+</tr>
+</table>
+
+
+<!-- 대학리스트 화면 -->
+<div id="list">#parse('mgr/educ/statisitics_univList.vm')</div>
+<!-- 대학리스트 화면 -->
+
+<div class="btn_box_type03">
+	<a href="javascript:allChk();"><img src="/mgr/images/educ/selectall.gif" alt="전체선택" height="27"/></a>
+	<a href="javascript:doReqGather();"><img src="/mgr/images/educ/re_gather_req.gif" alt="선택재수집요청" height="27"/></a>
+	<a href="javascript:selUnivDown();"><img src="/mgr/images/educ/download.gif" alt="다운로드" height="27"/></a>
+</div>
+
+</form>
+</div>
+
+<style type='text/css'>
+/**************** Tab Type2  Style ****************/
+.tab_type2{padding:0 0 20px 6px;height:27px;background:url('/home/images/bg/box1_1.gif') no-repeat left 27px;overflow:hidden;}
+.tab_type2 li{float:left;width:161px;}
+.tab_type2 li a{display:block;height:27px;text-indent:-90000px;background:url('/home/images/btn/tab1.gif') no-repeat;}
+
+.tab_type2 .tab1 a{background-position:0px bottom;}
+.tab_type2 .tab2 a{background-position:-161px bottom;}
+.tab_type2 .tab3 a{background-position:-322px bottom;}
+.tab_type2 .tab4 a{background-position:-483px bottom;}
+.tab_type2 .tab5 {width:80px;}
+.tab_type2 .tab5 a{background-position:-643px bottom;}
+.tab_type2 .tab6 a{background-position:-723px bottom;}
+.tab_type2 .tab7 a{background-position:-884px bottom;}
+.tab_type2 .tab8 a{background-position:-1045px bottom;}
+.tab_type2 .tab9 a{background-position:-1206px bottom;}
+
+.tab_type2 .tab1 .on{background-position:0px top;}
+.tab_type2 .tab2 .on{background-position:-161px top;}
+.tab_type2 .tab3 .on{background-position:-322px top;}
+.tab_type2 .tab4 .on{background-position:-483px top;}
+.tab_type2 .tab5 .on{background-position:-643px top;}
+.tab_type2 .tab6 .on{background-position:-723px top;}
+.tab_type2 .tab7 .on{background-position:-884px top;}
+.tab_type2 .tab8 .on{background-position:-1045px top;}
+.tab_type2 .tab9 .on{background-position:-1206px top;}
+
+.overall_tab_list{margin:0 0 20px 0;padding:0 0 15px 0;background:url('/home/images/bg/box1_2.gif') no-repeat left bottom;overflow:hidden;}
+* html .overall_tab_list{float:left;width:100%;}
+.overall_tab_list li{float:left;margin:0 0 0 35px;width:220px;}
+.overall_tab_list li a{display:block;padding:0 0 0 10px;line-height:25px;color:#535353;background:url('/home/images/bul/blue_off.gif') no-repeat left;}
+.overall_tab_list li span{display:block;padding:0 0 0 10px;line-height:25px;color:#999999;background:url('/home/images/bul/blue_off.gif') no-repeat left;}
+* html .overall_tab_list li{margin:0 0 0 25px;}
+.overall_tab_list li a:hover{font-weight:bold;color:#3352AC;background:url('/home/images/bul/blue_on.gif') no-repeat left;}
+.overall_tab_list li .on{font-weight:bold;color:#3352AC;background:url('/home/images/bul/blue_on.gif') no-repeat left;}
+</style>
+
+</body>
+</html>

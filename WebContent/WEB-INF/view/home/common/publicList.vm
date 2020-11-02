@@ -1,0 +1,31 @@
+#set($univPublicListCnt = $univPublicList.size())
+#if($univPublicList)
+	#if($univPublicList.size() > 0)
+		#foreach($list in $univPublicList)
+			
+			#if($velocityCount == 1 || $velocityCount % 2 == 1)
+			<ul id="public_list_$list.mod" style="display:none;">
+			#end
+			
+			<!-- logoUpfileGid -->
+			
+			<li>
+				<a href="/home/intro/overall.sub.action?gnb=12&university_id=$!list.universityId&viewTab=public"><img src="/home/refer/board_File_download.json?fileGid=$!list.publicImgUpfileId&fileID=1" alt="홍보이미지" /></a>
+				<a href="/home/intro/overall.sub.action?gnb=12&university_id=$!list.universityId">$!list.univName</a>
+			</li>
+				
+			#if($velocityCount % 2 == 0 || $univPublicListCnt == $velocityCount)
+			</ul>
+			#end
+		
+			#if($univPublicListCnt < 2)
+			#foreach($blank in [$univPublicListCnt..2])
+			<li>
+				<a href="#">결과없음</a>
+			</li>
+			#end
+			#end
+		
+		#end
+	#end
+#end

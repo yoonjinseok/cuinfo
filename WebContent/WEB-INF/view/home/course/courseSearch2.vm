@@ -1,0 +1,804 @@
+<head>
+	#if($!param.pageType == "1")
+	<title>강의명 검색</title>
+	#elseif($!param.pageType == "2")
+	<title>학과분야별 검색</title>
+	#elseif($!param.pageType == "3")
+	<title>대학원별 검색</title>
+	#end
+	<link rel="stylesheet" type="text/css" href="/home/css/course.css" />
+	<script type="text/javascript" language="javascript">
+	
+	$(document).ready(function(){
+		orderTabClick();
+		kocwApiSearch();
+		
+		/*
+		jQuery.post('deptNameView.ajax.action',
+					$("#form").formSerialize() + "&ViewType=1", 
+					function(data) {
+        				$("#deptNameView").html(data);
+		});
+		*/
+	
+		//#pg 객체 생성전에 페이지이 처리되어 문제 발생됨
+		$("#totalCnt").text($totalCnt);
+		setRecordCnt($totalCnt, $currPage, $totalPage, $showCnt);
+	});
+	
+	//검색
+	function search()
+	{		
+		goPage(1);
+	}
+	
+	//전체검색 [검색결과중 전체를 눌렀을경우]
+	function searchAll()
+	{		
+		$("#text").val("");
+		$("#deptId").val("");
+		$("#universityId").val("");
+		goPage(1);
+	}
+
+	//공개강의화면 변경
+	function viewNextPublicCourse(no){
+	
+		var pageNo = eval($("#currPageForPublic").val()) + no;
+		
+		if(pageNo < 1){
+			alert("첫페이지 입니다.");
+			pageNo = 1;
+			return;
+		}else{
+			//alert("pageNo ==> " + pageNo);
+			$("#currPageForPublic").val(pageNo);
+		}
+		
+		//alert('ajax 구현준비중');
+		//return;
+	
+		//공개강의부분 ajax 로 구현
+		jQuery.post('/home/course/publicList.ajax.action', 
+					$("#form").formSerialize(), 
+					function(data) {
+        				$("#publicList").html(data);
+		});
+		
+		
+	}
+
+
+		function overallUnivInfo(univName, univId)
+	{
+		
+	
+		$("#univName").val(univName);
+		$("#gubn1").val(univName);
+		$("#gubn2").val("");
+		
+
+		/*
+		jQuery.post('/home/intro/graduateList.ajax.action',
+					$("#form").formSerialize(), 
+					function(data) {
+						
+        				$("#graduateList").html(data);
+        				
+					});
+		*/
+		$("#currPage").val(1);
+		$("#form").attr("method","post");
+		$("#form").attr("onsubmit","");
+		$("#form").attr("action","/home/course/courseSearch2.sub2.action?gnb=4$!param.pageType");
+		$("#form").submit();
+	}
+	
+		function overallUnivInfo2(univId)
+	{
+	
+		$("#gubn2").val(univId);
+		$("#universityId").val(univId);
+		goPage(1);
+	}
+	
+		function overallUnivInfo2(univId)
+	{
+	
+		$("#gubn2").val(univId);
+		$("#universityId").val(univId);
+		goPage(1);
+	}
+	
+	function viewGubn(no)
+	{
+		$("#viewGubnTab a").removeClass("on");
+		$("#viewGubnTab .tab"+(no+1)).addClass("on");
+		$("div[id^=tab_]").hide();
+		$("#tab_"+(no+1)).show();
+	}
+
+	//페이징처리
+	function setRecordCnt(totalCnt, currPage, totalPage, showCnt)
+	{
+		//게시판 화면의 total : 17건 (1/2page) 표시용
+		/*
+		$("#tCnt").text(totalCnt);
+		$("#cPage").text(currPage);
+		$("#tPage").text(totalPage);
+		*/
+		setPaging($("#pg"), totalCnt, showCnt, currPage);
+	}	
+	
+	//상세검색 옵션
+	function detailSearch(){
+		$("#normal").hide();
+		$('#mainDiv').removeClass().addClass('detail_search');
+		$("#detail").show();
+		
+		//상세검색일 경우 
+		$("#isDetail").val("Y");
+		$("#publicList").hide();
+		$("#publicImg").hide();
+		
+		return;
+		
+		$("#totalSearch").val("2");
+		$("#text1").val($("#text").val());
+		$("#text").val("");
+		$("#checkbox3").val("3");
+		if($("#checkbox1").is(':checked'))
+			$("input[name=checkbox4]").attr("checked","checked");
+	}
+	
+	//상세보기
+	function viewDetail(courseId)
+	{
+	
+		//필요 변수 셋팅
+		$("#courseId").val(courseId);
+		
+		//onsubmit 속성을 비워주어야 submit이 된다.
+		$("#form").attr("method","post");
+		$("#form").attr("onsubmit","");
+		$("#form").attr("action","/home/course/courseSearch2View.sub2.action?gnb=4$!param.pageType");
+		$("#form").submit();
+		
+	}
+	
+	//공개강의리스트 갱신
+	function nextPublicCourseList(no){
+			
+			var id = $("dl[id^=publicCourse_]:visible").attr("id");
+			if(typeof(id) == "undefined")
+				return;
+			
+			var cutId = id.substring(0,id.lastIndexOf("_") + 1)
+			var nextId = parseInt(id.substring(id.lastIndexOf("_") + 1)) + no;
+			var maxNum = Math.ceil($("#publicListSize").val()/4);
+			
+			if(nextId > Math.ceil($("#publicListSize").val()/4))
+				nextId = 1;
+			else if(nextId < 1)
+				nextId = Math.ceil($("#publicListSize").val()/4);
+
+			$("dl[id^=publicCourse_]").hide();
+			$("#publicCourse_"+nextId).show();
+	}
+	
+	//강의검색
+	function goPage(page){
+		##강의검색 고도화. 페이지 전환방식으로 변경
+		$("#currPage").val(page);
+		$("#form").attr("method","post");
+		$("#form").attr("onsubmit","");
+		$("#form").attr("action","/home/course/courseSearch2.sub2.action?gnb=4$!param.pageType");
+		$("#form").submit();
+	}
+	
+	//공개강의, 학위논문 조회
+	function kocwApiSearch(){
+		jQuery.post('kocwApiSearch_K.ajax.action', 
+					$("#form").formSerialize(), 
+					function(data) {
+        				$("#kocwApiSearch_K").html(data);
+		});
+		
+		jQuery.post('kocwApiSearch_A.ajax.action', 
+					$("#form").formSerialize(), 
+					function(data) {
+					
+        				$("#kocwApiSearch_A").html(data);
+		});
+	}
+	
+	//리스트 크기 변경후 조회
+	function chgShowCnt(value){
+		$("#showCnt").val(value);
+		goPage(1);
+	}
+	
+	//키워드로 검색 (교수자 클릭시 선택옵션은 교수자명, 검색어는 교수자)
+	function searchKeyword(select, val){
+		$("#select").val(select);
+		$("#text").val(val);
+		goPage(1);
+	}
+	
+	//정렬순서 변경
+	function setOdbykey(){
+		$("#odbykey").val($("#odbykey1").val());
+		$("#odby").val($("#odby1").val());
+	}
+	
+	//정렬기준 변경
+	function setOdby(){
+		$("#odbykey").val($("#odbykey1").val());
+		$("#odby").val($("#odby1").val());
+	}
+	
+	function orderTabClick(){
+		var odbyKey = "";
+		$("#orderTab").find("a").each(function(index){
+			$(this).click(function(){
+				switch(index)
+				{
+					case 0:
+						odbyKey = "regdate";
+						break;
+					case 1:
+						odbyKey = "univname";
+						break;
+					case 2:
+						odbyKey = "department";
+						break;
+					case 3:
+						odbyKey = "clickscnt";
+						break;
+				}
+				
+				//$("#orderTab").find("a").removeClass();
+				//$(this).addClass("on");
+				
+				
+				if($("#odbykey").val() != odbyKey){
+					$("#odbykey").val(odbyKey);
+					
+					//정렬이 바뀔경우.
+					//regdate, clicksCnt 는 기본 desc 다른것은 asc 로변경. 2012.06.01[LJH]
+					$("#odbykey").val(odbyKey);
+					if(odbyKey == "regdate" || odbyKey == "clicksCnt")
+						$("#odby").val("desc");
+					else
+						$("#odby").val("asc");
+				} else {
+					$("#odbykey").val(odbyKey);
+					
+					if($("#odby").val() == "desc")
+						$("#odby").val("asc");
+					else
+						$("#odby").val("desc");
+				}
+				goPage(1);
+			});
+		});
+	}
+	
+	
+	// 학과분야별 검색에서 필요한 스트립트
+	
+	function showRollUp(classifyId, classifyName)
+	{
+		$("#classifyName").val(classifyName);
+		$("#univdeptName_list li").removeClass();
+		$("#univdeptName_list li").find("span").removeClass();
+		$("#classifyId").val(classifyId);
+		//$("#text").val("");
+		
+		jQuery.post('rollUpList.ajax.action', 
+					$("#form").formSerialize(), 
+					function(data) {
+						$("#"+classifyId+" div").html(data);
+						
+						$("#"+classifyId +" span").addClass("on");
+						$("#"+classifyId).addClass("on");
+		});
+	}
+	
+	function selectDept(deptName, deptId){
+		$("#deptName").val(deptName);
+		$("#deptId").val(deptId);
+		goPage(1);
+	}
+	
+	function selectUnivId(univId, univName){
+		$("#universityName").val(univName);
+		$("#universityId").val(univId);
+		goPage(1);
+	}
+
+	
+	function searchUnivList(gubunId)	{
+		$("#gubunId").val(gubunId);
+		$("#universityId").val("");
+		
+		jQuery.post('univList.ajax.action', 
+					{gubunId:gubunId}, 
+					function(data) {
+        				$("#list").html(data);
+        				
+						$(".tab_type2 a").removeClass();
+					
+						if(gubunId == '')
+							$(".tab_type2 .tab1 a").addClass("on");
+						else if(gubunId == '51')
+							$(".tab_type2 .tab2 a").addClass("on");
+						else if(gubunId == '52')
+							$(".tab_type2 .tab3 a").addClass("on");
+						else if(gubunId == '163')
+							$(".tab_type2 .tab4 a").addClass("on");
+							
+						$("#list a:not([class=noclick])").each(function(){
+							$(this).click(function(){
+								$("#list a:not([class=noclick])").removeClass();
+								$(this).attr("class","on");
+							});
+						});
+		});
+		//goPage(1);
+	}
+	
+	
+	function viewCurriculum(universityId,univdeptId){
+	
+		$("#universityId").val(universityId);
+		$("#univdeptId").val(univdeptId);
+	
+		if($("#universityId").val() == "" || $("#univdeptId").val() == ""){
+			alert("선택된 내용이 없습니다.");
+			return;
+		} 
+		$("#form").attr("method","post");
+		$("#form").attr("onsubmit","");
+		$("#form").attr("action","/home/curri/curriculum.sub.action?gnb=31");
+		$("#form").submit();
+	}
+	
+	</script>
+	
+	
+	<script type="text/javascript">
+	/*
+	//alert("kocwApiSearch_K");
+		
+	var lastScrollY = -333;
+	$(function(){
+	 	var diffY =  Math.max(document.documentElement.scrollTop, document.body.scrollTop) - 333;
+	 
+		//alert("diffY = " + diffY);
+		
+		return;
+	
+		 $(window).scroll(function(){
+		
+			  var diffTop =  Math.max(document.documentElement.scrollTop, document.body.scrollTop) - 333;
+			
+			  if (diffY != lastScrollY) {
+			  	   percent = .10 * (diffY - lastScrollY);
+				   if (percent > 0) {
+				    	percent = Math.ceil(percent);
+				   } else {
+				    	percent = Math.floor(percent);
+				   }
+				   
+				   diffTop = parseInt($("#kocwApiSearch_K").offset().top) + percent ;
+				
+				   lastScrollY = lastScrollY + percent ;
+			  }
+			
+			  $("#kocwApiSearch_K").stop();
+			  $("#kocwApiSearch_K").animate({"top": diffTop}, 500);
+		 });
+	});
+	*/
+	</script>
+	
+</head>
+	
+<body>
+
+<p class="location">
+	<a href="/home/index.main.action">홈</a> <span>></span> 
+	<a href="/home/course/courseSearch2.sub.action?gnb=41&pageType=1">강의검색</a> <span>></span> 
+	#if($!param.pageType == "1")
+	<a href="/home/course/courseSearch2.sub.action?gnb=41&pageType=1">강의명 검색</a>
+	#elseif($!param.pageType == "2")
+	<a href="/home/course/courseSearch2.sub.action?gnb=42&pageType=2">학과분야별 검색</a>
+	#elseif($!param.pageType == "3")
+	<a href="/home/course/courseSearch2.sub.action?gnb=43&pageType=3">대학원별 검색</a>
+	#end 
+</p>
+<h3>
+	##pageType 에 따라 타이틀 변경
+	#if($!param.pageType == "1")
+	<img src="/home/images/course/title1.gif" alt="강의명 검색" />
+	#elseif($!param.pageType == "2")
+	<img src="/home/images/course/title2.gif" alt="학과분야별 검색" />
+	#elseif($!param.pageType == "3")
+	<img src="/home/images3/etc/title3.gif" alt="대학원별 검색" />
+	#end
+	##<img src="/home/images/title/c_06.gif" alt="원하시는 학과분야에 마우스를 클릭해주세요." />
+	
+</h3>
+
+<div class="contentWrap">
+<div id="mainDiv" #if($!param.isDetail == "Y") class="detail_search" #else class="search_major type1" #end>
+	
+	
+	#if($!param.pageType == "2")
+		
+	##학과분야별 검색일경우
+	<ul class="tab_list3" id="univdeptName_list">
+		#foreach($list in $univdeptNameList)
+		<li id="$list.classifyId">
+            <a href="javascript:showRollUp('$list.classifyId', '$!list.classifyName');"><span> $!list.classifyName ($!list.cnt)</span></a>
+			<div class="_search_major_sub3"></div>
+		</li>	
+		#end
+	</ul>
+	
+	#elseif($!param.pageType == "3")
+	
+	<ul class="tab_type2">
+##	<li class="tab1"><a class="on" href="javascript:searchUnivList('')">전체</a> </li>
+##	<li class="tab2"><a href="javascript:searchUnivList('51')">사이버대학(4년제)</a> </li>
+##	<li class="tab3"><a href="javascript:searchUnivList('52')">사이버대학(2년제)</a> </li>
+##	<li class="tab4"><a href="javascript:searchUnivList('163')">원격대학 형태의 평생교육 시설</a> </li>
+	<li class="tab5"><a class="on" href="#">대학원</a></li>
+</ul>
+
+<!-- 대학리스트 화면 -->
+<div id="list">
+<ul class="overall_tab_list">
+	
+	#foreach($list in $univList)
+		
+		#if($list.univ_name=='고려사이버대학원')
+		<li><span>$!list.univ_name</span></li>
+		#else
+			
+			#if($list.univ_name==$gubn1)
+			<li style="font-weight: bold;"><a href="javascript:overallUnivInfo('$list.univ_name','$list.university_id')">$!list.univ_name</a></li>
+			#else
+			<li><a href="javascript:overallUnivInfo('$list.univ_name','$list.university_id')">$!list.univ_name</a></li>
+			#end
+				
+		#end
+	#end
+	
+	
+</ul>
+</div>
+<!-- 대학리스트 화면 -->
+
+<div id="graduateList">
+<div class="tabs_cont">
+	##<div class="bul02 m_b5 m_t0"><span class="">$!graduate</span></div>
+	<div class="tbl_wrap03 univ_table3 m_l0">
+		<table class="" cellspacing="0" cellpadding="0" summary="학과 내비게이션" style="width:100%;" ><!-- table_type1 st01 Start -->
+		<caption>대학원 내비게이션</caption>
+		<colgroup>
+			<col width="10%">
+			<col width="90%">
+		</colgroup>
+		<tbody>
+			<tr class="bottom">
+				<th class="tit">대학원</th>
+				<td class="t_left">
+					#if($graduateList)
+					#foreach($list in $graduateList)
+						#if($list.universityId==$gubn2)
+						<li style="font-weight: bold;">
+						<a href="javascript:overallUnivInfo2('$list.universityId');">$list.univName</a>
+						<div id="$!list.deptId" class="layST" style="display:none;"></div>
+						</li>
+						#else
+						<li>
+						<a href="javascript:overallUnivInfo2('$list.universityId');">$list.univName</a>
+						<div id="$!list.deptId" class="layST" style="display:none;"></div>
+						</li>
+						#end	
+					#end
+					#end
+				</td>
+			</tr>
+		</tbody>
+	  </table>
+	</div>
+</div>
+</div>
+
+
+	#end
+	
+	<form class="" id="form" name="form" action="#" onsubmit="try{search();}catch(e){alert(e);}return false;">
+		<input type="hidden" id="publicListSize"	name="publicListSize" 	value=""/>
+		<input type="hidden" id="totalSearch"	 	name="totalSearch" 		value="1"/>
+    	<input type="hidden" id="showCnt" 			name="showCnt" 			value="10"/>
+    	<input type="hidden" id="currPage" 			name="currPage" 		value="1"/>
+    	<input type="hidden" id="currPageForPublic" name="currPageForPublic"value="$!param.currPageForPublic"/>
+    	<input type="hidden" id="classifyId" 		name="classifyId" 		value="$!param.classifyId"/>
+    	<input type="hidden" id="classifyName" 		name="classifyName" 	value="$!param.classifyName"/>
+    	<input type="hidden" id="courseId" 			name="courseId" 		value=""/>
+    	<input type="hidden" id="courseIdentifier" 	name="courseIdentifier" value=""/>
+    	<input type="hidden" id="gubunId" 			name="gubunId" 			value="$!param.gubunId"/>
+    	<input type="hidden" id="universityId" 		name="universityId" 	value="$!param.universityId"/>
+    	<input type="hidden" id="univdeptId" 		name="univdeptId" 		value="$!param.univdeptId"/>
+    	<input type="hidden" id="universityName" 	name="universityName" 	value="$!param.universityName"/>
+    	<input type="hidden" id="odbykey" 			name="odbykey" 			value="$!param.odbykey"/>
+    	<input type="hidden" id="odby" 				name="odby" 			value="$!param.odby"/>
+    	<input type="hidden" id="terms1" 			name="terms1" 			value="AND"/>
+    	<input type="hidden" id="isDetail" 			name="isDetail" 		value="$!param.isDetail"/>
+    	<input type="hidden" id="hidetext" 			name="hidetext" 		value=""/>
+    	<input type="hidden" id="pageType" 			name="pageType" 		value="$!param.pageType"/>
+    	<input type="hidden" id="deptId" 			name="deptId" 			value="$!param.deptId"/>
+    	<input type="hidden" id="deptName" 			name="deptName"			value="$!param.deptName"/>
+    	<input type="hidden" id="univName" name="univName" value=""/>
+    	<input type="hidden" id="gubn1" name="gubn1" value="$!param.gubn1"/>
+    	<input type="hidden" id="gubn2" name="gubn2" value="$!param.gubn2"/>
+    	
+    	
+    	
+		<fieldset class="inner" id="normal" #if($!param.isDetail == "Y") style="display:none;" #end>
+			<table cellspacing="0" cellpadding="0" summary="강의명 검색" >
+				<caption>강의명 검색</caption>
+				<colgroup>
+					<col width="15%"/>
+					<col width="*"/>
+					<col width="15%"/>
+					<col width="15%"/>
+				</colgroup>
+				<tbody>
+    				<tr class="bottom">
+    					<td colspan="4" id="trLecture1" class="t_right">
+    						<select	id="select" name="select" style="width:80px;" >
+    							<option value="1" #if($!param.select == "1") selected #end>강의명</option>
+    							<option value="2" #if($!param.select == "2") selected #end>교수자명</option>
+    							<option value="3" #if($!param.select == "3") selected #end>학교명</option>
+    							<option value="4" #if($!param.select == "4") selected #end>강의설명</option>
+    							<option value="5" #if($!param.select == "5") selected #end>키워드</option>
+								<option value="6" #if($!param.select == "6") selected #end>학과명</option>
+    						</select>
+    						<input type="text" name="text" id="text" value="$!param.text" style="width:320px;" />
+							<a id="trLecture4" href="javascript:search();"><input type="image" style="width:67px;height:22px;border:0px;" src="/home/images/btn/search2.gif" alt="검색" /></a>
+							
+							##상세검색 버튼은 강의명 검색일경우만 보이도록한다.
+							#if($!param.pageType == "1")
+							<a id="trLecture2" href="javascript:detailSearch();"><img src="/home/images/btn/search3.gif" alt="상세검색" /></a>
+							#else
+							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+							#end
+                        </td>
+    				</tr>
+    				<tr id="trLecture3" class="top p_t20">
+    					<td colspan="4">
+    						<span class="bold p_r18">검색범위</span>
+    						<select	id="checkbox3" name="checkbox3" style="width:313px;color:blue;">
+    							<option value="2" #if($!param.checkbox3 == "2") selected #end>현재 개설강의(최근 1년)</option>
+    							<option value="3" #if($!param.checkbox3 == "3") selected #end>전체 강의정보</option>					
+                            </select>
+							
+    					</td>				
+    				</tr>
+				</tbody>
+			</table>
+		</fieldset>
+		
+		<!-- 상세검색 조건 -->
+		<fieldset class="inner" id="detail" #if($!param.isDetail == "N") style="display:none;" #end>
+			<table cellspacing="0" cellpadding="0" summary="강의명 검색">
+				<caption>강의명 검색</caption>
+				<colgroup>
+					<col width="15%"/>
+					<col width="*"/>
+					<col width="15%"/>
+					<col width="15%"/>
+				</colgroup>
+				<tbody>
+
+					<tr id="trDetail1">
+						<td class="p_l20 p_t20"><label for="select-1">서비스일</label></td>
+						<td class="p_t20">
+							<select	id="sdate" name="sdate" style="width:70px;">
+								#set($yCnt = $getYearList.size())
+								#foreach($list in $getYearList)
+								   <option value="$list" #if($velocityCount == ($yCnt-1)) selected #end #if($!param.sdate == $list) selected #end>$list</option>
+								#end
+							</select>
+							~
+							<select id="edate" name="edate" style="width:70px;">
+								#foreach($list in $getYearList)
+								   <option value="$list" #if($velocityCount == $yCnt) selected #end #if($!param.edate == $list) selected #end>$list</option>
+								#end
+							</select>
+						</td>
+						
+					</tr>
+					
+					<tr id="trDetail2">
+						<td class="p_l20">
+							<select id="select1" name="select1">
+								<option value="title" #if($!param.select1 == "title") selected #end>강의명</option>
+								<option value="manager" #if($!param.select1 == "manager") selected #end>교수자</option>
+								<option value="univName" #if($!param.select1 == "univName") selected #end>학교명</option>
+								<option value="description" #if($!param.select1 == "description") selected #end>강의설명</option>
+								<option value="keyword" #if($!param.select1 == "keyword") selected #end>키워드</option>
+								<option value="department" #if($!param.select1 == "department") selected #end>학과명</option>
+							</select>
+						</td>
+						<td colspan="2"><input type="text" id="text1" name="text1" size="20" title="검색어입력" value="$!param.text1"/></td>
+						<td class="p_r20">
+							<select id="terms2" name="terms2">
+								<option value="AND" #if($!param.terms2 == "AND") selected #end>AND</option>
+								<option value="OR"  #if($!param.terms2 == "OR") selected #end>OR</option>
+							</select>
+						</td>
+					</tr>
+					<tr id="trDetail3">
+						<td class="p_l20">
+							<select id="select2" name="select2">
+								<option value="title" #if($!param.select2 == "title") selected #end>강의명</option>
+								<option value="manager"  #if($!param.select2 == "manager") selected #end>교수자</option>
+								<option value="univName" #if($!param.select2 == "univName") selected #end>학교명</option>
+								<option value="description" #if($!param.select2 == "description") selected #end>강의설명</option>
+								<option value="keyword" #if($!param.select2 == "keyword") selected #end>키워드</option>
+								<option value="department" #if($!param.select2 == "department") selected #end>학과명</option>
+							</select>
+						</td>
+						<td colspan="2"><input type="text" id="text2" name="text2" size="20" title="검색어입력" value="$!param.text2"/></td>
+						<td class="p_r20">
+							<select id="terms3" name="terms3">
+								<option value="AND" #if($!param.terms3 == "AND") selected #end>AND</option>
+								<option value="OR"  #if($!param.terms3 == "OR") selected #end>OR</option>
+							</select>
+						</td>
+					</tr>
+					<tr id="trDetail4">
+						<td class="p_l20">
+							<select id="select3" name="select3">
+								<option value="title" #if($!param.select3 == "title") selected #end>강의명</option>
+								<option value="manager" #if($!param.select3 == "manager") selected #end>교수자</option>
+								<option value="univName"  #if($!param.select3 == "univName") selected #end>학교명</option>
+								<option value="description" #if($!param.select3 == "description") selected #end>강의설명</option>
+								<option value="keyword" #if($!param.select3 == "keyword") selected #end>키워드</option>
+								<option value="department" #if($!param.select3 == "department") selected #end>학과명</option>
+							</select>
+						</td>
+						<td colspan="2"><input type="text" id="text3" name="text3" size="20" title="검색어입력" value="$!param.text3"/></td>
+						<td class="p_r20">
+							#*
+							<select id="terms3" name="terms3">
+								<option value="AND">AND</option>
+								<option value="OR">OR</option>
+							</select>
+							*#
+						</td>
+					</tr>
+					<tr id="trDetail5">
+						<td class="p_l20"><label for="select-2">정렬방법</label></td>
+												<td>
+							<select	id="odbykey1" name="odbykey1" style="width:80px;" onclick="setOdbykey();">
+								<option value="regdate" #if($!param.odbykey == "regdate") selected #end>정확도</option>
+								<option value="title" #if($!param.odbykey == "title") selected #end>강의명</option>
+								<option value="univname" #if($!param.odbykey == "univname") selected #end>대학명</option>
+								<option value="manager" #if($!param.odbykey == "manager") selected #end>교수자</option>
+								<option value="regdate" #if($!param.odbykey == "regdate") selected #end>등록일</option>
+								<option value="department" #if($!param.odbykey == "department") selected #end>학과명</option>
+								<option value="clicksCnt" #if($!param.odbykey == "clicksCnt") selected #end>열람횟수</option>
+							</select>
+							~
+							<select id="odby1" name="odby1" style="width:80px;" onclick="setOdby();">
+								<option value="asc"  #if($!param.odby == "asc") selected #end>내림차순</option>
+								<option value="desc" #if($!param.odby == "desc") selected #end>오름차순</option>
+							</select>
+						</td>
+					</tr>
+					<tr class="bottom">
+    					<td colspan="4" id="trLecture1" class="t_right">
+							<a id="trLecture4" href="javascript:search();"><input type="image" style="width:67px;height:22px;border:0px;" src="/home/images/btn/search2.gif" alt="검색" /></a>
+                        </td>
+    				</tr>
+				</tbody>
+			</table>
+		</fieldset>
+	</form>
+</div>
+
+<div id="deptNameView">
+<ul class="dot_1">
+		
+	<li><span>검색결과 : </span> <a href="javascript:searchAll();"><img src="/home/images/btn/btn_sall.gif" /></a>
+	
+	#if($!param.deptName != "")
+	<img src="/home/images/layout/location_a.gif" /> <span class="A">$!param.classifyName</span>
+	<img src="/home/images/layout/location_a.gif" /> <span class="A">$!param.deptName</span>
+	#end
+	
+	#if($!param.universityName != "")
+	<img src="/home/images/layout/location_a.gif" /> <span class="A">$!param.universityName</span>
+	#end
+	
+	
+	#if($!param.text)
+		#if($!param.text != "")
+		
+			<img src="/home/images/layout/location_a.gif" />
+			#if($totalSearch ==2)
+				<span class="A">'$sdate ~ $edate', </span>
+			#end
+			
+			<span class="A">'$!param.text'</span> <span>검색범위 </span>
+		
+		#end
+		#if($!param.text == "" && $!param.sdate && $!param.edate)
+		
+			#if($totalSearch ==2)
+				<img src="/home/images/layout/location_a.gif" />
+				<span class="A">'$sdate ~ $edate' </span>
+				<span>검색범위 </span>
+			#end
+		
+		#end
+	#end
+	</li>
+</ul>	
+	
+	
+</div>
+
+	#if($!param.isDetail == "N" && $!param.pageType == '1')
+	<div class="feature02" id="publicImg"><img src="/home/images/curriculum/txt_open_lecture.gif" alt="공개강의" /></div>
+	<div class="moreST01"><a href="/home/course/publicCourse.sub.action?gnb=45"><img src="/home/images/btn/more.gif" alt="more" /></a></div><!-- 20130125 추가 -->
+	#end
+	
+<div class="search_list_area">
+	
+	<!-- 공개강의 리스트 -->
+	#if($!param.isDetail == "N")
+	<div id="publicList" class="rolling_area">#parse('home/course/publicList.vm')</div>
+	#end
+	
+	
+	<div id="listControlBar" class="top_box">
+		<span class="num">총 <b id="totalCnt"><!--롤업리스트에서 사이즈를 가져온다. --></b>개  결과</span>
+		<select	id="select-1" onchange="chgShowCnt(this.value);">
+			#foreach($list in $showCntList)			
+			<option value="$list.codeValue" #if($showCnt == $list.codeValue) selected #end>$list.codeName</option>
+			#end
+		</select>
+		<span class="f_right" id="orderTab">
+			<a #if($!param.odbykey == "regdate" || $!param.odbykey == "") class="on" #end href="#">최신순</a>  |
+			<a #if($!param.odbykey == "univname") class="on" #end href="#">학교명</a>  |
+			<a #if($!param.odbykey == "department") class="on" #end href="#">학과명</a>  |
+			<a #if($!param.odbykey == "clickscnt") class="on" #end href="#">열람횟수</a>
+		</span>
+		
+	</div>
+	
+	<div id="allList">#parse('home/course/allList2.vm')</div>
+
+	<div class="page_num">
+		<div id="pg" name="pg"></div>
+	</div>
+		
+	<!-- kocw 공개강의 -->
+	<div id="kocwApiSearch_K">#parse('home/course/kocwApiSearch_K.vm')</div>
+
+	<!-- 학위논문 -->
+	<div id="kocwApiSearch_A">#parse('home/course/kocwApiSearch_A.vm')</div>
+	
+</div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,9 @@
+<ul class="overall_tab_list m_b35">
+	
+	#foreach($list in $univList)
+		
+	<li><a href="javascript:majorInfo('$!list.univ_name','$list.university_id')">$!list.univ_name</a></li>
+	#end
+	
+	
+</ul>

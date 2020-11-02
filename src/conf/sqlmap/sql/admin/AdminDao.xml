@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="EUC-KR"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="AdminDao">
+	<typeAlias alias="admin" type="com.cyberup.model.admin.Admin"/>
+	
+	<select id="selectList" resultClass="admin"  parameterClass="map">
+		SELECT   a.*
+		FROM 
+		(
+			SELECT ROW_NUMBER () OVER (ORDER BY A.REG_DATE DESC) as recNum, COUNT (*) OVER () totalCnt,
+			A.ADMIN_ID as adminId,
+				A.ADMIN_NAME as adminName,
+				A.ADMIN_PWD as adminPwd,
+				A.AUTH_LEVEL_ID as authLevelId,
+				CODE.CODE_NAME as authLevelName,
+				A.ADMIN_COMPANY as adminCompany,
+				A.ADMIN_DEPART as adminDepart,
+				A.ADMIN_POSITION as adminPosition,
+				A.ADMIN_DUTY as adminDuty,
+				A.ADMIN_PHONE as adminPhone,
+				A.ADMIN_EMAIL as adminEmail,
+				A.ADMIN_DESC as adminDesc,
+				A.USE_YN as useYn,
+				A.REGISTER as register,
+				A.REG_DATE as regDate,
+				A.MODIFIER as modifier,
+				A.MOD_DATE as modDate,
+				A.UNIVERSITY_ID as universityId,
+				UNIV.UNIV_NAME as universityName, 
+				A.ACCEPT_IP as acceptIp
+			FROM CU_ADMIN A
+			  	LEFT JOIN CU_COM_CODE CODE
+			    	ON CODE.CODE_GROUP = 1 AND A.AUTH_LEVEL_ID = CODE.CODE_ID
+			    LEFT JOIN CU_UNIV_INFO UNIV
+			    	ON A.UNIVERSITY_ID = UNIV.UNIVERSITY_ID
+			WHERE 1=1
+				<isNotEqual property="authLevelId" prepend="AND" compareValue="0">
+			    	A.AUTH_LEVEL_ID =#authLevelId#
+			    </isNotEqual>
+			    <isNotEmpty property="adminId" prepend="AND">
+			    	A.ADMIN_ID  LIKE concat(concat('%',#adminId#),'%')
+			    </isNotEmpty> 
+			    <isNotEmpty property="adminName" prepend="AND">
+			    	A.ADMIN_NAME  LIKE concat(concat('%',#adminName#),'%')
+			    </isNotEmpty> 
+			    <isNotEmpty property="adminCompany" prepend="AND">
+			    	A.ADMIN_COMPANY  LIKE concat(concat('%',#adminCompany#),'%')
+			    </isNotEmpty>			
+		) a
+		WHERE CEIL (recNum / #showCnt,javaType=Integer#) = #currPage,javaType=Integer#
+		ORDER BY recNum ASC 
+	</select>
+	<select id="selectInfo" resultClass="admin"  parameterClass="String">
+		SELECT CU_ADMIN.ADMIN_ID as adminId, CU_ADMIN.ADMIN_NAME as adminName, CU_ADMIN.ADMIN_PWD as adminPwd
+			, CU_ADMIN.AUTH_LEVEL_ID as authLevelId, NVL(AUTHLEVEL.CODE_NAME, '') as authLevelName, CU_ADMIN.ADMIN_COMPANY as adminCompany, CU_ADMIN.ADMIN_DEPART as adminDepart
+			, CU_ADMIN.ADMIN_POSITION as adminPosition, CU_ADMIN.ADMIN_DUTY as adminDuty, CU_ADMIN.ADMIN_PHONE as adminPhone
+			, CU_ADMIN.ADMIN_EMAIL as adminEmail, CU_ADMIN.ADMIN_DESC as adminDesc, CU_ADMIN.USE_YN as useYn
+			, CU_ADMIN.REGISTER as register, NVL(REGISTERTBL.ADMIN_NAME,'') as registerName, CU_ADMIN.REG_DATE as regDate
+			, CU_ADMIN.MODIFIER as modifier, NVL(MODIFIERTBL.ADMIN_NAME, '') as modifierName, CU_ADMIN.MOD_DATE as modDate
+			, CU_ADMIN.UNIVERSITY_ID as universityId, UNIV.UNIV_NAME as universityName, CU_ADMIN.ACCEPT_IP as acceptIp
+		FROM CU_ADMIN LEFT JOIN CU_COM_CODE AUTHLEVEL
+					ON CU_ADMIN.AUTH_LEVEL_ID = AUTHLEVEL.CODE_ID
+				LEFT JOIN CU_ADMIN REGISTERTBL
+                	ON CU_ADMIN.REGISTER = REGISTERTBL.ADMIN_ID
+                LEFT JOIN CU_ADMIN MODIFIERTBL
+                	ON CU_ADMIN.MODIFIER = MODIFIERTBL.ADMIN_ID
+                LEFT JOIN CU_UNIV_INFO UNIV
+			    	ON CU_ADMIN.UNIVERSITY_ID = UNIV.UNIVERSITY_ID
+		WHERE CU_ADMIN.ADMIN_ID = #adminId,javaType=String#
+	</select>
+	
+	<update id="updateInfo" parameterClass="admin">
+		UPDATE CU_ADMIN SET 
+			ADMIN_NAME = #adminName#, ADMIN_PWD = NVL(#adminPwd#,ADMIN_PWD)
+			, ADMIN_COMPANY = #adminCompany#, ADMIN_DEPART = #adminDepart#
+			, ADMIN_POSITION = #adminPosition#, ADMIN_DUTY = #adminDuty#, ADMIN_PHONE = #adminPhone#
+			, ADMIN_EMAIL = #adminEmail#, ADMIN_DESC = #adminDesc#
+			, MODIFIER = #modifier#, MOD_DATE = SYSDATE
+			, ACCEPT_IP = #acceptIp#
+		WHERE ADMIN_ID = #adminId,javaType=String#
+	</update>
+	
+	<insert id="insertInfo" parameterClass="admin">
+		INSERT INTO CU_ADMIN 
+			(ADMIN_ID, ADMIN_NAME, ADMIN_PWD
+			, AUTH_LEVEL_ID, ADMIN_COMPANY, ADMIN_DEPART
+			, ADMIN_POSITION, ADMIN_DUTY, ADMIN_PHONE
+			, ADMIN_EMAIL, ADMIN_DESC, USE_YN
+			, REGISTER, REG_DATE
+			, UNIVERSITY_ID, ACCEPT_IP)
+		 values(#adminId#, #adminName#, #adminPwd#
+			, #authLevelId#, #adminCompany#, #adminDepart#
+			, #adminPosition#, #adminDuty#, #adminPhone#
+			, #adminEmail#, #adminDesc#, #useYn#
+			, #register#, SYSDATE
+			, #universityId#, #acceptIp#)
+	</insert>
+	
+	<delete id="deleteInfo"  parameterClass="String">
+		DELETE FROM CU_ADMIN 
+		WHERE 
+		ADMIN_ID = #adminId,javaType=String#
+	</delete>
+
+</sqlMap>

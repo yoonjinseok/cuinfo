@@ -1,0 +1,279 @@
+<head>
+	<title>사이버대학원 학과 개설현황</title>
+	<script type="text/javascript" language="javascript">
+
+	</script>
+</head>
+
+<body id="entr">
+	
+
+<p class="location">
+	<a href="/home/index2.main2.action">대학원 홈</a> <span>></span> <a href="/home/curri/major2.sub2.action?gnb=211">학과/교과과정</a> <span>></span> <a href="/home/curri/major2.sub2.action?gnb=23">사이버대학원 학과 개설현황</a>
+</p>
+<h3><img src="/home/images3/h3_grad_overview5.gif" alt="사이버대학원 학과 개설현황" /></h3>	
+
+
+
+<div class="m_l20">
+<div id="list">
+
+<table cellspacing="0" cellpadding="0" class="table_type1 st01" summary="사이버대학원 학과 개설현황"><!-- list_type01 Start -->
+	<caption>사이버대학원 학과 개설현황</caption>
+	<colgroup>
+		<col width="30%" />
+		<col width="30%" />
+		<col width="*%" />
+	</colgroup>
+	<thead>
+		<tr>
+			<th scope="col">대학원 구분</th>
+			<th scope="col">대학원</th>			
+			<th scope="col">학과/전공</th>
+		</tr>
+	</thead>
+
+	<tbody class="logo even1" >
+		<tr>
+			<th rowspan="4">
+				<a class="btn">
+				<img src="/home/images3/logo/logo1.png" alt="logo" width="230px"/>
+                </a>
+			</th>
+			
+			<td rowspan="2" style=" border-bottom: solid 1px #C7C7C7; background: white !important">
+				문화창조대학원
+			</td>
+			
+			<td style="background: white !important;">
+				<a style="color: blue;  text-decoration: underline; background: white !important" href="/home/curri/curriKH1.sub2.action?gnb=31">미디어문예창작</a>
+			</td>
+		</tr>
+		<tr>
+			<td style="background: white !important">
+				<a style="color: blue; text-decoration: underline; background: white !important" href="/home/curri/curriKH2.sub2.action?gnb=31">글로벌한국학</a>
+			</td>
+		</tr>
+		<tr>
+			<td rowspan="2" style="border-bottom: solid 1px #C7C7C7; background: white !important">
+				호텔관광대학원
+			</td>
+			
+			<td style=" color: blue; text-decoration: underline; background: white !important">
+				<a style="color: blue; text-decoration: underline; background: white !important" href="/home/curri/curriKH3.sub2.action?gnb=31">호텔외식MBA</a>
+			</td>
+		</tr>
+		<tr>
+			<td style="background: white !important">
+				<a style="color: blue; text-decoration: underline; background: white !important" href="/home/curri/curriKH4.sub2.action?gnb=31">관광레저항공MBA</a>
+			</td>
+		</tr>
+		
+		<tr>
+			<th>
+				<a class="btn">
+				<img src="/home/images3/logo/logo2.png" alt="logo" width="230px"/>
+                </a>
+			</th>
+			<td style=" border-bottom: solid 1px #C7C7C7; background: white !important">
+				융합정보대학원
+			</td>
+			
+			<td style="border-bottom: solid 1px #C7C7C7; color: blue; text-decoration: underline; background: white !important">
+				<a style="color: blue; text-decoration: underline; background: white !important" href="/home/curri/curriCUK.sub2.action?gnb=31">융합정보학</a>
+			</td>
+		</tr>
+		
+		<tr>
+			<th>
+				<a class="btn">
+				<img src="/home/images3/logo/logo3.png" alt="logo" width="230px"/>
+                </a>
+			</th>
+			<td style=" border-bottom: solid 1px #C7C7C7; background: white !important">
+				휴먼케어대학원
+			</td>
+			
+			<td style="border-bottom: solid 1px #C7C7C7; color: blue; text-decoration: underline; background: white !important">
+				<a style="color: blue; text-decoration: underline; background: white !important" href="/home/curri/curriDCU.sub2.action?gnb=31">미술상담(미술치료)학과</a>
+			</td>
+		</tr>
+		
+		<tr>
+			<th rowspan="2">
+				<a class="btn">
+				<img src="/home/images3/logo/logo4.png" alt="logo" width="230px"/>
+                </a>
+			</th>
+			<td rowspan="2" style=" border-bottom: solid 1px #C7C7C7; background: white !important">
+				휴먼서비스대학원
+			</td>
+			
+			<td style=" border-bottom: 0px; color: blue; text-decoration: underline; background: white !important">
+				<a style="color: blue; text-decoration: underline; background: white !important" href="/home/curri/curriBDU1.sub2.action?gnb=31">상담심리학과</a>
+			</td>
+		</tr>
+		<tr>
+			<td style="border-bottom: solid 1px #C7C7C7; color: blue; text-decoration: underline; background: white !important">
+				<a style="color: blue; text-decoration: underline; background: white !important" href="/home/curri/curriBDU2.sub2.action?gnb=31">사회복지상담학과</a>
+			</td>
+		</tr>
+		
+		<tr>
+			<th >
+				<a class="btn">
+				<img src="/home/images3/logo/logo5.png" alt="logo" width="230px"/>
+                </a>
+			</th>
+			<td style=" border-bottom: solid 1px #C7C7C7; background: white !important">
+				TESOL대학원
+			</td>
+			
+			<td style="border-bottom: solid 1px #C7C7C7; color: blue; text-decoration: underline; background: white !important">
+				<a style="color: blue; text-decoration: underline; background: white !important" href="/home/curri/curriTESOL.sub2.action?gnb=31">TESOL</a>
+			</td>
+		</tr>
+		
+		<tr>
+			<th rowspan="2">
+				<a class="btn">
+				<img src="/home/images3/logo/logo6.png" alt="logo" width="230px"/>
+                </a>
+			</th>
+			<td style="border-bottom: solid 1px #C7C7C7; background: white !important">
+				상담심리대학원
+			</td>
+			
+			<td style="border-bottom: solid 1px #C7C7C7; color: blue; text-decoration: underline; background: white !important">
+				<a style="color: blue; text-decoration: underline; background: white !important" href="/home/curri/curriISCU1.sub2.action?gnb=31">상담심리전공</a>
+			</td>
+		</tr>
+		<tr>
+			
+			<td style="border-bottom: solid 1px #C7C7C7; background: white !important">
+				휴먼서비스대학원
+			</td>
+			
+			<td style="border-bottom: solid 1px #C7C7C7; color: blue; text-decoration: underline; background: white !important">
+				<a style="color: blue; text-decoration: underline; background: white !important" href="/home/curri/curriISCU2.sub2.action?gnb=31">사회복지전공</a>
+			</td>
+		</tr>
+		
+		<tr>
+			<th rowspan="2">
+				<a class="btn">
+				<img src="/home/images3/logo/logo7.png" alt="logo" width="230px"/>
+                </a>
+			</th>
+			<td style="border-bottom: solid 1px #C7C7C7; background: white !important">
+				경영대학원
+			</td>
+			
+			<td style="border-bottom: solid 1px #C7C7C7; color: blue; text-decoration: underline; background: white !important">
+				<a style="color: blue; text-decoration: underline; background: white !important" href="/home/curri/curriSJCU1.sub2.action?gnb=31">MBA학과</a>
+			</td>
+		</tr>
+		<tr>
+			
+			<td style="border-bottom: solid 1px #C7C7C7; background: white !important">
+				정보보호대학원
+			</td>
+			
+			<td style="border-bottom: solid 1px #C7C7C7; color: blue; text-decoration: underline; background: white !important">
+				<a style="color: blue; text-decoration: underline; background: white !important" href="/home/curri/curriSJCU2.sub2.action?gnb=31">정보보호학과</a>
+			</td>
+		</tr>
+		
+		<tr>
+			<th>
+				<a class="btn">
+				<img src="/home/images3/logo/logo8.png" alt="logo" width="230px"/>
+                </a>
+			</th>
+			<td style="border-bottom: solid 1px #C7C7C7; background: white !important">
+				웰빙문화대학원
+			</td>
+			
+			<td style="border-bottom: solid 1px #C7C7C7; color: blue; text-decoration: underline; background: white !important">
+				<a style="color: blue; text-decoration: underline; background: white !important" href="/home/curri/curriWDU.sub2.action?gnb=31">자연건강학과</a>
+			</td>
+		</tr>
+		
+		<tr>
+			<th rowspan="10">
+				<a class="btn">
+				<img src="/home/images3/logo/logo9.png" alt="logo" width="230px"/>
+                </a>
+			</th>
+			<td rowspan="5" style="border-bottom: solid 1px #C7C7C7; background: white !important; ">
+				경영대학원
+			</td>
+			<td style="border-bottom: 0px; color: blue; text-decoration: underline; background: white !important">
+				<a style="color: blue; text-decoration: underline; background: white !important" href="/home/curri/curriHYCU1.sub2.action?gnb=31">MBA</a>
+			</td>
+		</tr>
+		<tr>
+			<td style="border-bottom: 0px; color: blue; text-decoration: underline; background: white !important">
+				<a style="color: blue; text-decoration: underline; background: white !important" href="/home/curri/curriHYCU2.sub2.action?gnb=31">그린텍MBA</a>
+			</td>
+		</tr>
+		<tr>
+			<td style="border-bottom: 0px; color: blue; text-decoration: underline; background: white !important">
+				<a style="color: blue; text-decoration: underline; background: white !important" href="/home/curri/curriHYCU3.sub2.action?gnb=31">외식프랜차이즈MBA</a>
+			</td>
+		</tr>
+		<tr>
+			<td style="border-bottom: 0px; color: blue; text-decoration: underline; background: white !important">
+				<a style="color: blue; text-decoration: underline; background: white !important" href="/home/curri/curriHYCU4.sub2.action?gnb=31">IT MBA</a>
+			</td>
+		</tr>
+		<tr>
+			<td style="border-bottom: solid 1px #C7C7C7; color: blue; text-decoration: underline; background: white !important">
+				<a style="color: blue; text-decoration: underline; background: white !important" href="/home/curri/curriHYCU5.sub2.action?gnb=31">미디어MBA</a>
+			</td>
+		</tr>
+		<tr>
+			<td style="border-bottom: solid 1px #C7C7C7; background: white !important">
+				교육정보대학원
+			</td>
+			<td style="border-bottom: solid 1px #C7C7C7; color: blue; text-decoration: underline; background: white !important">
+				<a style="color: blue; text-decoration: underline; background: white !important" href="/home/curri/curriHYCU6.sub2.action?gnb=31">교육공학</a>
+			</td>
+		</tr>
+		<tr>
+			<td style="border-bottom: solid 1px #C7C7C7; background: white !important">
+				디자인대학원
+			</td>
+			<td style="border-bottom: solid 1px #C7C7C7; color: blue; text-decoration: underline; background: white !important">
+				<a style="color: blue; text-decoration: underline; background: white !important" href="/home/curri/curriHYCU7.sub2.action?gnb=31">디자인기획</a>
+			</td>
+		</tr>
+		<tr>
+			<td style="border-bottom: solid 1px #C7C7C7; background: white !important">
+				부동산대학원
+			</td>
+			<td style="border-bottom: solid 1px #C7C7C7; color: blue; text-decoration: underline; background: white !important">
+				<a style="color: blue; text-decoration: underline; background: white !important" href="/home/curri/curriHYCU8.sub2.action?gnb=31">부동산</a>
+			</td>
+		</tr>
+		<tr>
+			<td rowspan="2" style="background: white !important">
+				휴먼서비스대학원
+			</td>
+			<td style="border-bottom: 0px; color: blue; text-decoration: underline; background: white !important">
+				<a style="color: blue; text-decoration: underline; background: white !important" href="/home/curri/curriHYCU9.sub2.action?gnb=31">아동가족</a>
+			</td>
+		</tr>
+		<tr>
+			<td style="color: blue; text-decoration: underline; background: white !important">
+				<a style="color: blue; text-decoration: underline; background: white !important" href="/home/curri/curriHYCU10.sub2.action?gnb=31">상담 및 임상심리</a>
+			</td>
+		</tr>
+		
+	</tbody>
+</table>
+
+</div>
+</div>
+</body>
+</html>

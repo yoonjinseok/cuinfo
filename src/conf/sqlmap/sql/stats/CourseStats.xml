@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="EUC-KR"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="CourseStatsDao">
+	<typeAlias alias="courseStats" type="com.cyberup.model.stats.CourseStats"/>
+	
+	<!-- 기간별 강좌 등록 통계 / 2011-10-18 -->	
+	<select id="selectPeriodList" resultClass="courseStats"  parameterClass="courseStats">
+      	
+      	WITH DT AS(
+      		SELECT 	        	  		        		
+	        	  TO_CHAR(A.REG_DATE,'YYYY/MM/DD') AS regDT,
+	              COUNT(*)  AS regCnt,
+	              SUM(CASE WHEN svc_Status = 'A' OR svc_Status = 'T' OR svc_Status = 'S' THEN 1 ELSE 0 END) AS serviceCnt,
+<!--	              SUM(CASE WHEN SVC_STATUS = 'E' THEN 1 ELSE 0 END) AS noServiceCnt-->
+	              SUM(CASE WHEN svc_Status != 'A' AND svc_Status != 'T' AND svc_Status = 'S' THEN 1 ELSE 0 END) AS noServiceCnt
+	        FROM CU_SVC_COURSE A, CU_UNIV_INFO B
+	        WHERE A.UNIVERSITY_ID = B.UNIVERSITY_ID
+                   <isNotEmpty property="searchSDT" prepend="">
+             		<isNotEmpty property="searchEDT" prepend="AND">
+              		 TO_CHAR(A.REG_DATE,'YYYYMMDD') BETWEEN #searchSDT# AND #searchEDT#
+              		</isNotEmpty>
+              	</isNotEmpty>
+              	<!-- 현재 서비스중인 강의만 검색(지난강의 포함이 아니면) -->
+                   <isNotEqual property="searchPassFlag" compareValue="Y" prepend="AND">
+                     TO_CHAR(SYSDATE,'YYYYMMDD')  BETWEEN SVC_START AND SVC_END
+                   </isNotEqual> 
+                   <!--  공개강의만 검색되도록  -->   
+                   <isEqual property="searchPublicFlag"  compareValue="Y" prepend="AND">
+                     PUBLIC_YN = 'Y'
+                   </isEqual>  
+                   <!--  맛보기 강의 만 검색되도록 -->
+                   <isEqual property="searchTasterFlag"  compareValue="Y" prepend="AND">
+                   </isEqual>
+                   <isNotEmpty property="searchValue1" prepend="">	                                  
+                  	<isEqual property="rdUniv"  compareValue="I" prepend="AND">                    		 
+			      	B.UNIVERSITY_ID = #searchValue1#
+		    		</isEqual> 	
+                   	<isEqual property="rdUniv"  compareValue="N" prepend="AND">			    	
+			        B.UNIV_NAME LIKE concat(concat('%',#searchValue1#),'%')
+		    		</isEqual> 
+		    	</isNotEmpty>
+		    	<isNotEmpty property="searchValue2" prepend="">	  		    	
+                   	<isEqual property="rdDept"  compareValue="I" prepend="AND">		    	
+			       A.DEPARTMENT_ID = #searchValue2#
+		    		</isEqual> 				    	
+	            	<isEqual property="rdDept"  compareValue="N" prepend="AND">		  	
+			       A.DEPARTMENT LIKE concat(concat('%',#searchValue2#),'%')
+		    		</isEqual> 
+		    	</isNotEmpty>
+	        GROUP BY TO_CHAR(A.REG_DATE,'YYYY/MM/DD')
+      	)
+      	SELECT * 
+      	FROM (
+	      	SELECT
+	      		ROW_NUMBER () OVER ($sortString$) AS recNum,    		
+			    DT.*,
+			    COUNT (*) OVER () totalCnt, 
+			    SUM(regCnt) OVER() as regTotalCnt,
+	            SUM(serviceCnt) OVER() as serviceTotalCnt,
+	            SUM(noServiceCnt) OVER() as noServiceTotalCnt,
+<!--	            CASE WHEN SUM(serviceCnt) OVER() >0 THEN -->
+<!--	            	ROUND(serviceCnt/SUM(serviceCnt) OVER() * 100 ,2) ELSE 0 END as serviceRate-->
+				round((servicecnt/regcnt)*100,2) AS servicerate
+			FROM DT		         
+		)
+		WHERE CEIL (recNum / #showCnt,javaType=Integer#) = #currPage,javaType=Integer#		 
+		$sortString$
+		
+	</select>	
+	
+	<!-- 학교별 강의 등록 통계 -->
+	<select id="selectUnivList" resultClass="courseStats"  parameterClass="courseStats">
+      	SELECT 	
+      		RANK() OVER(ORDER BY regCnt DESC) AS rank,	   
+		    DT.*,		    
+		    COUNT (*) OVER () totalCnt, 
+		    SUM(regCnt) OVER() as regTotalCnt,
+            SUM(serviceCnt) OVER() as serviceTotalCnt,
+            SUM(noServiceCnt) OVER() as noServiceTotalCnt,
+<!--            CASE WHEN SUM(serviceCnt) OVER() >0 THEN -->
+<!--             ROUND(serviceCnt/SUM(serviceCnt) OVER() * 100 ,2) ELSE 0 END as serviceRate-->
+			round((servicecnt/regcnt)*100,2) AS serviceRate
+		FROM (
+		        SELECT  UNIV_NAME AS univName,
+		                COUNT(*)  AS regCnt,
+		                SUM(CASE WHEN svc_Status = 'A' OR svc_Status = 'T' OR svc_Status = 'S' THEN 1 ELSE 0 END) AS serviceCnt,
+		                SUM(CASE WHEN svc_Status != 'A' AND svc_Status != 'T' AND svc_Status = 'S' THEN 1 ELSE 0 END) AS noServiceCnt
+		        FROM CU_SVC_COURSE A, CU_UNIV_INFO B
+		        WHERE A.UNIVERSITY_ID = B.UNIVERSITY_ID
+                    <isNotEmpty property="searchSDT" prepend="">
+	             		<isNotEmpty property="searchEDT" prepend="AND">
+	              		 TO_CHAR(A.REG_DATE,'YYYYMMDD') BETWEEN #searchSDT# AND #searchEDT#
+	              		</isNotEmpty>
+	              	</isNotEmpty>
+	              	<!-- 현재 서비스중인 강의만 검색(지난강의 포함이 아니면) -->
+                    <isNotEqual property="searchPassFlag" compareValue="Y" prepend="AND">	
+                     TO_CHAR(SYSDATE,'YYYYMMDD')  BETWEEN SVC_START AND SVC_END
+                    </isNotEqual> 
+                    <!--  공개강의만 검색되도록  -->   
+                    <isEqual property="searchPublicFlag"  compareValue="Y" prepend="AND">
+                     PUBLIC_YN = 'Y'
+                    </isEqual>  
+                    <!--  맛보기 강의 만 검색되도록 -->
+                    <isEqual property="searchTasterFlag"  compareValue="Y" prepend="AND">	 
+                    </isEqual>
+                    <isNotEmpty property="searchValue1" prepend="">                               
+                   		<isEqual property="rdUniv"  compareValue="I" prepend="AND">	
+				    	B.UNIVERSITY_ID = #searchValue1#
+			    		</isEqual> 	
+                    	<isEqual property="rdUniv"  compareValue="N" prepend="AND">			    	
+				    	B.UNIV_NAME LIKE concat(concat('%',#searchValue1#),'%')
+			    		</isEqual>
+			    	</isNotEmpty>
+  		        GROUP BY UNIV_NAME
+		) DT
+		$sortString$
+	</select>
+	
+	<!-- 학과분야별 강의 등록 통계 -->	
+	<select id="selectClassDeptList" resultClass="courseStats"  parameterClass="courseStats">
+		WITH DEPT AS(
+	        SELECT D.UNIVDEPT_ID, D.UNIVERSITY_ID, F.CLASSIFY_NAME
+	        FROM  CU_UNIV_DEPT D, CU_REPT_DEPT E, CU_REPT_CLASSIFICATION F
+	        WHERE D.DEPT_ID = E. DEPT_ID 
+		          AND E.CLASSIFY_ID = F.CLASSIFY_ID
+		),
+		DATA AS(
+			SELECT 
+			    RANK() OVER(ORDER BY  COUNT(*) DESC) AS rank,
+			    className,
+			    COUNT(*) AS  regCnt,
+			    SUM(serviceCnt) AS serviceCnt, 
+			    SUM(noServiceCnt) AS noServiceCnt
+			FROM (
+		       SELECT 
+		           NVL((SELECT CLASSIFY_NAME 
+		                FROM DEPT DT
+		                WHERE DT.UNIVDEPT_ID = A.DEPARTMENT_ID
+		                     AND DT.UNIVERSITY_ID = A.UNIVERSITY_ID),'기타') AS className,
+		           CASE WHEN svc_Status = 'A' OR svc_Status = 'T' OR svc_Status = 'S' THEN 1 ELSE 0 END AS serviceCnt,
+		           CASE WHEN svc_Status != 'A' AND svc_Status != 'T' AND svc_Status = 'S' THEN 1 ELSE 0 END AS noServiceCnt
+		        FROM CU_SVC_COURSE A, CU_UNIV_INFO B
+		        WHERE A.UNIVERSITY_ID = B.UNIVERSITY_ID
+	                <isNotEmpty property="searchSDT" prepend="">
+	           		<isNotEmpty property="searchEDT" prepend="AND">
+	            		 TO_CHAR(A.REG_DATE,'YYYYMMDD') BETWEEN #searchSDT# AND #searchEDT#
+	            	</isNotEmpty>
+	             	</isNotEmpty>
+	             	<!-- 현재 서비스중인 강의만 검색(지난강의 포함이 아니면) -->
+	                <isNotEqual property="searchPassFlag" compareValue="Y" prepend="AND">	
+	                  TO_CHAR(SYSDATE,'YYYYMMDD') BETWEEN SVC_START AND SVC_END
+	                </isNotEqual> 
+	                 <!--  공개강의만 검색되도록  -->            
+	                <isEqual property="searchPublicFlag"  compareValue="Y" prepend="AND">
+	                  PUBLIC_YN = 'Y'
+	                </isEqual>  
+	                <!--  맛보기 강의 만 검색되도록 --> 
+	                <isEqual property="searchTasterFlag"  compareValue="Y" prepend="AND">
+	                </isEqual>
+	                <isNotEmpty property="searchValue1" prepend=""> 
+	                	<isEqual property="rdUniv"  compareValue="I" prepend="AND">	
+				    	B.UNIVERSITY_ID = #searchValue1#
+			    		</isEqual> 	
+                    	<isEqual property="rdUniv"  compareValue="N" prepend="AND">			    	
+				    	B.UNIV_NAME LIKE concat(concat('%',#searchValue1#),'%')
+			    		</isEqual>
+			    	</isNotEmpty>
+			    	<isNotEmpty property="searchValue2" prepend="">          
+		            	<isEqual property="rdDept"  compareValue="I" prepend="AND">		    	
+					    A.DEPARTMENT_ID = #searchValue2#
+				    	</isEqual> 				    	
+			        	<isEqual property="rdDept"  compareValue="N" prepend="AND">		  	
+					    A.DEPARTMENT LIKE concat(concat('%',#searchValue2#),'%')
+				    	</isEqual>
+				    </isNotEmpty> 
+				)
+			 GROUP BY className
+			)
+		SELECT DT.*,
+			COUNT (*) OVER () totalCnt, 
+		 	SUM(regCnt) OVER() as regTotalCnt,
+            SUM(serviceCnt) OVER() as serviceTotalCnt,
+            SUM(noServiceCnt) OVER() as noServiceTotalCnt,
+<!--            CASE WHEN SUM(serviceCnt) OVER()>0 THEN -->
+<!--            	ROUND(serviceCnt/SUM(serviceCnt) OVER() * 100 ,2) ELSE 0 END as serviceRate-->
+	       	round((servicecnt/regcnt)*100,2) AS serviceRate
+		FROM DATA DT
+		$sortString$
+	</select>
+</sqlMap>

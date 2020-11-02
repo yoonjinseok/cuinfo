@@ -1,0 +1,71 @@
+<html>
+	<head>
+		<title>학교별 강의 맛보기</title>
+		<script type="text/javascript" language="javascript">
+			
+			$(document).ready(function(){
+		
+			});
+			
+			//대학 맛보기 페이지 링크 팝업
+			function selectUnivSampleLink(univSampleLink){
+				showWin(univSampleLink, 'modwin', 1024, 768);
+				return;
+			}
+			
+			function searchUnivList(gubunId){
+				$("#gubunId").val(gubunId);
+				jQuery.post('univList2.ajax.action', 
+							{gubunId:gubunId}, 
+							function(data) {
+		        				$("#list").html(data);
+								$(".tab_type2 a").removeClass();
+							
+								if(gubunId == '')
+									$(".tab_type2 .tab1 a").addClass("on");
+								else if(gubunId == '51')
+									$(".tab_type2 .tab6 a").addClass("on");
+								else if(gubunId == '52')
+									$(".tab_type2 .tab7 a").addClass("on");
+								else if(gubunId == '163')
+									$(".tab_type2 .tab4 a").addClass("on");
+									
+								$("#list a:not([class=noclick])").each(function(){
+									$(this).click(function(){
+										$(this).attr("class","on");
+									});
+								});
+				});
+			}
+			
+			
+			
+			
+			
+		</script>
+	</head>
+	<body>
+	
+	<p class="location">
+		<a href="/home/index.main.action">홈</a> <span>></span> <a href="/home/course/courseSearch.sub.action?gnb=41&pageType=1">강의검색</a> <span>></span> <a href="/home/course/sampleCourse.sub.action?gnb=44">학교별 강의 맛보기</a>
+	</p>
+	<h3><img src="/home/images/title/h3_taste_lecture.gif" alt="학교별 강의 맛보기" /></h3>
+	
+	<div class="contentWrap">
+		<!--s:컨텐츠영역-->
+			<ul class="tab_type2">
+				<li class="tab1"><a href="javascript:searchUnivList('')" class="on">전체</a> </li>
+				<li class="tab2"><a href="javascript:searchUnivList('51')">4년제</a> </li>
+				<li class="tab3"><a href="javascript:searchUnivList('52')">2년제</a> </li>
+				<li class="tab4"><a href="javascript:searchUnivList('163')">원격대학 형태의 평생교육 시설</a> </li>
+			</ul>
+			
+			<div id="list">#parse('home/course/univList2.vm')</div>
+			
+			<div id="info">
+				<img src="/home/images/curriculum/visual_taste.gif" alt="맛보기 강의를 보시려면 원하는 학교를 선택하시기 바랍니다." />
+			</div>
+		<!--e:컨텐츠영역-->
+	</div>
+	</body>
+</html>

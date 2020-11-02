@@ -1,0 +1,124 @@
+@charset"utf-8";
+
+/* layout */
+html.main {background:url('/home/images/main/bg_main.gif') repeat-x 0 80px;}
+html.main body {background:url('/home/images/new/bg_gnb_off.gif') repeat-x left 46px !important;}
+html.main #gnb {background:url('/home/images/new/bg_gnb_off.gif') repeat-x 0 1px !important;}
+html.main.on body {background:url('/home/images/new/bg_gnb.gif') repeat-x left 46px !important;}
+#main_container {width:1006px; margin:-26px auto 0;}
+html.main.on #gnb {background:url('/home/images/new/bg_gnb.gif') repeat-x 0 1px !important;}
+#main_footer {width:847px; height:45px; margin:0 auto; padding:32px 0 30px 158px; position:relative; background:url('/home/images/main/bg_main_footer.gif') no-repeat 0 0;}ㄴ
+
+/* main_top_visual */
+
+	/* rolling_visual */
+	.rolling_visual {width:100%; height:328px; position:relative;}
+	.rolling_visual .controlBtn {position:absolute; top:76px; left:71px; z-index:10; *zoom:1;}
+	.rolling_visual .controlBtn:after {content:""; display:block; clear:both;}
+	.rolling_visual .controlBtn li {float:left; width:12px; margin-right:5px;}
+	.rolling_visual .controlBtn li img {width:12px; height:12px; vertical-align:top;}
+	.rolling_visual .visual li {position:absolute; display:none;}
+	.rolling_visual .visual li#changeImg_0 {display:block;} /* 理쒖큹 濡쒕뵫 �� 泥�由ъ뒪���몄텧 */
+	.rolling_visual .visual li .btn_link {position:absolute; left:65px; top:228px;}
+	
+	/* link_menu */
+	.main_top_visual .link_menu {width:1006px; height:103px; position:relative; background:url('/home/images/main/bg_link_menu.jpg') no-repeat 0 0;}
+	.main_top_visual .link_menu a {position:absolute; top:0;}
+	.main_top_visual .link_menu .link_menu01 {left:42px;}
+	.main_top_visual .link_menu .link_menu02 {left:172px;}
+	.main_top_visual .link_menu .link_menu03 {left:302px;}
+	.main_top_visual .link_menu .link_menu04 {left:432px;}
+	.main_top_visual .link_menu .link_menu05 {left:562px;}
+	.main_top_visual .link_menu .link_menu06 {left:707px;}
+	.main_top_visual .link_menu .link_menu07 {left:837px;}
+
+/* main_bottom_area */
+.main_bottom_area {padding:25px 0 20px; *zoom:1; font-family:�뗭�,dotum;}
+.main_bottom_area:after {content:""; display:block; clear:both;}
+
+	/* news_notice */
+	.main_bottom_area .news_notice {float:left; width:362px; margin-right:33px;}
+		
+		/* news_notice_tab */
+		.news_notice_tab {width:362px; padding-top:26px; position:relative;}
+		.news_notice_tab li {display:inline;} /* IE6,7�먯꽌 怨듦컙��李⑥��섎뒗 踰꾧렇 諛⑹� */
+		.news_notice_tab li li {display:block;} /* IE6,7�먯꽌 怨듦컙��李⑥��섎뒗 踰꾧렇 諛⑹� */
+		.news_notice_tab .btn_tab {height:25px; line-height:25px; color:#999; display:block; text-align:center; font-weight:bold; font-size:0.9em; position:absolute; border:1px solid #d4d4d4; border-bottom:0 none; background:#ededed;}
+			
+			/* ��쾭���꾩튂 */
+			.news_notice_tab #tab01 .btn_tab {width:99px; left:0; top:0;}
+			.news_notice_tab #tab02 .btn_tab {width:70px; left:100px; top:0;}
+
+			/* �쒖꽦�붾맂 ��*/
+			.news_notice_tab li.on .btn_tab {color:#536b96; background:#fff;}
+
+			/* tab_content */
+			.news_notice_tab .tab_content {border-top:1px solid #d4d4d4; position:relative; font-size:0.9em; line-height:14px;}
+			.news_notice_tab .tab_content .btn_more {position:absolute; right:2px; top:-22px;}
+			.news_notice_tab .tab_content ul {padding-top:6px;}
+			.news_notice_tab .tab_content ul li {margin-top:6px; padding:0 60px 0 12px; position:relative; background:url("/home/images/main/bullet_dot.gif") no-repeat 5px 6px;}
+			.news_notice_tab .tab_content ul li a {color:#666;}
+			.news_notice_tab .tab_content ul li span {position:absolute; right:0; top:0; color:#999;}
+	
+	/* open_lecture */
+	.main_bottom_area .open_lecture {float:left; width:288px; height:110px; margin-right:30px; padding:30px 0 0 20px; border:1px solid #d4d4d4; position:relative; background:#f9f9f9;}
+	.main_bottom_area .open_lecture h2 {width:46px; height:14px; position:absolute; left:20px; top:10px;}
+	.main_bottom_area .open_lecture h2 img {vertical-align:top;}
+	.main_bottom_area .open_lecture .btn_more {position:absolute; right:17px; top:11px;}
+	.main_bottom_area .open_lecture .btn_more img {vertical-align:top;}
+	
+
+		/* area_rolling_banner */
+		.area_rolling_banner {width:271px; height:95px; position:relative;}
+		/*.area_rolling_banner .rotate-wrap {width:271px; height:95px; margin:0 auto; overflow:hidden; position:relative;}*/
+		.area_rolling_banner .rotate-wrap {width:271px; height:107px; margin:0 auto; overflow:hidden; position:relative;}
+		/*.area_rolling_banner .rotate-wrap ul li {width:271px;}*/
+		.area_rolling_banner .rotate-wrap ul li {width:271px;height:107px}
+		/*.area_rolling_banner .btn_prev {display:block; width:15px; height:15px; cursor:pointer; position:absolute; right:17px; top:70px;}*/
+		.area_rolling_banner .btn_prev {display:block; width:15px; height:15px; cursor:pointer; position:absolute; right:17px; top:75px;}
+		/*.area_rolling_banner .btn_next {display:block; width:15px; height:15px; cursor:pointer; position:absolute; right:2px; top:70px;}*/
+		.area_rolling_banner .btn_next {display:block; width:15px; height:15px; cursor:pointer; position:absolute; right:2px; top:75px;}
+		/*.area_rolling_banner dl {width:100%; *zoom:1;}*/
+		.area_rolling_banner dl {position:relative;width:100%;height:107px; *zoom:1;}
+		.area_rolling_banner dl:after {content:""; display:block; clear:both;}
+		/*.area_rolling_banner dl dt {float:left; width:123px; height:95px; margin-right:10px;}*/
+		.area_rolling_banner dl dt {float:left; width:171px; height:87px; margin-right:7px;}		
+		/*.area_rolling_banner dl dt a {display:block; width:113px; height:79px; margin:0 auto; padding:4px; border:1px solid #bfbfbf; background:#fff;}*/
+		.area_rolling_banner dl dt a {display:block; width:171px; height:87px; margin:0 auto; border:1px solid #bfbfbf; background:#fff;}
+		/*.area_rolling_banner dl dd {float:left; width:136px; height:95px; color:#999; font-size:0.9em; line-height:1.5;}*/
+		.area_rolling_banner dl dd {float:left; width:92px; height:95px; color:#999; font-size:0.9em; line-height:1.5;}		
+		/*.area_rolling_banner dl dd .title {display:block; padding:3px 0 6px; font-weight:bold; font-size:12px;}*/
+		.area_rolling_banner dl dd .title {display:block; padding:3px 0 17px; font-weight:bold; font-size:12px; color:#999999;} /*20130125 �섏젙*/
+		/*.area_rolling_banner dl dd .content {display:block; padding-top:8px;}*/
+		.area_rolling_banner dl dd .content {position:absolute;left:0;bottom:-1px;padding-top:8px;color:#0f91a4; font-size:12px; font-weight:bold;} /*20130125 �섏젙*/
+
+	/* stats */
+	.main_bottom_area .stats {float:left; width:248px; height:103px; padding:35px 0 0 20px; border:1px solid #d4d4d4; position:relative;}
+	.main_bottom_area .stats h2 {width:99px; height:14px; position:absolute; left:20px; top:10px;}
+	.main_bottom_area .stats h2 img {vertical-align:top;}
+
+		/* rolling_chart */
+		.rolling_chart {width:268px; height:103px; position:absolute; left:0; top:35px;}
+		.rolling_chart .controlBtn2 {position:absolute; top:-27px; right:19px; z-index:10; *zoom:1;}
+		.rolling_chart .controlBtn2:after {content:""; display:block; clear:both;}
+		.rolling_chart .controlBtn2 li {float:left; width:15px; height:15px; margin-right:2px;}
+		.rolling_chart .controlBtn2 li a {display:block; width:100%; height:100%; overflow:hidden; text-indent:-1000em;}
+		.rolling_chart .visual2 li {position:absolute; display:none;}
+		.rolling_chart .visual2 li.on {display:block;}
+		.rolling_chart .visual2 li#changeImg2_0 {display:block;} /* 理쒖큹 濡쒕뵫 �� 泥�由ъ뒪���몄텧 */
+
+			/* 踰꾪듉 �대�吏�*/
+			.rolling_chart .controlBtn2 #cBtn2_0 a {background:url("/home/images/main/btn_square1_off.gif") no-repeat 0 0;}
+			.rolling_chart .controlBtn2 #cBtn2_0.on a {background:url("/home/images/main/btn_square1_on.gif") no-repeat 0 0;}
+			.rolling_chart .controlBtn2 #cBtn2_1 a {background:url("/home/images/main/btn_square2_off.gif") no-repeat 0 0;}
+			.rolling_chart .controlBtn2 #cBtn2_1.on a {background:url("/home/images/main/btn_square2_on.gif") no-repeat 0 0;}
+			.rolling_chart .controlBtn2 #cBtn2_2 a {background:url("/home/images/main/btn_square3_off.gif") no-repeat 0 0;}
+			.rolling_chart .controlBtn2 #cBtn2_2.on a {background:url("/home/images/main/btn_square3_on.gif") no-repeat 0 0;}
+
+/* main_footer */
+#main_footer .footer_logo {position:absolute; left:40px; top:22px;}
+#main_footer .footer_menu1 {position:absolute; left:158px; top:8px;}
+#main_footer .footer_menu2 {position:absolute; left:207px; top:8px;}
+#main_footer .footer_menu3 {position:absolute; left:277px; top:8px;}
+#main_footer .link1 {position:absolute; left:780px; top:15px;}
+#main_footer .link2 {position:absolute; left:898px; top:15px;}

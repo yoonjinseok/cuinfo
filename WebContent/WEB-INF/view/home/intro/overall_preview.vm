@@ -1,0 +1,151 @@
+
+<head>
+	<title>대학소개</title>
+	<script type="text/javascript" language="javascript">
+	
+	$(document).ready(function(){
+		//alert("$!previewGubn");
+		$("*").click(function(){
+			return false;
+		});
+	});
+	
+	function isShowInfo()
+	{
+		//university_id가 넘어올경우 바로 대학정보를 보이도록 한다.
+		if("$!universityId" != "")
+		{
+			if("$!universityId" != "0"){
+				overallUnivInfo("","$university_id");
+			}
+		}
+	}
+	
+	function searchUnivList(gubunId)
+	{
+		
+		jQuery.post('overallUnivList.ajax.action', 
+					{gubunId:gubunId}, 
+					function(data) {
+        				$("#list").html(data);
+        				
+						$(".tab_type2 a").removeClass();
+					
+						if(gubunId == '')
+							$(".tab_type2 .tab1 a").addClass("on");
+						else if(gubunId == '51')
+							$(".tab_type2 .tab2 a").addClass("on");
+						else if(gubunId == '52')
+							$(".tab_type2 .tab3 a").addClass("on");
+		});
+		
+	}
+	
+	function overallUnivInfo(univName, univId)
+	{
+	
+		jQuery.post('overallUnivInfo.ajax.action', 
+					{university_id:univId,viewGubn:$("#viewGubn").val()}, 
+					function(data) {
+					
+        				$("#info").html(data);
+						
+						//기본으로 종합을 보이도록한다.
+						viewGubn(0);
+					
+					});
+	}
+	
+	function viewGubn(no)
+	{
+		
+		$("#viewGubnTab a").each(function(index){
+			
+			if(index == no)
+			{
+				$(this).removeClass();
+				$(this).addClass("tab" +( index + 1 ) + " on");
+				$("#tab_"+(index+1)).show();
+			}
+			else
+			{
+				$(this).removeClass();
+				$(this).addClass("tab" +( index + 1 ));
+				$("#tab_"+(index+1)).hide();
+			}
+			
+		});
+		
+	}
+	
+	
+	function moveArea(classifyId)
+	{
+		$("#deptName").val();
+		$("#classifyId").val(classifyId);
+		document.form.action="/home/intro/searchMajor.sub.action?gnb=14";
+		document.form.method = "post";
+		document.form.submit();
+		
+	}
+
+	function moveCode(classifyId, deptName)
+	{
+		$("#classifyId").val(classifyId);
+		$("#deptName").val(deptName);
+		document.form.action="/home/intro/searchMajor.sub.action?gnb=14";
+		document.form.method = "post";
+		document.form.submit();
+	}
+	
+	</script>
+</head>
+<body>
+
+	<div id="location_box"><!-- MainCopyBox  Start -->
+	<h3><img src="/home/images/intro/title2.gif" alt="학과분야별 검색" /></h3>
+		<span class="sns_box" id="sns_box">
+		<a href="#"><img src="/home/images/icon/sns_1.gif" alt="트위터" /></a>
+		<a href="#"><img src="/home/images/icon/sns_2.gif" alt="페이스북" /></a>
+		<a href="#"><img src="/home/images/icon/sns_3.gif" alt="미투데이" /></a>
+		<a href="#"><img src="/home/images/icon/sns_4.gif" alt="프린트" /></a>
+		</span>
+	<ul class="location">
+		<li><a href="#">Home</a></li>
+		<li><a href="#">사이버대학안내</a></li>
+		<li>대학소개</li>
+	</ul>
+</div><!-- MainCopyBox  End -->
+
+<form class="" id="form" name="form" action="#" onsubmit="try{search();}catch(e){alert(e);}return false;"><!-- box_type01 Start -->
+
+<input type="hidden" id="showCnt" name="showCnt" value="999"/>
+<input type="hidden" id="currPage" name="currPage" value="1"/>
+
+<input type="hidden" id="classifyId" name="classifyId" value=""/>
+<input type="hidden" id="deptName" name="deptName" value=""/>
+<input type="hidden" id="deptId" name="deptId" value=""/>
+
+<!-- viewGubn : 종합, 인사말, 비전, 홍보센, 오시는길 선택값 [기본 : 종합]  -->
+<input type="hidden" id="viewGubn" name="viewGubn" value="1"/>
+
+<ul class="tab_type2">
+	<li class="tab1"><a class="on" href="javascript:searchUnivList('')">전체</a> </li>
+	<li class="tab2"><a href="javascript:searchUnivList('51')">4년제</a> </li>
+	<li class="tab3"><a href="javascript:searchUnivList('52')">2년제</a> </li>
+</ul>
+
+<!-- 대학리스트 화면 -->
+<div id="list">#parse('home/intro/overallUnivList.vm')</div>
+<!-- 대학리스트 화면 -->
+
+<!-- 대학 정보 -->
+<div id="info">#parse('home/intro/overallUnivInfo_preview.vm')</div>
+<!-- 대학 정보 -->
+
+
+
+</form>
+</body>
+</html>
+

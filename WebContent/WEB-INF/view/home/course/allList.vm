@@ -1,0 +1,50 @@
+<ul class="list_type2">
+
+		
+	#foreach($list in $allList)
+	#set($cnt = ($currPage - 1 ) * $showCnt + $velocityCount)	
+	<li #if($velocityCount%2 == 0) class="even" #end>
+		<a class="f_12" href="javascript:viewDetail('$list.courseId');">$cnt . $list.title
+		## 공개강의의 경우 표시된다. 
+		#if($list.publicYn == 'Y' && $!list.prevuri)<span class="f_right"><img src="/home/images/btn/view1.gif"></span>#end
+		</a>
+		
+		<dl>
+    		#if($!list.universityName)	
+    			<dd>
+    				<span>대학명 : </span>&nbsp;<a href="$!list.univHomePage" target="_blank" class="btn_plus" onClick="dcsMultiTrack('DCS.dcssip','$!list.sip','DCS.dcsuri','$!list.uri','DCS.qry','$!list.qri','WT.ti','Offsite Link - $!list.sp','WT.sp','$!list.sp')"> $!list.universityName 
+    				<img src="/home/images/btn/btn_plus.gif" alt="+" /></a>
+    			</dd> 
+    		#end
+    		 
+    		##if($!list.clicksCnt)	<dd><span>열람횟수 : </span>&nbsp; $!list.clicksCnt</dd> #end
+    		
+    		#if($!list.department)	
+    			<dd>
+    				<span>학과 : </span>&nbsp;<a href="javascript:viewCurriculum('$!list.universityId','$!list.departmentId');" class="btn_plus"> $!list.department
+    				<img src="/home/images/btn/btn_plus.gif" alt="+" /></a>
+    			</dd> #end
+			#if($!list.credit)<dd><span>학점 : </span>&nbsp; $!list.credit 학점</dd> #end
+			
+    		#if($!list.termSemester)<dd><span>강의학기 : </span>&nbsp; $!list.termSemester 학기</dd> #end
+    		
+    		#if($!list.manager)
+    			#if($!list.manager.length() > 1)
+    			<dd>
+    				<span>교수자 : </span>&nbsp;<a href="javascript:searchKeyword('2', '$!list.manager');" class="btn_plus"> $!list.manager
+    				<img src="/home/images/btn/btn_plus.gif" alt="+" /></a>
+    			</dd>
+			    #end	
+    		#end
+    		
+    		#if($!list.description)	<dd class="none">$!list.description </dd>#end
+        </dl>
+	</li>
+	#end
+	
+	#if($allList.size() == 0)
+	<li style="text-align:center;">
+		검색결과가 없습니다.
+	</li>
+	#end
+</ul>

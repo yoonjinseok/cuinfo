@@ -1,0 +1,299 @@
+<?xml version="1.0" encoding="EUC-KR"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="HomeMainDao">
+	<typeAlias alias="homeMain" type="com.cyberup.model.common.HomeMain"/>
+	
+	<select id="newsList" resultClass="homeMain">
+	SELECT * FROM (
+        SELECT
+                    ROW_NUMBER() OVER(ORDER BY NEWS_REG_DATE DESC) recNum
+                    ,'1' gubn
+                    ,NEWS_ID newsId
+                    ,news_title AS fulltitle
+                    ,CASE WHEN LENGTHB(news_title) > 71 THEN  trim(SUBSTRB(news_title,1,71))||'...' ELSE news_title END newsTitle
+                    ,NEWS_REG_DATE newsRegDate
+                    ,REG_DATE regDate
+                    ,NEWS_LINK newsLink
+                    ,getSip(NEWS_LINK) AS sip
+                    ,getUri(NEWS_LINK) AS uri
+                    ,getQri(NEWS_LINK) AS qri
+                    ,getSp(NEWS_LINK) AS sp
+                    ,CASE WHEN TRUNC(SYSDATE-NEWS_REG_DATE)>1 THEN 'N' ELSE 'Y' END AS newYN
+        FROM CU_NEWSFEED
+        WHERE SHOW_YN = 'Y'
+    )
+    WHERE recNum BETWEEN 1 AND 4
+	</select>
+	
+	<select id="eventList" resultClass="homeMain">
+	SELECT * FROM (
+	    SELECT 
+	                 ROW_NUMBER() OVER(ORDER BY EVENT_SDT DESC) recNum
+	                 ,'2' gubn
+	                 ,BOARD_UNIV_ID boardID
+	                 ,UNIVERSITY_ID universityId
+					 ,TITLE AS title
+	                 ,REG_DATE regDate
+	                 ,EVENT_SDT eventSdt
+	                 ,EVENT_EDT eventEdt
+	                 ,CASE WHEN TRUNC(SYSDATE-REG_DATE)>1 THEN 'N' ELSE 'Y' END AS newYN
+	    FROM CU_BOARD_UNIV
+	    where TO_CHAR(SYSDATE, 'YYYYMMDD') &lt;EVENT_EDT
+		ORDER BY EVENT_SDT, EVENT_EDT, REG_DATE  
+	)
+	WHERE recNum BETWEEN 1 AND 5
+	</select>
+	
+	<select id="noticeList" resultClass="homeMain">
+	SELECT *
+	  FROM (SELECT ROW_NUMBER () OVER (ORDER BY REG_DATE DESC) AS recNum,
+	               '4' gubn,
+	               COUNT (*) OVER () totalCnt,
+	               BOARD_ID AS boardID,
+	               title AS fulltitle,
+	               (CASE WHEN length(title) > 27 THEN rtrim(substr(TITLE,0,27))||'...' ELSE title END) AS title,
+	               CONTENT_TYPE_ID AS typeID,
+	               CONTENT AS boardContent,
+	               ATTACH_UPFILE_GID AS upfileGid,
+	               EMAIL AS email,
+	               HITS_CNT AS hitsCount,
+	               REGISTER AS regID,
+	               (SELECT ADMIN_NAME
+	                  FROM CU_ADMIN A
+	                 WHERE A.ADMIN_ID = B.REGISTER)
+	                  AS regName,
+	               REG_DATE AS regDate,
+	               CASE WHEN TRUNC (SYSDATE - REG_DATE) > 1 THEN 'N' ELSE 'Y' END
+	                  AS newYN
+	          FROM CU_BOARD B
+	         WHERE GUBUN_ID = '154')
+	 WHERE recNum BETWEEN 1 AND 5
+	</select>
+	
+	<select id="conferenceList" resultClass="homeMain">
+	SELECT * FROM (
+		SELECT
+                       ROW_NUMBER () OVER (ORDER BY REG_DATE DESC) AS recNum, 
+                       '4' gubn,
+                       COUNT (*) OVER () totalCnt,
+                       BOARD_ID as boardID, 
+			           TITLE AS title,
+                       CONTENT_TYPE_ID as typeID,
+                       CONTENT as boardContent,
+                       ATTACH_UPFILE_GID as upfileGid,
+                       EMAIL as email,
+                       HITS_CNT as hitsCount,
+                       REGISTER AS regID,
+                       (SELECT ADMIN_NAME FROM CU_ADMIN A WHERE A.ADMIN_ID=B.REGISTER) AS regName,
+                       REG_DATE as regDate,
+                       CASE WHEN TRUNC(SYSDATE-REG_DATE)>1 THEN 'N' ELSE 'Y' END AS newYN
+                  FROM CU_BOARD B
+                  WHERE GUBUN_ID = '152'
+	)
+	WHERE recNum BETWEEN 1 AND 5
+	</select>
+	
+	<select id="univCourseList" resultClass="homeMain">
+	
+	SELECT 
+                ceil(recNum/5) mod,
+                (MOD(ABS(DBMS_RANDOM.RANDOM), FLOOR(totalCnt/ (7 - mod(totalCnt, 5)))) + 1) as rdmCnt
+                ,a.* 
+    FROM (
+      SELECT 
+            COUNT(*) OVER() totalCnt,
+            ROW_NUMBER() OVER(ORDER BY UNIV_NAME) recNum,
+            UNIVERSITY_ID universityId,
+             UNIV_NAME univName,
+             LOGO_UPFILE_GID logoUpfileGid,
+             CORE_SLOGAN coreSlogan,
+             CASE WHEN TRUNC(SYSDATE-REG_DATE)>1 THEN 'N' ELSE 'Y' END AS newYN,
+             (SELECT TITLE
+                FROM CU_SVC_COURSE
+               WHERE UNIVERSITY_ID = A.UNIVERSITY_ID
+                     AND TO_CHAR (SYSDATE, 'yyyymmdd') BETWEEN SVC_START
+                                                           AND SVC_END
+                     AND ROWNUM = 1)
+                mainTitle,
+                  (SELECT course_id
+                FROM CU_SVC_COURSE
+               WHERE UNIVERSITY_ID = A.UNIVERSITY_ID
+                     AND TO_CHAR (SYSDATE, 'yyyymmdd') BETWEEN SVC_START
+                                                           AND SVC_END
+                     AND ROWNUM = 1)
+                courseId,
+                  (SELECT course_identifier
+                FROM CU_SVC_COURSE
+               WHERE UNIVERSITY_ID = A.UNIVERSITY_ID
+                     AND TO_CHAR (SYSDATE, 'yyyymmdd') BETWEEN SVC_START
+                                                           AND SVC_END
+                     AND ROWNUM = 1)
+                courseIdentifier,
+                (SELECT reg_date
+                FROM CU_SVC_COURSE
+               WHERE UNIVERSITY_ID = A.UNIVERSITY_ID
+                     AND TO_CHAR (SYSDATE, 'yyyymmdd') BETWEEN SVC_START
+                                                           AND SVC_END
+                     AND ROWNUM = 1)
+                regDate1,
+             (SELECT TITLE
+                FROM CU_SVC_COURSE B
+               WHERE UNIVERSITY_ID = A.UNIVERSITY_ID
+                     AND TO_CHAR (SYSDATE, 'yyyymmdd') BETWEEN SVC_START
+                                                           AND SVC_END
+                     AND ROWNUM = 1)
+                subTitle,
+                (SELECT reg_date
+                FROM CU_SVC_COURSE B
+               WHERE UNIVERSITY_ID = A.UNIVERSITY_ID
+                     AND TO_CHAR (SYSDATE, 'yyyymmdd') BETWEEN SVC_START
+                                                           AND SVC_END
+                     AND ROWNUM = 1)
+                regDate2
+        FROM CU_UNIV_INFO A
+    ORDER BY UNIV_NAME
+    ) a
+	</select>
+	
+	<select id="univPublicList" resultClass="homeMain">
+		 select a.*,ceil(recNum/2) mod from
+	    (
+	    SELECT
+	          row_number() over(order by mod_date desc) recNum
+	          ,UNIVERSITY_ID universityId
+	          ,(select univ_name from cu_univ_info where university_id = a.university_id) univName
+	          ,A.VIDEO_IMG_UPFILE_GID publicImgUpfileId 
+	          ,CASE WHEN TRUNC(SYSDATE-REG_DATE)>1 THEN 'N' ELSE 'Y' END AS newYN
+	    FROM CU_UNIV_info A
+	    where 1=1
+	    AND VIDEO_IMG_UPFILE_GID != '0'
+	    ) a
+	</select>
+	
+	<select id="univCourseList_tmp" resultClass="homeMain">
+					select 
+                            course_id courseId
+                            ,course_identifier courseIdentifier
+                            ,CASE WHEN TRUNC(SYSDATE-REG_DATE)>1 THEN 'N' ELSE 'Y' END AS newYN
+                            ,title mainTitle
+                            ,reg_date regDate1
+                     from cu_svc_course
+                     where course_id in ('426','448','448','295','287','415','404','476')	
+	</select>
+	<!-- 임시로 맛보기강의 4개만 조회 -->
+	<select id="univCourseList_tmp2" resultClass="homeMain">
+					select 
+                            course_id courseId
+                            ,course_identifier courseIdentifier
+                            ,CASE WHEN TRUNC(SYSDATE-REG_DATE)>1 THEN 'N' ELSE 'Y' END AS newYN
+                            ,title mainTitle
+                            ,reg_date regDate1
+                     from cu_svc_course
+                     where course_id in ('539','413','474','475')
+	</select>
+	
+	
+	<select id="publicCoureList" resultClass="homeMain">
+	
+ 			SELECT ROW_NUMBER () OVER (ORDER BY A.MOD_DATE DESC, A.TERM_YEAR DESC, A.TERM_SEMESTER DESC) as recNum
+					, COUNT (*) OVER () totalCnt
+		            , A.COURSE_ID as courseId, A.COURSE_IDENTIFIER as courseIdentifier, A.UNIVERSITY_ID as universityId, B.UNIV_NAME as universityName
+					, A.PUBLIC_YN as publicYn
+					, CASE WHEN LENGTHB(A.TITLE) > 33 THEN  trim(SUBSTRB(A.TITLE,1,33))||'...' ELSE A.TITLE END as title
+					, A.KEYWORD as keyword
+					, A.DEPARTMENT_ID as departmentId, A.DEPARTMENT as department, A.TERM_YEAR as termYear
+					, A.TERM_SEMESTER as termSemester, A.SVC_START as svcStart, A.SVC_END as svcEnd
+					, A.SVC_STATUS as svcStatus, A.REGISTER as register, A.REG_DATE as regDate
+					, A.MODIFIER as modifier, A.MOD_DATE as modDate
+					, A.TYPE as type, A.RIGHTS as rights, A.LANGUAGE as language, A.MANAGER as manager
+					, A.GRAD_YEAR as gradYear, A.GRAD_SEMESTER as gradSemester, A.DEL_YN as delYn
+					, A.PREVTHUMBNAIL as prevthumbnail, A.PREVURI as prevuri
+					, A.IS_LOCK as isLock, A.IS_TEMP as isTemp, A.DELETOR as deletor, A.DEL_DATE as delDate
+					, d.kem_val as description
+				FROM CU_SVC_COURSE A 
+					join CU_UNIV_INFO B
+                 		  on A.UNIVERSITY_ID = B.UNIVERSITY_ID
+					LEFT JOIN CU_SVC_COURSE_KEM_L d
+		                  ON d.COURSE_ID = A.COURSE_ID AND d.COLLTYPE_ID = A.COURSE_ID AND d.METADIC_ID = '8'
+				WHERE B.USE_YN = 'Y'
+          and B.GUBUN_ID != '169'
+          and A.PUBLIC_YN = 'Y'
+					AND NVL(A.DEL_YN,' ') != 'Y' 
+					AND NVL(A.IS_TEMP,' ') != 'Y'
+					and A.PREVTHUMBNAIL is not null and A.PREVURI is not null   
+	</select>
+	
+		<select id="sampleList" resultClass="homeMain">
+	
+ 			SELECT ROW_NUMBER () OVER (ORDER BY A.MOD_DATE DESC, A.TERM_YEAR DESC, A.TERM_SEMESTER DESC) as recNum
+					, COUNT (*) OVER () totalCnt
+		            , A.COURSE_ID as courseId, A.COURSE_IDENTIFIER as courseIdentifier, A.UNIVERSITY_ID as universityId, B.UNIV_NAME as universityName
+					, A.PUBLIC_YN as publicYn
+					, CASE WHEN LENGTHB(A.TITLE) > 33 THEN  trim(SUBSTRB(A.TITLE,1,33))||'...' ELSE A.TITLE END as title
+					, A.KEYWORD as keyword
+					, A.DEPARTMENT_ID as departmentId, A.DEPARTMENT as department, A.TERM_YEAR as termYear
+					, A.TERM_SEMESTER as termSemester, A.SVC_START as svcStart, A.SVC_END as svcEnd
+					, A.SVC_STATUS as svcStatus, A.REGISTER as register, A.REG_DATE as regDate
+					, A.MODIFIER as modifier, A.MOD_DATE as modDate
+					, A.TYPE as type, A.RIGHTS as rights, A.LANGUAGE as language, A.MANAGER as manager
+					, A.GRAD_YEAR as gradYear, A.GRAD_SEMESTER as gradSemester, A.DEL_YN as delYn
+					, A.PREVTHUMBNAIL as prevthumbnail, A.PREVURI as prevuri
+					, A.IS_LOCK as isLock, A.IS_TEMP as isTemp, A.DELETOR as deletor, A.DEL_DATE as delDate
+					, d.kem_val as description
+				FROM CU_SVC_COURSE A 
+					join CU_UNIV_INFO B
+                 		  on A.UNIVERSITY_ID = B.UNIVERSITY_ID
+					LEFT JOIN CU_SVC_COURSE_KEM_L d
+		                  ON d.COURSE_ID = A.COURSE_ID AND d.COLLTYPE_ID = A.COURSE_ID AND d.METADIC_ID = '8'
+				WHERE B.USE_YN = 'Y'
+		  and B.GUBUN_ID = '169'				
+          and A.PUBLIC_YN = 'Y'
+					AND NVL(A.DEL_YN,' ') != 'Y' 
+					AND NVL(A.IS_TEMP,' ') != 'Y'
+					and A.PREVTHUMBNAIL is not null and A.PREVURI is not null   
+	</select>
+	
+	
+	<select id="getRecommendUpmenuId" parameterClass="String" resultClass="String">
+		SELECT upmenu_Id
+  		FROM cu_com_admin_recommendlink
+ 		WHERE menu_id = #menuId#
+	</select>
+	
+	<select id="getRecommendLink" parameterClass="HashMap" resultClass="homeMain">
+		SELECT menu_name AS menuName, url AS url
+		FROM cu_com_admin_recommendlink
+ 		WHERE 1 = 1
+		<isNotEmpty property="upmenuIds" prepend="AND">
+		<iterate property="upmenuIds" conjunction="," open="(" close=")" prepend="menu_id in">
+			 #upmenuIds[]#
+		</iterate>
+		</isNotEmpty>
+		<isEmpty prepend="AND" property="upmenuIds">
+			1=0
+		</isEmpty>
+	</select>
+	
+	<select id="getFacebookInfo" resultClass="HashMap">
+		select * from (
+		SELECT a.gubun_id,
+		       a.UNIVERSITY_ID AS universityId,
+		       a.univ_name univName,
+		       a.LOGO_UPFILE_GID AS logoUpfileGid,
+		       MAX (CASE WHEN b.link_gubun_id = 190 THEN link_url END) facebookUrl,
+		       MAX (CASE WHEN b.link_gubun_id = 191 THEN link_url END) facebookRssUrl
+		  FROM cu_univ_info a, cu_univ_link b
+		 WHERE     a.UNIVERSITY_ID = b.UNIVERSITY_ID
+		       AND a.GUBUN_ID IN (51, 52, 163)
+		GROUP BY a.UNIVERSITY_ID,
+		         a.LOGO_UPFILE_GID,
+		         a.univ_name,
+		         a.gubun_id
+		) 
+		where facebookurl is not null
+		order by UNIVNAME	
+	</select>
+	
+	
+</sqlMap>

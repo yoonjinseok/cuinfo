@@ -1,0 +1,48 @@
+<html>
+<head>
+	<title>세부권한할당</title>
+<script type="text/javascript" language="javascript">
+
+
+	function search() {
+		jQuery.post('admin_auth_list.ajax.action',
+			$("#searchForm").formSerialize(),
+			function(data){
+				$("#auth_list").html(data);
+		});
+	}
+	
+	function authAssign(val) {
+	
+		$("#opt").val(val);
+		
+		jQuery.post('admin_auth_assign.json',
+			$("#authForm").formSerialize(),
+				function(data) {
+					if(data.errors == true) {
+						eval(data.message);
+					} else {
+						alert("요청이 처리되었습니다.");
+						search();
+					}
+		});
+	}
+	
+	$(document).ready(function() {
+		search();
+	});
+	
+</script>
+</head>
+<body>
+	<div id="location_box">
+		<h3>세부권한할당</h3>
+		<ul class="location">	
+	</div>
+	<form class="search_box" id="searchForm" name="searchForm" action="#" onsubmit="try{search();}catch(e){alert(e);}return false;">
+	<input type="hidden" id="adminId" name="adminId" value="$!adminId"/>
+	<input type="hidden" id="authLevelId" name="authLevelId" value="$!authLevelId"/>
+	</form>
+	<div id="auth_list">#parse('/mgr/system/admin_auth_list.vm')</div>
+</body>
+</html>

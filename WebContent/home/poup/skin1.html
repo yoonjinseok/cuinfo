@@ -1,0 +1,47 @@
+
+<link href="/home/poup/css/popup.css" type="text/css" rel="stylesheet" />
+<script type="text/javascript" language="javascript" src="/home/poup/js/layout.js"></script>
+
+<!--  Skin2.html START-->
+<div id="Fwrap">
+	<div class="Ftop">
+		<div class="FtopL">
+			<dl>
+				<dt class="Ftitle"> @title@ </dt>
+				<dd class="Fimages">
+					<a href="javascript:closePoup('@poupNum@')"><img src="/home/poup/images/top_images.gif"/></a>
+				</dd>
+			</dl>
+			<div class="FtopR"></div>
+		</div>
+	</div>  
+	<div class="Fmid">
+		<div class="FmidL">
+			<div class="FmidR">
+				<div class="FconS">
+					<!-- 내용-->
+					<dl>
+						<dd>@TEXT@</dd>
+					</dl>
+					<dl>
+	                 	<dd class="Pp_40">@ATTACHMENT@</dd>
+	               	</dl>
+	               
+					<!-- 내용-->
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="Fbot1">
+		<div class="FbotL">
+			<div class="FbotR"></div>
+		</div>
+	</div>
+	<ul class="Fclose1">
+		<li>
+			<input type="checkbox" id="chkView@poupNum@"  name="chkView@poupNum@" onclick="javascript:closeEndPoup('@poupNum@');" />
+			<label for="chkView@poupNum@"> @CHKCLOSETEXT@ </label>
+		</li>
+	</ul>
+</div>
+<!--  Skin2.html END-->

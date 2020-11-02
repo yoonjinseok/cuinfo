@@ -1,0 +1,251 @@
+<?xml version="1.0" encoding="EUC-KR"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="UnivDeptDao">
+	<typeAlias alias="univDept" type="com.cyberup.model.univ.UnivDept"/>
+		
+	<select id="selectList" resultClass="univDept"  parameterClass="map">
+	WITH data1 AS (
+	    SELECT university_id, univdept_id, sum(clicks_cnt) cnt FROM CU_LOG_UNIV_CLICKS
+	    WHERE univdept_id IS NOT NULL
+	    GROUP BY university_id, univdept_id
+	)
+		SELECT   a.*
+		FROM 
+		(
+			select  COUNT (*) OVER () totalCnt,aa.* from (
+		  SELECT 1 as recNum, 
+		    A.UNIVDEPT_ID as univDeptId,
+		    A.UNIVDEPT_NAME as univDeptName,
+		    A.UNIVERSITY_ID as universityId,
+		    B.UNIV_NAME as universityName,
+		    A.DEPT_ID as deptId,
+		    C.DEPT_NAME as deptName,
+		    D.CLASSIFY_ID as classifyId,
+		    D.CLASSIFY_NAME as classifyName,
+		    A.UNIVDEPT_DESC as univDeptDesc,
+		    A.USE_YN as useYn,
+		    A.REGISTER as register,
+		    A.REG_DATE as regDate,
+		    A.MODIFIER as modifier,
+		    A.MOD_DATE as modDate,
+		    B.LOCAL_ID as localId,
+		    nvl((SELECT cnt FROM data1
+                               WHERE university_id = A.university_id
+                               AND univdept_id = A.univdept_id), 0) clicksCnt
+		  FROM
+		    CU_UNIV_DEPT A
+		    LEFT JOIN CU_UNIV_INFO B ON A.UNIVERSITY_ID = B.UNIVERSITY_ID
+		    LEFT JOIN CU_REPT_DEPT C ON A.DEPT_ID = C.DEPT_ID
+		    LEFT JOIN CU_REPT_CLASSIFICATION D ON C.CLASSIFY_ID = D.CLASSIFY_ID
+		  WHERE B.USE_YN = 'Y'
+		    <isNotEmpty property="univDeptId" prepend="AND">
+		      A.UNIVDEPT_ID LIKE concat(concat('%',#univDeptId#),'%')
+		    </isNotEmpty>
+		    <isNotEmpty property="univDeptName" prepend="AND">
+		      A.UNIVDEPT_NAME LIKE concat(concat('%',#univDeptName#),'%')
+		    </isNotEmpty>
+		    
+		  	<isNotEmpty property="universityName" prepend="AND">
+		      B.UNIV_NAME LIKE concat(concat('%',#universityName#),'%')
+		    </isNotEmpty> 
+		    <isNotEqual property="universityId" prepend="AND" compareValue="0">
+		      A.UNIVERSITY_ID =#universityId#
+		    </isNotEqual> 		    
+		    <isEqual property="universityId" prepend="AND" compareValue="0">
+		      1=0
+		    </isEqual> 		    
+		    
+   		    <isNotEmpty property="deptId" prepend="AND">
+		      A.DEPT_ID =#deptId#
+		    </isNotEmpty>
+		    <isNotEmpty property="deptName" prepend="AND">
+		      C.DEPT_NAME LIKE concat(concat('%',#deptName#),'%')
+		    </isNotEmpty> 
+		    
+   		    <isNotEmpty property="deptAllName" prepend="AND">
+		      (C.DEPT_NAME LIKE concat(concat('%',#deptAllName#),'%') 
+		      OR A.UNIVDEPT_NAME LIKE concat(concat('%',#deptAllName#),'%'))
+		    </isNotEmpty> 
+		    
+		    
+   		    <isNotEmpty property="classifyId" prepend="AND">
+		      D.CLASSIFY_ID =#classifyId#
+		    </isNotEmpty>		    
+		    <isNotEmpty property="useYn" prepend="AND">
+		      A.USE_YN = #useYn#
+		    </isNotEmpty> 
+		    
+   		    <isNotEqual property="localId" prepend="AND" compareValue="0">
+		      B.LOCAL_ID =#localId#
+		    </isNotEqual>		
+		    union all
+		  SELECT ROW_NUMBER () OVER (ORDER BY 
+			<dynamic> 
+				<isEqual property="searchCon1" compareValue="1"> A.REG_DATE </isEqual>
+				<isEqual property="searchCon1" compareValue="2"> A.UNIVDEPT_NAME </isEqual>
+				<isEqual property="searchCon1" compareValue="3"> B.UNIV_NAME </isEqual>
+				<isEqual property="searchCon1" compareValue="4"> nvl((SELECT cnt FROM data1 WHERE university_id = A.university_id AND univdept_id = A.univdept_id), 0) </isEqual>
+				<isEqual property="searchCon2" compareValue="1"> ASC </isEqual>
+				<isEqual property="searchCon2" compareValue="2"> DESC </isEqual>
+			</dynamic>	
+			)+1 as recNum, 
+		    A.UNIVDEPT_ID as univDeptId,
+		    A.UNIVDEPT_NAME as univDeptName,
+		    A.UNIVERSITY_ID as universityId,
+		    B.UNIV_NAME as universityName,
+		    A.DEPT_ID as deptId,
+		    C.DEPT_NAME as deptName,
+		    D.CLASSIFY_ID as classifyId,
+		    D.CLASSIFY_NAME as classifyName,
+		    A.UNIVDEPT_DESC as univDeptDesc,
+		    A.USE_YN as useYn,
+		    A.REGISTER as register,
+		    A.REG_DATE as regDate,
+		    A.MODIFIER as modifier,
+		    A.MOD_DATE as modDate,
+		    B.LOCAL_ID as localId,
+		    nvl((SELECT cnt FROM data1
+                               WHERE university_id = A.university_id
+                               AND univdept_id = A.univdept_id), 0) clicksCnt
+		  FROM
+		    CU_UNIV_DEPT A
+		    LEFT JOIN CU_UNIV_INFO B ON A.UNIVERSITY_ID = B.UNIVERSITY_ID
+		    LEFT JOIN CU_REPT_DEPT C ON A.DEPT_ID = C.DEPT_ID
+		    LEFT JOIN CU_REPT_CLASSIFICATION D ON C.CLASSIFY_ID = D.CLASSIFY_ID
+		  WHERE B.USE_YN = 'Y'
+		    <isNotEmpty property="univDeptId" prepend="AND">
+		      A.UNIVDEPT_ID LIKE concat(concat('%',#univDeptId#),'%')
+		    </isNotEmpty>
+		    <isNotEmpty property="univDeptName" prepend="AND">
+		      A.UNIVDEPT_NAME LIKE concat(concat('%',#univDeptName#),'%')
+		    </isNotEmpty>
+		    
+		  	<isNotEmpty property="universityName" prepend="AND">
+		      B.UNIV_NAME LIKE concat(concat('%',#universityName#),'%')
+		    </isNotEmpty> 
+		    <isNotEqual property="universityId" prepend="AND" compareValue="0">
+		      A.UNIVERSITY_ID !=#universityId#
+		    </isNotEqual> 		    
+		    
+		    <!-- 대학관리자로 들어왔을경우 1=0 조건을 준다. -->
+		    <isEqual property="authLevelId" compareValue="3" prepend="AND">
+		    	1=0
+		    </isEqual>
+		    
+   		    <isNotEmpty property="deptId" prepend="AND">
+		      A.DEPT_ID =#deptId#
+		    </isNotEmpty>
+		    <isNotEmpty property="deptName" prepend="AND">
+		      C.DEPT_NAME LIKE concat(concat('%',#deptName#),'%')
+		    </isNotEmpty> 
+		    
+   		    <isNotEmpty property="deptAllName" prepend="AND">
+		      (C.DEPT_NAME LIKE concat(concat('%',#deptAllName#),'%') 
+		      OR A.UNIVDEPT_NAME LIKE concat(concat('%',#deptAllName#),'%'))
+		    </isNotEmpty> 
+		    
+		    
+   		    <isNotEmpty property="classifyId" prepend="AND">
+		      D.CLASSIFY_ID =#classifyId#
+		    </isNotEmpty>		    
+		    <isNotEmpty property="useYn" prepend="AND">
+		      A.USE_YN = #useYn#
+		    </isNotEmpty> 
+		    
+   		    <isNotEqual property="localId" prepend="AND" compareValue="0">
+		      B.LOCAL_ID =#localId#
+		    </isNotEqual>		
+		    ) aa
+		) a
+		WHERE CEIL (recNum / #showCnt,javaType=Integer#) = #currPage,javaType=Integer#
+		ORDER BY recNum
+			<dynamic> 
+				<isEqual property="searchCon3" compareValue="1"> ASC </isEqual>
+				<isEqual property="searchCon3" compareValue="2"> DESC </isEqual>
+			</dynamic>	
+	</select>
+	
+	<select id="selectInfo" resultClass="univDept"  parameterClass="map">
+		SELECT 
+  		    A.UNIVDEPT_ID as univDeptId,
+		    A.UNIVDEPT_NAME as univDeptName,
+		    A.UNIVERSITY_ID as universityId,
+		    B.UNIV_NAME as universityName,
+		    A.DEPT_ID as deptId,
+		    C.DEPT_NAME as deptName,
+		    D.CLASSIFY_ID as classifyId,
+		    D.CLASSIFY_NAME as classifyName,
+		    A.UNIVDEPT_DESC as univDeptDesc,
+		    A.USE_YN as useYn,
+		    A.REGISTER as register,
+		    A.REG_DATE as regDate,
+		    A.MODIFIER as modifier,
+		    A.MOD_DATE as modDate,
+		    A.POPULAR_YN as popularYn,
+		    A.RECOMMEND_YN as recommendYn
+		  FROM
+		    CU_UNIV_DEPT A
+		    LEFT JOIN CU_UNIV_INFO B ON A.UNIVERSITY_ID = B.UNIVERSITY_ID
+		    LEFT JOIN CU_REPT_DEPT C ON A.DEPT_ID = C.DEPT_ID
+		    LEFT JOIN CU_REPT_CLASSIFICATION D ON C.CLASSIFY_ID = D.CLASSIFY_ID
+		  
+		  WHERE B.USE_YN = 'Y'
+<!--		    AND A.UNIVDEPT_ID like concat(concat('%',#univDeptId#),'%')-->
+		    AND A.UNIVDEPT_ID = #univDeptId#
+		    AND A.UNIVERSITY_ID = #universityId,javaType=Integer#
+		    
+	</select>
+
+	<update id="updateInfo" parameterClass="univDept">
+<!--		2012.02.09 쿼리수정 LJH-->
+<!--		UPDATE CU_UNIV_DEPT-->
+<!--		SET -->
+<!--			UNIVDEPT_ID =#univDeptId#-->
+<!--			, UNIVERSITY_ID =#universityId#-->
+<!--			, UNIVDEPT_NAME =#univDeptName#-->
+<!--			, DEPT_ID =#deptId#-->
+<!--			, UNIVDEPT_DESC =#univDeptDesc#-->
+<!--			, USE_YN =#useYn#-->
+<!--			, MODIFIER =#modifier#-->
+<!--			, MOD_DATE =SYSDATE-->
+<!--		WHERE UNIVDEPT_ID = #univDeptId,javaType=String#-->
+
+		UPDATE CU_UNIV_DEPT
+		SET 
+			UNIVDEPT_NAME =#univDeptName#
+			, DEPT_ID =#deptId#
+			, UNIVDEPT_DESC =#univDeptDesc#
+			, POPULAR_YN = #popularYn#
+			, RECOMMEND_YN = #recommendYn#
+			, USE_YN =#useYn#
+			, MODIFIER =#modifier#
+			, MOD_DATE =SYSDATE
+		WHERE UNIVDEPT_ID = #univDeptId,javaType=String#
+		AND   UNIVERSITY_ID = #universityId,javaType=Integer#
+	</update>
+	
+	
+	<update id="updateUnivDeptName" parameterClass="univDept">
+		update cu_svc_course
+		set department = #univDeptName#
+		where university_id = #universityId,javaType=Integer#
+		and department_id = #univDeptId,javaType=String#
+	</update>
+	
+	<insert id="insertInfo" parameterClass="univDept">
+		INSERT INTO CU_UNIV_DEPT
+		  ( UNIVDEPT_ID, UNIVDEPT_NAME, UNIVERSITY_ID, DEPT_ID, UNIVDEPT_DESC, POPULAR_YN, RECOMMEND_YN, USE_YN 
+		  , REGISTER, REG_DATE)
+		VALUES
+		  ( #univDeptId#, #univDeptName#, #universityId#, #deptId#, #univDeptDesc#, #popularYn#, #recommendYn#, #useYn# 
+		  , #register#, SYSDATE )
+	</insert>
+	
+	<delete id="deleteInfo"  parameterClass="map">
+		DELETE FROM CU_UNIV_DEPT
+		WHERE UNIVDEPT_ID = #univDeptId,javaType=String#
+			AND UNIVERSITY_ID = #universityId,javaType=Integer#
+	</delete>
+
+</sqlMap>

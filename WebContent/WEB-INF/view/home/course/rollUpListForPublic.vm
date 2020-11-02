@@ -1,0 +1,7 @@
+
+	<span class="tit"><img src="/home/images/course/sub_top.gif" /></span>
+	<ul> 
+	#foreach($list in $rollUpListForPublic)
+		<li class="sub_link3"><a href="javascript:selectDept('$list.deptName','$list.deptId');">$list.deptName ($list.cnt)</a></li>
+	#end
+	</ul> 

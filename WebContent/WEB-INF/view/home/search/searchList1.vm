@@ -1,0 +1,41 @@
+	<ul class="list_type2">
+		#set($cnt = 1)
+		#foreach($list in $coursesList)
+        	<li #if($cnt != 1) class="even" #end>
+        		<a class="f_12" href="javascript:viewDetail1('$list.courseId','$list.courseIdentifier', '$list.mainTitle');"> $!list.title</a>
+        		<dl>
+            		<dd><span>대학명 : </span>&nbsp; $!list.univName</dd>
+            		##<dd><span>열람횟수 : </span>&nbsp; $!list.clicksCnt</dd>
+            		<dd><span>학과 : </span>&nbsp; $!list.department</dd>
+        			##<dd><span>학점 : </span>&nbsp; $!list.credit 학점</dd>
+            		<dd><span>강의학기 : </span>&nbsp; $!list.termSemester 학기</dd>
+            		#if($!list.manager)
+	            		#if($!list.manager.length() > 1)
+		            		<dd><span>교수자 : </span>&nbsp; $!list.manager</dd>
+			            #end
+		            #end
+            		<dd class="none">$!list.description </dd>
+                </dl>
+        	</li>
+		#if($cnt != 1) #set($cnt = 1) #else #set($cnt = 2) #end
+		#end
+		
+		#set($cnt1 = $coursesList.size())
+		#if($cnt1 == 0)
+		#set($tCnt1 = 0)
+		<li>
+			<!-- span class="block normal">검색결과가 없습니다.</span-->
+			<a href="#">검색결과가 없습니다.</a>
+		</li>
+		#end
+	</ul>
+	
+	<script>
+	$("#searchListCnt1").text($tCnt1);
+	#if($coursesList && $coursesList.size() != 0 && $gubn == 1)
+		$(document).ready(function() {
+			setRecordCnt2($totalCnt2, $currPage2, $totalPage2, $showCnt2);
+	    });
+	#end
+	</script>
+	

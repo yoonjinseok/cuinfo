@@ -1,0 +1,234 @@
+<head>
+	<title>전체학과검색</title>
+	<link rel="stylesheet" type="text/css" href="/home/css/course.css" />
+	<script type="text/javascript" language="javascript">
+
+	function search()
+	{
+		goPage(1);
+		searchRank();
+	}
+	
+	function setRecordCnt(totalCnt, currPage, totalPage, showCnt)
+	{
+		$("#tCnt").text(totalCnt);
+		$("#cPage").text(currPage);
+		$("#tPage").text(totalPage);
+		
+		setPaging($("#pg"), totalCnt, showCnt, currPage);
+	}
+	
+	function goPage(page)
+	{
+		
+		if($("#deptAllName").val() == ""){
+			$("#univDeptId").val("");
+			$("#deptId").val("");
+			$("#universityId").val("");
+		}
+		
+		$("#currPage").val(page);
+		jQuery.post('searchMajor_list.ajax.action', 
+				$("#form").formSerialize(), 
+				function(data) {
+        			$("#list").html(data);
+		});
+		
+	}
+
+	function searchRank()
+	{
+		jQuery.post('/home/intro/searchMajorRank_list.ajax.action',
+				$("#form").formSerialize(), 
+				function(data) {
+        			$("#rankList").html(data);
+		});
+	}
+	
+	function reSearchEvent(SearchCon)
+	{	
+		
+		if(SearchCon == "2"){
+			document.getElementById("searchType4").className=""; 
+			document.getElementById("searchType2").className="on"; 
+			document.getElementById("searchType3").className=""; 
+		} else if(SearchCon == "3"){
+			document.getElementById("searchType4").className=""; 
+			document.getElementById("searchType2").className=""; 
+			document.getElementById("searchType3").className="on"; 
+		} else {
+			document.getElementById("searchType4").className="on"; 
+			document.getElementById("searchType2").className=""; 
+			document.getElementById("searchType3").className=""; 
+		}
+		
+		if($("#searchCon1").val() == SearchCon){
+			if($("#searchCon2").val() == "1"){
+				$("#searchCon2").val("2");
+			} else {
+				$("#searchCon2").val("1");
+			}			
+		} else {
+			$("#searchCon2").val("2");
+		}
+		$("#searchCon1").val(SearchCon);
+		
+		search();
+	}
+
+	function reSearchEvent2(selectDeptId,univDeptName)
+	{
+		$("#classifyId").val("");
+		$("#universityName").val("");
+		$("#localId").val("");
+		$("#deptAllName").val(univDeptName);
+		$("#selectDeptId").val(selectDeptId);
+		
+		search();
+	}
+	
+	function reSearchEvent3()
+	{
+		$("#showCnt").val($("#showCntS").val());
+		search();
+	}
+	
+	function moreClick(){
+		
+		if($("#searchCnt").val() == "10"){
+			$("#searchCnt").val("999");
+		} else {
+		 	$("#searchCnt").val("10");
+		}			
+		searchRank();
+	}
+	
+	function viewCurriculum(){
+		if($("#universityId").val() == "" || $("#univdeptId").val() == ""){
+			alert("선택된 내용이 없습니다.");
+			return;
+		} 
+		$("#form").attr("method","post");
+		$("#form").attr("onsubmit","");
+		$("#form").attr("action","/home/curri/curriculum.sub.action?gnb=31");
+		$("#form").submit();
+	}
+	
+	function goLecture(universityId, univDeptId, deptId, deptName){
+		$("#deptId").val(deptId);
+		$("#universityId").val(universityId);
+		$("#univdeptId").val(univDeptId);
+		viewCurriculum();
+		return;
+	}
+	
+	$(document).ready(function() {
+		//reSearchEvent3();	
+		search();
+    });
+	</script>
+</head>
+
+<body>
+	
+		<p class="location">
+			<a href="/home/index.main.action">홈</a> <span>></span> <a href="/home/curri/areadept.sub.action?gnb=31">교과과정</a> <span>></span> <a href="/home/curri/searchMajor.sub.action?gnb=33">전체학과검색</a>
+		</p>
+		<h3><img src="/home/images/intro/title4.gif" alt="전체학과검색" /></h3>
+		
+	<div class="contentWrap">
+	
+    <div class="search_major">
+    
+        <form id="form" name="form" action="#" onsubmit="try{search();}catch(e){alert(e);}return false;"><!-- box_type01 Start -->
+            <input type="hidden" id="searchCnt" name="searchCnt" value="10"/>
+			<input type="hidden" id="showCnt" 	name="showCnt" value="10"/>
+            <input type="hidden" id="currPage" 	name="currPage" value="1"/>
+			<input type="hidden" id="deptId" 	name="deptId" value=""/>		
+			<input type="hidden" id="universityId" name="universityId" value="$!universityId"/>		
+			<input type="hidden" id="univdeptId" name="univdeptId" value=""/>		
+            <input type="hidden" id="searchCon1" name="searchCon1" value="4"/>
+            <input type="hidden" id="searchCon2" name="searchCon2" value="2"/>
+            <input type="hidden" id="selectDeptId" name="selectDeptId" value=""/>
+            <input type="hidden" id="deptName" name="deptName" value=""/>
+			
+        	<fieldset class="inner">
+        		<table cellspacing="0" cellpadding="0" summary="전체학과검색">
+        			<caption>전체학과검색</caption>
+        			<colgroup>
+        				<col width="20%"/>
+        				<col width="30%"/>
+        				<col width="20%"/>
+        				<col width="30%"/>
+        			</colgroup>
+        			<tbody>
+        				<tr>
+                            <th><label for="univDeptName">학과명</label></th>
+        					<td>
+								<input type="text" id="deptAllName" name="deptAllName" size="10" title="학과명" value="$!univDeptName"></input>
+							</td>
+        					<th><label for="classifyId">학과분류</label></th>
+							<td>
+        						<select	id="classifyId" name="classifyId">
+        							<option value="">전체</option>
+        							#foreach($code in $reptClassifyList)
+        							<option value="$!code.classifyId">$!code.classifyName</option>
+        							#end
+        						</select>
+        						<script>
+                					document.forms['form'].elements['classifyId'].value = '$!classifyId' ;
+                				</script> 
+        					</td>
+        				</tr>
+        				<tr class="bottom">
+        					<th><label for="universityName">학교명</label></th>
+        					<td>
+								<input type="text" id="universityName" name="universityName" size="10" title="학교명입력" />
+        					</td>
+        					<th><label for="localId">소재지</label></th>
+        					<td>
+								<select	id="localId" name="localId">
+        							<option value="">전체</option>
+        							#foreach($code in $localSelect)
+        								<option value="$!code.codeId">$!code.codeName</option>
+        							#end
+        						</select>
+        					</td>				
+        				</tr>
+        			</tbody>
+        		</table>
+				<a class="right" ><input type="image" style="width:67px;height:22px;border:0px;" src="/home/images/btn/search2.gif" alt="검색" /></a>
+				##<input type="image" style="width:67px;height:22px;border:0px;" src="/home/images/btn/search2.gif" alt="검색" />
+        	</fieldset>	
+        </form><!-- box_type01 End -->
+</div>
+<div class="search_list_area">
+    <div class="top_box">
+		<span class="num">총  <b><span id="tCnt">00</span></b>개  결과 </span>
+		
+        <select	id="showCntS" name="showCntS" onChange="reSearchEvent3();">
+    		#foreach($scl in $showCntList)
+    			<option value="$!scl.codeValue">$!scl.codeName</option>
+    		#end
+        </select>
+		<span class="f_right">
+        	<a id="searchType4" class="on" href="javascript:reSearchEvent('4');">열람횟수</a>|
+            <a id="searchType2" href="javascript:reSearchEvent('2');">학과명순</a>|
+            <a id="searchType3" href="javascript:reSearchEvent('3');">학교명순</a>
+        </span>
+
+		
+	</div>
+	
+    <div id="list">#parse('home/intro/searchMajor_list.vm')</div>
+
+    <div class="page_num">
+    	<div id="pg" name="pg"></div>
+    </div>
+	
+	<div id="rankList">#parse('home/intro/searchMajorRank_list.vm')</div>
+</div>
+
+</div>
+</body>
+</html>

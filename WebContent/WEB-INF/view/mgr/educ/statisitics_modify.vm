@@ -1,0 +1,229 @@
+<head>
+	<title>통계문서 수정</title>
+	<script type="text/javascript" language="javascript">
+	function modify()
+	{
+	
+		var blnChk = 0;
+		$("#uploadTB").find("div").each(function(index){
+			blnChk = 1;
+		});
+		if(blnChk == 0)
+			$("#upfileGid").val("");
+		
+		##alert($("#uploadTB div[class=icon]").size());
+		if($("#useYN:checked").val() == "Y" && $("#uploadTB div[class=icon]").size() == 0) {
+			##alert("양식 파일을 등록해주세요");
+			##return;
+		}
+			
+		jQuery.post('statisitics_update.json', 
+				$("#modifyForm").formSerialize(), 
+				function(data) {
+        			if(data.errors == true)
+        			{
+        				eval(data.message);
+        			}
+        			else
+        			{
+						alert("저장되었습니다.");
+						opener.search();
+						window.close();
+        			}
+				});
+	}	
+	
+	function statFileDelete(){    	
+		var fileGid = $("#upfileGid").val();
+		var sttID = $("#sttID").val();
+
+		var cofirm = confirm("게시물을  삭제하시겠습니까?");
+    	if(cofirm){
+    		jQuery.get('statisitics_delete.json', 
+				{fileGid:fileGid, sttID:sttID},
+				function(data) {
+        			if(data.errors == true)
+        			{
+        				eval(data.message);
+        			}else{						
+						opener.search();
+						window.close();
+					}
+				});
+    	}
+	}
+	
+
+	
+	/*******************************
+    
+    	다중 파일 업로드 관련 함수
+    	
+    ********************************/
+    
+    //파일 업로드 시 
+    function setUploadResult(originalFilename, srcName, fileSize)
+    {
+		$("#uploadTB").append('<div class="icon" id=\''+srcName+'\'><input type="hidden" id="upfileSrc" name="upfileSrc" value="'+srcName+'"/><a href="javascript:download(\''+srcName+'\');">'+originalFilename+'</a><span>('+getFileSize(fileSize)+')</span><a href="javascript:delRow(\''+srcName+'\');"><img src="/mgr/images/btn/btn_del.gif" /></a></div>');
+		$("#fileupload").hide();
+    }
+    
+	//저장되어있는 파일 삭제
+	function deleteFileDB(fileID)
+    {
+    	if(confirm("파일을 삭제하시겠습니까?")){
+			jQuery.post('/mgr/common/file_delete_id.json', 
+				'upfileId='+fileID, 
+				function(data) {
+        			if(data.errors == true)
+        			{
+        				eval(data.message);
+        			}
+        			else
+        			{
+						$("#uploadTB").find("div[id^="+fileID+"]").remove();
+						$("#fileupload").show();
+        			}
+				});
+    	}
+    }
+	
+    //파일 삭제(저장되기전)
+    function delRow(trId)
+    {
+    	jQuery.post('/mgr/common/file_delete.json?srcName=' + trId, 
+    			function(data) {
+        			if(data.errors == true)
+        				eval(data.message);
+					else{
+						$("#uploadTB").find("div[id^="+trId+"]").remove();
+						$("#fileupload").show();
+					}
+    	});
+    }
+	
+	//디비에 저장된 내용 다운로드
+    function downloadDB(fileID)
+    {
+    	document.location.href = '/mgr/common/file_download_id.json?upfileId=' + fileID;
+    }
+	
+	//디비에 저장되기전 내용 다운로드
+    function download(srcName)
+	{
+		document.location.href = '/mgr/common/file_download.json?srcName=' + srcName;
+	}
+
+	$(document).ready(function() {
+
+		$("#sttYear").val("$!statisitics.sttYear");
+    });	
+	
+	</script>
+</head>
+<body>
+<div style="width:90%;padding-left:30px;padding-top:30px;">
+<form id="modifyForm" action="#" onsubmit="try{modify();}catch(e){alert(e);}return false;">
+<input type="hidden" id="sttID" name="sttID" value="$!statisitics.sttID"/>
+<input type="hidden" name="upfileGid" id="upfileGid" value="$!upFileGid"/>
+<h2>글 수정</h2>
+<table borad="1" cellspacing="0" cellpadding="0" class="form_type01" summary="게시판 글 수정"><!-- list_type01 Start -->
+	<caption>게시판관리</caption>
+	<colgroup>
+		<col width="15%" />
+		<col width="35%" />
+		<col width="15%" />
+		<col width="35%" />
+	</colgroup>
+	<tbody>
+		<tr>
+			<th scope="row">구분</th>
+			<td>
+				<select id="termState" name="termState" title="구분" >
+                	<option value="Y" #if($!statisitics.termState == 'Y') selected #end>정기</option>
+                	<option value="N" #if($!statisitics.termState == 'N') selected #end>비정기</option>
+                </select>
+                <select id="sttYear" name="sttYear" title="수집년도" #if($!statisitics.termState != 'Y') disabled="disabled" #end>
+                	<option value="">선택</option>
+					<script>
+					
+					var currYear = new Date().getFullYear();
+					for(var i = currYear; i >= currYear - 10; i--)
+					{
+						document.writeln('<option value="'+i+'" >'+i+'년</option>');
+					}
+					</script>
+				</select>					
+				<select id="sttMonth" name="sttMonth" title="수집분기" #if($!statisitics.termState != 'Y') disabled="disabled" #end>
+                	<option value="">선택</option>
+                	<option value="4" #if($!statisitics.sttMonth == '4') selected #end>04월</option>
+                	<option value="10" #if($!statisitics.sttMonth == '10') selected #end>10월</option>
+                </select>
+			 </td>
+			<th scope="row">마감일</th>
+			#if($statisitics.deadline)
+			#set($deadline = $!statisitics.deadline.replaceAll('/','-'))
+			#end
+			<td><input type="text" size="20" title="마감일" name="deadline" id="deadline" value="$!deadline"/>(yyyy-MM-dd)</td>
+		</tr>
+		<tr>
+			<th scope="row">통계명</th>
+
+			<td colspan="3"><input type="text" size="50" title="통계명" name="sttName" id="sttName" value="$!statisitics.sttName"/></td>
+		</tr>
+		<tr>
+			<th scope="row">수집상태</th>
+			<td colspan="3">
+				#if($!statisitics.gatherState == 'Y')수집완료
+				#else 수집중
+				#end
+			 </td>			
+		</tr>		
+		<tr>
+			<th scope="row">양식파일</th>
+			
+			<td colspan ="3" id="uploadTB">
+				<div id="fileupload" #if($fileList) #if($fileList.size() > 0) style="display:none;" #end #end>
+				<iframe id="upload" name="upload" src="/mgr/common/file_write.ifm.action?confKey=att" width="100%" height="25" frameborder="0" scrolling="no" style="padding: 0;margin: 0"></iframe>
+				</div>
+			</td>
+			<script>
+				
+			#if ($fileList.size()>0)
+			  #foreach($file in $fileList)
+              $("#uploadTB").append('<div class="icon" id=\'$file.upfileId\'><a href="javascript:downloadDB(\'$file.upfileId\');">$file.upfileFilename</a><span>('+getFileSize($file.upfileSize)+')</span><a href="javascript:deleteFileDB(\'$file.upfileId\');"><img src="/mgr/images/btn/btn_del.gif" /></a></div>');               
+			  #end
+			#end
+			</script>
+		</tr>
+		<tr>
+			<th scope="row">설명</th>
+			<td colspan ="3"><input type="text" size="50" id="declare" name="declare" title="설명" value="$!statisitics.declare"></td>
+		</tr>
+		<tr>
+			<th scope="row">사용여부</th>
+			<td colspan="3">
+				<input type="radio" title="사용함" name="useYN" id="useYN" value="Y" #if($!statisitics.useYN == 'Y') checked #end/>사용함
+				<input type="radio" title="사용하지않음" name="useYN" id="useYN" value="N" #if($!statisitics.useYN == 'N') checked #end/>사용하지 않음
+			</td>		
+		</tr>
+		<tr>
+			<th scope="row">등록정보</th>
+			<td>$!statisitics.register ($datetimeformatter.print($!statisitics.regDate, $locale)) </td>
+			<th scope="row">수정정보</th>
+			<td>#if("$!statisitics.modifier" !="") $!statisitics.modifier ($datetimeformatter.print($!statisitics.modDate, $locale)) #end</td>
+		</tr>
+	</tbody>
+</table><!-- list_type01 End -->
+
+
+<div class="btn_box_type03">
+	<a href="javascript:modify();"><img src="/mgr/images/btn/save.gif" alt="저장" /></a>
+	<a href="javascript:statFileDelete();"><img src="/mgr/images/btn/delete.gif" alt="삭제" /></a>
+	<a href="javascript:window.close();"><img src="/mgr/images/btn/cancel.gif" alt="취소" /></a>
+</div>
+
+</form>
+</div>
+</body>
+</html>

@@ -1,0 +1,65 @@
+.overall_tab_list{margin:0 0 20px 0;padding:0 0 15px 0;background:url('/home/images/bg/box1_2.gif') no-repeat left bottom;overflow:hidden;}
+* html .overall_tab_list{float:left;width:100%;}
+.overall_tab_list li{ position:relative; float:left;margin:0 0 0 35px;width:220px;}
+.overall_tab_list li a{display:block;padding:0 0 0 10px;line-height:25px;color:#535353;background:url('/home/images/bul/blue_off.gif') no-repeat left;}
+* html .overall_tab_list li{margin:0 0 0 25px;}
+.overall_tab_list li a:hover{font-weight:bold;color:#3352AC;background:url('/home/images/bul/blue_on.gif') no-repeat left;}
+.overall_tab_list .m_select{display:inline-block;margin:0 20px 0 0}
+
+.info_box{margin:0 0 30px 25px;position:relative;}
+.info_box .univ_logo{position:absolute;left:0px;top:5px;padding:30px 0;width:175px;text-align:center;border:solid 3px #C9C8C8;background:#F5F4F4;}
+* html .info_box .univ_logo{left:-200px;}
+.info_box .univ_logo img{max-width:160px;}
+
+.info_box .univ_info{margin:0 0 20px 200px;}
+.info_box .univ_info li{padding:0 0 0 7px;line-height:25px;background:url('/home/images/bul/green2.gif') no-repeat left;}
+.info_box .univ_info li a{font-weight:bold;}
+.info_box .univ_info li .email{font-weight:normal;}
+
+.info_box .univ_banner{margin:0 0 20px 0;}
+
+
+.univ_table .table_info{padding:0 0 0 10px;margin:0 0 10px 0;line-height:20px;font-size:12px;background:url('/home/images/bul/plus.gif') no-repeat left;}
+
+.univ_table{margin:0 0 20px 25px;}
+.univ_table table{margin:0 0 20px 0;width:100%;border-bottom:solid 2px #5C7EC0;}
+.univ_table thead th{color:#fff;line-height:24px;border-right:solid 1px #fff;background:#5E80C1;}
+.univ_table tbody tr.line01 th, .univ_table tbody tr.line01 td{border-bottom:1px solid #5e80c1;}
+.univ_table tbody tr.line01 th, .univ_table tbody tr.line02 th{border-bottom:1px solid #5e80c1;}
+.univ_table tbody th{line-height:32px;border-right:solid 1px #D8D8D8;border-bottom:solid 1px #fff;background:#F5F5F5;}
+.univ_table .bottom th,
+.univ_table .bottom td{border-bottom:none;}
+.univ_table td{padding:5px 10px;text-align:center;border-bottom:solid 1px #D8D8D8;}
+
+
+.univ_table li{ position:relative; display:inline-block;margin:0 0 0 20px;padding:0 0 0 8px;width:160px;line-height:25px;text-align:left;background:url('/home/images/bul/skyblue.gif') no-repeat left;}
+
+
+/* 레이어추가 */li .layST {position:absolute; top:15px; left:15px; padding:5px 7px 2px 5px; border:solid 1px #bad8e2; line-height:14px; background:#e4f1f9; z-index:999; color:#437daa;}
+
+/* 교과과정보기 */
+.feature02{padding:10px 0 15px 0}
+.tbl_wrap03 .btn_more{position:absolute;top:-32px;right:0}
+
+.cSubjectTab01{overflow:hidden;height:34px;margin:0 0 20px 0;background:url('/home/images/course/bg_subject_tab01.gif') repeat-x left top}
+.cSubjectTab01 li{float:left;width:123px}
+
+.table_type03 .bul{display:inline-block;margin:0 0 0 20px;padding:0 0 0 8px;width:150px;line-height:25px;text-align:left;background:url('/home/images/bul/skyblue.gif') no-repeat left}
+.search_major .tbl td{text-align:left;background:#ffffff;border-bottom:0 none}
+.search_major .tbl .top02 label{display:inline-block;width:25%}
+.search_major .tbl input[type=checkbox]{width:auto !important}
+.search_major .tbl a{display:inline-block;margin:0 5px 0 0}
+
+/* 121108 추가 */
+.path_major{padding:5px 0 23px;font-weight:bold;font-size:1.2em;position:relative}
+.path_major span{padding:0 3px;vertical-align:baseline;color:#b9b9b9}
+.path_major a{color:#437daa}
+.path_major .btn_info_major{position:absolute;right:0;top:5px}
+.row_top th, .row_top td {border-top:1px solid #fff}
+.title_intro_subj{padding-bottom:8px;font-size:1.2em}
+.desc_intro_subj{width:550px;padding-bottom:10px;position:relative;}
+.desc_intro_subj span{text-align:right;position:absolute;right:0;top:0}
+
+
+/* 20130125 추가 */
+.moreST01 {position:absolute; top:245px; left:520px;}

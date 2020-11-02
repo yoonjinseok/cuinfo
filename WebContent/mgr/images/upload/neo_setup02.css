@@ -1,0 +1,120 @@
+@charset "utf-8";
+
+
+.mgb_4 { margin-bottom: 4px; }
+/* 로그인 */
+.log_bg { width: 800px; height: 328px; padding: 70px 0 45px 0; }
+.logwrap { width: 310px; height: 160px; position: relative; padding: 100px 0 0 248px; margin-left: 100px; }
+.logwrap .logposi { position: absolute; top: 120px; left: 55px;  }
+.logwrap p { text-align: center; }
+.logw { width: 239px; float: left; margin-right: 2px; }
+.logbt { float: left; }
+.logwrap .logbox { float: left; }
+.logwrap .logbox dt { width: 83px; float: left; padding-top: 6px; }
+.logwrap .logbox dt img { vertical-align: top; }
+.logwrap .logbox dd { width: 156px; float: left; height: 25px; }
+.loginp { width: 151px; height: 13px; padding: 5px 0 5px 3px; font-family: dotum; font-size: 12px; vertical-align: top; border: 1px solid #c6c6c6; background: #fff; }
+
+
+
+/* 1002.psd */
+
+.bgcovera { border-top: 3px solid #d29ca6; width: 100%; padding: 1px 0 0 0; border-bottom: 3px solid #c0c0c0; margin: 0 0 22px 0; }
+.bgcovera .table01 { width: 100%; table-layout: fixed; }
+.bgcovera .table01 tbody tr.lastLine td { border-bottom: 0; }
+.bgcovera .table01 tbody tr.lastLine th { border-bottom: 0; }
+.bgcovera .table01 tbody td { text-align: left; padding: 5px 0 5px 23px; line-height: 100%; vertical-align: middle; color: #666; font-family: Gulim; border-bottom: 1px solid #eaeaea; }
+.bgcovera .table01 thead th { text-align: center; background: #f7f7f7; height: 29px; line-height: 100%; font-size: 14px; font-weight: bold; vertical-align: middle; color: #333; font-family: Dotum; border-bottom: 1px solid #cbcbcb; }
+.bgcovera .table01 tbody th { text-align: left !important; padding: 0 0 0 40px; font-size: 12px !important; color: #666 !important; border-right: 1px solid #eaeaea; border-bottom: 1px solid #eaeaea; }
+
+.bgcoverb { border-top: 3px solid #d29ca6; width: 100%; padding: 1px 0 0 0; border-bottom: 3px solid #c0c0c0; margin: 0 0 22px 0; }
+
+TD.td8_title_top_Gray {
+	BACKGROUND-COLOR: #dbe8ee; COLOR: #000033; FONT-FAMILY: "돋음, 굴림, Arial,sans-serif",; FONT-SIZE: 9pt; LINE-HEIGHT: 180%; TEXT-ALIGN: right
+}
+TD.td6_title_top_Gray_C {
+	BACKGROUND-COLOR: #efefef; COLOR: #000033; FONT-FAMILY: "돋음, 굴림, Arial,sans-serif",; FONT-SIZE: 9pt; LINE-HEIGHT: 180%; TEXT-ALIGN: center
+}
+TD.td4_title_top_Gray {
+	BACKGROUND-COLOR: #efefef; COLOR: #000033; FONT-FAMILY: "돋음, 굴림, Arial,sans-serif",; FONT-SIZE: 9pt; LINE-HEIGHT: 250%
+}
+TD.td1_title_top_Blue {
+	BACKGROUND-COLOR: #78a6ad; HEIGHT: 2px
+}
+TD {
+	COLOR: #555555; FONT-FAMILY: 돋음, 굴림, Arial,sans-serif,; FONT-SIZE: 9pt; LINE-HEIGHT: 170%
+}
+
+TD.td3_title_top_Gray {
+	BACKGROUND-COLOR: #a7c5c9; COLOR: #000033; FONT-FAMILY: "돋음, 굴림, Arial,sans-serif",; FONT-SIZE: 9pt; FONT-WEIGHT: bold; LINE-HEIGHT: 250%
+}
+
+TABLE.tatble2_box_w_1 {
+	BACKGROUND-COLOR: #ffffff; BORDER-BOTTOM: #cecfce 1px solid; BORDER-LEFT: #cecfce 1px solid; BORDER-RIGHT: #cecfce 1px solid; BORDER-TOP: #cecfce 1px solid; FONT-FAMILY: 돋음, 굴림, Arial,sans-serif
+}
+TR.boldFont {font-weight: bold;}
+TR.normalFont {font-weight: normal;}
+ 
+.int_tp01 { width: 352px; height: 16px; padding: 2px 0 2px 3px; font-family: dotum; font-size: 12px; border: 1px solid #d0d0d0; background: #fff; }
+.sel_tp { width: 129px; font-family: dotum; font-size: 12px; }
+.w280px { width: 280px !important; }
+.w230px { width: 230px !important; }
+.w146px { width: 146px !important; }
+.w96px { width: 96px !important; }
+.lawid { width: 68px; display: inline-block; }
+
+.btnAreab { margin-left: 210px; }
+
+.coursew { width: 800px; height: 109px; margin: 60px 0 30px 0; overflow: hidden; }
+.coursew .courselist { width: 654px; float: left; padding-left: 14px; }
+.coursew .courselist dl { width: 654px; overflow: hidden; padding: 8px 0 5px 0; }
+.coursew .courselist dl dt { width: 67px; float: left; padding-left: 20px; font-weight: bold; color: #333; }
+.coursew .courselist dl dd { float: left; }
+.coursew h4 { padding: 30px 0 0 0; width: 130px; float: left; color: #333; font-weight: bold; font-size: 16px; text-align: center; }
+
+.int_tp02 { width: 352px; height: 45px; padding: 2px 0 2px 3px; font-family: dotum; font-size: 12px; border: 1px solid #d0d0d0; background: #fff; }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.bd { border: 1px solid red; }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

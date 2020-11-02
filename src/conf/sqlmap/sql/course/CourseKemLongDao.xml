@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="EUC-KR"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="CourseKemLongDao">
+	<update id="updateInfo" parameterClass="map">
+		UPDATE CU_SVC_COURSE_KEM_L SET 
+			KEM_VAL = #kemVal#
+		WHERE COURSE_ID = #courseId,javaType=Integer#
+			AND COLLTYPE_ID = #collTypeId,javaType=Integer#
+			AND METADIC_ID = #metadicId,javaType=Integer#
+	</update>
+	
+	<insert id="insertInfo" parameterClass="map">
+		<selectKey resultClass="Integer" keyProperty="kemId">
+         SELECT NVL(MAX(KEM_ID),0) + 1 as kemId FROM CU_SVC_COURSE_KEM_L where COURSE_ID=#courseId#
+        </selectKey>
+        
+		INSERT INTO CU_SVC_COURSE_KEM_L 
+		(KEM_ID, COURSE_ID, METADIC_ID
+			, COLLTYPE_ID, KEM_VAL)
+		 values(#kemId#, #courseId#, #metadicId#
+			, #collTypeId#, #kemVal#)
+	</insert>
+	
+	<delete id="deleteInfo"  parameterClass="map">
+		DELETE FROM CU_SVC_COURSE_KEM_L 
+		WHERE 
+			COURSE_ID = #courseId,javaType=Integer#
+			AND COLLTYPE_ID = #collTypeId,javaType=Integer#
+			AND METADIC_ID = #metadicId,javaType=Integer#
+	</delete>
+	<delete id="deleteList"  parameterClass="map">
+		DELETE FROM CU_SVC_COURSE_KEM_L 
+		WHERE 
+			COURSE_ID = #courseId,javaType=Integer#
+			<isNotEmpty property="collType" prepend="AND">
+			METADIC_ID IN (SELECT METADIC_ID FROM CU_COM_METADIC WHERE COLL_TYPE = #collType#)
+			</isNotEmpty>
+			<isNotEqual property="collTypeId" prepend="AND" compareValue="0">
+			COLLTYPE_ID = #collTypeId#
+			</isNotEqual>
+	</delete>
+	<delete id="deleteNotIn" parameterClass="map">
+		DELETE FROM CU_SVC_COURSE_KEM_L
+		WHERE
+			COURSE_ID = #courseId,javaType=Integer#
+			<isNotEmpty property="collType" prepend="AND">
+			METADIC_ID IN (SELECT METADIC_ID FROM CU_COM_METADIC WHERE COLL_TYPE = #collType#)
+			</isNotEmpty>
+			<dynamic open="(" close=")" prepend="AND">
+                <iterate property="colltypeIds" conjunction="AND" removeFirstPrepend="true">
+                    COLLTYPE_ID != #colltypeIds[]#
+                </iterate>
+            </dynamic>
+	</delete>
+
+</sqlMap>

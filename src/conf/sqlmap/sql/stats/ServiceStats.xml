@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="EUC-KR"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="ServiceStatsDao">
+	<typeAlias alias="serviceStats" type="com.cyberup.model.stats.ServiceStats"/>
+	<!-- 강좌조회수 -->
+	<select id="selectCourseList" resultClass="serviceStats"  parameterClass="serviceStats">
+      WITH REPT AS(
+		    SELECT  A.UNIVERSITY_ID, A.UNIVDEPT_ID, B.DEPT_ID, B.DEPT_NAME 
+		    FROM    CU_UNIV_DEPT A, CU_REPT_DEPT B
+		    WHERE A.DEPT_ID = B.DEPT_ID
+	   ), 
+	 DT AS(
+	      SELECT  
+              TITLE  as courseName,
+              UNIV_NAME as univName,
+              NVL((SELECT DEPT_NAME 
+               	  FROM REPT 
+               	  WHERE REPT.UNIVDEPT_ID = A.UNIVDEPT_ID
+                        AND REPT.UNIVERSITY_ID = B.UNIVERSITY_ID),'기타') AS deptName,
+              SUM(CLICKS_CNT) as hitsCnt
+		   FROM CU_LOG_COURSE_CLICKS A, CU_SVC_COURSE B, CU_UNIV_INFO C
+		   WHERE A.COURSE_ID = B.COURSE_ID    
+		         AND B.UNIVERSITY_ID = C.UNIVERSITY_ID
+		   		<isNotEmpty property="searchSDT" prepend="">
+           		<isNotEmpty property="searchEDT" prepend="AND">
+            	 A.SEARCH_DT BETWEEN #searchSDT# AND #searchEDT#
+            	</isNotEmpty>
+             	</isNotEmpty>
+             	<isNotEmpty property="searchUnivName" prepend="AND">
+              		UNIV_NAME LIKE concat(concat('%',#searchUnivName#),'%') 
+              	</isNotEmpty>
+		   GROUP BY TITLE, UNIVDEPT_ID, B.UNIVERSITY_ID,UNIV_NAME ),
+		RT AS(
+	      SELECT 
+                ROW_NUMBER () OVER ($sortString$) AS recNum, 
+                DT.courseName,
+                DT.univName,          
+ 				DT.deptName,
+ 				hitsCnt,
+                SUM(hitsCnt) OVER() as hitsTotalCnt,
+                CASE WHEN SUM(hitsCnt) OVER() >0 THEN 
+                      ROUND(hitsCnt/SUM(hitsCnt) OVER() * 100 ,2) ELSE 0 END  as hitsRate,
+                COUNT (*) OVER () totalCnt   
+	        FROM  DT
+	        WHERE 1=1
+	        <isNotEmpty property="searchDeptName" prepend="AND">
+	       		deptName  LIKE concat(concat('%',#searchDeptName#),'%')
+	        </isNotEmpty>	        
+		 )
+		 SELECT *
+		 FROM RT
+      	 WHERE CEIL (recNum / #showCnt,javaType=Integer#) = #currPage,javaType=Integer#
+      	 $sortString$      	
+	</select>	
+	
+	<!-- 학교 조회수 -->
+	<select id="selectUnivList" resultClass="serviceStats"  parameterClass="serviceStats">
+      	SELECT 
+      		RANK() OVER(ORDER BY hitsCnt DESC) AS serviceRank,
+      		DT.*, 
+      		SUM(hitsCnt) OVER() as hitsTotalCnt,
+      		CASE WHEN SUM(hitsCnt) OVER() >0 THEN 
+      			ROUND(hitsCnt/SUM(hitsCnt) OVER() * 100 ,2) ELSE 0 END as hitsRate
+      	FROM(
+	            SELECT  	             	 
+		             COUNT (*) OVER () totalCnt,
+		             UNIV_NAME  as univName, 
+		             SUM(CLICKS_CNT) as hitsCnt
+				FROM CU_LOG_UNIV_CLICKS A, CU_UNIV_INFO B
+				WHERE A.UNIVERSITY_ID = B.UNIVERSITY_ID
+             	<isNotEmpty property="searchSDT" prepend="">
+             		<isNotEmpty property="searchEDT" prepend="AND">
+              		 SEARCH_DT BETWEEN #searchSDT# AND #searchEDT#
+              		</isNotEmpty>
+              	</isNotEmpty>
+              	<isNotEmpty property="searchUnivName" prepend="AND">
+              		UNIV_NAME LIKE concat(concat('%',#searchUnivName#),'%') 
+              	</isNotEmpty>
+			    GROUP BY UNIV_NAME 
+			    ORDER BY UNIV_NAME    	
+           ) DT
+           $sortString$
+		</select>	
+		
+	<!-- 학과 조회수 -->
+	<select id="selectDeptList" resultClass="serviceStats"  parameterClass="serviceStats">
+      	
+      	WITH DT AS(
+     		SELECT  
+		        CLASSIFY_NAME AS className,
+                DEPT_NAME  as deptName, 
+                SUM(CLICKS_CNT) as hitsCnt,
+                COUNT (*) OVER () totalCnt,
+                CLASSIFY_ORDER,
+                C.DEPT_ORDER         
+            FROM CU_LOG_UNIV_CLICKS A, CU_UNIV_DEPT B,  CU_REPT_DEPT C,CU_REPT_CLASSIFICATION D
+            WHERE A.UNIVDEPT_ID = B.UNIVDEPT_ID
+                   AND A.UNIVERSITY_ID = B.UNIVERSITY_ID
+                   AND  B.DEPT_ID = C.DEPT_ID
+                   AND C.CLASSIFY_ID = D.CLASSIFY_ID            
+            	<isNotEmpty property="searchSDT" prepend="">
+            		<isNotEmpty property="searchEDT" prepend="AND">
+             		 SEARCH_DT BETWEEN #searchSDT# AND #searchEDT#
+             		</isNotEmpty>
+             	</isNotEmpty>
+             	<isNotEmpty property="searchDeptName" prepend="AND">
+             		DEPT_NAME LIKE concat(concat('%',#searchDeptName#),'%') 
+             	</isNotEmpty>
+		    GROUP BY DEPT_NAME, CLASSIFY_NAME, CLASSIFY_ORDER, DEPT_ORDER
+      	)
+      	SELECT * 
+      	FROM (
+	      	SELECT 
+	      		ROW_NUMBER () OVER ( $sortString$ ) AS recNum,  
+	      		DT.*, 
+	      		SUM(hitsCnt) OVER() as hitsTotalCnt,
+	      		CASE WHEN SUM(hitsCnt) OVER() >0 THEN 
+	      			ROUND(hitsCnt/SUM(hitsCnt) OVER() * 100 ,2) ELSE 0 END as hitsRate
+	      	FROM DT
+      	)
+		WHERE CEIL (recNum / #showCnt,javaType=Integer#) = #currPage,javaType=Integer#
+ 		$sortString$   
+	</select>				
+	
+	<statement id="insCourseHits" parameterClass="map">		    
+	    MERGE INTO CU_LOG_COURSE_CLICKS  A
+	    USING  DUAL 
+	    ON  (A.COURSE_ID = #courseID#
+	         AND  A.SEARCH_DT = to_char(sysdate,'yyyymmdd'))
+	    WHEN MATCHED THEN 
+	          UPDATE SET A.CLICKS_CNT = A.CLICKS_CNT+ 1
+	    WHEN NOT MATCHED THEN 
+	          INSERT(A.SEARCH_DT, A.COURSE_ID, A.CLICKS_CNT, UNIVERSITY_ID, UNIVDEPT_ID)
+	          VALUES(to_char(sysdate,'yyyymmdd'), #courseID#, 1, #univID#, #deptID#)
+	</statement>
+	
+	<statement id="insServiceHits" parameterClass="map">		    
+	    MERGE INTO CU_LOG_UNIV_CLICKS  A
+	    USING  DUAL 
+	    ON  (A.UNIVERSITY_ID  = #univID#
+	    <isNotEmpty property="deptID" prepend="">
+	   		 AND  A.UNIVDEPT_ID  = #deptID#
+	    </isNotEmpty>
+	    <isEmpty property="deptID" prepend="">
+	   		 AND  A.UNIVDEPT_ID  IS NULL
+	    </isEmpty>
+	         AND  A.SEARCH_DT = to_char(sysdate,'yyyymmdd'))
+	    WHEN MATCHED THEN 
+	          UPDATE SET A.CLICKS_CNT = A.CLICKS_CNT + 1
+	    WHEN NOT MATCHED THEN 
+	          INSERT(CLICKS_ID, A.SEARCH_DT, A.CLICKS_CNT, UNIVERSITY_ID, UNIVDEPT_ID)
+	          VALUES(SEQ_LOG_UNIVCLICKS_ID.NEXTVAL, to_char(sysdate,'yyyymmdd'), 1, #univID#, #deptID#)
+	</statement>
+</sqlMap>

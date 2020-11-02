@@ -1,0 +1,195 @@
+<head>
+	<title>학과 내비게이션</title>
+	<link rel="stylesheet" type="text/css" href="/home/css/course.css" />
+	<script type="text/javascript" language="javascript">
+	
+	$(document).ready(function() {
+	
+		//alert( "$!curriculum.gubn" );
+		search();
+		//showTab(1);
+		
+    });
+    
+    //대학 롤업 감추기
+    function hidelayST(){
+    	$(".items").mouseleave(function(){
+    		$("div .layST").hide();
+    	});
+    }
+    
+    function showTab(gubn){
+    	$("#gubn").val(gubn);
+		$("#form").attr("method","post");
+		$("#form").attr("onsubmit","");
+		$("#form").attr("action","/home/curri/navigationMajorArea.sub.action?gnb=32");
+		$("#form").submit();
+    	
+    	/*
+    	if(gubn == "1"){
+			$("#areaList").show();
+			$("#list").hide();   
+			$("#tab").removeClass().addClass("tab_type2");
+			$(".tab9 a").removeClass();
+			$(".tab8 a").addClass("on");
+    	}else {
+    		$("#deptList").html("<center><img src='/home/images/course/visual_part.gif' alt='학과선택'/></center>");
+			$("#areaList").hide();    	
+			$("#list").show();    	
+			$("#tab").removeClass().addClass("tab_type2 tab_no_bottom"); 
+			$(".tab8 a").removeClass();
+			$(".tab9 a").addClass("on");
+    	}
+    	*/
+    }
+    
+	function search()
+	{
+		jQuery.post('navigationMajorArea_list.ajax.action',  
+				function(data) {
+        			$("#list").html(data);
+		});
+	}
+	
+	function moveArea(classifyId)
+	{
+		$("#classifyId").val(classifyId);
+		document.form.action="/home/intro/searchMajor.sub.action?gnb=14";
+		document.form.method = "post";
+		document.form.submit();
+		
+	}
+
+	function moveCode(classifyId, deptName)
+	{
+		$("#classifyId").val(classifyId);
+		$("#deptName").val(deptName);
+		document.form.action="/home/intro/searchMajor.sub.action?gnb=14";
+		document.form.method = "post";
+		document.form.submit();
+	}
+	
+	function selectClassifyItem(classifyName,classifyId){
+		$("#selectUnivList").hide();
+		
+		$("#classifyId").val(classifyId);
+		$("#classifyName").val(classifyName);
+		$("#form").attr("method","post");
+		$("#form").attr("onsubmit","");
+		$("#form").attr("action","/home/curri/navigationMajorArea.sub.action?gnb=32");
+		$("#form").submit();
+		
+		
+		/*
+		jQuery.post('deptList.ajax.action',
+					{classifyName:classifyName,classifyId:classifyId},  
+					function(data) {
+        				$("#deptList").html(data);
+		});
+		*/
+	}
+
+//분야별보기에서 사용할 대학리스트	
+	function selectDeptItem(deptId){
+		$("#deptId").val(deptId);
+	
+		jQuery.post('selectUnivList.ajax.action',
+					$("#form").formSerialize(),  
+					function(data) {
+						//alert(data);
+						
+	        			$("#"+deptId).html(data);
+	        			$("#"+deptId).show();
+	        			hidelayST();
+		});
+	}
+	function viewCurriculum(universityId, univdeptId, deptId ,cnt){
+		$("#universityId").val(universityId);
+		$("#univdeptId").val(univdeptId);
+		$("#deptId").val(deptId);
+		$("#cnt").val(cnt);
+		
+		if($("#universityId").val() == "" || $("#univdeptId").val() == ""){
+			alert("선택된 내용이 없습니다.");
+			return;
+		} 
+		
+		$("#form").attr("method","post");
+		$("#form").attr("onsubmit","");
+		
+		if(cnt == 1)
+			$("#form").attr("action","/home/curri/curriculum.sub.action?gnb=31");		
+		else
+			$("#form").attr("action","/home/curri/deptDetail.sub.action?gnb=31");
+		$("#form").submit();
+	}
+	
+	</script>
+</head>
+	
+<body id="curri">
+	<p class="location">
+		<a href="/home/index.main.action">홈</a> <span>></span> <a href="/home/curri/areadept.sub.action?gnb=31">교과과정</a> <span>></span> <a href="/home/curri/navigationMajorArea.sub.action?gnb=32">학과정보</a> 
+	</p>
+	<h3>
+		<img src="/home/images/title/h3_subject_navigation.gif" alt="학과 내비게이션" />
+		<img src="/home/images/title/c_05.gif" alt="분야 및 학과를 선택하시면 학과검색으로 이동됩니다.">
+	</h3>
+
+	
+		
+#if($!curriculum.gubn == "1")
+	<div class="contentWrap">
+	<!--s:컨텐츠영역-->
+	
+		<ul id="tab" class="tab_type2">
+					<li class="tab8"><a class="on" href="javascript:showTab(1)">분야보기</a> </li>
+					<li class="tab9"><a class="" href="javascript:showTab(2)">전체보기</a> </li>
+		</ul>
+	
+	
+		<div id="areaList">
+			<div>
+				<ul class="overall_tab_list m_b35">
+					#if($classifyList)
+						#foreach($list in $classifyList)
+						<li><a href="javascript:selectClassifyItem('$list.classifyName',$list.classifyId);">$!list.classifyName</a></li>
+						
+						#end
+					#end
+				</ul>
+			</div>
+			
+			<div id="deptList">#parse('home/curri/deptList.vm')</div>
+			<div id="selectUnivList" class="search_major type1" style="display:none;">#parse('home/curri/navigationMajorArea_list.vm')</div>
+	</div>
+	
+#else
+	<div class="contentWrap">
+	<!--s:컨텐츠영역-->
+	
+		<ul id="tab" class="tab_type2 tab_no_bottom">
+					<li class="tab8"><a class="" href="javascript:showTab(1)">분야보기</a> </li>
+					<li class="tab9"><a class="on" href="javascript:showTab(2)">전체보기</a> </li>
+		</ul>
+	<div id="list" class="univ_table m_l0">#parse('home/curri/navigationMajorArea_list.vm')</div>
+
+#end		
+		
+		
+		
+		
+	<form class="search_box01" id="form" name="form" action="#" onsubmit="try{search();}catch(e){alert(e);}return false;"><!-- box_type01 Start -->
+        <input type="hidden" id="universityId" name="universityId" />
+        <input type="hidden" id="univdeptId" name="univdeptId" />
+        <input type="hidden" id="classifyId" name="classifyId" />
+        <input type="hidden" id="classifyName" name="classifyName" />
+        <input type="hidden" id="deptId" name="deptId" />
+        <input type="hidden" id="deptName" name="deptName" />
+        <input type="hidden" id="tabGubn" name="tabGubn" value="1"/>
+		<input type="hidden" id="cnt" name="cnt"/>
+		<input type="hidden" id="gubn" name="gubn"/>
+	</form>
+
+</body>
+</html>

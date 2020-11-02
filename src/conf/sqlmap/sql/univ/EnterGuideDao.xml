@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="EUC-KR"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="EnterGuideDao">
+	<typeAlias alias="univ" type="com.cyberup.model.univ.Univ"/>
+	
+	<select id="selectEnterGuideList" resultClass="univ" parameterClass="univ">
+		SELECT * FROM (
+            SELECT  TEMP.*
+                    , (SELECT LINK_URL FROM CU_UNIV_LINK WHERE LINK_GUBUN_ID = 16 AND UNIVERSITY_ID = TEMP.UNIVERSITY_ID AND LINK_NAME LIKE '신입학%'  AND ROWNUM=1) as newcome
+                    , (SELECT getSip(LINK_URL) FROM CU_UNIV_LINK WHERE LINK_GUBUN_ID = 16 AND UNIVERSITY_ID = TEMP.UNIVERSITY_ID AND LINK_NAME LIKE '신입학%'  AND ROWNUM=1) as sip1
+                    , (SELECT getUri(LINK_URL) FROM CU_UNIV_LINK WHERE LINK_GUBUN_ID = 16 AND UNIVERSITY_ID = TEMP.UNIVERSITY_ID AND LINK_NAME LIKE '신입학%'  AND ROWNUM=1) as uri1
+                    , (SELECT getQri(LINK_URL) FROM CU_UNIV_LINK WHERE LINK_GUBUN_ID = 16 AND UNIVERSITY_ID = TEMP.UNIVERSITY_ID AND LINK_NAME LIKE '신입학%'  AND ROWNUM=1) as qri1
+                    , (SELECT getSp(LINK_URL) FROM CU_UNIV_LINK WHERE LINK_GUBUN_ID = 16 AND UNIVERSITY_ID = TEMP.UNIVERSITY_ID AND LINK_NAME LIKE '신입학%'  AND ROWNUM=1) as sp1
+                    , (SELECT LINK_URL FROM CU_UNIV_LINK WHERE LINK_GUBUN_ID = 16 AND UNIVERSITY_ID = TEMP.UNIVERSITY_ID AND LINK_NAME LIKE '편입학%'  AND ROWNUM=1) as transfer
+                    , (SELECT getSip(LINK_URL) FROM CU_UNIV_LINK WHERE LINK_GUBUN_ID = 16 AND UNIVERSITY_ID = TEMP.UNIVERSITY_ID AND LINK_NAME LIKE '편입학%'  AND ROWNUM=1) as sip2
+                    , (SELECT getUri(LINK_URL) FROM CU_UNIV_LINK WHERE LINK_GUBUN_ID = 16 AND UNIVERSITY_ID = TEMP.UNIVERSITY_ID AND LINK_NAME LIKE '편입학%'  AND ROWNUM=1) as uri2
+                    , (SELECT getQri(LINK_URL) FROM CU_UNIV_LINK WHERE LINK_GUBUN_ID = 16 AND UNIVERSITY_ID = TEMP.UNIVERSITY_ID AND LINK_NAME LIKE '편입학%'  AND ROWNUM=1) as qri2
+                    , (SELECT getSp(LINK_URL) FROM CU_UNIV_LINK WHERE LINK_GUBUN_ID = 16 AND UNIVERSITY_ID = TEMP.UNIVERSITY_ID AND LINK_NAME LIKE '편입학%'  AND ROWNUM=1) as sp2
+                    , (SELECT LINK_URL FROM CU_UNIV_LINK WHERE LINK_GUBUN_ID = 16 AND UNIVERSITY_ID = TEMP.UNIVERSITY_ID AND LINK_NAME LIKE '시간제%'  AND ROWNUM=1) as timecome
+                    , (SELECT getSip(LINK_URL) FROM CU_UNIV_LINK WHERE LINK_GUBUN_ID = 16 AND UNIVERSITY_ID = TEMP.UNIVERSITY_ID AND LINK_NAME LIKE '시간제%'  AND ROWNUM=1) as sip3
+                    , (SELECT getUri(LINK_URL) FROM CU_UNIV_LINK WHERE LINK_GUBUN_ID = 16 AND UNIVERSITY_ID = TEMP.UNIVERSITY_ID AND LINK_NAME LIKE '시간제%'  AND ROWNUM=1) as uri3
+                    , (SELECT getQri(LINK_URL) FROM CU_UNIV_LINK WHERE LINK_GUBUN_ID = 16 AND UNIVERSITY_ID = TEMP.UNIVERSITY_ID AND LINK_NAME LIKE '시간제%'  AND ROWNUM=1) as qri3
+                    , (SELECT getSp(LINK_URL) FROM CU_UNIV_LINK WHERE LINK_GUBUN_ID = 16 AND UNIVERSITY_ID = TEMP.UNIVERSITY_ID AND LINK_NAME LIKE '시간제%'  AND ROWNUM=1) as sp3
+            FROM (
+                SELECT UNIVERSITY_ID 
+                        , UNIV_NAME as univ_name
+                        , nvl(UNIV_ENTER_PHONE,univ_phone) as univ_phone
+                        , UNIV_HOMEPAGE as univ_homepage
+                        , getSip(UNIV_HOMEPAGE) as sip
+                        , getUri(UNIV_HOMEPAGE) as uri
+                        , getQri(UNIV_HOMEPAGE) as qri
+                        , getSp(UNIV_HOMEPAGE) as sp
+                        , LOGO_UPFILE_GID as logo_upfile_gid
+                        ,(SELECT upfile_id FROM cu_svc_attfileupload WHERE upfile_gid = LOGO_UPFILE_GID and upfile_gid != 0) upfileId0
+                        ,(SELECT upfile_id FROM cu_svc_attfileupload WHERE upfile_gid = entermodel and upfile_gid != 0 and UPFILE_FILENAME like '%'||#selectYear#||'%' and rownum = 1) entermodel
+                FROM CU_UNIV_INFO a
+                where 1=1
+                and a.gubun_id in ('51','52','163')
+                ORDER BY UNIV_NAME
+            ) TEMP
+        )
+	</select>
+	
+	<select id="selectEnterGuideList2" resultClass="univ" parameterClass="univ">
+		SELECT * FROM (
+            SELECT  TEMP.*
+                    , (SELECT LINK_URL FROM CU_UNIV_LINK WHERE LINK_GUBUN_ID = 16 AND UNIVERSITY_ID = TEMP.UNIVERSITY_ID AND LINK_NAME LIKE '입학안내%'  AND ROWNUM=1) as newcome
+                    , (SELECT getSip(LINK_URL) FROM CU_UNIV_LINK WHERE LINK_GUBUN_ID = 16 AND UNIVERSITY_ID = TEMP.UNIVERSITY_ID AND LINK_NAME LIKE '입학안내%'  AND ROWNUM=1) as sip1
+                    , (SELECT getUri(LINK_URL) FROM CU_UNIV_LINK WHERE LINK_GUBUN_ID = 16 AND UNIVERSITY_ID = TEMP.UNIVERSITY_ID AND LINK_NAME LIKE '입학안내%'  AND ROWNUM=1) as uri1
+                    , (SELECT getQri(LINK_URL) FROM CU_UNIV_LINK WHERE LINK_GUBUN_ID = 16 AND UNIVERSITY_ID = TEMP.UNIVERSITY_ID AND LINK_NAME LIKE '입학안내%'  AND ROWNUM=1) as qri1
+                    , (SELECT getSp(LINK_URL) FROM CU_UNIV_LINK WHERE LINK_GUBUN_ID = 16 AND UNIVERSITY_ID = TEMP.UNIVERSITY_ID AND LINK_NAME LIKE '입학안내%'  AND ROWNUM=1) as sp1
+            FROM (
+                SELECT UNIVERSITY_ID 
+                        , CASE WHEN instr(univ_name,'(') > 1 THEN substr(univ_name, 1, instr(univ_name,'(') - 1) ELSE univ_name END univ_name
+                        , nvl(UNIV_ENTER_PHONE,univ_phone) as univ_phone
+                        , UNIV_HOMEPAGE as univ_homepage
+                        , getSip(UNIV_HOMEPAGE) as sip
+                        , getUri(UNIV_HOMEPAGE) as uri
+                        , getQri(UNIV_HOMEPAGE) as qri
+                        , getSp(UNIV_HOMEPAGE) as sp
+                        , LOGO_UPFILE_GID as logo_upfile_gid
+                        ,(SELECT upfile_id FROM cu_svc_attfileupload WHERE upfile_gid = LOGO_UPFILE_GID and upfile_gid != 0) upfileId0
+                        ,(SELECT upfile_id FROM cu_svc_attfileupload WHERE upfile_gid = entermodel and upfile_gid != 0 and UPFILE_FILENAME like '%'||#selectYear#||'%' and rownum = 1) entermodel
+                FROM CU_UNIV_INFO a
+                where 1=1
+                and a.gubun_id in ('169')
+                and UNIV_NAME like '%(%'
+                AND UNIVERSITY_ID IN ('33','43','38','41','39','36','40','35','28')
+                ORDER BY UNIV_NAME
+            ) TEMP
+        )
+	</select>
+	
+
+</sqlMap>

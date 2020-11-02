@@ -1,0 +1,126 @@
+<head>
+	<title>대학정보현황</title>
+	<script type="text/javascript" language="javascript">
+	function search()
+	{
+		goPage(1);
+	}
+	
+	function setRecordCnt(totalCnt, currPage, totalPage, showCnt)
+	{
+		$("#tCnt").text(totalCnt);
+		$("#cPage").text(currPage);
+		$("#tPage").text(totalPage);
+		
+		setPaging($("#pg"), totalCnt, showCnt, currPage);
+	}
+	
+	function goPage(page)
+	{
+		if(typeof(page) != "undefined")
+			$("#currPage").val(page);
+		jQuery.post('univStats_list.ajax.action', 
+				$("#searchForm").formSerialize(), 
+				function(data) {
+        			$("#list").html(data);
+		});
+	}
+	
+	function modify(infoId)
+	{
+		showWin('/mgr/univ/univStats_modify.pop.action?infoId=' + infoId, 'modwin', 800, 440);
+	}
+	
+	function reg()
+	{
+		showWin('/mgr/univ/univStats_write.pop.action', 'regwin', 800, 410);
+	}
+	
+	//데드링크체크 [ university_id 를 인자값으로 넘겨야한다. ] 
+	function deadLinkCheck()
+	{
+		$("div[id=progressbar").show();
+
+		jQuery.post('univStats_deadLinkCheck.json', 
+				$("#searchForm").formSerialize(), 
+				function(data) {	
+					$("div[id=progressbar").hide();
+					alert("수정이 완료되었습니다.");
+		});
+		
+		search();
+	}
+	
+	$(document).ready(function() {
+		search();
+    });
+	</script>
+</head>
+
+<body>
+	
+	<!-- MainCopyBox  Start (페이지별 location 정보 표시.)-->
+	<div id="location_box">
+		<h3><img src="/mgr/images/univ/title3.gif" alt="대학정보현황" /></h3>
+		<ul class="location">
+			<li><a href="/mgr/main.sub.action">Home</a></li>
+			<li><a href="/mgr/univ/univInfo.sub.action?gnb=11">학교/학사관리</a></li>
+			<li>대학정보현황</li>
+		</ul>
+	</div>
+	<!-- MainCopyBox  End -->
+	
+<form class="search_box01" id="searchForm" name="searchForm" action="#" onsubmit="try{search();}catch(e){alert(e);}return false;"><!-- box_type01 Start -->
+<input type="hidden" id="showCnt" name="showCnt" value="15"/>
+<input type="hidden" id="currPage" name="currPage" value="1"/>
+	<fieldset class="inner">
+		<table cellspacing="0" cellpadding="0" summary="대학정보현황 검색" class="border_none_table">
+			<caption>대학정보현황 검색</caption>
+			<colgroup>
+				<col width="50%"/>
+				<col width="*%"/>
+			</colgroup>
+			<tbody>
+				<tr>
+					<td>
+						<label for="checkbox-1">구분</label>
+						<select	id="infoGubunId" name="infoGubunId">
+							<option value="0">전체</option>
+							#foreach($code in $codeList)
+							<option value="$!code.codeId">$!code.codeName</option>
+							#end
+						</select>
+						 
+					</td>
+					<td>
+						<label for="select-1">현황정보</label>
+						<input type="text" id="infoName" name="infoName" size="10" title="학교명입력"/>
+						<a><input type="image" style="width:52px;height:21px;border:0px;" src="/mgr/images/btn/search.gif" alt="검색" /></a>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</fieldset>
+</form><!-- box_type01 End -->
+
+
+<div class="list_top01">
+	<span>현황정보 클릭시 관리페이지로 이동합니다.</span>
+	<span class="f_right">total : <em id="tCnt">00</em>건(<em id="cPage">1</em>/<em id="tPage">10</em>page)</span>
+</div>
+
+
+<div id="list">#parse('mgr/univ/univStats_list.vm')</div>
+
+<div id="progressbar" style="position:fixed;height:200px;width:200px;top:40%;left:40%;z-index:9999;display:none;">
+	<img src="/mgr/images/univ/progressbar.gif" alt="진행창" />
+</div>
+<div class="page_num">
+	<div id="pg" name="pg"></div>
+	<a href="javascript:reg();" class="f_right2"><img src="/mgr/images/btn/enter_info.gif" alt="현황정보등록" /></a>
+	<a href="javascript:deadLinkCheck();" class="f_right _popup_type1"><img src="/mgr/images/btn/dead_link.gif" alt="데드링크" /></a>
+</div>
+
+
+</body>
+</html>

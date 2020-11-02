@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="EUC-KR"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="AcademyinfoLinkDao">
+	<typeAlias alias="academyinfoLink" type="com.cyberup.model.univ.AcademyinfoLink"/>
+
+	<select id="selectList" resultClass="academyinfoLink"  parameterClass="map">
+		SELECT   a.*
+		FROM 
+		(
+			SELECT ROW_NUMBER () OVER (ORDER BY REG_DATE DESC) as recNum, COUNT (*) OVER () totalCnt,
+				INFO_ID as infoId, 
+				INFO_NAME as infoName,
+				INFO_GUBUN_ID as infoGubunId,
+				B.CODE_NAME as infoGubunName,
+				INFO_URLPATTERN as infoUrlpattern,
+				A.USE_YN as useYn,
+				REGISTER as register,
+				REG_DATE as regDate,
+				MODIFIER as modifier,
+				MOD_DATE as modDate,
+				INFO_ORDER as infoOrder,
+				nvl(DEADLINK_ERR_CODE,'O') deadlinkErrCode 
+			FROM CU_ACADEMYINFO_LINK A
+				LEFT JOIN CU_COM_CODE B
+					ON B.CODE_GROUP=84 AND A.INFO_GUBUN_ID = B.CODE_ID
+			WHERE 1=1
+				<isNotEqual property="infoGubunId" prepend="AND" compareValue="0">
+					A.INFO_GUBUN_ID =#infoGubunId#			
+				</isNotEqual>  
+				<isNotEmpty property="infoName" prepend="AND">
+					INFO_NAME LIKE concat(concat('%',#infoName#),'%')
+				</isNotEmpty>  
+		) a
+		WHERE CEIL (recNum / #showCnt,javaType=Integer#) = #currPage,javaType=Integer#
+		ORDER BY recNum ASC
+	</select>
+
+	<select id="selectInfo" resultClass="academyinfoLink"  parameterClass="int">
+		SELECT 
+			INFO_ID as infoId, 
+			INFO_NAME as infoName,
+			INFO_GUBUN_ID as infoGubunId,
+			B.CODE_NAME as infoGubunName,
+			INFO_URLPATTERN as infoUrlpattern,
+			A.USE_YN as useYn,
+			REGISTER as register,
+			REG_DATE as regDate,
+			MODIFIER as modifier,
+			MOD_DATE as modDate,
+			INFO_ORDER as infoOrder 
+		FROM CU_ACADEMYINFO_LINK A
+			LEFT JOIN CU_COM_CODE B
+				ON B.CODE_GROUP=84 AND A.INFO_GUBUN_ID = B.CODE_ID
+		WHERE INFO_ID =#infoId,javaType=Integer#			
+	</select>
+		
+	<select id="selectViewList" resultClass="academyinfoLink"  parameterClass="int">
+		SELECT 
+			INFO_ID as infoId, 
+			INFO_NAME as infoName,
+			INFO_GUBUN_ID as infoGubunId,
+			INFO_URLPATTERN as infoUrlpattern,
+			USE_YN as useYn,
+			REGISTER as register,
+			REG_DATE as regDate,
+			MODIFIER as modifier,
+			MOD_DATE as modDate,
+			INFO_ORDER as infoOrder
+		FROM CU_ACADEMYINFO_LINK 
+      	ORDER BY INFO_GUBUN_ID, INFO_ORDER
+	</select>
+	
+	<update id="updateInfo" parameterClass="academyinfoLink">
+		UPDATE CU_ACADEMYINFO_LINK
+		SET 
+			INFO_ID = #infoId#, INFO_NAME = #infoName#, INFO_GUBUN_ID = #infoGubunId#
+			, INFO_URLPATTERN = #infoUrlpattern#, USE_YN = #useYn#, INFO_ORDER = #infoOrder#
+			, MODIFIER =#modifier#, MOD_DATE =SYSDATE
+		WHERE INFO_ID = #infoId,javaType=Integer#
+	</update>
+	
+	<update id="updateDeadlink" parameterClass="map">
+		UPDATE CU_ACADEMYINFO_LINK
+		SET 
+			<isEqual property="deadlinkErrCode" compareValue="0">
+				DEADLINK_ERR_CODE = null
+			</isEqual>
+			<isNotEqual property="deadlinkErrCode" compareValue="0">
+				DEADLINK_ERR_CODE = #deadlinkErrCode#
+			</isNotEqual>
+		WHERE INFO_ID = #infoId,javaType=Integer#
+	</update>
+	
+	<insert id="insertInfo" parameterClass="academyinfoLink">
+		<selectKey resultClass="Integer" keyProperty="infoId">
+         	SELECT SEQ_INFO_ID.nextval as infoId FROM dual
+        </selectKey>	
+		INSERT INTO CU_ACADEMYINFO_LINK
+			( INFO_ID, INFO_NAME, INFO_GUBUN_ID, INFO_URLPATTERN, USE_YN, INFO_ORDER, 
+	  		  REGISTER, REG_DATE)
+		VALUES
+			( #infoId#, #infoName#, #infoGubunId#, #infoUrlpattern#, #useYn#, #infoOrder# 
+			, #register#, SYSDATE)
+	</insert>
+	
+	<delete id="deleteInfo"  parameterClass="int">
+		DELETE FROM CU_ACADEMYINFO_LINK
+		WHERE INFO_ID =#infoId,javaType=Integer#			
+	</delete>
+	
+</sqlMap>
+	
+	

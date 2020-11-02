@@ -1,0 +1,92 @@
+<head>
+	<title>진학가이드</title>
+	<script type="text/javascript" language="javascript">
+	function search()
+	{
+		goPage(1);
+	}
+
+	 
+	function goPage(jumpGideNo)
+	{
+	
+		##$(".inner_box_preview").hide();
+		##$(".inner_box_preview").show();
+	
+		$("#guideNo").val(jumpGideNo);
+		jQuery.post('serviceGuide_list.ajax.action', 
+				$("#form").formSerialize(), 
+				function(data) {
+        			$("#list").html(data);
+		});
+		
+	}
+		
+	$(document).ready(function() {
+		//search();
+    });
+	
+	function selectStep1(no){
+
+		$("#selectStep1").val(no);
+		$("#form").attr("method","post");
+		$("#form").attr("onsubmit","");
+		$("#form").attr("action","/home/intro/serviceGuide2.sub.action?gnb=14");
+		
+		if(no == "4"){
+			no = "3";
+			$("#selectStep1").val(no);
+		}else if(no == "5"){
+			$("#selectStep1").val("4");
+			$("#selectStep2").val("1");
+			$("#form").attr("action","/home/intro/serviceGuideEnd.sub.action?gnb=14");
+		}
+	
+		$("#form").submit();
+	}
+//onload 함수.
+window.onload = function(){
+
+	$("#gnb li").find("div").hide();
+	$("li[id^=gnb] a").each(forEachMouseover);
+	$("div[id^=gnb_sub]").each(forEachMouseleave);
+	
+};
+
+function forEachMouseleave()
+{
+	$(this).mouseleave(function(){
+		$(this).slideUp("fast");
+	});
+}
+
+function forEachMouseover()
+{
+	$(this).mouseenter(function(){
+		$(this).parent().find("div").slideDown("fast",function(){
+			$("#gnb div:not(:animated)").slideUp("fast");
+		});
+	});
+}
+	</script>
+</head>
+
+<body>
+	<!-- MainCopyBox  Start (페이지별 location 정보 표시.)-->
+	<p class="location">
+		<a href="/home/index.main.action">홈</a> <span>></span> <a href="/home/intro/summary.sub.action?gnb=11">사이버대학 안내</a> <span>></span> <a href="/home/intro/serviceGuide.sub.action?gnb=14">진학가이드</a> 
+	</p>
+	<h3>
+		<img src="/home/images/title/h3_my_preview.gif" alt="나의 전형 미리보기" /> <img src="/home/images/title/c_03.gif" alt="자신에게 적합한 전형을 안내해 드립니다." />
+	</h3>
+
+	<div id="list">#parse('home/intro/serviceGuide_list.vm')</div>
+	<div id="result"></div>
+
+<form class="search_box01" id="form" name="form" action="#" onsubmit="try{search();}catch(e){alert(e);}return false;"><!-- box_type01 Start -->
+	<input type="hidden" id="guideNo" name="guideNo"/>
+	<input type="hidden" id="selectStep1" name="selectStep1"/>
+	<input type="hidden" id="selectStep2" name="selectStep2" />
+</form><!-- box_type01 End -->
+</body>
+</html>

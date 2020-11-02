@@ -1,0 +1,36 @@
+	
+	#if($publicList)
+	#if($publicList.size() > 0)
+		<script>
+			//공개강의 수가 있다면 공개강의 이미지를 보인다.
+			$("#publicImg").show();	
+		</script>
+		
+		#if($publicList.get(0).totalCnt > 4)
+		<a href="javascript:viewNextPublicCourse(-1);" class="btn_left"><img  src="/home/images/curriculum/btn_rolling_left.gif" alt="&lt;" /></a>
+		#end
+		
+			<dl class="img_txt">
+			#if($publicList.size() > 0)
+			#foreach($list in $publicList)
+				<dt><a href="javascript:viewDetail('$!list.courseId','$!list.title')"><img src="$!list.prevthumbnail" alt="썸네일" style="width:100%" /></a></dt>
+				<dd>
+					<a href="javascript:viewDetail('$!list.courseId','$!list.title')">$!list.title</a>
+					##$!list.department <span>|</span> $!list.manager
+					$!list.department <br/> $!list.manager
+				</dd>
+			#end
+			#end
+			</dl>
+			
+		#if($publicList.get(0).totalCnt > 4)
+		<a href="javascript:viewNextPublicCourse(1);" class="btn_right"><img src="/home/images/curriculum/btn_rolling_right.gif" alt="&gt;" /></a>
+		#end
+		
+	#else
+		<script>
+			//공개강의 수가 없다면 공개강의 이미지를 숨긴다.
+			$("#publicImg").hide();	
+		</script>
+	#end
+	#end

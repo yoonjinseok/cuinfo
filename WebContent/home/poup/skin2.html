@@ -1,0 +1,35 @@
+
+<link href="/home/poup/css/popup.css" type="text/css" rel="stylesheet" />
+<script type="text/javascript" language="javascript" src="/home/poup/js/layout.js"></script>
+
+<!--  Skin2.html START-->
+<div id="Pwrap1">
+	<div id="Pbody1">
+		<div class="Ptitle_bg">
+			<ul class="Ptitle_1">
+				<li> @title@ </li>
+				
+				<li class="Pclose">
+					<a href="javascript:closePoup('@poupNum@')"><img src="/home/poup/images/close.gif"/></a>
+				</li>
+			</ul>
+		</div>
+    	<ul class="Pp_30">
+    		<!-- 내용-->
+	      	<li>
+	      		@TEXT@
+			</li>
+			<li class="Pp_40">@ATTACHMENT@</li>
+			<!-- 내용-->
+    	</ul>     
+	</div>
+	<div class="Pbot">
+		<ul>
+			<li>
+				<input type="checkbox" id="chkView@poupNum@" onclick="javascript:closeEndPoup('@poupNum@');" />
+				<label for="chkView@poupNum@"> @CHKCLOSETEXT@ </label>
+			</li>
+		</ul>
+	</div>
+</div>
+<!--  Skin2.html END-->

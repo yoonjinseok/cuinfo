@@ -1,0 +1,45 @@
+<html>
+<body>
+	<div id="location_box"><!-- MainCopyBox  Start -->
+		<h3><img src="/home/images/etc/title2.gif" alt="오시는길" /></h3>
+		<ul class="location">
+			<li><a href="/home/index.main.action">Home</a></li>
+			<li>오시는길</li>
+		</ul>
+	</div><!-- MainCopyBox  End -->
+   <div class="t_center"><img src="/home/images/etc/site_img1.gif" alt="약도" /></div>
+   
+   <ul class="site_blank m_t30">
+     <li><img src="/home/images/etc/text1.gif" alt="주소" /><span class="bold"> 서울 중구 퇴계로 299 (쌍림동 22-1) KERIS빌딩 (1층 외환은행의 흰색 15층 건물)</span></li>
+     <li><img src="/home/images/etc/text2.gif" alt="전화" /><span class="bold"> 02)218-1114</span></li>
+     <li><img src="/home/images/etc/text3.gif" alt="교통편" /></li>
+   </ul>
+   <ul class="s_tit">  
+     <li><img src="/home/images/etc/text4.gif" alt="지하철이용시" /></li>
+     <li><span>지하철 2,4,5호선 동대문역사문화공원역 5번 출구 50m</span></li>
+     <li><img src="/home/images/etc/text5.gif" alt="버스이용시" /></li>
+     <li><span>KERLS빌딩 앞 정류소</span></li>
+     <li><span>버스 노선 찾기: <a href="http://www.bus.go.kr" target="_blank">http://www.bus.go.kr/</a></span></li>
+    </ul>
+    <ul>
+     <li class="green"><img src="/home/images/etc/green_bus.gif" alt="초록(지선)" />(초록버스): 0013, 0211</li>
+     <li class="blue"><img src="/home/images/etc/blue_bus.gif" alt="파랑(간선)" />104,105,263,371</li>
+     <li class="yellow"><img src="/home/images/etc/yellow_bus.gif" alt="노랑(순환)" />02</li>
+     <span class="ex1"><img src="/home/images/bul/icon_a.gif" alt="아이콘" />&nbsp; 간선(파랑)버스는 간선도로를 따라 서울의 각 권역을 연결, 지선(초록색)버스는 각 권역 안에서 간선버스나 지하철과 연결, 순환(노랑)버스는 도심 부도심 안에서 순환<br /> </span><span class="ex1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;운행</span>
+     </ul>
+      <ul class="s_tit m_t10">  
+     <li><img src="/home/images/etc/text6.gif" alt="자가용이용시" /></li>
+     </ul>
+     <ul class="s_tit1">
+     <li>퇴계로/명동 방향에서 오시는 경우</li>
+      <span class="ex">중구청 방향으로 직진 -> 광희사거리에서 유턴 -> 퇴계로 방향으로 100m 지점 오른쪽 KERIS빌딩</span>
+     <li>동대문 방향에서 오시는 경우</li>
+ <span class="ex"> 지나(장충동방향) -> 광희사거리에서 퇴계로 방향으로 우회전 -> 100m 지점 오른쪽 KERIS빌딩</span>
+     <li>장충동 방향에서 오시는 경우</li>
+         <span class="ex">장충체육관에서 퇴계로5가 사거리 방향으로 직진 -> 퇴계로5가 사거리에서 왕십리쪽으로 우회전 -> 광희사거리에서 유턴 -> 퇴계로 방향으로 100m 지점</span> <br /> <span class="ex">오른쪽 KERIS빌딩</span></li>
+     </ul>
+   <span class="ex1"><img src="/home/images/bul/icon_a.gif" alt="아이콘" /> &nbsp;주차공간이 부족하오니 가급적 대중교통을 이용해주시기 바랍니다.	</span>
+</div><!-- container End -->
+<br/></br>
+</body>
+</html>

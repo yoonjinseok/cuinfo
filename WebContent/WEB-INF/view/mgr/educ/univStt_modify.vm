@@ -1,0 +1,326 @@
+<head>
+	<title>통계문서 수정</title>
+	<script type="text/javascript" language="javascript">
+		
+	$(document).ready(function(){
+		//alert("$univStt.isEnd");
+	});
+		
+		
+	function modify()
+	{
+	
+		var blnChk = 0;
+		$("#uploadTB").find("div").each(function(index){
+			blnChk = 1;
+		});
+		if(blnChk == 0)
+			$("#upfileGid").val("");
+
+		$("#putState").val("Y");
+		//$("#uploadState").val("입력 완료하였습니다.");
+		$("#uploadState1").val("입력중입니다...\r\n");
+		$("#forNum").val(0);	  
+
+		//정기 일시 파일 정보  캡취하여 저장
+		if($("#termState").val() == "Y")
+			ajaxExcleUp(0);	//Excle 통계파일 내용 캡취
+		else
+			univsttUpdate(); //대학별 통계 파일 저장
+	}	
+
+	//Excle 통계파일 내용 등록
+	function ajaxExcleUp(count) 
+	{
+		var cnt = count;
+		jQuery.post('excle_update.json', 
+			$("#modifyForm").formSerialize(), 
+			function(data) 
+			{
+				//alert(cnt + " : " + data.errors + " : " + data.exerrors + " : " + data.allsucceed + ":" + data.exmessage);
+			
+				if(data.errors == true)
+    			{
+					eval(data.message);
+    				return;
+    			//} else if(data.end == true && cnt == 9) {
+    			} else if(data.exerrors == true){
+    				$("#uploadState1").val($("#uploadState1").val() + "\n" + data.exmessage);
+    				delRow($("#upfileSrc").val());
+    				
+    				//에러가 있을경우 데이터가 올바르지 않으므로 업로드 상태값을 변경
+    				jQuery.post("excle_updateFail.json",
+    							 $("#modifyForm").formSerialize(),
+    							 function(data){
+    							 	opener.goReload();
+    				});
+    					
+    				return;
+        		}else if(cnt == 8 && data.allsucceed == true) {	  
+    				univsttUpdate();
+    				return;
+	    		} else {
+	    			cnt += 1;
+	    			$("#forNum").val(cnt);	    			
+	    			$("#uploadState1").val($("#uploadState1").val() +data.sumessage);
+	    			ajaxExcleUp(cnt);
+	    			return;
+		    	}
+			});
+	}
+
+	 //대학별 통계 파일 저장
+	function univsttUpdate()
+	{
+		jQuery.post('univStt_update.json', 
+			$("#modifyForm").formSerialize(), 
+			function(data) {
+       			if(data.errors == true)
+       			{
+       				$("#uploadState1").val("입력 실패하였습니다.");
+       				eval(data.message);
+       			}
+       			else
+       			{
+					alert("저장되었습니다.");
+					//opener.search();
+					opener.goReload();
+					window.close();
+       			}
+			});
+			return;
+	}
+	
+	function statFileDelete(){    	
+		var fileGid = $("#upfileGid").val();
+		var sstID = $("#sstID").val();
+
+		var cofirm = confirm("게시물을  삭제하시겠습니까?");
+    	if(cofirm){
+    		jQuery.get('univStt_delete.json', 
+				{fileGid:fileGid, sstID:sstID},
+				function(data) {
+        			if(data.errors == true)
+        			{
+        				eval(data.message);
+        			}else{						
+						opener.search();
+						window.close();
+					}
+				});
+    	}
+	}
+	
+
+	
+	/*******************************
+    
+    	다중 파일 업로드 관련 함수
+    	
+    ********************************/
+    
+  //파일 업로드 시 
+    function setUploadResult(originalFilename, srcName, fileSize)
+    {
+    	/*
+    	alert(originalFilename);
+    	alert(srcName);
+    	alert(fileSize);
+    	*/
+    	
+    	if(originalFilename.indexOf(".xlsx")>0) {
+    		alert("확장자가 xls인 파일(Excel 97 - 2003 통합 문서)만 업로드 가능합니다.")
+    		return false;
+    	}
+    	
+    	
+    	$("#upload").hide();
+		$("#uploadTB").append('<div class="icon" id=\''+srcName+'\'><input type="hidden" id="upfileSrc" name="upfileSrc" value="'+srcName+'"/><a href="javascript:download(\''+srcName+'\');">'+originalFilename+'</a><span>('+getFileSize(fileSize)+')</span><a href="javascript:delRow(\''+srcName+'\');"><img src="/mgr/images/btn/btn_del.gif" /></a></div>');
+    }
+	function setUploadImageResult(originalFilename, srcName, fileSize)
+	{
+		var sHTML = "<img src='/mgr/common/file_download.json?srcName=" + srcName + "'>"; 
+        oEditors[0].exec("PASTE_HTML", [sHTML]); 
+	}
+    
+	//저장되어있는 파일 삭제
+	function deleteFileDB(fileID)
+    {
+    	if(confirm("파일을 삭제하시겠습니까?")){
+    	
+    		//통계파일 업로드 플래그 변경
+    		
+    	
+    		//파일삭제
+			jQuery.post('/mgr/common/file_delete_id.json', 
+				'upfileId='+fileID, 
+				function(data) {
+        			if(data.errors == true)
+        			{
+        				eval(data.message);
+        			}
+        			else
+        			{
+						$("#uploadTB").find("div[id^="+fileID+"]").remove();
+						$("#upload").show();
+        			}
+				});
+    	}
+    }
+	
+    //파일 삭제(저장되기전)
+    function delRow(trId)
+    {
+    	jQuery.post('/mgr/common/file_delete.json?srcName=' + trId, 
+    			function(data) {
+        			if(data.errors == true)
+        				eval(data.message);
+					else{
+						$("#uploadTB").find("div[id^="+trId+"]").remove();
+						$("#upload").show();
+					}
+    	});
+    }
+	
+	//디비에 저장된 내용 다운로드
+    function downloadDB(fileID)
+    {
+    	document.location.href = '/mgr/common/file_download_id.json?upfileId=' + fileID;
+    }
+	
+	//디비에 저장되기전 내용 다운로드
+    function download(srcName)
+	{
+		document.location.href = '/mgr/common/file_download.json?srcName=' + srcName;
+	}
+	</script>
+</head>
+<body>
+<div style="width:90%;padding-left:30px;padding-top:30px;">
+<form id="modifyForm" action="#">
+<input type="hidden" id="sttID" name="sttID" value="$!univStt.sttID"/>
+<input type="hidden" id="sttUnivID" name="sttUnivID" value="$!univStt.sttUnivID"/>
+<input type="hidden" id="forNum" name="forNum" value="0"/>
+<input type="hidden" id="termState" name="termState" value="$!univStt.termState"/>
+<input type="hidden" id="putState" name="putState" value="$!univStt.putState"/>
+<input type="hidden" name="upfileGid" id="upfileGid" value="$!upFileGid"/>
+<h2>글 수정</h2>
+<table borad="1" cellspacing="0" cellpadding="0" class="form_type01" summary="게사판 글 수정"><!-- list_type01 Start -->
+	<caption>대학교별 통계문서 수정</caption>
+	<colgroup>
+		<col width="15%" />
+		<col width="35%" />
+		<col width="15%" />
+		<col width="35%" />
+	</colgroup>
+	<tbody>
+		<tr>
+			<th scope="row">구분</th>
+			<td>
+                	#if($!univStt.termState == 'Y') 정기 
+                	#else 비정기
+                	#end
+			 </td>
+			<th scope="row">마감일</th>
+			<td id="deadline">
+				$univStt.deadline
+			</td>
+		</tr>
+		<tr>
+			<th scope="row">통계명</th>
+			<td colspan="3">
+				$!univStt.sttName
+			</td>
+		</tr>
+		<tr>
+			<th scope="row">수집상태</th>
+			<td colspan="3">
+				#if($!univStt.gatherState == 'Y')수집완료
+				#else 수집중
+				#end
+			 </td>			
+		</tr>		
+		<tr>
+			<th scope="row">통계파일</th>
+#*
+		#if("$!univStt.putState" != "Y") 
+			<td colspan ="3" id="uploadTB">
+				<iframe id="upload" name="upload" src="/mgr/common/file_write.ifm.action?confKey=att" width="100%" height="25" frameborder="0" scrolling="no" style="padding: 0;margin: 0"></iframe>
+			</td>
+			<script>
+			#if($fileList.size()>0)
+			  #foreach($file in $fileList)
+              $("#uploadTB").append('<div class="icon" id=\'$file.upfileId\'><a href="javascript:downloadDB(\'$file.upfileId\');">$file.upfileFilename</a><span>('+getFileSize($file.upfileSize)+')</span><a href="javascript:deleteFileDB(\'$file.upfileId\');"><img src="/mgr/images/btn/btn_del.gif" /></a></div>');               
+			  #end
+			#end
+			</script>
+		#else
+			<td colspan ="3" id="uploadTB">
+			</td>
+			
+			<script>
+			#if ($fileList.size()>0)
+			  #foreach($file in $fileList)
+              $("#uploadTB").append('<div class="icon" id=\'$file.upfileId\'>$file.upfileFilename<span>('+getFileSize($file.upfileSize)+')</span></div>');               
+			  #end
+			#end
+			</script>
+		#end
+*#
+			
+	
+		#if("$!univStt.isEnd" == "N")
+		
+			<td colspan ="3" id="uploadTB">
+				<iframe id="upload" name="upload" src="/mgr/common/file_write.ifm.action?confKey=att" width="100%" height="25" frameborder="0" scrolling="no" style="padding: 0;margin: 0"></iframe>
+			</td>
+			<script>
+			#if($fileList.size()>0)
+			  #foreach($file in $fileList)
+              $("#uploadTB").append('<div class="icon" id=\'$file.upfileId\'><a href="javascript:downloadDB(\'$file.upfileId\');">$file.upfileFilename</a><span>('+getFileSize($file.upfileSize)+')</span><a href="javascript:deleteFileDB(\'$file.upfileId\');"><img src="/mgr/images/btn/btn_del.gif" /></a></div>');               
+			  #end
+			#end
+			</script>
+		#else
+			<td colspan ="3" id="uploadTB">
+			</td>
+			
+			<script>
+			#if ($fileList.size()>0)
+			  #foreach($file in $fileList)
+              $("#uploadTB").append('<div class="icon" id=\'$file.upfileId\'><a href="javascript:downloadDB(\'$file.upfileId\');">$file.upfileFilename</a><span>('+getFileSize($file.upfileSize)+')</span></div>');               
+			  #end
+			#end
+			</script>
+		#end
+		
+			
+			
+		</tr>
+		<tr>
+			<th scope="row">업로드결과</th>
+			<td colspan ="3">
+				<textarea rows="10" cols="80" id="uploadState1" name="uploadState1" title="업로드결과" readonly="readonly">$!univStt.uploadState</textarea>
+				<input readonly="readonly" type="hidden"  size="50" id="uploadState" name="uploadState" title="설명" value="">
+			</td>
+		</tr>		
+		<tr>
+			<th scope="row">등록정보</th>
+			<td>$!univStt.register ($datetimeformatter.print($!univStt.regDate, $locale)) </td>
+			<th scope="row">수정정보</th>
+			<td>#if("$!univStt.modifier" !="") $!univStt.modifier ($datetimeformatter.print($!univStt.modDate, $locale)) #end</td>
+		</tr>
+	</tbody>
+</table><!-- list_type01 End -->
+
+<div class="btn_box_type03">
+	#if("$!univStt.isEnd" == "N") 
+	<a href="javascript:modify();"><img src="/mgr/images/educ/submit.gif" alt="제출" width="56" height="27"/></a>
+	#end
+	<a href="javascript:window.close();"><img src="/mgr/images/btn/cancel.gif" alt="취소" /></a>
+</div>
+
+</form>
+</div>
+</body>
+</html>

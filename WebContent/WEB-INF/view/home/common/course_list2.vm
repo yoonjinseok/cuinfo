@@ -1,0 +1,36 @@
+
+#set($cnt = $univCourseList_tmp2.size())
+<ul class="list" id="course_list2_$list.mod">
+#foreach($list in $univCourseList_tmp2)
+	#**
+	#if($velocityCount == 1 || $velocityCount % 5 == 1)
+	<ul class="list" id="course_list2_$list.mod" style="display:none;">
+	#end
+		<li>
+			<a href='/home/course/viewDetail2_header.sub.action?courseId=$!list.courseId&courseIdentifier=$!list.courseIdentifier&gnb=34'>
+				$!list.subTitle
+			</a>
+			<span>
+				#if($!list.regDate2)
+					($dateformatter.print($!list.regDate2, $locale))
+				#end
+			</span>
+		</li>
+	#if($velocityCount % 5 == 0 || $cnt == $velocityCount)
+	</ul>
+	#end
+	**#
+	
+		<li>
+			<a href='/home/course/viewDetail2_header.sub.action?courseId=$!list.courseId&courseIdentifier=$!list.courseIdentifier&gnb=34'>
+				$!list.mainTitle
+			</a>
+			<span>
+				#if($!list.regDate1)
+					($dateformatter.print($!list.regDate1, $locale))
+				#end
+			</span>
+		</li>
+	
+#end
+	</ul>

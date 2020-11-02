@@ -1,0 +1,29 @@
+	<ul class="list">
+		
+		#if($newsList)
+		#set($cnt=$newsList.size())
+		#foreach($list in $newsList)
+		<li><a href="$!list.newsLink" target="_blank">$list.newsTitle &nbsp;#if($list.newYN == 'Y')<img name="image" src="/home/images/icon/new.gif" alt="new"/>#end</a><span>$dateformatter.print($!list.newsRegDate, $locale)</span></li>
+		#end
+		#elseif($eventList)
+		#set($cnt=$eventList.size())
+		#foreach($list in $eventList)
+		<li><a href="/home/refer/boardUniv_view_header.sub.action?boardID=$list.boardID&gnb=42">$list.title &nbsp;#if($list.newYN == 'Y')<img name="image" src="/home/images/icon/new.gif" alt="new"/>#end</a><span>$dateformatter.print($!list.regDate, $locale)</span></li>
+		#end
+		#elseif($conferenceList)
+		#set($cnt=$conferenceList.size())
+		#foreach($list in $conferenceList)
+		<li><a href="/home/refer/board_view_header.sub.action?boardID=$!list.boardID&gnb=44&gID=152">$list.title &nbsp;#if($list.newYN == 'Y')<img name="image" src="/home/images/icon/new.gif" alt="new"/>#end</a><span>$dateformatter.print($!list.regDate, $locale)</span></li>
+		#end
+		#elseif($noticeList)
+		#set($cnt=$noticeList.size())
+		#foreach($list in $noticeList)
+		<li><a href="/home/refer/board_view_header.sub.action?boardID=$!list.boardID&gnb=45&gID=154">$list.title &nbsp;#if($list.newYN == 'Y')<img name="image" src="/home/images/icon/new.gif" alt="new"/>#end</a><span>$dateformatter.print($!list.regDate, $locale)</span></li>
+		#end
+		#end
+		
+		#if($cnt==0)
+		<li>검색결과가 없습니다.</li>
+		#end
+		
+	</ul>

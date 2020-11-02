@@ -1,0 +1,100 @@
+<head>
+	<title>정보 등록</title>
+	<script type="text/javascript" language="javascript">
+	function save()
+	{
+		jQuery.post('univCode_save.json', 
+				$("#writeForm").formSerialize(), 
+				function(data) {
+        			if(data.errors == true)
+        			{
+        				eval(data.message);
+        			}
+        			else
+        			{
+						alert("저장되었습니다.");
+						opener.search();
+						window.close();
+        			}
+		});
+	}
+	
+	
+	function searchUniversity()
+	{
+		showWin('/mgr/system/univCodeSearch.pop.action', 'univwin', 800, 450);
+	}
+	function setUniversity(universityId, universityName)
+	{
+		$("#universityId").val(universityId);
+		$("#universityName").val(universityName);
+	}
+	
+	function setUploadResult(originalFilename, subectory, srcName, fileSize)
+	{
+        $("#uploadTB").append('<tr id=\"'+srcName+'\"><td>'+originalFilename+'</td><td>'+fileSize+'</td><td>삭제</td></tr>'); 
+	}
+	</script>
+</head>
+<body>
+<div style="width:90%;padding-left:30px;padding-top:30px;">
+<form id="writeForm" action="#" onsubmit="try{write();}catch(e){alert(e);}return false;">
+<h2>정보 등록</h2>	
+<table cellspacing="0" cellpadding="0" class="form_type01" summary="생산기관관리"><!-- list_type01 Start -->
+	<caption>정보등록</caption>
+	<colgroup>
+		<col width="15%" />
+		<col width="35%" />
+		<col width="15%" />
+		<col width="35%" />
+	</colgroup>
+	<tbody>
+		<tr>
+			<th scope="row">학교명</th>
+			<input type="hidden" name="universityId" id="universityId"/>
+			<td><input type="text" size="20" title="학교명" name="univName" id="univName" onchange="if(this.value == '')$('#universityId').val('');"/> </td>
+			<th scope="row">소재지</th>
+			<td>
+				<select	id="localId" name="localId">
+					<option value="0">선택</option>
+					#foreach($code in $codeList2)
+					<option value="$!code.codeId">$!code.codeName</option>
+					#end
+				</select>
+			</td>
+		</tr>
+		<tr>
+			<th scope="row">학교구분 </th>
+			<td>
+				<select	id="gubunId" name="gubunId">
+					<option value="0">선택</option>
+					#foreach($code in $codeList)
+					<option value="$!code.codeId">$!code.codeName</option>
+					#end
+				</select>
+			</td>
+			<th scope="row">대학알리미 코드</th>
+			<td colspan ="3"><input type="text" size="30" title="대학알리미코드" name="academyId" id="academyId"/></td>
+		</tr>
+		<tr>
+			<th scope="row">사용여부</th>
+			<td colspan="3">
+				<label for="radio-1"><input type="radio" name="useYn" id="useYn" value="Y" /> 사용함</label>
+				<label for="radio-2"><input type="radio" name="useYn" id="useYn" value="N" checked /> 사용하지않음</label>
+			</td>
+		</tr>
+
+	</tbody>
+</table><!-- list_type01 End -->
+
+
+<div class="btn_box_type03">
+	<a href="javascript:save();"><img src="/mgr/images/btn/save.gif" alt="저장" /></a>
+	<a href="javascript:delete();"><img src="/mgr/images/btn/delete.gif" alt="삭제" /></a>
+	<a href="javascript:window.close();"><img src="/mgr/images/btn/cancel.gif" alt="취소" /></a>
+</div>
+
+</form>
+</div>
+</body>
+</html>

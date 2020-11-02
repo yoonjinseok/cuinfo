@@ -1,0 +1,98 @@
+<script type="text/javascript">
+
+function setCookie( name, value, expiredays ) {
+
+    var todayDate = new Date(); 
+    todayDate.setDate( todayDate.getDate() + expiredays ); 
+    document.cookie = name + "=" + escape( value ) + "; path=/; expires=" + todayDate.toGMTString() + ";" 
+} 
+  
+function getCookie(name) { 
+    var Found = false 
+    var start, end 
+    var i = 0 
+    
+    // cookie 문자열 전체를 검색 
+    while(i <= document.cookie.length) { 
+        start = i 
+        end = start + name.length 
+        // name과 동일한 문자가 있다면 
+        if(document.cookie.substring(start, end) == name) { 
+            Found = true 
+            break 
+        } 
+    	i++ 
+    } 
+        
+    // name 문자열을 cookie에서 찾았다면 
+    if(Found == true) { 
+        start = end + 1 
+    	end = document.cookie.indexOf(";", start) 
+        // 마지막 부분이라는 것을 의미(마지막에는 ";"가 없다) 
+        if(end < start) 
+        	end = document.cookie.length 
+        // name에 해당하는 value값을 추출하여 리턴한다. 
+        return document.cookie.substring(start, end) 
+    } 
+    // 찾지 못했다면 
+    return "" 
+} 
+
+
+function closePoup(num){
+
+	if($("#poup").find("input[id^=chkView"+num+"]").is(':checked')){
+
+		setCookie("poupNo" + num, "Y", 1);
+	}
+
+	$("#poup").find("div[id^=poupNo"+num+"]").remove();
+	
+}
+function closeEndPoup(num){
+
+	setCookie("poupNo" + num, "Y", 1);
+
+	$("#poup").find("div[id^=poupNo"+num+"]").remove();
+	
+}
+
+function poupViewCheck(){
+
+	$("[class1=div]").each(function(){        
+		if(getCookie(this.id) =="Y")
+			$("#poup").find("div[id^="+ this.id +"]").hide();
+		else
+			$("#poup").find("div[id^="+ this.id +"]").show();
+	});
+	
+}
+
+function reView(){
+	$("[class1=div]").each(function(){    
+		setCookie(this.id, "");
+	});
+}
+
+function downloadDB(fileGid,fileID)
+{
+//document.location.href = 'savedFile_download.json?fileGid=' + fileGid + '&fileID=' + fileID;
+
+	document.location.href = 'board_File_download.json?fileGid=' + fileGid + '&fileID=' + fileID;
+}
+	
+</script>
+
+#foreach($list in $poupList)
+	
+	#set($posttion="height:"+$list.poupHeight+"px;width:"+$list.poupWidth+"px;top:"+$list.poupTop+"px;left:"+$list.poupLeft+"px")
+	
+    <div class1="div" id="poupNo$list.poupNum" style="position:fixed;$posttion;z-index:9999;display:none;"> 
+
+		$list.skinText
+
+    </div>
+#end
+<script>
+	poupViewCheck();
+</script>

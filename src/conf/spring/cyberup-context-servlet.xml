@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:ehcache="http://ehcache-spring-annotations.googlecode.com/svn/schema/ehcache-spring"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xsi:schemaLocation="http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
+		http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd
+		http://ehcache-spring-annotations.googlecode.com/svn/schema/ehcache-spring http://ehcache-spring-annotations.googlecode.com/svn/schema/ehcache-spring/ehcache-spring-1.1.xsd">
+
+	<context:component-scan base-package="com.cyberup" />
+	
+	<mvc:annotation-driven conversion-service="conversionService" />
+	
+	
+	<bean id="loggingAspector"
+	  class="com.cyberup.framework.controller.LoggingAspector">
+	</bean>
+	<bean id="controllerAspector"
+	  class="com.cyberup.framework.controller.ControllerAspector">
+	</bean>
+	<bean id="validatorAspector"
+	  class="com.cyberup.framework.controller.ValidatorAspector">
+	</bean>
+	
+	
+	<!-- aop:config>
+		<aop:pointcut id="loggingControllerPointcut" expression="execution(* com.cyberup..*Controller.*(..))" />
+		<aop:aspect ref="loggingAspector">
+			<aop:around method="loggingAdvice" pointcut-ref="loggingControllerPointcut"/>
+		</aop:aspect>
+	</aop:config -->
+	<aop:config>
+		<aop:pointcut id="controllerPointcut" expression="execution(public * com.cyberup..*Service.*(..))" />
+		<aop:aspect ref="controllerAspector">
+			<aop:around method="methodAdvice" pointcut-ref="controllerPointcut"/>
+		</aop:aspect>
+	</aop:config>
+	<!-- aop:config>
+		<aop:pointcut id="loggingValidPointcut" expression="execution(* com.cyberup..*Validator.*(..))" />
+		<aop:aspect ref="loggingAspector">
+			<aop:around method="loggingAdvice" pointcut-ref="loggingValidPointcut"/>
+		</aop:aspect>
+	</aop:config -->
+	<!-- aop:config>
+		<aop:pointcut id="loggingServicePointcut" expression="execution(* com.cyberup..*Service.*(..))" />
+		<aop:aspect ref="loggingAspector">
+			<aop:around method="loggingAdvice" pointcut-ref="loggingServicePointcut"/>
+		</aop:aspect>
+	</aop:config -->
+	<aop:config>
+		<aop:pointcut id="validateInitPointcut" expression="execution(* com.cyberup.framework.controller.MapValidator.validate(..))" />
+		<aop:aspect ref="validatorAspector">
+			<aop:around method="validatePointcut" pointcut-ref="validateInitPointcut"/>
+		</aop:aspect>
+	</aop:config>
+	
+	<!-- aop 테스트:s -->
+	<bean id="modelCheckAspector" class="com.cyberup.framework.model.ModelCheck"></bean><!-- 공통관심사항 -->
+	<aop:config>
+		<aop:aspect ref="modelCheckAspector">
+			<aop:pointcut id="aopRunCut" expression="execution(public * com.cyberup..*Controller.*(..))" />
+			<aop:before pointcut-ref="aopRunCut" method="modelCheck" />
+<!-- 			<aop:after-throwing method="errorCheck" pointcut-ref="aopRunCut" throwing="ex"/> -->
+<!-- 			<aop:around pointcut-ref="aopRunCut" method="aroundCheck" /> -->
+		</aop:aspect>
+	</aop:config>
+	<!-- aop 테스트:e -->
+	
+	<mvc:interceptors>
+		<mvc:interceptor>
+            <mvc:mapping path="/**"/>
+            <bean class="com.cyberup.framework.interceptor.VelocityToolsInterceptor"/>
+        </mvc:interceptor>
+		<mvc:interceptor>
+            <mvc:mapping path="/mgr/**"/>
+            <bean class="com.cyberup.framework.interceptor.AdminSecurityInterceptor">
+                <property name="excepAuth">
+                    <list>
+                        <value>*/mgr/user/login.*</value>
+                        <value>*/mgr/user/loginAction.*</value>
+                        <value>*/mgr/user/logout.*</value>
+                        <value>*/mgr/common/file_download.*</value>
+                        <value>*/mgr/common/file_download_id.*</value>
+                        <value>*/mgr/common/kocw_upload.*</value>
+                        <value>*/mgr/common/file_status.*</value>
+                        <value>*/mgr/course/metaCollection_kocwfilewrite.*</value>
+                        
+                    </list>
+                </property>
+                <property name="loginUri" value="/mgr/user/login.main.action"/>
+            </bean>
+        </mvc:interceptor>
+	</mvc:interceptors>
+	
+	<bean id="conversionService" class="org.springframework.format.support.FormattingConversionServiceFactoryBean"/>
+    
+    <bean id="multipartResolver" class="com.cyberup.framework.interceptor.AjaxMultipartResolver">
+    	<property name="defaultEncoding" value="UTF-8"/>
+    	<property name="maxUploadSize" value="100000000"/>
+        <property name="uploadTempDir" ref="uploadTempDir"/>
+    </bean>
+    <bean id="uploadTempDir" class="org.springframework.core.io.FileSystemResource">
+        <constructor-arg value="D:/"/>
+    </bean>
+    
+     <bean class="org.springframework.web.servlet.view.ContentNegotiatingViewResolver">
+         <property name="mediaTypes">
+             <map>
+                 <entry key="json" value="application/json" />
+                 <entry key="xml" value="application/xml" />
+             </map>
+         </property>
+         <property name="defaultViews">
+             <list>
+                 <ref bean="jsonView" />
+                 <ref bean="xmlView" />
+             </list>
+         </property>
+     </bean>
+ 
+     <bean id="jsonView" class="com.cyberup.framework.interceptor.DisplayMappingJSONView">
+     </bean>
+ 
+     <bean id="xmlView" class="org.springframework.web.servlet.view.xml.MarshallingView">
+         <property name="marshaller">
+             <bean class="org.springframework.oxm.xstream.XStreamMarshaller">
+                 <property name="autodetectAnnotations" value="true" />
+             </bean>
+         </property>
+     </bean>
+     
+     <bean id="velocityConfigurer" class="org.springframework.web.servlet.view.velocity.VelocityConfigurer">
+	    <property name="resourceLoaderPath" value="/WEB-INF/view" />
+	    <property name="velocityProperties">
+	    <props>
+	    	<prop key="input.encoding">UTF-8</prop>
+	    	<prop key="output.encoding">UTF-8</prop>
+	    	<prop key="file.resource.loader.cache">true</prop>
+	    </props>
+	    </property>
+	 </bean>
+	 <bean id="viewResolver" class="org.springframework.web.servlet.view.velocity.VelocityViewResolver">
+	    <property name="exposeRequestAttributes" value="true"/>
+	    <property name="exposeSessionAttributes" value="false"/>
+	    <property name="exposeSpringMacroHelpers" value="false"/>
+	    <property name="requestContextAttribute" value="requestContext"/>
+	    <property name="cache" value="false"/>
+	    <property name="suffix" value=".vm"/>
+	    <property name="contentType" value="text/html; charset=UTF-8"/>
+	    <property name="viewClass" value="com.cyberup.framework.interceptor.VelocityViewExtension"/>
+	    <property name="prefix" value=""/>
+	    <property name="toolboxConfigLocation" value="/WEB-INF/classes/spring/velocity-toolbox.xml"/>
+	 </bean>
+	
+	<!-- requst가 가지고 있는 session으로 부터 locale 정보를 가져온다 -->
+	<bean id="localeResolver"
+		class="org.springframework.web.servlet.i18n.SessionLocaleResolver">
+		<property name="defaultLocale" value="ko" />
+	</bean>
+	
+	<bean id="messageSource" class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
+		<property name="basenames">
+			<list>
+				<value>classpath:/messages/message</value>
+				<value>classpath:/messages/menu</value>
+			</list>
+		</property>
+		<property name="cacheSeconds">
+			<value>60</value>
+		</property>
+	</bean>
+	
+	<!-- ehcache -->
+	<ehcache:annotation-driven cache-manager="ehCacheManager" />
+	<bean id="ehCacheManager"
+		class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean">
+		<property name="configLocation" value="classpath:/spring/ehcache.xml" />
+	</bean>
+	
+	<bean id="mailSender" class="com.cyberup.framework.controller.MailSender">
+		<property name="javaMailSender">
+			<ref local="javaMailSender"/>
+		</property>
+	</bean>
+	<bean id="javaMailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+		<property name="javaMailProperties">
+		<props>
+		<prop key="mail.smtp.starttls.enable">true</prop>
+		<prop key="mail.smtp.starttls.required">true</prop>
+		<prop key="mail.smtp.auth">true</prop>
+		<prop key="mail.transport.protocol">smtp</prop>
+		<!--<prop key="mail.smtp.host">mail.keris.or.kr</prop>
+		<prop key="mail.smtp.port">25</prop>-->
+			<prop key="mail.smtp.host">smtp.gmail.com</prop>
+			<prop key="mail.smtp.port">587</prop>
+		<prop key="mail.smtp.soketFactory.class">javax.net.ssl.SSLSocketFactory</prop>
+		</props>
+		</property>
+		<!--<property name="username" value="cuinfo"/>
+		<property name="password" value="cuinfo12"/>-->
+		<property name="username" value="ksa1207@kotech.co.kr"/>
+		<property name="password" value="ksa2694512"/>
+	</bean>
+	<bean id="errorNotifyMessage" class="org.springframework.mail.SimpleMailMessage">
+		<property name="to" value="camvision@kotech.co.kr"/>
+		<property name="from" value="cuinfo@keris.or.kr"/>
+		<property name="subject" value="KERIS SYSTEM has had a fatal exception occur"/>
+	</bean>
+	<bean id="exceptionResolver" class="com.cyberup.framework.controller.ExceptionResolver">
+		<property name="defaultErrorView" value="/common/error.main.action"/>
+	</bean>
+	
+	<bean id="velocityEngine" class="org.springframework.ui.velocity.VelocityEngineFactoryBean">
+      <property name="velocityProperties">
+         <value>
+            resource.loader=class
+            class.resource.loader.class=org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+         </value>
+      </property>
+   </bean>
+	
+</beans>

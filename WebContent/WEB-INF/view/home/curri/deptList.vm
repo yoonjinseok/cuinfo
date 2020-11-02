@@ -1,0 +1,33 @@
+#if($deptList)
+<div class="tabs_cont">
+	<div class="bul02 m_b5 m_t0"><span class="">$!classifyName</span> 분야 학과</div>
+	<div class="tbl_wrap03 univ_table m_l0">
+		<table class="" cellspacing="0" cellpadding="0" summary="학과 내비게이션"><!-- table_type1 st01 Start -->
+		<caption>학과 내비게이션</caption>
+		<colgroup>
+			<col width="10%">
+			<col width="90%">
+		</colgroup>
+		<tbody>
+			<tr class="bottom">
+				<th class="tit">학과</th>
+				<td class="t_left">
+					#if($deptList)
+					#foreach($list in $deptList)
+					<li class="items">
+						<a href="javascript:selectDeptItem('$list.deptId');">$list.deptName</a>
+						<div id="$!list.deptId" class="layST" style="display:none;"></div>
+					</li>
+					#end
+					#end
+				</td>
+			</tr>
+		</tbody>
+	  </table>
+	</div>
+</div>
+#else
+	<center>
+	<img src="/home/images/course/visual_part.gif" "학과선택"/>
+	</center>
+#end

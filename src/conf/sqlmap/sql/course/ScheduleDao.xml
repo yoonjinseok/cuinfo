@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="EUC-KR"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="ScheduleDao">
+	<typeAlias alias="schedule" type="com.cyberup.model.course.Schedule"/>
+	
+	<select id="selectHarvestList" resultClass="schedule"  parameterClass="map">
+		SELECT A.SCHEDULE_ID as scheduleId, A.ORG_ID as orgId, A.UNIVERSITY_ID as universityId
+			, A.START_DATE as startDate, A.END_DATE as endDate, A.SCHEDULE_TYPE as scheduleType
+			, A.INTERVALS as intervals, A.RUN_HOUR as runHour, A.STATUS as status, A.RUNNING_STATUS as runningStatus
+			, A.SCHEDULE_REGISTER as scheduleRegister, A.SCHEDULE_REGDATE as scheduleRegdate, A.SCHEDULE_MODIFIER as scheduleModifier
+			, A.SCHEDULE_MODDATE as scheduleModdate
+		FROM CU_CTR_SCHEDULE A LEFT JOIN CU_CTR_HISTORY H
+		                ON A.SCHEDULE_ID = H.SCHEDULE_ID 
+		                	AND TO_CHAR (h.start_date, 'yyyymmdd') = #harvestDate,javaType=String#
+		        , CU_CTR_DATAPROVIDER B
+		WHERE H.SCHEDULE_ID IS NULL
+		    AND A.UNIVERSITY_ID = B.UNIVERSITY_ID
+		    AND B.USE_YN = 'Y'
+		    AND A.STATUS = 'Y' 
+		    AND A.MANUAL_YN != 'Y'
+		    AND TO_CHAR(A.START_DATE, 'yyyymmdd') <![CDATA[<=]]> #harvestDate,javaType=String#
+		    AND #harvestDate,javaType=String# <![CDATA[<=]]> TO_CHAR(A.END_DATE, 'yyyymmdd')
+		    AND MOD((to_date(to_char(sysdate,'yyyymmdd'),'yyyymmdd') - to_date(#harvestDate,javaType=String#,'yyyymmdd')), a.intervals) = 0
+		order by A.RUN_HOUR ASC, A.UNIVERSITY_ID ASC
+	</select>
+	
+	<select id="selectManualHarvestList" resultClass="schedule"  parameterClass="map">
+		SELECT A.SCHEDULE_ID as scheduleId, A.ORG_ID as orgId, A.UNIVERSITY_ID as universityId
+			, A.START_DATE as startDate, A.END_DATE as endDate, A.SCHEDULE_TYPE as scheduleType
+			, A.INTERVALS as intervals, A.RUN_HOUR as runHour, A.STATUS as status, A.RUNNING_STATUS as runningStatus
+			, A.SCHEDULE_REGISTER as scheduleRegister, A.SCHEDULE_REGDATE as scheduleRegdate, A.SCHEDULE_MODIFIER as scheduleModifier
+			, A.SCHEDULE_MODDATE as scheduleModdate
+		FROM CU_CTR_SCHEDULE A
+		        , CU_CTR_DATAPROVIDER B
+		WHERE A.UNIVERSITY_ID = B.UNIVERSITY_ID
+		    AND B.USE_YN = 'Y'
+		    AND A.STATUS = 'Y' 
+		    AND A.MANUAL_YN = 'Y'
+		    AND A.RUNNING_STATUS = 'R'
+		    <isNotEqual property="runHour" compareValue="0" prepend="AND">
+		    A.RUN_HOUR = #runHour#
+		    </isNotEqual>
+		    <isEqual property="runHour" compareValue="0" prepend="AND">
+		    A.RUN_HOUR = to_number(to_char(sysdate, 'HH24'))
+		    </isEqual>
+		    <isNotEqual property="universityId" compareValue="0" prepend="AND">
+		    A.UNIVERSITY_ID = #universityId#
+		    </isNotEqual>
+		order by A.RUN_HOUR ASC, A.UNIVERSITY_ID ASC
+	</select>
+	
+	<select id="selectList" resultClass="schedule"  parameterClass="map">
+		SELECT   a.*
+            FROM 
+            (
+				SELECT ROW_NUMBER () OVER (ORDER BY A.SCHEDULE_REGDATE DESC) as recNum
+					, COUNT (*) OVER () totalCnt
+		            , A.SCHEDULE_ID as scheduleId, B.UNIV_NAME as universityName, A.ORG_ID as orgId, A.UNIVERSITY_ID as universityId
+					, A.START_DATE as startDate, A.END_DATE as endDate, A.SCHEDULE_TYPE as scheduleType
+					, A.INTERVALS as intervals, A.RUN_HOUR as runHour, A.STATUS as status
+					, A.SCHEDULE_REGISTER as scheduleRegister, A.SCHEDULE_REGDATE as scheduleRegdate, A.SCHEDULE_MODIFIER as scheduleModifier
+					, A.SCHEDULE_MODDATE as scheduleModdate, A.MANUAL_YN as manualYn, A.RUNNING_STATUS as runningStatus
+				FROM CU_CTR_SCHEDULE A, CU_UNIV_INFO B
+				WHERE A.UNIVERSITY_ID = B.UNIVERSITY_ID 
+					AND B.USE_YN = 'Y'
+					AND NVL(A.MANUAL_YN,'N') = #manualYn#
+					<isNotEmpty property="universityName" prepend="AND">
+		                B.UNIV_NAME LIKE concat(concat('%',#universityName#),'%')
+		            </isNotEmpty>
+		            <isNotEmpty property="status" prepend="AND">
+		                A.STATUS = #status#
+		            </isNotEmpty>
+		    ) a
+        WHERE CEIL (recNum / #showCnt,javaType=Integer#) = #currPage,javaType=Integer#
+        ORDER BY recNum ASC
+	</select>
+	
+	<select id="selectInfo" resultClass="schedule"  parameterClass="Integer">
+		SELECT A.SCHEDULE_ID as scheduleId, A.ORG_ID as orgId, A.UNIVERSITY_ID as universityId, B.UNIV_NAME as universityName
+			, A.START_DATE as startDate, A.END_DATE as endDate, A.SCHEDULE_TYPE as scheduleType
+			, A.INTERVALS as intervals, A.RUN_HOUR as runHour, A.STATUS as status
+			, A.SCHEDULE_REGISTER as scheduleRegister, A.SCHEDULE_REGDATE as scheduleRegdate, A.SCHEDULE_MODIFIER as scheduleModifier
+			, A.SCHEDULE_MODDATE as scheduleModdate, A.MANUAL_YN as manualYn, A.RUNNING_STATUS as runningStatus
+		FROM CU_CTR_SCHEDULE A, CU_UNIV_INFO B
+		WHERE A.UNIVERSITY_ID = B.UNIVERSITY_ID 
+			AND A.SCHEDULE_ID = #scheduleId,javaType=Integer#
+	</select>
+	
+	<update id="updateInfo" parameterClass="schedule">
+		UPDATE CU_CTR_SCHEDULE SET 
+			START_DATE = #startDate#, END_DATE = #endDate#, SCHEDULE_TYPE = #scheduleType#
+			, INTERVALS = #intervals#, RUN_HOUR = #runHour#, STATUS = #status#
+			, SCHEDULE_MODIFIER = #scheduleModifier#, SCHEDULE_MODDATE = SYSDATE
+		WHERE SCHEDULE_ID = #scheduleId,javaType=Integer#
+	</update>
+	
+	<update id="updateRunningStatus" parameterClass="map">
+		UPDATE CU_CTR_SCHEDULE SET 
+			RUNNING_STATUS = #runningStatus#
+			, SCHEDULE_MODIFIER = #scheduleModifier#, SCHEDULE_MODDATE = SYSDATE
+		WHERE SCHEDULE_ID = #scheduleId,javaType=Integer#
+	</update>
+	
+	<insert id="insertInfo" parameterClass="schedule">
+		<selectKey resultClass="Integer" keyProperty="scheduleId">
+         SELECT SEQ_SCHEDULE_ID.nextVal as scheduleId FROM dual
+        </selectKey>
+        
+		INSERT INTO CU_CTR_SCHEDULE 
+			(SCHEDULE_ID, ORG_ID, UNIVERSITY_ID
+			, START_DATE, END_DATE, SCHEDULE_TYPE
+			, INTERVALS, RUN_HOUR, STATUS, MANUAL_YN, RUNNING_STATUS
+			, SCHEDULE_REGISTER, SCHEDULE_REGDATE, SCHEDULE_MODIFIER
+			, SCHEDULE_MODDATE)
+		 values(#scheduleId#, #orgId#, #universityId#
+			, #startDate#, #endDate#, #scheduleType#
+			, #intervals#, #runHour#, #status#, #manualYn#, #runningStatus#
+			, #scheduleRegister#, SYSDATE, #scheduleRegister#
+			, SYSDATE)
+	</insert>
+	
+	<delete id="deleteInfo"  parameterClass="Integer">
+		DELETE FROM CU_CTR_SCHEDULE 
+			WHERE 
+			SCHEDULE_ID = #scheduleId,javaType=Integer#
+	</delete>
+
+</sqlMap>

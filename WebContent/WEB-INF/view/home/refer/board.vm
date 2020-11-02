@@ -1,0 +1,128 @@
+ #if($!gID == "153")	
+	#set($SubTitle = "연구/교육 자료")
+	#set($TitleImage = "title1.gif")
+	#set($main_copy = "사이버대학에 대한 연구자료 및 교육 자료에 대한 안내입니다.")
+ #elseif($!gID == "154")
+	#set($SubTitle = "공지사항")
+	#set($TitleImage = "title5.gif")
+	#set($main_copy = "홈페이지 및 사이버 대학에 대한 내용을 알려드립니다.")
+ #else
+	#set($SubTitle = "원격대학협의회동정")
+	#set($TitleImage = "title4.gif")
+	#set($main_copy = "원격 대학 협의회 최근 근황 및 사이버대학 주요 정책에 대해 알려 드립니다.")
+ #end
+<head>
+	<title>$SubTitle</title>
+	<script type="text/javascript" language="javascript">
+	function search()
+	{
+		goPage(1);
+	}
+	
+	function setRecordCnt(totalCnt, currPage, totalPage, showCnt)
+	{
+		$("#tCnt").text(totalCnt);
+		$("#cPage").text(currPage);
+		$("#tPage").text(totalPage);
+		
+		setPaging($("#pg"), totalCnt, showCnt, currPage);
+	}
+	
+	function goPage(page)
+	{
+		$("#currPage").val(page);
+		
+		//onsubmit 속성을 비워주어야 submit이 된다.
+		$("#form").attr("method","post");
+		$("#form").attr("onsubmit","");
+		$("#form").attr("action","/home/refer/board.sub.action?gnb=$!gnb&gID=$!gID");
+		$("#form").submit();
+		
+		/*
+		$("#currPage").val(page);
+		
+		jQuery.post('board_list.ajax.action', 
+				$("#form").formSerialize(), 
+				function(data) {
+        			$("#list").html(data);
+		});
+		*/
+	}
+	
+	function view(bID)
+	{
+		//필요 변수 셋팅
+		$("#boardID").val(bID);
+		
+		//onsubmit 속성을 비워주어야 submit이 된다.
+		$("#form").attr("method","post");
+		$("#form").attr("onsubmit","");
+		
+		#if($!gID == "153")
+			$("#form").attr("action","/home/refer/board_view.sub.action?gnb=51&gID=$!gID&boardID="+bID);
+		#elseif($!gID == "154")
+			$("#form").attr("action","/home/refer/board_view.sub.action?gnb=53&gID=$!gID&boardID="+bID);
+		#end
+			
+		$("#form").submit();
+
+	}	
+
+	$(document).ready(function() {
+		#if($boardList)
+		setRecordCnt($totalCnt, $currPage, $totalPage, $showCnt);
+		#end
+    });
+	
+	//디비에 저장된 내용 다운로드
+    function downloadDB(fileGid,fileID)
+    {
+    //document.location.href = 'savedFile_download.json?fileGid=' + fileGid + '&fileID=' + fileID;
+
+		document.location.href = 'board_File_download.json?fileGid=' + fileGid + '&fileID=' + fileID;
+    }
+	
+	</script>
+</head>
+
+<body>
+
+<p class="location">
+	<a href="/home/index.main.action">홈</a> <span>></span>
+	<a href="/home/refer/board.sub.action?gnb=51&gID=153">정보자료실</a> <span>></span>
+	#if($!gID=="153")
+	<a href="/home/refer/board.sub.action?gnb=51&gID=153">연구/교육 자료</a>
+	#elseif($!gID=="154")
+	<a href="/home/refer/board.sub.action?gnb=53&gID=154">공지사항</a>
+	#end
+</p>
+	#if($!gID=="153")
+	<h3><img src="/home/images/refer/title1.gif" alt="연구/교육 자료" /></h3>
+	#elseif($!gID=="154")
+	<h3><img src="/home/images/refer/title5.gif" alt="공지사항" /></h3>
+	#end
+
+<div class="main_copy">$main_copy</div>
+<form id="form" name="form" action="#" onsubmit="try{search();}catch(e){alert(e);}return false;"><!-- box_type01 Start -->
+<input type="hidden" id="showCnt" name="showCnt" value="10"/>
+<input type="hidden" id="currPage" name="currPage" value="1"/>
+<input type="hidden" id="gubunID" name="gubunID" value="$!gID"/><!-- 게시판 구분 -->
+<input type="hidden" id="boardID" name="boardID" value="0" />
+<fieldset class="borad_search" id="borad_search">
+	<span class="dot">total : <b><em id="tCnt">0</em>건</b> (<em id="cPage">1</em>/<em id="tPage">0</em>page)</span>
+	<select	name="cbSearch" id="cbSearch">
+		<option value="">선택</option>
+		<option value="T" selected>제목</option>
+		<option value="C">내용</option>
+		<option value="N">작성자</option>
+	</select>
+	<input type="text" size="20" name="searchValue1" id="searchValue1" title="검색어입력"/>
+	<input type="image" src="/home/images/btn/search.gif" alt="검색" />
+</fieldset>
+</form><!-- box_type01 End -->
+<div class="m_l20" id="list">#parse('home/refer/board_list.vm')</div>
+<div class="page_num" id ="page_num">
+	<div id="pg" name="pg"></div>
+</div>
+</body>
+</html>

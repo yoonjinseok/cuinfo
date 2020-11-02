@@ -1,0 +1,38 @@
+
+<ul class="dot_1">
+	
+	<li><span>검색결과 : </span> <a href="javascript:search2('');"><img src="/home/images/btn/btn_sall.gif" /></a>
+
+#if($!reptDeptInfo.deptName)
+<img src="/home/images/layout/location_a.gif" /> <span class="A">$!reptDeptInfo.classifyName</span>
+<img src="/home/images/layout/location_a.gif" /> <span class="A">$!reptDeptInfo.deptName</span>
+#end
+
+#if($!univInfo.univ_name)
+<img src="/home/images/layout/location_a.gif" /> <span class="A">$!univInfo.univ_name</span>
+#end
+
+
+#if($!searchText)
+#if($!searchText != "")
+
+	<img src="/home/images/layout/location_a.gif" />
+	#if($totalSearch ==2)
+		<span class="A">'$sdate ~ $edate', </span>
+	#end
+	
+	<span class="A">'$!searchText'</span> <span>검색범위 </span>
+
+#end
+#if($!searchText == "" && $!sdate && $!edate)
+
+	#if($totalSearch ==2)
+		<img src="/home/images/layout/location_a.gif" />
+		<span class="A">'$sdate ~ $edate' </span>
+		<span>검색범위 </span>
+	#end
+
+#end
+#end
+    </li>
+</ul>

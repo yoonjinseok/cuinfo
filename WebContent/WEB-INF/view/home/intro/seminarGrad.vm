@@ -1,0 +1,122 @@
+
+<head>
+	<title>화상 세미나 안내</title>
+	<script>
+		$(document).ready(function(){
+		
+			//비디오위에 마우스를 올릴경우 크기를 크게하는 이벤트
+			videoSizeUp();
+		
+			$("img[src*='body_stitle2.gif']").click(function(){
+				if($(this).attr("src").indexOf("_close") < 0)
+					$(this).attr("src",$(this).attr("src").replace(".gif","")+"_close.gif");
+				else
+					$(this).attr("src",$(this).attr("src").replace("_close.gif","")+".gif");
+			});
+			$("img[src*='body_stitle3.gif']").click(function(){
+				if($(this).attr("src").indexOf("_close") < 0)
+					$(this).attr("src",$(this).attr("src").replace(".gif","")+"_close.gif");
+				else
+					$(this).attr("src",$(this).attr("src").replace("_close.gif","")+".gif");
+			});
+			$("img[src*='body_stitle5.gif']").click(function(){
+				if($(this).attr("src").indexOf("_close") < 0)
+					$(this).attr("src",$(this).attr("src").replace(".gif","")+"_close.gif");
+				else
+					$(this).attr("src",$(this).attr("src").replace("_close.gif","")+".gif");
+			});
+
+		});	
+		
+		function videoSizeUp(){
+			$(".mov").each(function(index){
+				$(this).mouseenter(function(){
+					//alert("animate");
+					
+					$(".mov:not(:eq("+index+"))").stop().animate({width:"130"},800,"easeInOutExpo");
+					$(".mov:eq("+index+")").stop().animate({width:"430px"} ,800 ,"easeInOutExpo");
+				});
+			});
+			
+			$(".mov_area").mouseleave(function(){
+				$(".mov").stop().animate({width:"230px"} ,800 ,"easeInOutExpo");
+			});
+		}
+		
+		function move(no){
+		
+		if(no == 1)
+			document.location.href = "/home/intro/overall.sub.action?gnb=12";
+		else if(no == 2)
+			document.location.href = "/home/intro/searchMajor.sub.action?gnb=14";
+		}
+		
+		function openpage(){
+			$("#form").attr("method","post");
+			$("#form").attr("onsubmit","");
+			$("#form").attr("target","_blank");
+			$("#form").attr("action",$("#link").val());
+			
+			var link = $("#link").val();
+			var index = link.indexOf("?") + 1;
+			var qri=link.substring(index);
+			
+			dcsMultiTrack('DCS.dcssip','www.law.go.kr','DCS.dcsuri','/lsInfoP.do','DCS.qry',qri,'WT.ti','Offsite Link - law','WT.sp','law');
+			
+			$("#form").submit();
+		}
+		
+		function showMore(){
+			$("#moreBtn").toggle();
+			$("#closeBtn").toggle();
+			$("#hide1").toggle("fast");
+			$("#hide2").toggle("fast");
+			$("#hide3").toggle("fast");
+		}
+		
+	</script>
+	
+</head>
+<body>
+
+<p class="location">
+	<a href="/home/index2.main2.action">대학원 홈</a> <span>></span> 
+	<a href="/home/intro/summaryGrad.sub2.action?gnb=11">사이버대학원안내</a> <span>></span> 
+	<a href="/home/intro/seminarGrad.sub2.action?gnb=11">화상 세미나 안내</a>
+</p>
+<h3><img src="/home/images3/h3_grad_overview3.png" alt="화상세미나 안내" /></h3>
+		
+		
+		<div class="contentWrap_summary">
+			<!--s:컨텐츠영역-->
+				
+
+<dl class="feature">
+  <dt><img src="/home/images3/grad_title6.gif" alt="화상세미나 시스템 구축" /></dt>
+    <dd>
+    	사이버대학원은 전체 수업의 20% 내외를 세미나 수업으로 진행한다.<br> 
+  이를 위해 모든 사이버대학원은 (실시간) 화상 세미나 시스템을 운영하고 있다. 
+
+
+	</dd>
+   <dd>
+    	실시간 화상 세미나 시스템을 활용하여 교수자와 대학원생 간 역동적인 교수학습이 가능하다.<br>
+대학원생은 같은 강의를 듣는 동료대학원생과의 토론 및 의견 교환 등을 통해 활발한 상호 학습교류가 가능하다.  
+	</dd>
+	 <dd>
+    	그 밖에도 화상 세미나 시스템을 통하여 대학원생 간 토론, 논문지도, 온라인 학습감독, 대학원특강 등 다양한 활용이 가능하다.
+	</dd>
+	<p class="t_center"><img src="/home/images3/grad_images2.gif" alt="실시간 화상 세미나 시스템의 활용" /></p>
+		<br/><br/><br/><br/>
+<dt><img src="/home/images3/grad_title9.gif" alt="화상세미나 시스템 구축" /></dt>		
+    <p class="t_center"><img src="/home/images3/grad_images3.gif" alt="실시간 화상 세미나 시스템 활용 예시 화면" /></p>
+</dl>
+
+
+
+			<!--e:컨텐츠영역-->
+		</div>
+
+</body>
+</html>
+

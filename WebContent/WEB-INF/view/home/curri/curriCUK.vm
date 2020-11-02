@@ -1,0 +1,281 @@
+<head>
+	<title>학과 내비게이션</title>
+	<link rel="stylesheet" type="text/css" href="/home/css/course.css" />
+	<script type="text/javascript" language="javascript">
+	
+	$(document).ready(function() {
+		//search();
+    });
+    
+    	//유사강의검색
+	function viewDetail2(courseId, title)
+	{
+	
+		//필요 변수 셋팅
+		$("#text").val(title);
+		$("#hidetext").val(title);
+		$("#courseId").val(courseId);
+		$("#deptId").val("");
+		
+		//onsubmit 속성을 비워주어야 submit이 된다.
+		$("#form").attr("method","post");
+		$("#form").attr("onsubmit","");
+		$("#form").attr("action","/home/course/courseSearch2.sub2.action?gnb=41&pageType=1&checkbox3=2");
+		$("#form").submit();
+		
+	}
+	</script>
+</head>
+	
+<body id="intro">
+
+	<p class="location">
+		<a href="">홈</a> <span>&gt;</span> <a href="">학과/교과과정</a> <span>&gt;</span> <a href="">교과과정 보기</a> 
+	</p>
+	<h3><img src="/home/images/title/h3_sub_view.gif" alt="교과과정 보기"></h3>
+		
+	
+	<div class="contentWrap">
+		<!--s:컨텐츠영역-->
+			
+			<div class="path_major">
+				<a>고려사이버대학원</a><span>&gt;</span>
+				<a>융합정보대학원</a><span>&gt;</span>
+				<a>융합정보학</a>
+				<a target="_blank" href="http://grad.cuk.edu/100650.do" class="btn_info_major"><img src="/home/images/btn/btn_info_major.gif" alt="학과안내 페이지 바로가기"></a>
+																																																																																																												</div>
+			
+			<div id="list" class="univ_table m_l0">
+				<table cellspacing="0" cellpadding="0" summary="교과과정 보기"><!-- table_type1 st01 Start -->
+				<caption>교과과정 보기</caption>
+				<colgroup>
+					<col width="20%">
+					<col width="40%">
+					<col width="20%">
+				</colgroup>
+				<thead>
+					<tr>
+						<th scope="col">분야</th>
+						<th scope="col">교과목명</th>
+						<th scope="col">학점</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr class="line02">
+						<th class="line02" rowspan="5">Core Informatics</th>
+						<td class="t_left line02">
+							<p>정보와 정보학</p>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','정보와 정보학');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>
+					<tr>
+						<td class="t_left line02">
+							<p>인간사회정보세미나</p>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','인간사회정보세미나');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>
+					<tr>
+						<td class="t_left line02">
+							<p>연구방법론</p>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','연구방법론');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>																			
+					<tr>
+						<td class="t_left line02">
+							<p>자료분석론</p>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','자료분석론');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>
+					<tr class="line01">
+						<td class="t_left line02">
+							<p>사람과 문화</p>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','사람과 문화');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>
+					
+					
+					
+					<tr class="line02">
+						<th class="line02" rowspan="5">Education Informatics</th>
+						<td class="t_left line02">
+							<p>진로진학교육론</p>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','진로진학교육론');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>
+					
+					<tr class="line02">
+						<td class="t_left line02">
+							<p>진로설계와 포트폴리오 설계전략</p>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','진로설계와 포트폴리오 설계전략');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>																
+					<tr>
+						<td class="t_left line02">
+							<p>진학지도기법의 이론과 실제</p>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','진학지도기법의 이론과 실제');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>
+					<tr>
+						<td class="t_left line02">
+							<p>진단검사를 활용한 진로의 이해와 설계</p>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','진단검사를 활용한 진로의 이해와 설계');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>
+					<tr class="line01">
+						<td class="t_left line02">
+							<p>직업세계와 직업정보탐색</p>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','직업세계와 직업정보탐색');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>
+					
+					
+					
+					<tr class="line02">
+						<th class="line02" rowspan="6">Business Informatics</th>
+						<td class="t_left line02">
+							<p>시스템사고와 통계적 프로세스</p>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','시스템사고와 통계적 프로세스');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>
+					<tr>
+						<td class="t_left line02">
+							<p>창의적 이노베이션</p>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','창의적 이노베이션');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>
+																								
+					<tr>
+						<td class="t_left line02">
+							<p>인적자원관리와 조직개발</p>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','인적자원관리와 조직개발');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>
+					<tr>
+						<td class="t_left line02">
+							<p>데이터 기반 예측</p>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','데이터 기반 예측');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>
+					<tr>
+						<td class="t_left line02">
+							<p>전략적 의사결정</p>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','전략적 의사결정');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>
+					<tr class="line01">
+						<td class="t_left line02">
+							<p>리더쉽과 커뮤니케이션</p>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','리더쉽과 커뮤니케이션');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>
+					
+					
+					
+					
+					<tr class="line02">
+						<th class="line02" rowspan="6">Technology Informatics</th>
+						<td class="t_left line02">
+							<p>지능형정보시스템</p>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','지능형정보시스템');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>
+					<tr>
+						<td class="t_left line02">
+							<p>프로젝트 관리방법과 활용</p>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','프로젝트 관리방법과 활용');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>
+																								
+					<tr>
+						<td class="t_left line02">
+							<p>정보시스템보안감리</p>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','정보시스템보안감리');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>
+					<tr>
+						<td class="t_left line02">
+							<p>스마트컴퓨팅환경</p>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','스마트컴퓨팅환경');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>
+					<tr>
+						<td class="t_left line02">
+							<p>UX/UI</p>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','UX/UI');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>
+					<tr class="line01">
+						<td class="t_left line02">
+							<p>빅데이터 분석과 활용</p>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','빅데이터 분석과 활용');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>
+					
+				</tbody>
+				</table>	
+			</div>
+			
+			<p class="m_b5"><img src="/home/images/course/txt_info_search.gif" alt="전체 사이버대학을 대상으로 유사강의 검색"></p>
+			<br>
+			
+		<!--e:컨텐츠영역-->
+	</div>
+
+	
+	<form class="search_box01" id="form" name="form" action="#" onsubmit="try{search();}catch(e){alert(e);}return false;"><!-- box_type01 Start -->
+        <input type="hidden" id="courseId" name="courseId" />
+        <input type="hidden" id="hidetext" name="hidetext" />
+        <input type="hidden" id="text" name="text" />
+        <input type="hidden" id="deptId" name="deptId" value="" />
+	</form>
+
+	<div class="page_num">
+		<div id="pg" name="pg"></div>
+	</div>
+
+</body>
+</html>

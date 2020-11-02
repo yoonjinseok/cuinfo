@@ -1,0 +1,113 @@
+<head>
+	<title>진학가이드</title>
+	<script type="text/javascript" language="javascript">
+	
+	function searchUnivList(gubunId)
+	{
+		
+		jQuery.post('serviceQuestion_List.ajax.action', 
+					{gubunId:gubunId}, 
+					function(data) {
+        				$("#list").html(data);
+        				
+						$(".tab_type2 a").removeClass();
+					
+						if(gubunId == '')
+							$(".tab_type2 .tab1 a").addClass("on");
+						else if(gubunId == '51')
+							$(".tab_type2 .tab2 a").addClass("on");
+						else if(gubunId == '52')
+							$(".tab_type2 .tab3 a").addClass("on");
+						else if(gubunId == '163')
+							$(".tab_type2 .tab4 a").addClass("on");
+							
+						$("#info").html("<center class='p_t10 p_b10'><img src='/home/images/intro/no_school.gif' /></center>");
+						
+						$("#list a").each(function(){
+							$(this).click(function(){
+								$("#list a").removeClass();
+								$(this).attr("class","on");
+							});
+						});
+		});
+	}
+	
+	function sendMail() {
+	
+		if($("input[name=univEmail]:checked").size() < 1){
+			alert("대학을 선택해 주세요.")
+			return;
+		}
+	
+		if(($("#title").val().trim())==''||($("#title").val().trim())==null){
+			alert("제목을 입력해 주세요.")
+			return;
+		}
+		if(($("#writer").val().trim())==''||($("#writer").val().trim())==null){
+			alert("작성자를 입력해 주세요.")
+			return;
+		}
+		if(($("#fromAddr").val().trim())==''||($("#fromAddr").val().trim())==null){
+			alert("회신 이메일을 입력해 주세요.")
+			return;
+		}
+		if(($("#content").val().trim())==''||($("#content").val().trim())==null){
+			alert("내용을 입력해 주세요.")
+			return;
+		}
+		
+		
+		if( confirm("정말 메일을 보내시겠습니까?" )){
+		//alert("111"+$("#form").formSerialize());
+		jQuery.post('serviceQuestion_sendMail.json',
+			$("#form").formSerialize(),
+				function(data) {
+					if(data.errors == true) {
+						eval(data.message);
+					} else {
+						alert("메일을 발송하였습니다.");
+						searchUnivList('');
+					}
+					
+		});
+	}
+	}
+	
+	</script>
+</head>
+<body>
+	
+	<p class="location">
+			<a href="/home/index.main.action">홈</a> <span>></span> <a href="/home/intro/summary.sub.action?gnb=11">사이버대학 안내</a> <span>></span> <a href="/home/intro/serviceGuide.sub.action?gnb=14">진학가이드</a> 
+	</p>
+	<h3>
+		<img src="/home/images/title/h3_ask_college.gif" alt="대학별 문의" /> <img src="/home/images/title/c_04.gif" alt="궁금하신 내용을 문의해주시면 빠른 답변 드리도록 하겠습니다." />
+	</h3>
+	
+
+<form class="" id="form" name="form" action="#" onsubmit="try{search();}catch(e){alert(e);}return false;"><!-- box_type01 Start -->
+
+<input type="hidden" id="classifyId" name="classifyId" value=""/>
+<input type="hidden" id="deptName" name="deptName" value=""/>
+<input type="hidden" id="deptId" name="deptId" value=""/>
+<input type="hidden" id="univId" name="univId" value=""/>
+<input type="hidden" id="kerisEmail" name="kerisEmail" value="$!kerisEmail">
+
+<div class="contentWrap">
+	<p class="txt_desc">문의할 대학을 선택하고 내용을 입력하여 문의를 클릭하면, 각 대학의 담당자에게 메일로 문의됩니다. <br />문의 결과는 입력하신 본인의 e-mail로 받아 볼 수 있습니다. </p>
+	<h4 class="preview_h4"><img src="/home/images/intro/txt_select_college.gif" alt="대학선택" /></h4>
+	<ul class="tab_type2">
+		<li class="tab1"><a href="javascript:searchUnivList('')" class="on">전체</a> </li>
+		<li class="tab2"><a href="javascript:searchUnivList('51')">사이버대학(4년제)</a> </li>
+		<li class="tab3"><a href="javascript:searchUnivList('52')">사이버대학(2년제)</a> </li>
+		<li class="tab4"><a href="javascript:searchUnivList('163')">원격대학 형태의 평생교육 시설</a> </li>
+	</ul>
+	<!-- 대학리스트 화면 -->
+	<div id="list">#parse('home/intro/serviceQuestion_List.vm')</div>
+	<!-- 대학리스트 화면 -->
+</div>
+
+</form>
+
+</body>
+</html>

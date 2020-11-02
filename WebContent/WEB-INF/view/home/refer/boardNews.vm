@@ -1,0 +1,59 @@
+<head>
+	<title>사이버대학 뉴스</title>
+	<script type="text/javascript" language="javascript">
+		
+	$(document).ready(function() {
+		search();
+    });
+    
+	function search()
+	{
+		goPage(1);
+	}
+	
+	function goPage(page)
+	{
+		$("#currPage").val(page);
+		
+		jQuery.post('boardNews_list.ajax.action', 
+				$("#form").formSerialize(), 
+				function(data) {
+				
+        			$("#list").html(data);
+		});
+	}
+	
+	function setRecordCnt(totalCnt, currPage, totalPage, showCnt)
+	{
+		$("#tCnt").text(totalCnt);
+		$("#cPage").text(currPage);
+		$("#tPage").text(totalPage);
+		
+		setPaging($("#pg"), totalCnt, showCnt, currPage);
+	}
+	
+	</script>
+	</head>
+<body>
+	
+<p class="location">
+	<a href="/home/index.main.action">홈</a> <span>></span> <a href="/home/refer/board.sub.action?gnb=51&gID=153">정보자료실</a> <span>></span> <a href="/home/refer/boardNews.sub.action?gnb=52">사이버대학 뉴스</a>
+</p>
+<h3><img src="/home/images/refer/title2.gif" alt="대학 정보 현황" /></h3>	
+		
+<form class="search_box01" id="form" name="form" action="#" onsubmit="try{search();}catch(e){alert(e);}return false;"><!-- box_type01 Start -->
+<input type="hidden" id="showCnt" name="showCnt" value="10"/>
+<input type="hidden" id="currPage" name="currPage" value="1"/>
+
+
+<div id="list">#parse('home/refer/boardNews_list.vm')</div>
+<div class="main_right">* 사이버대학의  최신 뉴스를 RSS 피드로 제공합니다.</div>
+<div class="page_num">
+	
+	<div id="pg" name="pg"></div>
+	
+</div>
+
+</form>
+</body>
+</html>

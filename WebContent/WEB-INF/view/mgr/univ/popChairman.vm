@@ -1,0 +1,172 @@
+<script type="text/javascript" language="javascript">
+	function add(val) {
+		$("#tr"+val+" .addButton").hide();
+		var val = val+1;
+		var tag = "";
+		tag = tag.concat("<tr id=\"tr" + val + "\">"
+							  ,"		<td>"
+							  ,"			<input type=\"text\" style=\"text-align:center\" maxlength=\"4\" size=\"3\" onKeyup=\"checkVal(this)\">"
+							  ,"		</td>"
+							  ,"		<td>"
+							  ,"			<input type=\"text\" style=\"text-align:center\" maxlength=\"4\" size=\"5\">&nbsp;&nbsp;&nbsp;"
+							  ,"			<a href=\"javascript:add(" + val + ");\"><img src=\"/mgr/images/btn/btn_edit.gif\" class=\"addButton\" alt=\"추가\"></a>&nbsp;"
+							  ,"			<a href=\"javascript:del(" + val + ");\"><img src=\"/mgr/images/btn/btn_delete.gif\" alt=\"삭제\"></a>"
+							  ,"		</td>"
+							  ,"	</tr>");
+		
+		$("#content").append(tag);
+	}
+	
+	function del(val) {
+	
+		var maxTrNo = $("#content tr:last-child").attr("id").replace("tr","");	##content내의 마지막tr의 val가져오기
+				
+		if($("#content tr").length == 2) {
+			alert("모든 내용을 지울 수 없습니다");
+		} else {
+			$("#tr"+val).remove();																	##삭제버튼 클릭한 곳 tr 삭제
+			if(val == maxTrNo){																		##삭제버튼 클릭한 곳 tr의 val이 마지막tr인 경우
+				$("#content tr:last-child .addButton").show();							##content내의 마지막tr의 addButton클래스 show
+			}
+		}
+	}
+	
+	function save() {
+		
+		var chairman = "";
+		var trSize = $("tr[id*=tr]").size();
+		var flag = false;
+		
+		$("tr[id*=tr]").each(function(index){
+			if(index == (trSize - 1)) {
+				if($(this).find("input:eq(0)").val() == "" || $(this).find("input:eq(1)").val() == "") {
+					if($(this).find("input:eq(0)").val().length < 4 && $(this).find("input:eq(1)").val() != "") {
+						alert("학년도는 4자리 숫자로 입력해주세요");
+					} else {
+						alert("내용을 입력해주세요");
+					}
+					chairman = "";
+					flag = false;
+					return;
+				} else {
+					if($(this).find("input:eq(0)").val().length < 4) {
+						alert("학년도는 4자리 숫자로 입력해주세요");
+						flag = false;
+						return;
+					}
+					chairman += $(this).find("input:eq(0)").val() + $(this).find("input:eq(1)").val();
+					flag = true;
+				}
+			} else {
+				if($(this).find("input:eq(0)").val() == "" || $(this).find("input:eq(1)").val() == "") {
+					if($(this).find("input:eq(0)").val().length < 4 && $(this).find("input:eq(1)").val() != "") {
+						alert("학년도는 4자리 숫자로 입력해주세요");
+					} else {
+						alert("내용을 입력해주세요");
+					}
+					chairman = "";
+					flag = false;
+					return;
+				} else {
+					if($(this).find("input:eq(0)").val().length < 4) {
+						alert("학년도는 4자리 숫자로 입력해주세요");
+						flag = false;
+						return;
+					}
+					chairman += $(this).find("input:eq(0)").val() + $(this).find("input:eq(1)").val() + ";";
+					flag = true;
+				}
+			}
+		
+		});
+		
+		if(flag) {
+			form1.chairman.value = chairman;
+			jQuery.post('popChairman_save.json', 
+				$("#form1").formSerialize(),
+				function(data) {
+	    			if(data.errors == true) {
+	    				eval(data.message);
+	    			} else {
+	    				alert("저장되었습니다");
+						opener.location.reload();
+						window.close();
+	    			}
+			});
+		}
+		#*
+		var content = document.getElementById("content");
+		var trs = content.getElementsByTagName("tr");
+		var ttt = "";
+		##alert(trs.length);
+		
+		for(var i=0;i<trs.length;i++){
+			if(i == 0)
+				continue;
+			else{
+				if(i == (trs.length - 1))
+					ttt += trs[i].getElementsByTagName("input")[0].value + trs[i].getElementsByTagName("input")[1].value;
+				else
+					ttt += trs[i].getElementsByTagName("input")[0].value + trs[i].getElementsByTagName("input")[1].value + ";";
+			}
+				
+		}
+		alert(ttt);
+		*#
+	}
+	
+	function checkVal(obj) {
+		if(isNaN($(obj).val())){
+			alert("숫자만 입력가능 합니다");
+			$(obj).val("");
+			$(obj).focus();
+		}
+	}
+</script>
+<form id="form1" method="post">
+<input type="hidden" name="universityId" value="$universityId"/>
+<input type="hidden" name="chairman" value=""/>
+<table cellspacing="0" cellpadding="0" class="form_type01" summary="이사장"><!-- list_type01 Start -->
+	<caption>이사장</caption>
+	<colgroup>
+		<col width="20%" />
+		<col width="*%" />
+	</colgroup>
+	<tbody id="content">
+		<tr>
+			<td bgcolor="#F7F7F7">학년도</td>
+			<td bgcolor="#F7F7F7">&nbsp;&nbsp;&nbsp;이름</td>
+		</tr>
+		#if($chairman)
+			#foreach($list in $chairman)
+				<tr id="tr$velocityCount">
+					<td>
+						<input type="text" style="text-align:center" size="3" maxlength="4" value=#if($list.length() < 4)""#else"$!list.substring(0,4)"#end onKeyup="checkVal(this)">
+					</td>
+					<td>
+						<input type="text" style="text-align:center" size="5" maxlength="4" value=#if($list.length() < 4)""#else"$!list.substring(4)"#end>&nbsp;&nbsp;&nbsp;
+						<a href="javascript:add($velocityCount);"><img src="/mgr/images/btn/btn_edit.gif" alt="추가" class="addButton" #if($velocityCount != $chairman.size())style="display:none"#end></a>&nbsp;
+						<a href="javascript:del($velocityCount);"><img src="/mgr/images/btn/btn_delete.gif" alt="삭제"></a>
+					</td>
+				</tr>
+			#end
+		#else
+			<tr id="tr1">
+				<td>
+					<input type="text" style="text-align:center" size="3" maxlength="4" onKeyup="checkVal(this)">
+				</td>
+				<td>
+					<input type="text" style="text-align:center" size="5" maxlength="4">&nbsp;&nbsp;&nbsp;
+					<a href="javascript:add(1);"><img src="/mgr/images/btn/btn_edit.gif" alt="추가" class="addButton"></a>&nbsp;
+					<a href="javascript:del();"><img src="/mgr/images/btn/btn_delete.gif" alt="삭제"></a>
+				</td>
+			</tr>
+		#end
+	</tbody>
+</table><!-- list_type01 End -->
+</form>
+
+<div class="btn_box_type02">
+	<a href="javascript:save()"><img src="/mgr/images/btn/save.gif" alt="저장" /></a>
+	<a href="javascript:window.close();"><img src="/mgr/images/btn/cancel.gif" alt="취소" /></a>
+</div>

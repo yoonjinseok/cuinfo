@@ -1,0 +1,212 @@
+#*********************************************************************************
+ *  작성내용 : 자주하는 질문답변 최상위 레이어 (탭/검색/페이지) -  home >정보자료실 > 자주하는 질문 답변
+ *  작성일    : 2011.11.04
+ *  작성자    : 최상혁 
+ *  수정내용 : 
+ *  수정일    :  
+ *  수정자    :
+ *********************************************************************************# 
+
+ #if($!gID == "156")	
+	#set($SubTitle = "자주 묻는 질문")
+	#set($TitleImage = "title7.gif")
+ #end
+<head>
+	<title>$SubTitle</title>
+	<script type="text/javascript" language="javascript">
+
+	function search()
+	{
+		goPage(1);
+	}
+	
+	function setRecordCnt(totalCnt, currPage, totalPage, showCnt)
+	{
+		$("#tCnt").text(totalCnt);
+		$("#cPage").text(currPage);
+		$("#tPage").text(totalPage);
+
+		setPaging($("#pg"), totalCnt, showCnt, currPage);
+	}
+	
+	function goPage(page)
+	{
+
+		$("#currPage").val(page);
+		
+		jQuery.post('faq_list.ajax.action', 
+				$("#searchForm").formSerialize(), 
+				function(data) {
+        			$("#list").html(data);
+		});
+
+	}
+
+	$(document).ready(function() {
+		search();
+    });
+	
+    // Tab View
+	function changeTab(selectedValue)
+	{
+		$("#univFaqList").hide();
+		$("#searchForm").show();
+		$("#list").show();
+		$("#pg").show();
+	
+		$("#tabVal").val(selectedValue);
+		
+		$("#faqTab li > a").removeClass("on");		
+		if(selectedValue == 1){
+			$("#tab1").addClass("on");
+			$("#sectionId").val("");
+		}else if(selectedValue == 3){
+			$("#tab3").addClass("on");
+			$("#sectionId").val("45");
+		}else if(selectedValue == 4){
+			$("#tab4").addClass("on");
+			$("#sectionId").val("46");
+		}else if(selectedValue == 6){
+			$("#tab6").addClass("on");
+			$("#searchForm").hide();
+			$("#list").hide();
+			$("#pg").hide();
+			$("#univFaqList").show();
+			return;
+			
+		}else{
+			$("#tab5").addClass("on");			
+			$("#sectionId").val("47");
+		}		
+		goPage(1);
+	}
+	
+	function viewImage(faqId,upfileGid){
+	/*
+		jQuery.get('faq_File_download.ajax.action?fileGid=$!step.upfileGid&fileID=1',
+					function(data){
+                    			    if(data.errors == true)
+                        			{
+                        				eval(data.message);
+                        			}
+		 		    });
+	*/   
+		displayControll_A(faqId);
+	}
+	
+	// 클릭 횟 수 증가
+   function hitCount(faqId){
+   		 
+		 if(document.getElementById("cnt_" + faqId).value == "0"){
+        	jQuery.get('faq_cnt.ajax.action?faqId='+faqId, 
+        			function(data) {
+        				document.getElementById("cnt_" + faqId).value = "1"
+				});
+	     }else{
+				document.getElementById("cnt_" + faqId).value = "0"
+		 }
+   }
+	
+	function openAnswer(faqId,upfileGid){
+		/*
+		if(upfileGid > 0){
+    		jQuery.get('faq_file.ajax.action?fileGid='+upfileGid, 
+    			function(data) {
+        			$("#file_"+faqId).html(data);
+    		});
+		}
+		*/
+		displayControll_A(faqId);
+		
+		/*
+		if(upfileGid > 0){
+			displayControll_B(faqId);
+		}
+		*/
+	}
+	
+	function displayControll_A(faqId){
+		if(document.getElementById("id_" + faqId).style.display == "none" || document.getElementById("id_" + faqId).style.display == "" ){
+			document.getElementById("id_" + faqId).style.display = "block";
+		}else{
+			document.getElementById("id_" + faqId).style.display = "none";
+		}
+	}
+	
+	/*
+	function displayControll_B(faqId){
+		if(document.getElementById("file_" + faqId).style.display == "none" || document.getElementById("file_" + faqId).style.display == "" ){
+			document.getElementById("file_" + faqId).style.display = "block";
+		}else{
+		    document.getElementById("file_" + faqId).style.display = "none";
+		}
+	}
+   */
+	
+
+   
+	//디비에 저장된 내용 다운로드
+    function downloadDB(fileGid,fileID)
+    {
+    	document.location.href = 'board_File_download.json?fileGid=' + fileGid + '&fileID=' + fileID;
+    }
+	
+
+	</script>
+</head>
+
+<body>
+	
+<p class="location">
+	<a href="/home/index.main.action">홈</a> <span>></span> <a href="/home/refer/board.sub.action?gnb=51&gID=153">정보자료실</a> <span>></span> <a href="/home/refer/faq.sub.action?gnb=52&gID=156">자주 묻는 질문</a>
+</p>
+<h3><img src="/home/images/refer/title7.gif" alt="대학 정보 현황" /></h3>	
+		
+    <ul id ="faqTab" class="tab_type1 menu2">
+    	<li class="tab1"><a class="on" id ="tab1" href="javascript:changeTab(1)">전체</a></li>
+    	<li class="tab3"><a id ="tab3" href="javascript:changeTab(3)">일반</a></li>
+        <li class="tab4"><a id ="tab4" href="javascript:changeTab(4)">입학안내</a></li>
+    	<li class="tab5"><a id ="tab5" href="javascript:changeTab(5)">수업/학업</a></li>
+    	<li class="tab6"><a id ="tab6" href="javascript:changeTab(6)">대학별FAQ</a></li>
+    </ul>
+
+	<form id="searchForm" name="searchForm" action="#" onsubmit="try{search();}catch(e){alert(e);}return false;"><!-- box_type01 Start -->
+    <input type="hidden" id="showCnt" name="showCnt" value="10"/>
+    <input type="hidden" id="currPage" name="currPage" value="1"/>
+    <input type="hidden" id="gubunID" name="gubunID" value="$!gID"/><!-- 게시판 구분 -->
+    <input type="hidden" id="sectionId" name="sectionId" value=""/>
+    <input type="hidden" id="faqID" name="faqID" value="0" />
+    <input type="hidden" id="tabVal" name="tabVal" value="" />
+    <!-- faqDao.xml 에서 요구되는 정렬기준 값(관리자모드에서의 변수값을 임의로  추가)  -->
+    <input type="hidden" id="searchCon1" name="searchCon1" value="1" />
+    <!-- faqDao.xml 에서 요구되는 '제목+내용' 검색을 위한  구분 값(관리자모드에서의 변수값을 임의로  추가) -->
+    <input type="hidden" id="selectRadio1" name="selectRadio1" value="3" />
+
+    <fieldset class="faq_search" id="faq_search">
+    	<span>궁금하신 사항을 검색해주세요. 바로 바로 해결방법을 제시해드립니다</span>
+    	<input style="margin:0 0 10px 0;padding:0 0 0 8px;" type="text" size="20" name="faqContent" id="faqContent" value="$!searchText" title="검색어입력"/>
+    	<input style="margin:0 0 10px 0;padding:0 0 0 8px;" type="image" src="/home/images/btn/search.gif" alt="검색" />
+    </fieldset>
+</form><!-- box_type01 End -->
+<div id="list">#parse('home/refer/faq_list.vm')</div>
+<div class="page_num">
+	<div id="pg" name="pg"></div>
+</div>
+
+##univListerror_box
+<div id="univFaqList" style="display:none;">
+	<ul class="tab_type2"></ul>
+	<ul class="overall_tab_list">
+		#foreach($list in $univFaqList)
+		<li><a target="_blank" href="$!list.univFaqLink" onClick="dcsMultiTrack('DCS.dcssip','$!list.sip','DCS.dcsuri','$!list.uri','DCS.qry','$!list.qri','WT.ti','Offsite Link - $!list.sp','WT.sp','$!list.sp')">$!list.univName</a></li>
+		#end
+	</ul>
+	
+	<center class="p_t10 p_b10">
+		<img src="/home/images/intro/no_school.gif" />
+	</center>
+</div>
+
+
+</body>
+</html>

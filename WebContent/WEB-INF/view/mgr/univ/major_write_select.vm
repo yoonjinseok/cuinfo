@@ -1,0 +1,6 @@
+
+<select	id="deptId" name="deptId">
+	#foreach($rd in $reptDeptList)
+	<option value="$!rd.deptId">$!rd.deptName</option>
+	#end
+</select>

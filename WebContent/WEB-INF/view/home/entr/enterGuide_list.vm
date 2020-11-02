@@ -1,0 +1,54 @@
+
+<table cellspacing="0" cellpadding="0" class="table_type1 st01 st02" summary="과정관리"><!-- table_type1 st01 Start -->
+	<caption>모집요강</caption>
+	<colgroup>
+		<col width="*" />
+		<col width="18%" />
+		<col width="10%" />
+		<col width="14%" />
+		<col width="14%" />
+		<col width="14%" />
+	</colgroup>
+	<thead>
+		<tr>
+			<th scope="col" rowspan="2">학교명</th>
+			<th scope="col" rowspan="2">연락처</th>
+			<th scope="col" rowspan="2">입학전형<br/>시행계획</th>
+			<th scope="col" colspan="3">입학안내링크</th>
+		</tr>
+		<tr>
+			<th scope="col">신입학</th>
+			<th scope="col">편입학</th>
+			<th scope="col">시간제등록</th>
+		</tr>
+	</thead>
+	<tbody>
+		#foreach($eg in $enterGuideList)
+		<tr>
+            <td>
+            	<a href="$!eg.univ_homepage" target="_blank" class="btn" onclick="dcsMultiTrack('DCS.dcssip','$!eg.sip','DCS.dcsuri','$!eg.uri','DCS.qry','$!eg.qri','WT.ti','Offsite Link - $!eg.sp','WT.sp','$!eg.sp')"> 
+					<img src="http://cuinfo.net/mgr/common/file_download_id.json?upfileId=$!eg.logo_upfile_gid" alt="logo" />
+				</a>
+			</td>
+            <td class="t_left">$!eg.univ_phone</td>
+            <td>
+            	#if($!eg.entermodel != "0")
+            		<div><a href="/mgr/common/file_download_id.json?upfileId=$!eg.entermodel"><img src="/home/images/btn/pdf.gif"/></a></div>
+            	#end	
+            	##<a href="$!eg.newcome" target="_blank" class="btn"><img src="/mgr/images/btn/btn_link.gif" value="Go"/></a>
+            </td>
+			<td><a href="$!eg.newcome" target="_blank" class="btn" onclick="dcsMultiTrack('DCS.dcssip','$!eg.sip1','DCS.dcsuri','$!eg.uri1','DCS.qry','$!eg.qri1','WT.ti','Offsite Link - $!eg.sp1','WT.sp','$!eg.sp1')"><img src="/mgr/images/btn/go2.gif" value="Go"/></a></td>
+            <td>#if($!eg.transfer)<a href="$!eg.transfer" target="_blank" class="btn" onclick="dcsMultiTrack('DCS.dcssip','$!eg.sip2','DCS.dcsuri','$!eg.uri2','DCS.qry','$!eg.qri2','WT.ti','Offsite Link - $!eg.sp2','WT.sp','$!eg.sp2')"><img src="/mgr/images/btn/go2.gif" value="Go"/></a>#end</td>
+			<td>#if($!eg.timecome)<a href="$!eg.timecome" target="_blank" class="btn" onclick="dcsMultiTrack('DCS.dcssip','$!eg.sip3','DCS.dcsuri','$!eg.uri3','DCS.qry','$!eg.qri3','WT.ti','Offsite Link - $!eg.sp3','WT.sp','$!eg.sp3')"><img src="/mgr/images/btn/go2.gif" value="Go"/></a>#end</td>
+		</tr>
+		#end
+		
+
+	</tbody>
+</table><!-- list_type01 End -->
+<div class="main_right">* 학교명의 가나다순으로 정렬합니다.</div>
+<script>
+	#if($poupList)
+	setRecordCnt($totalCnt, $currPage, $totalPage, $showCnt);
+	#end
+</script>

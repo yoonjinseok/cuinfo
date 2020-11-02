@@ -1,0 +1,84 @@
+<!-- 성별 등록율 비율 -->
+<table cellspacing="0" cellpadding="0" class="table_type1 st01 st02 th_2line" summary="성별 등록율 비율 현황"><!-- table_type1 st01 Start -->
+	<caption>성별 등록율 비율 현황</caption>
+	<colgroup>
+		<col width="14%"><col width="14%"><col width="14%"><col width="14%"><col width="14%"><col width="15%"><col width="15%">
+	</colgroup>
+	<thead>
+		<tr>
+			<th scope="col" rowspan="2" class="first bg02">연도</th>
+			<th scope="col" colspan="3">등록인원(명)</th>
+			<th scope="col" colspan="3">등록비율(%)</th>
+		</tr>
+		<tr>
+			<th scope="col">남</th>
+			<th scope="col">여</th>
+			<th scope="col">계</th>
+			<th scope="col">남</th>
+			<th scope="col">여</th>
+			<th scope="col">계</th>
+		</tr>
+	</thead>
+	<tbody>
+
+		#foreach($stt in $statisiticsList)
+		<tr>
+			<td>$!stt.STTYEAR</td>
+			<td>$!stt.SEXM</td>
+			<td>$!stt.SEXG</td>
+			<td>$!stt.AGETOTAL</td>
+			<td>$!stt.SEXMP</td>
+			<td>$!stt.SEXGP</td>
+			<td>100</td>
+		</tr>
+		#end
+	</tbody>
+</table><!-- list_type01 End -->
+
+<div class="graphWrap" id="chart_div1" style="text-indent: 100px; padding-top:30px;padding-bottom:10px; display: none;">	
+백분율(%)
+</div>
+<div class="graphWrap" id="chart_div" style="display: none;">	
+</div>
+<div class="graphWrap" id="chart_div2" style="text-align:center; display: none;">	
+연도별
+</div>
+
+<script type="text/javascript"> 
+
+	google.load('visualization', '1', {packages: ['corechart']});
+	function drawVisualization() {
+	  // Create and populate the data table.
+	  var data = google.visualization.arrayToDataTable([
+	    ['Year', '여', '남']
+	    #foreach($stt in $statisiticsList)
+	    ,['$!stt.STTYEAR', $!stt.SEXGP, $!stt.SEXMP]
+	    #end	   
+	  ]);
+
+	// Create and draw the visualization.
+	  new google.visualization.ColumnChart(document.getElementById('chart_div')).
+	      draw(data,
+	           {'isStacked': true,
+				bar:{groupWidth:"70"},	           
+	    	    width:775, height:300,
+	    	    fontName: "Verdana", 
+	    	    fontSize: "12",
+	            //title: "백분율(%)",
+	           // hAxis: {title: "연도별(%)", fontSize : "12", fontName : "Verdana", 
+	           //  	 titleTextStyle: {fontSize : "12", fontName : "Verdana"}},
+	            colors: ['#f08080', '#4169e1'],
+	            legend: {textStyle: {fontSize : "11", fontName : "Verdana"}},
+	            chartArea:{left:"20%",top:"5",width:"60%",height:"90%"}
+	           }
+	      );
+	 }
+	
+	google.setOnLoadCallback(drawVisualization);
+
+	#if('$!statisiticsList' != '' && $!statisiticsList.size() != 0)
+		$("#chart_div").toggle();
+		$("#chart_div1").toggle();
+		$("#chart_div2").toggle();
+	#end
+</script>

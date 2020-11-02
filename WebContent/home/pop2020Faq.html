@@ -1,0 +1,124 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<link rel="SHORTCUT ICON" href="http://www.cuinfo.net/favicon.ico" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+   	<meta name="Description" content="CUinfo 사이버 대학 종합정보 서비스" />
+    <meta name="Keywords" content="사이버 대학, 사이버대학 포털, 사이버 대학 종합정보 서비스" />
+    <meta name="Author" content="KERIS" />
+    <title>역량진단 결과보고서 작성을 위한 질의 입력</title>
+    <link rel="stylesheet" type="text/css" href="/home/css/layout.css" />
+	<link rel="stylesheet" type="text/css" href="/home/css/popup_aboutCuinfo.css" />
+	<script type="text/javascript" language="javascript" src="/home/js/jquery-1.6.4.min.js"></script>
+    <script type="text/javascript" language="javascript" src="/mgr/js/jquery.form.js"></script>
+    	<script type="text/javascript" language="javascript" src="/home/js/jquery.popupWindow.js"></script>
+    	<script type="text/javascript" language="javascript" src="/home/js/jquery.fadeSliderToggle.js"></script>
+    	<script type="text/javascript" language="javascript" src="/home/js/common.js"></script>
+	<script type="text/javascript" language="javascript">
+	$(document).ready(function(){
+		/*$("div .tabArea").find("div").hide();
+
+		$("a").click(function(){
+			
+			if($(this).find("img").attr("src").indexOf("_on") > 0)
+				$(this).find("img").attr("src",$(this).find("img").attr("src").replace("_on","_off"));
+			else
+				$(this).find("img").attr("src",$(this).find("img").attr("src").replace("_off","_on"));
+			
+			$(this).parent().find("div").fadeToggle("fast");
+				
+		}
+		);*/
+
+	});
+
+    function sendMail2020(){
+        alert('hello');
+
+        if(($("#title").val().trim())==''||($("#title").val().trim())==null){
+            alert("제목을 입력해 주세요.");
+            $("#title").focus();
+            return;
+        }
+        if(($("#writer").val().trim())==''||($("#writer").val().trim())==null){
+            alert("작성자를 입력해 주세요.");
+            $("#writer").focus();
+            return;
+        }
+        if(($("#fromAddr").val().trim())==''||($("#fromAddr").val().trim())==null){
+            alert("회신 이메일을 입력해 주세요.");
+            $("#fromAddr").focus();
+            return;
+        }
+        if(($("#content").val().trim())==''||($("#content").val().trim())==null){
+            alert("내용을 입력해 주세요.");
+            $("#content").focus();
+            return;
+        }
+
+
+        if( confirm("정말 메일을 보내시겠습니까?" )){
+            //alert("111"+$("#form").formSerialize());
+            jQuery.post('serviceQuestion_sendMail2.json.action',
+                $("#form").formSerialize(),
+                function(data) {
+                    if(data.errors == true) {
+                        eval(data.message);
+                    } else {
+                        alert("메일을 발송하였습니다.");
+                        //searchUnivList('');
+                    }
+
+                });
+        }
+    }
+	</script>
+</head>
+
+<body class="main_pop">
+
+<!--팝업사이즈 750*600-->
+<div class="popupArea" style="height: 100%;">
+	<div class="tit_P"><img src="/home/images/popup/popup_bg_top.jpg" alt="about CUinfo" /></div>
+    
+    <div class="middle_P" style="padding-right: 23px;">
+    	<!--<p><strong class="letter01"><span style="color: #F38003;vertical-align:baseline;">CU</span>info(사이버대학 종합정보)는 국내 사이버대학(<span style="color: #F38003;vertical-align:baseline;">C</span>yber <span style="color: #F38003;vertical-align:baseline;">U</span>niversity)의 다양한 정보(<span style="color: #000000;vertical-align:baseline;">info</span>rmation)를 제공하는 서비스입니다.</strong><br /><br />
+        <span class="coR01">※ CUinfo는 한국원격대학협의회와 한국교육학술정보원이 주관하는 ‘사이버대학 경쟁력 강화 사업’의 일환으로 사이버대학에 대한<br /></span><span class="coR01 pl16">정확한 정보 제공 및 인식 제고를 위해 구축한 사이트입니다. </span></p>-->
+        
+        <!--<p class="pt40">이 사이트는 다음과 같은 서비스를 제공하고 있습니다.</p>-->
+        <h4 class="preview_h4"><img src="/home/images/intro/txt_inp_ask.gif" alt="문의 내용 입력" /></h4>
+        <form id="form" name="form" method="post" >
+        <table class="ask_table">
+            <colgroup>
+                <col style="width:20%;" />
+                <col style="width:80%;" />
+            </colgroup>
+            <tbody>
+            <tr>
+                <th>제목</th>
+                <td><input type="text" id="title" name="title" size="30" class="inp_email"></td>
+            </tr>
+            <tr>
+                <th>작성자 (대학/소속<br>/성명/직위)</th>
+                <td><input type="text" id="writer" name="writer" class="inp_email"></td>
+            </tr>
+            <tr>
+                <th>회신 이메일</th>
+                <td><input type="text" id="fromAddr" name="fromAddr" class="inp_email"></td>
+            </tr>
+            <tr>
+                <th>질의 내용</th>
+                <td><textarea cols="999" rows="999" id="content" name="content" class="ask_textarea"></textarea></td>
+            </tr>
+            </tbody>
+        </table>
+        </form>
+        <div class="btn_area_new"><a href="javascript:sendMail2020();"><img src="/home/images/btn/btn_ask.gif" alt="문의하기" /></a></div>
+
+    </div>
+    
+	<div class="bottom_P"><img src="/home/images/popup/popup_bg_bottom.jpg" alt="" /></div>
+</div>
+
+</body>
+</html>

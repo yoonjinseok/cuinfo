@@ -1,0 +1,549 @@
+		<script type="text/javascript" language="javascript">
+			$(document).ready(function(){
+				facebookRssInit();
+				   
+				$("#fbArea").mouseenter(function(){
+					facebookAni = false;
+				}); 
+				
+				$("#fbArea").mouseleave(function(){
+					facebookAni = true;
+					//facebookRss();
+				});
+				
+				mainSlideStart(); 
+				mainSlideStop();
+				
+				$("#visual_ChangeIMG2_1 li").mouseenter(function(){
+					var src;
+					//이미지 _off 변경
+					$("#visual_ChangeIMG2_1 li").find("img").each(function(){
+						src = $(this).attr("src");
+						src = src.replace("_on", "_off");
+						$(this).attr("src", src);
+					});
+					
+					src = $(this).find("img").attr("src");
+					//해당이미지 _on 변경
+					src = src.replace("_off", "_on");
+					$(this).find("img").attr("src", src);
+				});
+				
+				$("#slideshow").find("img").change(function(){
+					alert("change");
+				});
+				
+				$(".cyber_info a").each(function(index){
+					$(this).mouseenter(function(){
+					
+						if(index == 0 || index == 2)
+							$(this).css("background","#eeeeee");
+						else if(index == 1)
+							$(this).css("background","#146EA0");
+						else
+							$(this).css("background","#AA4913");
+							
+						$(this).css("border-radius","0 5px 5px 0").css("box-shadow","2px 2px 3px 3px lightgray").animate({width : "200px"},500, function(){
+							$(this).find("img").effect( "pulsate" , {times  : 2}, 300);
+						});
+					});
+				});
+				
+				$(".cyber_info a").each(function(){
+					$(this).mouseleave(function(){
+						//$(this).find("img").stop(true, true);
+						$(this).stop().css("background-color","").css("height","76px").css("box-shadow","0 0 0 0 lightgray");
+						$(this).stop().animate({width : "184px", opacity : "1"},300, function(){
+							$(this).css("border-radius","0 0 0 0")
+						});
+						
+					});
+				});
+				
+			});
+			
+			
+			var mainSlide;
+			var mainSlideYN = true;
+			function mainSlideStart() {
+					
+					mainSlide = setInterval( function(){
+						if(eval(mainSlideYN)){
+							var active = $('#slideshow IMG.active');
+							var active2 = $('.rolling li.on');
+							
+						    if ( active.length == 0 ) active = $('#slideshow IMG:last');
+						    if ( active2.length == 0 ) active2 = $('.rolling li:last');
+						    
+						    var next =  active.next().length ? active.next() : $('#slideshow IMG:first');
+						    var next2 =  active2.next().length ? active2.next() : $('.rolling li:first');
+						
+						    active.addClass('last-active');
+						    active2.removeClass('on').addClass('off');
+						    
+						    next.css({opacity: 0.0}).addClass('active').animate({opacity: 1.0}, 1000, function() {
+						            active.removeClass('active last-active');
+						        });
+						    
+						    next2.css({opacity: 0.0}).removeClass('off')
+					        	.addClass('on')
+					        	.animate({opacity: 0.4}, 1000, function() {
+					        		active2.removeClass('on');
+					        });
+						}
+				}, 3000 );
+			}
+			
+			function mainSlideStop(){
+				
+				$(".cyber_info a").each(function(index){
+					$(this).mouseenter(function(){
+						$("#slideshow IMG.active").addClass("last-active");
+						$("#slideshow IMG:eq("+index+")").attr("class", "");
+						$("#slideshow IMG:eq("+index+")").css({opacity: 0.0}).addClass('active').animate({opacity: 1.0}, 500, function(){
+							$("#slideshow IMG.last-active").removeClass("active last-active");
+						});
+						
+						$(".rolling li.on").removeClass("on").addClass("off");
+						$(".rolling li:eq("+index+")").css({opacity: 0.0}).removeClass('off').addClass('on').animate({opacity: 0.4}, 100);
+						
+					});
+				});
+				
+				$(".cyber_info").mouseenter(function(){
+					mainSlideYN = false;
+					if(mainSlide)
+							clearInterval(mainSlide);
+				});
+				
+				$(".cyber_info").mouseleave(function(){
+					mainSlideYN = true;
+					mainSlideStart();
+				});
+			}
+			
+			function clickTab(no){
+				if(no == 1){
+					$("#tab01").addClass("on");			
+					$("#tab02").removeClass();	
+					
+					$("#tab01 div").show();		
+					$("#tab02 div").hide();		
+				}else{
+					$("#tab01").removeClass();			
+					$("#tab02").addClass("on");			
+				
+					$("#tab01 div").hide();		
+					$("#tab02 div").show();		
+				}
+			}
+			function viewDetail(courseId){
+			
+				$("#courseId").val(courseId);
+				$("#form").attr("method","post");
+				$("#form").attr("onsubmit","");
+				$("#form").attr("action","/home/course/courseSearchView.sub.action?gnb=41");
+				$("#form").submit();
+				
+			}
+		
+		function layerTest(opt) {
+		
+			var leftCP = ( $(window).scrollLeft() + ($(window).width() - $("#layerPopup").width()) / 2 );
+			var topCP = ( $(window).scrollTop() + ($(window).height() - $("#layerPopup").height()) / 2 );
+			
+			$(window).scroll(function() {
+				var scrollLeftCP = ( $(window).scrollLeft() + ($(window).width() - $("#layerPopup").width()) / 2 );
+				var scrollTopCP = ( $(window).scrollTop() + ($(window).height() - $("#layerPopup").height()) / 2 );
+				$("#layerPopup").css({"left":scrollLeftCP, "top":scrollTopCP});
+			});
+			
+			
+			var myVod = document.getElementById("video1");
+			var myVod2 = document.getElementById("video2");
+			
+			if(opt=="show") {
+				$("#mask").show();
+				$("#layerPopup").show();
+				$("#layerPopup").css("left", leftCP);
+				$("#layerPopup").css("top", topCP);
+				
+				if(jwplayer())
+					jwplayer().pause();
+				myVod.play();
+				
+				
+					
+			} else {
+				$("#mask").hide();
+				$("#layerPopup").hide();
+				
+				//jwplayer().pause();
+				//$("#video1").play();
+				
+				if(jwplayer())
+					jwplayer().pause();
+				myVod.pause();
+				
+			}
+		}
+		
+		
+		
+		//페이스북 RSS 기능 파라미터 및 호출
+		//보안관련 이슈가 없고, url 정보 변경시 실시간 대응하기 위해 스크립트에서 파라미터 관리
+		//화신, 세계 페이스북 없음
+		
+		var idx = 0;
+		var univArr = [1,2,3,4,5,6,7,8,9,10,11,12,13,15,16,17,18,19,21];
+		//var univArr = [2,4,6];
+		var facebookSt;
+		var facebookAni = true;
+		
+		function facebookRssInit(){
+		
+			for (var i in univArr) {
+				univArr.sort(function() {
+				return Math.random() - Math.random()}); // 랜덤정렬
+			};
+			
+			facebookRss();
+		}
+		
+		function facebookRss(){
+			if(idx == univArr.length)
+				idx = 0;
+			
+			jQuery.post("/home/facebookRss.json.action",
+				{universityId:univArr[idx++]},
+				function(data){
+					if(eval(facebookAni)){
+				
+						if(data.title == ""){
+							facebookRss();
+							return false;
+						}
+						
+						if(!$("#fbArea").is(":visible"))
+							$("#fbArea").show(300);
+						
+						
+						
+						$("#1st").fadeOut(300, function(){
+							$("#1st .fbLogo img").prop("src", "/mgr/common/file_download_id.json?upfileId=" + data.logo);
+							$("#1st .fbTitle a").prop("href", data.url);
+							$("#1st .fbTitle a").text(data.title);
+							$("#1st .fbRegDt").text(data.regDt);
+							$("#1st").fadeIn(300);
+						});
+						
+						
+						//alert($("#1st").html());
+					
+					}
+					
+					facebookSt = setTimeout(function(){
+						facebookRss();
+					}, 1000 * 5);
+			});
+		}
+		
+		</script>
+		<div id="contents">
+        
+        <div class="visual_ly">
+        	<!-- visual -->
+        	<div class="visual">
+           	
+            	<div id="slideshow" class="img">
+            		
+            		<img src="/home/images2/main/main1.jpg" alt="visual1" class="active"/>
+            		<img src="/home/images2/main/main2.jpg" alt="visual2"/>
+            		<img src="/home/images2/main/main3.jpg" alt="visual4" />
+            		<img src="/home/images2/main/main4.jpg" alt="visual5" />
+            		
+            		<!--
+            		<img src="/home/images2/main/temp_visual.jpg" alt="visual1" class="active"/>
+            		<img src="/home/images2/main/temp_visual2.jpg" alt="visual2" />
+            		<img src="/home/images2/main/temp_visual3.jpg" alt="visual3" />
+            		-->
+            		
+            		<!--
+	            	<ul class="iimmgg" id="visual_ChangeIMG2">
+	                	<li id="changeImg2_0"><a href="/home/intro/summary.sub.action?gnb=11" ><img src="/home/images2/main/temp_visual.jpg" alt="visual1" /></a></li>
+	                    <li id="changeImg2_1"><a href="/home/intro/guidenew.sub.action?gnb=112" ><img src="/home/images2/main/temp_visual2.jpg" alt="visual2" /></a></li>
+	                    <li id="changeImg2_2"><a href="/home/intro/successStory.sub.action?gnb=15" ><img src="/home/images2/main/temp_visual3.jpg" alt="visual3" /></a></li>
+	                </ul>
+	                -->
+            	</div>
+              	<!-- <div style="width: 100%; height: 100%; z-index:11; background-image: url('/home/images2/main/mlayer1.png');position:absolute;display:block;"></div> -->
+              	
+                <div class="btn" style="">
+					<ul class="controlBtn2" id="visual_ChangeIMG2_1" style="z-index:12;position:absolute;">
+	                    <li id="cBtn2_0"><a href="/home/intro/summary.sub.action?gnb=11" ><img src="/home/images2/main/btn_visual1_on.png" alt="visual1" /></a></li>
+	                    <li id="cBtn2_1"><a href="/home/intro/guidenew.sub.action?gnb=112" ><img src="/home/images2/main/btn_visual2_on.png" alt="visual2" /></a></li>
+	                    <li id="cBtn2_2"><a href="/home/intro/successStory.sub.action?gnb=15" ><img src="/home/images2/main/btn_visual3_on.png" alt="visual3" /></a></li>
+	                    <li id="cBtn2off_0"><a href="/home/intro/summary.sub.action?gnb=11" ><img src="/home/images2/main/btn_visual1_off.png" alt="visual1" /></a></li>
+	                    <li id="cBtn2off_1"><a href="/home/intro/guidenew.sub.action?gnb=112" ><img src="/home/images2/main/btn_visual2_off.png" alt="visual2" /></a></li>
+	                    <li id="cBtn2off_2"><a href="/home/intro/successStory.sub.action?gnb=15" ><img src="/home/images2/main/btn_visual3_off.png" alt="visual3" /></a></li>
+	                </ul>
+				</div>
+                
+                <div class="rolling">
+	                <ul>
+	                	<li class="on" id="rolling0"></li>
+	                	<li class="off" id="rolling1"></li>
+	                	<li class="off" id="rolling2"></li>
+	                	<li class="off" id="rolling3"></li>
+	                	<!--  <a href="#" class="on" id="rolling0"></a>
+	                    <a href="#" class="off"  id="rolling1"></a>
+	                    <a href="#" class="off" id="rolling2"></a>-->
+	                </ul>
+                </div>
+            </div>
+            <!-- //visual -->
+            <!-- //visual -->
+            
+            <div class="cyber_info" id="accordion">
+            	 <a href="javascript:popupOpen1();" class="info0">
+                	<p><img src="/home/images2/main/txt_info1.png" alt="사이버대학 체험관" /></p>
+                    <p><img src="/home/images2/main/btn_info1.png" alt="" /></p>
+                </a>
+                <a href="/home/intro/summary.sub.action?gnb=11" class="info1">
+                	<p><img src="/home/images2/main/txt_info2.png" alt="사이버대학 안내" /></p>
+                    <p><img src="/home/images2/main/btn_info2.png" alt="" /></p>
+                </a>
+                <a href="/home/curri/areadept.sub.action?gnb=31">
+                	<p><img src="/home/images2/main/txt_info3.png" alt="학과/교과과정 전체보기" /></p>
+                    <p><img src="/home/images2/main/btn_info1.png" alt="" /></p>
+                </a>
+                <a href="/home/entr/enterGuide.sub.action?gnb=22" class="info2">
+                	<p><img src="/home/images2/main/txt_info4.png" alt="모집요강" /></p>
+                    <p><img src="/home/images2/main/btn_info3.png" alt="" /></p>
+                </a>
+            </div>
+            <div class="clear"></div>
+		<form class="" id="form" name="form" action="#" onsubmit="try{search();}catch(e){alert(e);}return false;">
+		<input type="hidden" id="courseId"	name="courseId" value=""/>
+	</form>
+		 <div class="cont_ly">
+            
+ <!--           	<div class="lecture">
+                	<h2><img src="/home/images2/main/h2_lecture.png" alt="사이버대학 공개강의" /></h2>
+                   	<a href="#" class="txt">
+                    			<span>이영돈PD와 함께하는 탐사<br/>
+								보도 즐겁게 이해하기 2부</span>
+                                
+                                <p>영진사이버대학 | 이동식</p>
+                    </a>
+                    <a href="#" class="img"><img src="/home/images2/main/temp_lecture.png" alt="강의 동영상" /></a>
+                </div>
+-->			<div class="lecture">
+           	 <div class="open_lecture" id="open_lecture">
+			<h2><a href="/home/course/publicCourse.sub.action?gnb=45">&nbsp;<img src="/home/images2/main/h2_lecture.png" alt="공개강의" /></a></h2>
+			
+			<!-- area_rolling_banner -->
+			<div class="area_rolling_banner">
+				<!-- rotate-container -->
+				<div class="rotate-container">
+					<!-- rotate-wrap -->
+					<div class="rotate-wrap">
+						<ul id="rotate-left">
+							#foreach($list in $publicCoureList)
+							<li>
+								<dl>
+									<dt><a href="javascript:viewDetail($list.courseId)"><img src="$!list.prevthumbnail" alt=""width="171px" height="87px"/></a></dt>
+									<dd>
+										<a href="javascript:viewDetail($list.courseId)" class="title">#if($!list.universityName.length()<11)$!stringUtils.replace($!list.universityName,"대학","<br/>대학")#elseif($!list.universityName.length()==11)$!stringUtils.replace($!list.universityName,"외국어","<br/>외국어")#elseif($!list.universityName.length()==12)$!stringUtils.replace($!list.universityName,"문화","<br/>문화")#else$!list.universityName#end</a>
+										$!list.manager
+										<a href="javascript:viewDetail($list.courseId)" class="content">$!list.title &nbsp;</a>
+									</dd>
+								</dl>
+							</li>
+							#end
+						</ul>
+					</div>
+					<!--// rotate-wrap -->
+				</div>
+				<!--// rotate-container -->
+				<span id="leftprevButton" class="btn_prev"><img src="/home/images/main/btn_left_rolling.gif" alt="이전"></span>
+				<span id="leftnextButton" class="btn_next"><img src="/home/images/main/btn_right_rolling.gif" alt="다음"></span>
+			</div>
+			<!--// area_rolling_banner -->
+		</div>
+				</div>
+				<div class="news" >
+					<h2><a href="/home/refer/boardNews.sub.action?gnb=52">&nbsp;<img src="/home/images2/main/h2_news.png" alt="사이버대학 뉴스" /></a></h2>	
+				<ul>
+					#foreach($list in $newsList)
+					<li>
+                        <a  href="$!list.newsLink" target="_blank" onClick="dcsMultiTrack('DCS.dcssip','$!list.sip','DCS.dcsuri','$!list.uri','DCS.qry','$!list.qri','WT.ti','Offsite Link - $!list.sp','WT.sp','$!list.sp')">$list.newsTitle
+							<span>
+								#if($list.newYN == 'Y') #end $dateformatter.print($!list.newsRegDate, $locale)
+							</span>
+						</a>
+					</li>
+					#end
+					</ul>
+            </div>
+            
+           		<div class="future">
+                    
+                    <ul class="img" id="visual_ChangeIMG3">
+                    	<li id="changeImg3_0"><img src="/home/images2/main/temp_img1.png" useMap="#image11"/>
+						<map name="image11">						
+						<area href="/home/eudc/statistics.sub.action?gnb=55&gubunNm=sex" shape="rect" coords="245, 60, 380, 85"/>
+						<area href="/home/eudc/statistics.sub.action?gnb=55&gubunNm=job" shape="rect" coords="245, 85, 380, 110"/>
+						<area href="/home/eudc/statistics.sub.action?gnb=55&gubunNm=age" shape="rect" coords="245, 110, 380, 135"/>
+						<area href="/home/eudc/statistics.sub.action?gnb=55&gubunNm=fee" shape="rect" coords="245, 135, 380, 160"/>
+						</map>
+						</li>
+                        <li id="changeImg3_1"><img src="/home/images2/main/temp_img2.png" useMap="#image12"/>
+						<map name="image12">
+						<area href="/home/eudc/statistics.sub.action?gnb=55&gubunNm=sex" shape="rect" coords="245, 60, 380, 85"/>
+						<area href="/home/eudc/statistics.sub.action?gnb=55&gubunNm=job" shape="rect" coords="245, 85, 380, 110"/>
+						<area href="/home/eudc/statistics.sub.action?gnb=55&gubunNm=age" shape="rect" coords="245, 110, 380, 135"/>
+						<area href="/home/eudc/statistics.sub.action?gnb=55&gubunNm=fee" shape="rect" coords="245, 135, 380, 160"/>
+						</map>
+						</li>
+                        <li id="changeImg3_2"><img src="/home/images2/main/temp_img3.png" useMap="#image13"/>
+						<map name="image13">
+						<area href="/home/eudc/statistics.sub.action?gnb=55&gubunNm=sex" shape="rect" coords="245, 60, 380, 85"/>
+						<area href="/home/eudc/statistics.sub.action?gnb=55&gubunNm=job" shape="rect" coords="245, 85, 380, 110"/>
+						<area href="/home/eudc/statistics.sub.action?gnb=55&gubunNm=age" shape="rect" coords="245, 110, 380, 135"/>
+						<area href="/home/eudc/statistics.sub.action?gnb=55&gubunNm=fee" shape="rect" coords="245, 135, 380, 160"/>
+						</map>
+						</li>
+						<li id="changeImg3_3"><img src="/home/images2/main/temp_img4.png" useMap="#image14"/>
+						<map name="image14">
+						<area href="/home/eudc/statistics.sub.action?gnb=55&gubunNm=sex" shape="rect" coords="245, 60, 380, 85"/>
+						<area href="/home/eudc/statistics.sub.action?gnb=55&gubunNm=job" shape="rect" coords="245, 85, 380, 110"/>
+						<area href="/home/eudc/statistics.sub.action?gnb=55&gubunNm=age" shape="rect" coords="245, 110, 380, 135"/>
+						<area href="/home/eudc/statistics.sub.action?gnb=55&gubunNm=fee" shape="rect" coords="245, 135, 380, 160"/>
+						</map>
+						</li>
+                    </ul>
+                    
+                    <div class="roll">
+						<ul>
+                    	<a href="/home/eudc/statistics.sub.action?gnb=55&gubunNm=sex"><li class="on" id="roll0"></li></a>
+						<a href="/home/eudc/statistics.sub.action?gnb=55&gubunNm=job"><li class="off" id="roll1"></li></a>
+						<a href="/home/eudc/statistics.sub.action?gnb=55&gubunNm=age"><li class="off" id="roll2"></li></a>
+						<a href="/home/eudc/statistics.sub.action?gnb=55&gubunNm=fee"><li class="off" id="roll3"></li></a>
+						</ul>
+                    </div>
+                    
+                </div>
+            
+           		<div class="business">
+                	<a href="/home/intro/characterization2014.sub.action?gnb=161">
+                		<div class="business_l">
+	                    	<h2><img src="/home/images2/main/h2_business.png" alt="교육부 2014년도 사이버대학 특성화 사업" /></h2>
+	                        <p><img src="/home/images2/main/txt_business1_1.png" alt="국가직무능력표준(NCS) 기반으로 한 현장 중심의 교육제공으로 산업수요에 맞는 인재양성 및 평생능력 개발 도모" /></p>
+                    	</div>
+                    </a>
+                    
+                    <div class="business_r">
+                    	<a href="/home/course/sampleCourse.sub.action?gnb=44">
+                        	<p><img src="/home/images2/main/txt_business6_1.png" alt="강의 맛보기" /></p>
+                            <p><img src="/home/images2/main/txt_business7_1.png" alt="대학 온라인 강의를 체험해 보세요." /></p>
+                        </a>
+                        <a href="/home/intro/serviceQuestion.sub.action?gnb=142">
+                        	<p><img src="/home/images2/main/txt_business4.png" alt="대학에 질문하기" /></p>
+                            <p><img src="/home/images2/main/txt_business5.png" alt="궁긍함 부분은 여기에 질문해 주세요" /></p>
+                        </a>
+                        <a href="/home/intro/certificate1.sub.action?gnb=13">
+                        	<p><img src="/home/images2/main/txt_business6.png" alt="자격증 안내" /></p>
+                            <p><img src="/home/images2/main/txt_business7.png" alt="사이버대학 취득가능 주요 국가자격증" /></p>
+                        </a>
+                    </div>
+                </div>
+            
+            </div>
+            
+            
+            
+            <div class="clear"></div>
+            
+            <style>
+            	#fbFix{width:94px; height:36px;float:left;border-bottom:0px solid #eeeeee;border-top:0px solid #eeeeee}
+            	#1st{width:100%;height:40px;padding-top:2px;}
+            	
+            	.fbArea {border-top:1px solid #eeeeee; border-bottom: 1px thin #eeeeee; height: 39px; overflow: hidden; padding: 3px 0 0 0}
+            	.fbLogo	{border: 0px solid red; min-width: 150px; 	height: 40px; text-align: left; float: left;}
+            	.fbTitle{border: 0px solid red; width: 460px; 	height: 40px; line-height:17px; font-family: nanum gothic; font-size: 11px; float: left;}
+            	.fbRegDt{border: 0px solid red; width: 100%; 	height: 40px; line-height:34px; font-family: nanum gothic; font-size: 11px; text-align: center;}	
+            </style>
+            
+            <div id="fbArea" class="fbArea" style="display:none;">
+            	<div id="fbFix">
+        			<img src="/home/images/bul/facebook.gif" alt="facebooklogo" style="width:98px;"/>
+        		</div>
+            	<div id="1st">
+            		<!-- 이미지 -->
+            		<div class="fbLogo">
+            			<img id="fbLogo" src="" alt="" style="width:136px;" />	
+            		</div>
+            		
+            		<!-- 내용 -->
+            		<div id="fbTitle" class="fbTitle">
+            			<a target="_blank" href="javascript:return false;"></a>	
+            		</div>
+            		
+            		<!-- 작성일 -->
+            		<div class="fbRegDt" id="fbRegDt">
+            		</div>
+            	</div>
+            	
+            	#*
+				<div id="2nd">
+            		<!-- 이미지 -->
+            		<div class="fbLogo">
+            			<img src="/home/images/bul/facebook.gif" alt="facebooklogo" style="width:98px;"/>
+            		</div>
+            		
+            		<!-- 내용 -->
+            		<div class="fbTitle">
+            			<a target="_blank" href="javascript:return false;">
+            				<span style="color: #aaaaaa;font-family: verdana;font-size: 23px;font-weight: bold;line-height: 33px;">
+            				F A C E B O O K &nbsp;&nbsp; L O A D I N G 
+            				</span>
+            			</a>	
+            		</div>
+            		
+            		<!-- 작성일 -->
+            		<div class="fbRegDt">
+            		</div>
+				</div>
+				*#
+				
+        	</div>
+            
+            <div id="footer">
+            	<h2><a href="http://www.kcou.org/" onClick="dcsMultiTrack('DCS.dcssip','www.kcou.org','DCS.dcsuri','/','DCS.qry','','WT.ti','Offsite Link - kcou','WT.sp','kcou')"><img src="/home/images2/common/h2_foot.png" alt="한국원격대학협의회" /></a></h2>
+                
+                <div class="footer_m">
+                	<a target="_blank" href="http://www.kcou.org/common/Content.aspx?CUMENUCODE=000000011672" onClick="dcsMultiTrack('DCS.dcssip','www.kcou.org','DCS.dcsuri','/common/Content.aspx','DCS.qry','CUMENUCODE=000000011672','WT.ti','Offsite Link - kcou','WT.sp','kcou')"><img src="/home/images2/common/txt_foot1.png" alt="기관소개" /></a>
+                    <a target="_blank" href="/home/etc/copyright.main.action"><img src="/home/images2/common/txt_foot2.png" alt="저작권 신고" /></a>
+                    <a target="_blank" href="http://www.kcou.org/common/Content.aspx?CUMENUCODE=000000011701" onClick="dcsMultiTrack('DCS.dcssip','www.kcou.org','DCS.dcsuri','/common/Content.aspx','DCS.qry','CUMENUCODE=000000011701','WT.ti','Offsite Link - kcou','WT.sp','kcou')"><img src="/home/images2/common/txt_foot3.png" alt="찾아오시는 길" /></a>
+                    <p class="juso"><img src="/home/images2/common/txt_juso1.png" alt="[110-858] 서울특별시 종로구삼봉로 81 위브파빌리온 924호 TEL : 02.723-6574~5 FAX : 02.723-6541" /></p>
+                    <p class="copyright"><img src="/home/images2/common/txt_copyright.png" alt="COPYRIGHT (R) SINCE 2014 한국원격대학협의회.  ALL RIGHT RESERVED." /></p>
+                </div>
+                
+                <div class="footer_r">
+					<a target="_blank" class="f_right" href="http://www.keris.or.kr/" onClick="dcsMultiTrack('DCS.dcssip','www.keris.or.kr','DCS.dcsuri','/','DCS.qry','','WT.ti','Offsite Link - keris','WT.sp','keris')"><img src="/home/images2/common/keris_cp.png" alt="" /></a>
+                	<a target="_blank" class="f_right" href="http://www.moe.go.kr/main.do" onClick="dcsMultiTrack('DCS.dcssip','www.moe.go.kr','DCS.dcsuri','/main.do','DCS.qry','','WT.ti','Offsite Link - moe','WT.sp','moe')"><img src="/home/images2/common/edu_cp.png" alt="" /></a>                    
+                </div>
+                
+            </div>
+            
+        </div>
+    
+    </div>
+	<div class="main_popup"><!-- copy_box  Start -->
+		<div id="poup">#parse('home/common/poup.vm')</div>
+	</div><!-- copy_box  End -->
+    <!-- //contents --> 
+    <div class="clear"></div>
+		
+    </body>			

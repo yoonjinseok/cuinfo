@@ -1,0 +1,37 @@
+<head>
+	<title>사이버대학이란?</title>
+</head>
+<body>
+
+<p class="location">
+	<a href="/home/index2.main2.action">대학원 홈</a> <span>></span> <a href="/home/intro/summaryGrad.sub2.action?gnb=11">사이버대학원안내</a> <span>></span> <a href="/home/intro/guideGrad.sub2.action?gnb=11">학기 및 수업 안내</a>
+</p>
+<h3><img src="/home/images3/h3_grad_overview2.png" alt="학기 및 수업안내" /></h3>
+
+#*<div class="feature"><img src="/home/images/intro/guidenew_title1.gif" alt="신입학/편입학 안내" /></div>
+<p class="t_center"><img src="/home/images/intro/guidenew_text1.gif" alt="신입생은 대학(교) 1학년으로 입학하여 소정의 교육과정을 이수하면 학위와 총장명의 졸업증을 수여받을 수 있습니다.
+편입생은 대학교 2, 3학년으로 편입이 가능하고 소정의 교육과정을 이수하면 학위와 총장명의 졸업증을 수여받을 수 있습니다. 
+  ※ 1학년의 경우 신입생이기 때문에 편입학이 불가능합니다.    " /></p>
+*#  
+		
+<dl class="feature">
+  <dt><img src="/home/images3/grad_title4.gif" alt="수업 기간" /></dt>
+    <dd>졸업에 필요한 기간은 2년 6개월(5학기)이며 평점 B 이상, 전공 및 외국어 시험, 논문심사(대체 수업 이수 가능) 등의 요건을 충족하면 졸업 및 석사학위 수여가 가능하다. 
+</dd>
+</dl>
+
+<dl class="feature">
+  <dt><img src="/home/images3/grad_title5.gif"  alt="학년도/학기 구분 및 수업일수"/></dt>
+    <dd>1학기, 2학기, 3학기, 4학기, 5학기(논문작성 기간)</dd>
+    <dd>수업일수 : 매 학기 15주로 구성</dd>
+    <dd>1~4학기 : 수업</dd>
+    <dd>3~4학기 : 전공 및 외국어 시험 실시</dd>
+    <dd>5학기 : 논문 심사 혹은 대체수업 실시</dd>
+    <dd class="no t_center p_t20 p_b20"><img src="/home/images3/grad_images1.gif"  alt="학년도/학기 구분 및 수업일수 이미지 입니다." /></dd>
+	 <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;※ 대학원별로 졸업 및 학위 수여 조건이 다를 수 있으므로 입학 후 졸업 요건에 대해 정확히 확인  해야 함.</span>
+</dl>
+
+
+</body>
+</html>
+

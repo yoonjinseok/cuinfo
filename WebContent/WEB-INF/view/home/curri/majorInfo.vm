@@ -1,0 +1,63 @@
+<script type="text/javascript" src="/home/js/flowplayer-3.2.6.min.js"></script>
+
+#if(!$univMajorList)
+	<center class="p_t10 p_b10">
+		<img src="/home/images/intro/no_school.gif" />
+	</center>
+	
+#else
+
+<div class="search_list_area">
+	<h4 class="title_intro_subj">$!univName 학과소개</h4>
+	<p class="desc_intro_subj">
+		· 학과를 선택하시면 해당학과 교육과정 페이지가 표시됩니다.
+		<span><img src="/home/images/curri/popular_subject.gif" alt="인기학과" /><img src="/home/images/curri/recommend_subject.gif" alt="추천학과" /></span>
+	</p>
+	
+<div class="univ_table m_l0" style="width:550px">
+	<table cellspacing="0" cellpadding="0" summary="교과 과정 보기"><!-- table_type1 st01 Start -->
+	<caption>교과과정 보기</caption>
+	<colgroup>
+		<col width="20%">
+		<col width="60%">
+		<col width="20%">
+	</colgroup>
+	<thead>
+		<tr>
+			<th scope="col">분 야</th>
+			<th scope="col" colspan="2">학 과</th>
+		</tr>
+	</thead>
+	<tbody>
+		#foreach($!list in $univMajorList)
+		<tr>
+			#if($!list.rn1>1&&$!list.rn2==1)
+			<th rowspan="$!list.rn1">$!list.classifyName</th>
+			#elseif($!list.rn2==1)
+			<th>$!list.classifyName</th>
+			#end
+			<td class="t_left">
+				<p class="m_b5"><a href="javascript:viewCurriculum('$list.univdeptId');">$list.univdeptName</a></p>
+			</td>
+			<td>
+				#if($list.popularYn=='Y')
+				<img src="/home/images/icon/icon_popular_subject.gif" alt="인기학과" />
+				#end
+				#if($list.recommendYn=='Y')
+				<img src="/home/images/icon/icon_recommend_subject.gif" alt="추천학과" />
+				#end
+			</td>
+		</tr>
+		#end
+	   </tbody>
+  </table>
+</div>
+<!-- 맛보기 강의 -->
+	<div id="sample">#parse('home/curri/major_sampleLecture.vm')</div>
+	<!-- 맛보기 강의 -->
+	
+	<!-- 추천 강의 -->
+	<div id="recommend">#parse('home/curri/major_recommendLecture.vm')</div>
+	<!-- 추천 강의 -->
+</div>
+#end

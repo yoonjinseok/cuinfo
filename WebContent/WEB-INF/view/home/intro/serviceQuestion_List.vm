@@ -1,0 +1,31 @@
+<ul class="overall_tab_list m_b35 no_bul">
+	#foreach($list in $univList)
+	<li><input type="checkbox" value="$!list.univEmail" id="univEmail" name="univEmail" /> <label for="univName">$!list.univ_name</label></li>
+	#end
+</ul>
+	<h4 class="preview_h4"><img src="/home/images/intro/txt_inp_ask.gif" alt="문의 내용 입력" /></h4>
+	<table class="ask_table">
+		<colgroup>
+			<col style="width:15%;" />
+			<col style="width:%;" />
+		</colgroup>
+		<tbody>
+			<tr>
+				<th>제목</th>
+				<td><input type="text" id="title" name="title" size="30" class="inp_email"></td>
+			</tr>
+			<tr>
+				<th>작성자</th>
+				<td><input type="text" id="writer" name="writer" class="inp_email"></td>
+			</tr>
+			<tr>
+				<th>회신 이메일</th>
+				<td><input type="text" id="fromAddr" name="fromAddr" class="inp_email"></td>
+			</tr>
+			<tr>
+				<th>내용</th>
+				<td><textarea cols="999" rows="999" id="content" name="content" class="ask_textarea"></textarea></td>
+			</tr>
+		</tbody>
+	</table>
+	<div class="btn_area_new"><a href="javascript:sendMail();"><img src="/home/images/btn/btn_ask.gif" alt="문의하기" /></a></div>

@@ -1,0 +1,252 @@
+<head>
+	<title>팝업 수정</title>
+	<link type="text/css" href="/css/jquery.datepicker.css" rel="stylesheet"/>
+	<script type="text/javascript" src="/js/jquery.ui.core.js"></script>
+	<script type="text/javascript" src="/js/jquery.ui.datepicker.js"></script>
+	<script type="text/javascript" src="/js/jquery.ui.datepicker-ko.js"></script>
+	<script type="text/javascript" language="javascript">
+	
+	// 삭제
+	function del(){
+		
+    	var cofirm = confirm("삭제하시겠습니까?");
+    	
+    	if(cofirm){
+    		jQuery.get('poup_delete.json', 
+				$("#modifyForm").formSerialize(), 
+				function(data) {
+        			if(data.errors == true)
+        			{
+        				eval(data.message);
+        			}else{
+						alert("삭제되었습니다.");
+						opener.search();
+						window.close();
+					}
+				});
+    	}
+		
+	}	
+	
+	function save()
+	{
+		oEditors[0].exec("UPDATE_CONTENTS_FIELD", []);
+		
+		if($("#modifyForm").formSerialize().indexOf("\'") != -1) {
+			alert("' 는 사용할 수 없습니다.\n    \" 를 사용해주세요.");
+			return;
+		}
+		
+		jQuery.post('poup_update.json', 
+				$("#modifyForm").formSerialize(), 
+				function(data) {
+        			if(data.errors == true)
+        			{
+        				eval(data.message);
+        			}
+        			else
+        			{
+						alert("수정되었습니다.");
+						opener.goPage();
+						window.close();
+        			}
+		});
+	}
+	//파일 업로드 시 
+    function setUploadResult(originalFilename, srcName, fileSize)
+    {
+		$("#uploadTB").append('<div class="icon" id=\''+srcName+'\'><input type="hidden" id="upfileSrc" name="upfileSrc" value="'+srcName+'"/><a href="javascript:download(\''+srcName+'\');">'+originalFilename+'</a><span>('+getFileSize(fileSize)+')</span><a href="javascript:delRow(\''+srcName+'\');"><img src="/mgr/images/btn/btn_del.gif" /></a></div>');
+    }
+	function setUploadImageResult(originalFilename, srcName, fileSize)
+	{
+		var sHTML = "<img src='/mgr/common/file_download.json?srcName=" + srcName + "'>"; 
+        oEditors[0].exec("PASTE_HTML", [sHTML]); 
+	}
+    
+	//저장되어있는 파일 삭제
+	function deleteFileDB(fileID)
+    {
+    	if(confirm("파일을 삭제하시겠습니까?")){
+			jQuery.post('/mgr/common/file_delete_id.json', 
+				'upfileId='+fileID, 
+				function(data) {
+        			if(data.errors == true)
+        			{
+        				eval(data.message);
+        			}
+        			else
+        			{
+						$("#uploadTB").find("div[id^="+fileID+"]").remove();
+        			}
+				});
+    	}
+    }
+	
+    //파일 삭제(저장되기전)
+    function delRow(trId)
+    {
+    	jQuery.post('/mgr/common/file_delete.json?srcName=' + trId, 
+    			function(data) {
+        			if(data.errors == true)
+        				eval(data.message);
+					else
+						$("#uploadTB").find("div[id^="+trId+"]").remove();
+    	});
+    }
+	
+	//디비에 저장된 내용 다운로드
+    function downloadDB(fileID)
+    {
+    	document.location.href = '/mgr/common/file_download_id.json?upfileId=' + fileID;
+    }
+	
+	//디비에 저장되기전 내용 다운로드
+    function download(srcName)
+	{
+		document.location.href = '/mgr/common/file_download.json?srcName=' + srcName;
+	}
+	
+	$(document).ready(function () {
+		
+		//달력
+		showCalendar($('#showStartDt'));
+		showCalendar($('#showEndDt'));
+    });
+	
+	
+	</script>
+</head>
+<body>
+<div style="width:90%;padding-left:30px;padding-top:30px;">
+	
+<form id="modifyForm" action="#" onsubmit="try{write();}catch(e){alert(e);}return false;">
+<input type="hidden" id="poupNum" name="poupNum" value="$!poup.poupNum"/>
+<input type="hidden" name="attachUpfileGid" id="attachUpfileGid" value="$!poup.attachUpfileGid"/>
+
+<h2>팝업 수정</h2>	
+<table cellspacing="0" cellpadding="0" class="form_type01" summary="팝업관리"><!-- list_type01 Start -->
+	<caption>팝업관리</caption>
+	<colgroup>
+		<col width="10%" />
+		<col width="35%" />
+		<col width="10%" />
+		<col width="35%" />
+	</colgroup>
+	<tbody>
+		<tr>
+			<th scope="row">제목</th>
+			<td colspan="3"><input type="text" maxlength="100" size="70" title="제목" id="title" name="title" value="$!poup.title"/></td>
+		</tr>
+		<tr id="i_typeId2">
+			<th scope="row">내용</th>
+			<td colspan="3">
+				<textarea rows="20" cols="96" id="content" name="content"></textarea>
+				<div id="tempContent" style="display:none;">$!poup.content</div>
+				<script type="text/javascript">
+					var oEditors=[];
+					nhn.husky.EZCreator.createInIFrame({
+					    oAppRef: oEditors,
+					    elPlaceHolder:"content",
+					    sSkinURI: "/smarteditor/SmartEditor2Skin.html",
+					    fCreator:"createSEditor2", 
+						htParams:{fOnBeforeUnload:function(){}}, 
+						fOnAppLoad:function(){oEditors[0].exec("PASTE_HTML", [$('#tempContent').html()]); }
+					});
+				</script>
+			</td>
+		</tr>
+		<tr>
+			<th scope="row">첨부파일</th>
+			<td colspan="3" id="uploadTB">
+				<iframe id="upload" name="upload" src="/mgr/common/file_write.ifm.action?confKey=att" width="100%" height="25" frameborder="0" scrolling="no" style="padding: 0;margin: 0"></iframe>
+			</td>
+			<script>
+			#if ($fileList.size()>0)
+			  #foreach($file in $fileList)
+              $("#uploadTB").append('<div class="icon" id=\'$file.upfileId\'><a href="javascript:downloadDB(\'$file.upfileId\');">$file.upfileFilename</a><span>('+getFileSize($file.upfileSize)+')</span><a href="javascript:deleteFileDB(\'$file.upfileId\');"><img src="/mgr/images/btn/btn_del.gif" /></a></div>');               
+			  #end
+			#end
+			</script>
+		</tr>
+		<tr>
+			<th scope="row">게시기간</th>
+			<td colspan="3">
+				<input type="text" title="시작날짜" name="showStartDt" id="showStartDt" size="10" maxlength="10" onChange="setDateFormat(this)" value="$!poup.showStartDt">
+				<select id="startHour" name="startHour">
+					#foreach($i in [00,01,02,03,04,05,06,07,08,09,10,11,12,13,14,15,16,17,18,19,20,21,22,23])
+                    <option value="$i" #if($!poup.startHour == $i) selected #end> $i 시 </option>
+					#end
+                    </option>
+				</select>
+				<select id="startMin" name="startMin">
+					#foreach($j in [00,10,20,30,40,50])
+					<option value="$j" #if($!poup.startMin == $j) selected #end> $j 분 </option>
+					#end
+				</select> ~
+				<input type="text" size="10" title="종료날짜" id="showEndDt" name="showEndDt" maxlength="10" onChange="setDateFormat(this)" value="$!poup.showEndDt"/>
+				<select id="endHour" name="endHour">
+					#foreach($i in [00,01,02,03,04,05,06,07,08,09,10,11,12,13,14,15,16,17,18,19,20,21,22,23])
+                    <option value="$i" #if($!poup.endHour == $i) selected #end> $i 시 </option>
+					#end
+				</select>
+				<select id="endMin" name="endMin">
+					#foreach($j in [00,10,20,30,40,50])
+					<option value="$j" #if($!poup.endMin == $j) selected #end> $j 분 </option>
+					#end
+				</select>	
+			</td>
+		</tr>
+		<tr>
+			<th scope="row">사이즈</th>
+			<td colspan="3">WIDTH : <input type="text" size="5" maxlength="5" title="WIDTH" id="poupWidth" name="poupWidth" value="$!poup.poupWidth" onkeyup="return numbersonly(this)"/>&nbsp; 
+				  × HEIGHT <input type="text" size="5" maxlength="5" title="HEIGHT" id="poupHeight" name="poupHeight" value="$!poup.poupHeight" onkeyup="return numbersonly(this)"/> px
+			</td>
+		</tr>
+		<tr>
+			<th scope="row">위치</th>
+			<td colspan="3">LEFT : <input type="text" size="5" maxlength="5" title="LEFT" id="poupLeft" name="poupLeft" value="$!poup.poupLeft" onkeyup="return numbersonly(this)"/>
+					&nbsp; × TOP <input type="text" size="5" maxlength="5" title="TOP" id="poupTop" name="poupTop" value="$!poup.poupTop" onkeyup="return numbersonly(this)"/> px
+			</td>
+		</tr>
+		<tr>
+			<th scope="row">스킨</th>
+			<td colspan="3">
+				<select id="skinId" name="skinId">
+					#foreach($code in $codeList)
+					<option value="$!code.codeId">$!code.codeName</option>
+					#end
+				</select>
+				<script>
+					document.forms['modifyForm'].elements['skinId'].value = $!poup.skinId ;
+				</script> 
+			</td>
+		</tr>
+		<tr>
+			<th scope="row">게시여부</th>
+			<td colspan="3">
+				<label for="radio-4" class="m_r30"><input type="radio" name="showYn" id="showYn" value="Y" #if($!poup.showYn=="Y")checked="checked"#end /> Y</label>
+				<label for="radio-5"><input type="radio" name="showYn" id="showYn" value="N" #if($!poup.showYn=="N")checked="checked"#end /> N</label>
+			</td>
+		</tr>
+		<tr>
+			<th scope="row">등록정보</th>
+			<td>$!poup.regnm ($datetimeformatter.print($!poup.regDate, $locale)) </td>
+			#if("$!poup.modnm" !="")
+			<th scope="row">수정정보</th>
+			<td> $!poup.modnm ($datetimeformatter.print($!poup.modDate, $locale))</td>
+			 #end
+		</tr>
+	</tbody>
+</table><!-- list_type01 End -->
+
+
+<div class="btn_box_type03">
+	<a href="javascript:save();"><img src="/mgr/images/btn/save.gif" alt="저장" /></a>
+	<a href="javascript:del();"><img src="/mgr/images/btn/delete.gif" alt="삭제" /></a>
+	<a href="javascript:window.close();"><img src="/mgr/images/btn/cancel.gif" alt="취소" /></a>
+</div>
+
+</form>
+</div>
+</body>
+</html>

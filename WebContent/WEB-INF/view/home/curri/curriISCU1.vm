@@ -1,0 +1,437 @@
+<head>
+	<title>학과 내비게이션</title>
+	<link rel="stylesheet" type="text/css" href="/home/css/course.css" />
+	<script type="text/javascript" language="javascript">
+	
+	$(document).ready(function() {
+		//search();
+    });
+    function viewDetail(title)
+	{
+		
+		
+		//필요 변수 셋팅
+		$("#text").val(title);
+		$("#deptId").val("125311");
+		$("#univId").val("37");
+		
+		//onsubmit 속성을 비워주어야 submit이 된다.
+		$("#form").attr("method","post");
+		$("#form").attr("onsubmit","");
+		$("#form").attr("action","/home/course/courseSearch3View.sub2.action?gnb=41");
+		$("#form").submit();
+		
+	}
+    	//유사강의검색
+	function viewDetail2(courseId, title)
+	{
+	
+		//필요 변수 셋팅
+		$("#text").val(title);
+		$("#hidetext").val(title);
+		$("#courseId").val(courseId);
+		$("#deptId").val("");
+		
+		//onsubmit 속성을 비워주어야 submit이 된다.
+		$("#form").attr("method","post");
+		$("#form").attr("onsubmit","");
+		$("#form").attr("action","/home/course/courseSearch2.sub2.action?gnb=41&pageType=1&checkbox3=2");
+		$("#form").submit();
+		
+	}
+	</script>
+</head>
+	
+<body id="intro">
+
+	<p class="location">
+		<a href="">홈</a> <span>&gt;</span> <a href="">학과/교과과정</a> <span>&gt;</span> <a href="">교과과정 보기</a> 
+	</p>
+	<h3><img src="/home/images/title/h3_sub_view.gif" alt="교과과정 보기"></h3>
+		
+	
+	<div class="contentWrap">
+		<!--s:컨텐츠영역-->
+			
+			<div class="path_major">
+				<a>서울사이버대학원</a><span>&gt;</span>
+				<a>상담심리대학원</a><span>&gt;</span>
+				<a>상담심리전공</a>
+				<a target="_blank" href="http://grad.iscu.ac.kr/03_aboutschool/07_overview.asp" class="btn_info_major"><img src="/home/images/btn/btn_info_major.gif" alt="학과안내 페이지 바로가기"></a>
+																																																																																																												</div>
+			
+			<div id="list" class="univ_table m_l0">
+				<table cellspacing="0" cellpadding="0" summary="교과과정 보기"><!-- table_type1 st01 Start -->
+				<caption>교과과정 보기</caption>
+				<colgroup>
+					<col width="20%">
+					<col width="40%">
+					<col width="20%">
+				</colgroup>
+				<thead>
+					<tr>
+						<th scope="col">학기</th>
+						<th scope="col">교과목명</th>
+						<th scope="col">학점</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr class="line02">
+						<th class="line02" rowspan="11">1</th>
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('심리학개론');"><p>심리학개론</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','심리학개론');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>
+					<tr>
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('스트레스의 이해와 상담');"><p>스트레스의 이해와 상담</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','스트레스의 이해와 상담');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>																			
+					<tr>
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('고급발달심리학');"><p>고급발달심리학</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','고급발달심리학');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>
+					<tr>
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('상담윤리');"><p>상담윤리</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','상담윤리');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>																			
+					<tr>
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('상담및심리치료이론');"><p>상담및심리치료이론</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','상담및심리치료이론');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>
+					<tr>
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('이상심리세미나');"><p>이상심리세미나</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','이상심리세미나');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>																			
+					<tr>
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('코칭심리이론및실습');"><p>코칭심리이론및실습</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','코칭심리이론및실습');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>
+					<tr>
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('학습코칭');"><p>학습코칭</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','학습코칭');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>																			
+					<tr>
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('아동·청소년상담세미나');"><p>아동·청소년상담세미나</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','아동·청소년상담세미나');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>
+					<tr>
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('가족및부부상담');"><p>가족및부부상담</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','가족및부부상담');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>
+					<tr class="line01">
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('놀이치료세미나');"><p>놀이치료세미나</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','놀이치료세미나');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>
+					<tr class="line02">
+						<th class="line02" rowspan="10">2</th>
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('상담의기초');"><p>상담의기초</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','상담의기초');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>
+					<tr>
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('정신분석세미나');"><p>정신분석세미나</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','정신분석세미나');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>
+					<tr>
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('외상후 성장과 상담');"><p>외상후 성장과 상담</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','외상후 성장과 상담');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>																			
+					<tr>
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('성심리 및 성상담');"><p>성심리 및 성상담</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','성심리 및 성상담');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>
+					<tr>
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('위기상담');"><p>위기상담</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','위기상담');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>																			
+					<tr>
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('심리평가세미나');"><p>심리평가세미나</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','심리평가세미나');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>
+					<tr>
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('긍정심리세미나');"><p>긍정심리세미나</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','긍정심리세미나');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>																			
+					<tr>
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('문화심리학세미나');"><p>문화심리학세미나</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','문화심리학세미나');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>
+					<tr>
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('새티어가족상담');"><p>새티어가족상담</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','새티어가족상담');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>
+					<tr class="line01">
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('학교폭력상담의이론과실제');"><p>학교폭력상담의이론과실제</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','학교폭력상담의이론과실제');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>
+					<tr class="line02">
+						<th class="line02" rowspan="10">3</th>
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('성격심리학');"><p>성격심리학</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','성격심리학');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>
+					<tr>
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('심리연구방법과통계');"><p>심리연구방법과통계</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','심리연구방법과통계');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>
+					<tr>
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('실버상담');"><p>실버상담</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','실버상담');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>																			
+					<tr>
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('고급집단상담');"><p>고급집단상담</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','고급집단상담');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>
+					<tr>
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('상담실습및사례연구');"><p>상담실습및사례연구</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','상담실습및사례연구');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>																			
+					<tr>
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('자살위기상담');"><p>자살위기상담</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','자살위기상담');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>
+					<tr>
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('인지치료세미나');"><p>인지치료세미나</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','인지치료세미나');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>																			
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('조직심리학');"><p>조직심리학</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','조직심리학');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>
+					<tr>
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('리더쉽코칭');"><p>리더쉽코칭</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','리더쉽코칭');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>
+					<tr class="line01">
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('이혼상담');"><p>이혼상담</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','이혼상담');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>
+					
+					<tr class="line02">
+						<th class="line02" rowspan="9">4</th>
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('학습심리학');"><p>학습심리학</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','학습심리학');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>
+					<tr>
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('범죄심리와상담');"><p>범죄심리와상담</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','범죄심리와상담');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>
+					<tr>
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('다문화상담');"><p>다문화상담</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','다문화상담');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>																			
+					<tr>
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('고급사이버상담');"><p>고급사이버상담</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','고급사이버상담');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>
+					<tr>
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('중독상담');"><p>중독상담</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','중독상담');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>																			
+					<tr>
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('임상심리실습');"><p>임상심리실습</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','임상심리실습');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>
+					<tr>
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('경력개발및진로상담');"><p>경력개발및진로상담</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','경력개발및진로상담');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>																			
+					<tr>
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('가족·부부상담실습및사례연구');"><p>가족·부부상담실습및사례연구</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','가족·부부상담실습및사례연구');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>
+		
+					<tr class="line01">
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('논문연구세미나');"><p>논문연구세미나</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','논문연구세미나');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>
+					
+					
+					<tr class="line02">
+						<th class="line02">5</th>
+						<td class="t_left line02" colspan="2">
+							<p>논문과정 또는 논문 대체 수업이수</p>
+						</td>
+					</tr>
+					
+				</tbody>
+				</table>	
+			</div>
+			
+			<p class="m_b5"><img src="/home/images/course/txt_info_search.gif" alt="전체 사이버대학을 대상으로 유사강의 검색"></p>
+			<br>
+			
+		<!--e:컨텐츠영역-->
+	</div>
+
+	
+	<form class="search_box01" id="form" name="form" action="#" onsubmit="try{search();}catch(e){alert(e);}return false;"><!-- box_type01 Start -->
+        <input type="hidden" id="courseId" name="courseId" />
+        <input type="hidden" id="hidetext" name="hidetext" />
+        <input type="hidden" id="text" name="text" />
+        <input type="hidden" id="deptId" name="deptId" value="" />
+        <input type="hidden" id="univId" name="univId" value="" />
+	</form>
+
+	<div class="page_num">
+		<div id="pg" name="pg"></div>
+	</div>
+
+</body>
+</html>

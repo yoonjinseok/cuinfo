@@ -1,0 +1,146 @@
+<head>
+	<title>시스템코드관리</title>
+	<script type="text/javascript" language="javascript">
+	function search()
+	{
+		goPage(1);
+	}
+	
+	function setRecordCnt(totalCnt, currPage, totalPage, showCnt)
+	{
+		$("#tCnt").text(totalCnt);
+		$("#cPage").text(currPage);
+		$("#tPage").text(totalPage);
+		
+		setPaging($("#pg"), totalCnt, showCnt, currPage);
+	}
+	
+	function goPage(page)
+	{
+		if(typeof(page) != "undefined")
+			$("#currPage").val(page);
+		
+		jQuery.post('code_list.ajax.action', 
+				$("#searchForm").formSerialize(), 
+				function(data) {
+        			$("#list").html(data);
+		});
+	}
+
+	
+	function modify(codeId)
+	{
+		showWin('/mgr/system/code_modify.pop.action?codeId=' + codeId, 'modwin', 800, 400);
+	}
+	
+	function reg()
+	{
+		showWin('/mgr/system/code_write.pop.action', 'regwin', 800, 400);
+	}
+	
+	function chkNumber(obj, index) { 
+
+		var valRadio;
+		
+		if(index == 1){
+ 			valRadio = $('input[name="radioCodeGroup"]:checked').val();
+		} else {
+			valRadio = $('input[name="radioCode"]:checked').val();
+		}
+		
+		if(valRadio=="Y"){
+			return true; 	
+		} else {
+			numbersonly(obj);
+			return true; 	
+  		}
+	}
+	
+	function clsText(index){
+	
+		if(index == 1){
+			$("#codeGroupIdName").val("");
+		} else {
+			$("#codeIdName").val("");
+		}
+	}
+	
+	$(document).ready(function() {
+		search();
+    });
+	</script>
+</head>
+
+<body>
+	
+	<!-- MainCopyBox  Start (페이지별 location 정보 표시.)-->
+	<div id="location_box">
+		<h3><img src="/mgr/images/system/title1.gif" alt="시스템코드관리" /></h3>
+		<ul class="location">
+			<li><a href="/mgr/main.sub.action">Home</a></li>
+			<li><a href="/mgr/system/code.sub.action?gnb=51">시스템관리</a></li>
+			<li>시스템코드관리</li>
+		</ul>
+	</div>
+	<!-- MainCopyBox  End -->
+	
+<form class="search_box01" id="searchForm" name="searchForm" action="#" onsubmit="try{search();}catch(e){alert(e);}return false;"><!-- box_type01 Start -->
+<input type="hidden" id="showCnt" name="showCnt" value="15"/>
+<input type="hidden" id="currPage" name="currPage" value="1"/>
+
+	<fieldset class="inner">
+		<table cellspacing="0" cellpadding="0" summary="시스템코드 검색" class="border_none_table">
+			<caption>시스템코드 검색</caption>
+			<colgroup>
+				<col width="50%"/>
+				<col width="*%"/>
+			</colgroup>
+			<tbody>
+				<tr>
+					<td colspan="2">
+						<label for="radio-1"><input type="radio" name="radioCodeGroup" id="radio-1" value="Y" onclick="clsText(1)"  checked/> 그룹명</label>
+						<label for="radio-2"><input type="radio" name="radioCodeGroup" id="radio-2" value="N" onclick="clsText(1)"  /> 코드</label>
+						<input type="text" id="codeGroupIdName" name="codeGroupIdName" size="20" title="그룹코드" onkeyup="return chkNumber(this, 1)"/> 
+					</td>
+					
+				</tr>
+				<tr>
+					<td>
+						<label for="radio-3"><input type="radio" name="radioCode" id="radio-3" value="Y" onclick="clsText(2)" checked/> 코드명</label>
+						<label for="radio-4"><input type="radio" name="radioCode" id="radio-4" value="N" onclick="clsText(2)"/> 코드</label>
+						<input type="text" id="codeIdName" name="codeIdName" size="20" title="코드"  onkeyup="return chkNumber(this, 2)"/> 
+					</td>
+					<td>
+						<label for="useYn">사용여부</label>
+						<select	id="useYn" name="useYn" style="min-width:150px;">
+							<option value="">전체</option>
+							<option value="Y">예</option>
+							<option value="N">아니오</option>
+						</select>
+						<a><input type="image" style="width:52px;height:21px;border:0px;" src="/mgr/images/btn/search.gif" alt="검색" /></a>
+					</td>				
+				</tr>
+			</tbody>
+		</table>
+	</fieldset>
+</form><!-- box_type01 End -->
+
+
+<div class="list_top01">
+	<span>코드명 클릭시 관리페이지로 이동합니다.</span>
+	<span class="f_right">total : <em id="tCnt">00</em>건(<em id="cPage">1</em>/<em id="tPage">10</em>page)</span>
+</div>
+
+
+<div id="list">#parse('mgr/system/code_list.vm')</div>
+
+
+
+<div class="page_num">
+	<div id="pg" name="pg"></div>
+	<a class="f_right" href="javascript:reg();"><img src="/mgr/images/btn/enter.gif" alt="학과등록" /></a>
+</div>
+
+
+</body>
+</html>

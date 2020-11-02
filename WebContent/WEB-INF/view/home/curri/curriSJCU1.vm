@@ -1,0 +1,342 @@
+<head>
+	<title>학과 내비게이션</title>
+	<link rel="stylesheet" type="text/css" href="/home/css/course.css" />
+	<script type="text/javascript" language="javascript">
+	
+	$(document).ready(function() {
+		//search();
+    });
+    function viewDetail(title)
+	{
+		
+		
+		//필요 변수 셋팅
+		$("#text").val(title);
+		$("#deptId").val("GS21");
+		$("#univId").val("42");
+		
+		//onsubmit 속성을 비워주어야 submit이 된다.
+		$("#form").attr("method","post");
+		$("#form").attr("onsubmit","");
+		$("#form").attr("action","/home/course/courseSearch3View.sub2.action?gnb=41");
+		$("#form").submit();
+		
+	}
+    	//유사강의검색
+	function viewDetail2(courseId, title)
+	{
+	
+		//필요 변수 셋팅
+		$("#text").val(title);
+		$("#hidetext").val(title);
+		$("#courseId").val(courseId);
+		$("#deptId").val("");
+		
+		//onsubmit 속성을 비워주어야 submit이 된다.
+		$("#form").attr("method","post");
+		$("#form").attr("onsubmit","");
+		$("#form").attr("action","/home/course/courseSearch2.sub2.action?gnb=41&pageType=1&checkbox3=2");
+		$("#form").submit();
+		
+	}
+	</script>
+</head>
+	
+<body id="intro">
+
+	<p class="location">
+		<a href="">홈</a> <span>&gt;</span> <a href="">학과/교과과정</a> <span>&gt;</span> <a href="">교과과정 보기</a> 
+	</p>
+	<h3><img src="/home/images/title/h3_sub_view.gif" alt="교과과정 보기"></h3>
+		
+	
+	<div class="contentWrap">
+		<!--s:컨텐츠영역-->
+			
+			<div class="path_major">
+				<a>세종사이버대학원</a><span>&gt;</span>
+				<a>경영대학원</a><span>&gt;</span>
+				<a>MBA학과</a>
+				<a target="_blank" href="http://graduate.sjcu.ac.kr/major01/intro" class="btn_info_major"><img src="/home/images/btn/btn_info_major.gif" alt="학과안내 페이지 바로가기"></a>
+																																																																																																												</div>
+			
+			<div id="list" class="univ_table m_l0">
+				<table cellspacing="0" cellpadding="0" summary="교과과정 보기"><!-- table_type1 st01 Start -->
+				<caption>교과과정 보기</caption>
+				<colgroup>
+					<col width="20%">
+					<col width="40%">
+					<col width="20%">
+				</colgroup>
+				<thead>
+					<tr>
+						<th scope="col">학기</th>
+						<th scope="col">교과목명</th>
+						<th scope="col">학점</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr class="line02">
+						<th class="line02" rowspan="5">1</th>
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('경영전략론');"><p>경영전략론</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','경영전략론');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>
+					<tr>
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('인적자원관리론');"><p>인적자원관리론</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','인적자원관리론');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>																			
+					<tr>
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('유통전략세미나');"><p>유통전략세미나</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','유통전략세미나');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>
+					<tr>
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('사회적책임과기업윤리세미나');"><p>사회적책임과기업윤리세미나</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','사회적책임과기업윤리세미나');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>
+					<tr class="line01">
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('프랜차이즈시스템연구');"><p>프랜차이즈시스템연구</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','프랜차이즈시스템연구');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>
+					
+					<tr class="line02">
+						<th class="line02" rowspan="6">2</th>
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('경영정보시스템');"><p>경영정보시스템</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','경영정보시스템');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>
+					<tr>
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('연구조사방법론');"><p>연구조사방법론</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','연구조사방법론');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>																			
+					<tr>
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('관리회계세미나');"><p>관리회계세미나</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','관리회계세미나');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>
+					<tr>
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('고급식음료연구세미나');"><p>고급식음료연구세미나</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','고급식음료연구세미나');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>
+					<tr>
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('조직론');"><p>조직론</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','조직론');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>
+					<tr class="line01">
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('소비자행동론');"><p>소비자행동론</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','소비자행동론');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>
+					
+					<tr class="line02">
+						<th class="line02" rowspan="5">3</th>
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('상권분석및입지전략');"><p>상권분석및입지전략</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','상권분석및입지전략');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>																		
+					<tr>
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('고급외식경영연구');"><p>고급외식경영연구</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','고급외식경영연구');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>
+					<tr>
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('경영분석과기업가치');"><p>경영분석과기업가치</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','경영분석과기업가치');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>
+					<tr>
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('서비스마케팅');"><p>서비스마케팅</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','서비스마케팅');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>
+					<tr class="line01">
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('소매마케팅전략사례연구');"><p>소매마케팅전략사례연구</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','소매마케팅전략사례연구');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>
+					
+					
+					<tr class="line02">
+						<th class="line02" rowspan="8">4</th>
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('고급마케팅관리');"><p>고급마케팅관리</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','고급마케팅관리');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>
+					<tr>
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('전략적의사결정론');"><p>전략적의사결정론</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','전략적의사결정론');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>
+					<tr>
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('소셜미디어마케팅세미나');"><p>소셜미디어마케팅세미나</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','소셜미디어마케팅세미나');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>
+					<tr>
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('재무관리론');"><p>재무관리론</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','재무관리론');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>
+					<tr>
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('외식창업계획및사업성분석');"><p>외식창업계획및사업성분석</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','외식창업계획및사업성분석');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>																			
+					
+					<tr>
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('외식소비자커뮤니케이션연구');"><p>외식소비자커뮤니케이션연구</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','외식소비자커뮤니케이션연구');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>
+					<tr>
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('논문연구지도1');"><p>논문연구지도1</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','논문연구지도1');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 0
+						</td>
+					</tr>
+					<tr class="line01">
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('논문연구지도2');"><p>논문연구지도2</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','논문연구지도2');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 0
+						</td>
+					</tr>
+					
+					<tr class="line02">
+						<th class="line02" rowspan="4">5</th>
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('글로벌리더십연구');"><p>글로벌리더십연구</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','글로벌리더십연구');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>
+					<tr>
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('외식상품개발연구');"><p>외식상품개발연구</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','외식상품개발연구');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>
+					<tr>
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('논문연구지도1');"><p>논문연구지도1</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','논문연구지도1');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 0
+						</td>
+					</tr>
+					<tr class="line01">
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('논문연구지도2');"><p>논문연구지도2</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','논문연구지도2');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 0
+						</td>
+					</tr>
+					
+
+					
+				</tbody>
+				</table>	
+				※ 5학기는 졸업논문 혹은 논문대체과목 중 선택
+			</div>
+			
+			<p class="m_b5"><img src="/home/images/course/txt_info_search.gif" alt="전체 사이버대학을 대상으로 유사강의 검색"></p>
+			<br>
+			
+		<!--e:컨텐츠영역-->
+	</div>
+
+	
+	<form class="search_box01" id="form" name="form" action="#" onsubmit="try{search();}catch(e){alert(e);}return false;"><!-- box_type01 Start -->
+        <input type="hidden" id="courseId" name="courseId" />
+        <input type="hidden" id="hidetext" name="hidetext" />
+        <input type="hidden" id="text" name="text" />
+        <input type="hidden" id="deptId" name="deptId" value="" />
+        <input type="hidden" id="univId" name="univId" value="" />
+	</form>
+
+	<div class="page_num">
+		<div id="pg" name="pg"></div>
+	</div>
+
+</body>
+</html>

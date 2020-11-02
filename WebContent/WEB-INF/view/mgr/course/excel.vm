@@ -1,0 +1,35 @@
+<html>
+	<head>
+		<title>
+			excel file insert
+		</title>
+		<script>
+			function upload()
+			{
+				alert($("#form").attr("action"));
+				alert($("#form").attr("method"));
+				alert($("#form").attr("enctype"));
+				
+				/*
+				jQuery.post('excelUpload.ajax.action', 
+				$("#form").formSerialize(), 
+				function(data) {
+						alert("저장되었습니다.");
+						window.close();
+				});
+				*/
+				
+				$("#form").submit();
+			}
+			
+		</script>
+	</head>
+	<body>
+		<form id="form" name="form" action="/" method="post" enctype="multipart/form-data">
+			엑셀파일선택 : <input type="file" id="filepath" name="filefilepath" />
+		</form>
+		
+		<a href="javascript:upload();"><input type="button" value="저장"/></a>
+		
+	</body>
+</html>

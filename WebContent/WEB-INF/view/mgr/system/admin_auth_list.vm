@@ -1,0 +1,87 @@
+	##$(document).ready(function(){
+	##	$("input[name=menuId]").attr("checked", false);
+	##});
+<form id="authForm" name="authForm" action="#" onsubmit="try{search();}catch(e){alert(e);}return false;">
+<input type="hidden" id="adminId" name="adminId" value="$!adminId">
+<input type="hidden" id="authLevelId" name="authLevelId" value="$!authLevelId">
+<input type="hidden" id="opt" name="opt" value="">
+<div style="width:90%;padding-left:30px;padding-top:30px;">
+<h2>권한할당</h2>	
+<table cellspacing="0" cellpadding="0" class="list_type01" summary="세부권한할당"
+	<tr>
+		<td width="45%">
+			<table>
+			<caption>그룹권한 리스트</caption>
+			<colgroup>
+				<col width="15%"/>
+				<col width="25%"/>
+				<col width="*%"/>
+			</colgroup>
+			<thead>
+				<tr>
+					<th colspan="3">그룹권한</th>
+				</tr>
+				<tr>
+					<th scope="col">선택</th>
+					<th scope="col">메뉴그룹</th>
+					<th scope="col">메뉴명</th>
+				</tr>
+			</thead>
+				<tbody>
+					#foreach($admL in $adminLeftList)				
+					<tr>
+						<td><input type="checkbox" name="menuId" value="$!admL.menuId"></td>
+						<td>$!admL.menuId</td>
+						<td align>$!admL.menuName</td>
+					</tr>
+					#end
+				</tbody>
+			</table>
+		</td>
+		<td width="10%">
+			<table>
+				<tr>
+					<td>
+						<a href="javascript:authAssign('A');"><img src="/mgr/images/btn/addAuth.gif" alt="할당"/></a>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<a href="javascript:authAssign('D');"><img src="/mgr/images/btn/delAuth.gif" alt="삭제"/></a>
+					</td>
+				</tr>
+			</table>
+		</td>
+		<td width="45%">
+			<table>
+			<caption>권한부여 리스트</caption>
+			<colgroup>
+				<col width="15%"/>
+				<col width="25%"/>
+				<col width="*%"/>
+			</colgroup>
+			<thead>
+				<tr>
+					<th colspan="3" align="center">권한부여</th>
+				</tr>
+				<tr>
+					<th scope="col">선택</th>
+					<th scope="col">메뉴그룹</th>
+					<th scope="col">메뉴명</th>
+				</tr>
+			</thead>
+			<tbody>
+				#foreach($admR in $adminRightList)
+				<tr>
+					<td><input type="checkbox" name="menuId" value="$!admR.menuId"></td>
+					<td>$admR.menuId</td>
+					<td>$admR.menuName</td>
+				</tr>
+				#end
+			<tbody>
+			</table>
+		</td>			
+	</tr>
+</table>
+</div>
+</form>

@@ -1,0 +1,146 @@
+<head>
+	<title>FAQ 관리</title>
+	<script type="text/javascript" language="javascript">
+	function search()
+	{
+		goPage(1);
+	}
+	
+	function setRecordCnt(totalCnt, currPage, totalPage, showCnt)
+	{
+		$("#tCnt").text(totalCnt);
+		$("#cPage").text(currPage);
+		$("#tPage").text(totalPage);
+		
+		setPaging($("#pg"), totalCnt, showCnt, currPage);
+
+	}
+	
+	function goPage(page)
+	{
+		$("#currPage").val(page);
+		
+		jQuery.post('faq_list.ajax.action', 
+				$("#searchForm").formSerialize(), 
+				function(data) {
+        			$("#list").html(data);
+		});
+	}
+	
+	function modify(faqId)
+	{
+		showWin('/mgr/home/faq_modify.pop.action?faqId=' + faqId, 'modwin', 820, 630);
+	}
+	
+	function reg()
+	{
+		showWin('/mgr/home/faq_write.pop.action', 'regwin', 820, 630);
+	}
+	
+	function searchConEvent1(selectedItem)
+	{
+		
+		$("#searchCon1").val(selectedItem);
+	}
+	
+	function searchConEvent2(selectedItem)
+	{
+		$("#searchCon2").val(selectedItem);
+	}
+
+	
+	$(document).ready(function() {
+		search();
+    });
+	
+
+	</script>
+</head>
+<body>
+	<!-- MainCopyBox  Start (페이지별 location 정보 표시.)-->
+	<div id="location_box">
+		<h3><img src="/mgr/images/home/title6.gif" alt="FAQ관리" /></h3>
+		<ul class="location">
+			<li><a href="/mgr/main.sub.action">Home</a></li>
+			<li><a href="/mgr/home/newsFeed.sub.action?gnb=41">홈페이지관리</a></li>
+			<li>FAQ관리</li>
+		</ul>
+	</div>
+	<!-- MainCopyBox  End -->
+	
+<form class="search_box01" id="searchForm" name="searchForm" action="#" onsubmit="try{search();}catch(e){alert(e);}return false;"><!-- box_type01 Start -->
+<input type="hidden" id="showCnt" name="showCnt" value="10"/>
+<input type="hidden" id="currPage" name="currPage" value="1"/>
+<input type="hidden" id="searchCon1" name="searchCon1" value="1"/>
+<input type="hidden" id="searchCon2" name="searchCon2" value="1"/>
+	<fieldset class="inner">
+		<table cellspacing="0" cellpadding="0" summary="게시물 검색" class="border_none_table">
+			<caption>게시물  검색</caption>
+			<colgroup>
+				<col width="45%"/>
+				<col width="*%"/>
+			</colgroup>
+			<tbody>
+				<tr>
+					<td>
+						<label for="select-1">분류</label>
+						<select	id="sectionId" name="sectionId" >
+							<option value="">전체</option>
+							#foreach($code in $codeList)
+							<option value="$!code.codeId">$!code.codeName</option>
+							#end							
+						</select>
+					</td>
+					<td>
+						<input type="radio" name="selectRadio1" value="1" checked >&nbsp;제목
+						<input type="radio" name="selectRadio1" value="2">&nbsp;내용
+						<input type="text" id="faqContent" name="faqContent" size="10" title="검색어(제목/내용) 입력"/> 
+					</td>		
+				</tr>
+				<tr>
+					<td>
+						<input type="radio" name="selectRadio2" value="1" checked>&nbsp;작성자
+						<input type="radio" name="selectRadio2" value="2">&nbsp;아이디
+						<input type="text" id="faqWriter" name="faqWriter" size="10" title="검색어(작성자/아이디) 입력"/> 	
+					</td>
+					<td align="right">
+						<a><input type="image" style="width:52px;height:21px;border:0px;" src="/mgr/images/btn/search.gif" alt="검색" /></a>
+						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</fieldset>
+</form><!-- box_type01 End -->
+
+<div class="list_top01">
+	<span>질문클릭 시 관리 화면으로 이동합니다.</span>
+	<span class="f_right">
+		total : <em id="tCnt">00</em>건(<em id="cPage">1</em>/<em id="tPage">10</em>page)
+		<select	id="searchConA" name="searchConA" onchange="javascript:searchConEvent1(this.options[this.selectedIndex].value);" >
+			<option value="1">번호</option>
+			<option value="2">분류</option>
+			<option value="3">제목</option>
+			<option value="4">조회수</option>
+		</select>
+		<select	id="searchConB" name="searchConB"  onchange="javascript:searchConEvent2(this.options[this.selectedIndex].value);" >
+			<option value="1">오름차순</option>
+			<option value="2">내림차순</option>
+		</select>
+	</span>
+</div>
+
+
+
+<div id="list">#parse('mgr/home/faq_list.vm')</div>
+
+
+
+<div class="page_num">
+	<div id="pg" name="pg"></div>
+	<a class="f_right" href="javascript:reg();"><img src="/mgr/images/btn/enter.gif" alt="등록" /></a>
+</div>
+
+
+</body>
+</html>

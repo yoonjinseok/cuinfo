@@ -1,0 +1,323 @@
+<head>
+	<title>학과 분야별 검색</title>
+	<script type="text/javascript" language="javascript">
+	
+	$(document).ready(function(){
+		jQuery.post('kocwApiSearch_K.ajax.action', 
+					$("#form").formSerialize(), 
+					function(data) {
+        				$("#kocwApiSearch_K").html(data);
+		});
+		
+		jQuery.post('kocwApiSearch_A.ajax.action', 
+					$("#form").formSerialize(), 
+					function(data) {
+					
+        				$("#kocwApiSearch_A").html(data);
+		});
+		orderTabClick();
+	});
+	
+	function orderTabClick()
+	{
+		var odbyKey = "";
+		$("#orderTab").find("a").each(function(index){
+			$(this).click(function(){
+				switch(index)
+				{
+					case 0:
+						odbyKey = "regdate,clicksCnt desc,maintitle";
+						break;
+					case 1:
+						odbyKey = "univname,clicksCnt desc,maintitle";
+						break;
+					case 2:
+						odbyKey = "deptname,clicksCnt desc,maintitle";
+						break;
+					case 3:
+						odbyKey = "clicksCnt desc,maintitle";
+						break;
+				}
+				$("#orderTab").find("a").removeClass();
+				$(this).addClass("on");
+				$("#odbykey").val(odbyKey);
+				goPage(1);
+			});
+		});
+	}
+	
+	
+	function search(deptId)
+	{
+		$("#deptId").val(deptId);
+		
+		//show
+		$("#publicList").show();
+		$("#allList").show();
+		$("#pg").show();
+		
+		//hide
+		$("#viewInfo").hide();
+		$("#viewList").hide();
+		
+		goPage(1);
+		showRollUp();
+	}
+	
+	//검색
+	function goPage(page)
+	{
+		
+		$("#currPage").val(page);
+		$("#hideText").val($("#text").val());
+		//kocw 공개강의와 학위논문 검색 kocwApiSearch_K
+		kocwApiSearch();
+		
+		jQuery.post('publicList.ajax.action', 
+					$("#form").formSerialize(), 
+					function(data) {
+        				$("#publicList").html(data);
+		});
+		
+		
+		jQuery.post('allList.ajax.action', 
+					$("#form").formSerialize(), 
+					function(data) {
+					
+        				$("#allList").html(data);
+        				
+		});
+		
+	}
+	
+	function kocwApiSearch(){
+		jQuery.post('kocwApiSearch_K.ajax.action', 
+					$("#form").formSerialize(), 
+					function(data) {
+        				$("#kocwApiSearch_K").html(data);
+		});
+		
+		jQuery.post('kocwApiSearch_A.ajax.action', 
+					$("#form").formSerialize(), 
+					function(data) {
+					
+        				$("#kocwApiSearch_A").html(data);
+		});
+		
+	}
+	
+	function viewDetail(courseId,courseIdentifier, title)
+	{
+		alert(title);
+		$("#hideText").val(title);
+	
+		// 상세보기로 갈경우 publicList , listControlBar , allList , pg 를 감춘다.
+		// viewDetail 는 보인다.
+		
+		$("#courseIdentifier").val(courseIdentifier);
+		$("#courseId").val(courseId);
+		
+		$("#publicList").hide();
+		$("#allList").hide();
+		$("#pg").hide();
+		
+		jQuery.post('viewInfo.ajax.action', 
+					$("#form").formSerialize(), 
+					function(data) {
+        				$("#viewInfo").html(data);
+        				$("#viewInfo").show();
+		});
+		
+		jQuery.post('viewList.ajax.action', 
+					$("#form").formSerialize(), 
+					function(data) {
+        				$("#viewList").html(data);
+        				$("#viewList").show();
+		});
+		
+		kocwApiSearch();
+		
+	}
+	
+	function setRecordCnt(totalCnt, currPage, totalPage, showCnt)
+	{
+		$("#tCnt").text(totalCnt);
+		$("#cPage").text(currPage);
+		$("#tPage").text(totalPage);
+		
+		setPaging($("#pg"), totalCnt, showCnt, currPage);
+	}
+		
+	function viewList()
+	{
+		document.location.href = "/home/course/searchByMajorArea.sub.action?gnb=31";
+	}
+	
+	function showRollUp(classifyId)
+	{
+		$("#univdeptName_list li").removeClass();
+		
+		$("#classifyId").val(classifyId);
+		
+		$("#text").val("");
+		
+		jQuery.post('rollUpList.ajax.action', 
+					$("#form").formSerialize(), 
+					function(data) {
+	
+						$("#"+classifyId+" div").html(data);
+						$("#"+classifyId).addClass("on");
+					
+		});
+		
+		
+	}
+	
+	function chgShowCnt(value)
+	{
+		$("#showCnt").val(value);
+		goPage(1);
+	}	
+
+	function searchKeyword(select, val){
+	
+		$("#select").val(select);
+		$("#text").val(val);
+		goPage(1);
+	}
+	
+	</script>
+</head>
+<body>
+
+<div id="location_box"><!-- MainCopyBox  Start -->
+	<h3><img src="/home/images/course/title1.gif" alt="학과 분야별 검색" /></h3>
+		<span class="sns_box" id="sns_box">
+		<a href="javascript:sns(1)"><img src="/home/images/icon/sns_1.gif" alt="트위터" /></a>
+		<a href="javascript:sns(2)"><img src="/home/images/icon/sns_2.gif" alt="페이스북" /></a>
+		<a href="javascript:sns(3)"><img src="/home/images/icon/sns_3.gif" alt="미투데이" /></a>
+		<a href="javascript:contentPrint()"><img src="/home/images/icon/sns_4.gif" alt="프린트" /></a>
+		</span>
+	<ul class="location">
+		<li><a href="/home/index.main.action">Home</a></li>
+		<li><a href="/home/course/searchByMajorArea.sub.action?gnb=31">강의검색</a></li>
+		<li>학과 분야별 검색</li>
+	</ul>
+</div><!-- MainCopyBox  End -->
+
+
+<div class="search_major type1">
+	<div class="info">원하시는 학과분야에 마우스를 클릭해주세요.</div>
+	<ul class="tab_type4" id="univdeptName_list">
+		
+		#foreach($list in $univdeptName_list)
+		<li id="$list.classifyId">
+			<a href="javascript:showRollUp('$list.classifyId');"><span>$list.classifyName<br />($list.cnt)</span></a>
+			<div class="_search_major_sub"></div>
+		</li>	
+		#end
+		
+	</ul>
+	<form class="" id="form" name="form" action="#" onsubmit="try{search();}catch(e){alert(e);}return false;">
+	
+	<input type="hidden" id="hideText" name="hideText" value="$!hideText"/>
+	
+	<input type="hidden" id="showCnt" name="showCnt" value="10"/>
+	<input type="hidden" id="currPage" name="currPage" value="1"/>
+	
+	<input type="hidden" id="classifyId" name="classifyId" value=""/>
+	<input type="hidden" id="deptId" name="deptId" value=""/>
+	
+	<input type="hidden" id="courseId" name="courseId" value=""/>
+	<input type="hidden" id="courseIdentifier" name="courseIdentifier" value=""/>
+	<input type="hidden" id="univListType" name="univListType" value="1"/>
+	
+	<!-- 정렬을 위한 값 -->
+	<input type="hidden" id="odbykey" name="odbykey" value="regdate,clicksCnt desc,maintitle"/>
+	<input type="hidden" id="odby" name="odby" value="asc"/>
+	
+	
+	<fieldset class="inner">
+		<table cellspacing="0" cellpadding="0" summary="전체학과검색">
+			<caption>전체학과검색</caption>
+			<colgroup>
+				<col width="100%"/>
+			</colgroup>
+			<tbody>
+				<tr id="trLecture3" class="top">
+					<td>
+						<label for="checkbox3" style="width:55px"> 검색 범위 </label>
+						<select	id="checkbox3" name="checkbox3" style="width:160px;">
+							<option value="2">최근 1년</option>
+							<option value="3">전체 강의정보</option>					
+                        </select>                        
+						<label for="checkbox1"> 공개강의 <input type="checkbox" value="1" id="checkbox1" name="checkbox1"/></label>
+					</td>			
+				</tr>
+				<tr class="bottom">
+					<td>
+						<select	id="select" name="select" style="width:80px;" >
+							<option value="1">강의명</option>
+							<option value="2">교수자명</option>
+							<option value="3">학교명</option>
+							<option value="4">강의설명</option>
+							<option value="5">키워드</option>
+						</select>
+						<input type="text" name="text" id="text" value="$!searchText" style="width:320px;">
+						<a href="javascript:search();"><img src="/home/images/btn/search2.gif" alt="검색" /></a>
+						<a href="/home/course/detailSearch.sub.action?gnb=33"><img src="/home/images/btn/search3.gif" alt="고급검색" /></a>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</fieldset>
+	</form>
+</div>
+
+<div class="green_text" id="deptNameView">#parse('home/course/deptNameView.vm')</div>
+
+<div class="search_list_area">
+	
+	<!-- 공개강의 리스트 -->
+	<div id="publicList" style="display:none">#parse('home/course/publicList.vm')</div>
+	
+	
+	<div id="listControlBar" class="top_box" style="display:none;">
+		<span class="num">총 <b id="totalCnt"><!--롤업리스트에서 사이즈를 가져온다. --></b>개  결과</span>
+		<select	id="select-1" onchange="chgShowCnt(this.value);">
+			#foreach($list in $showCntList)			
+			<option value="$list.codeValue">$list.codeName</option>
+			#end
+		</select>
+		<span class="f_right" id="orderTab">
+			<a class="on" href="#orderTab">최신순</a>  |
+			<a href="#orderTab">학교명</a>  |
+			<a href="#orderTab">학과명</a>  |
+			<a href="#orderTab">열람횟수</a>
+		</span>
+	</div>
+	
+	<div id="allList" style="display:none">#parse('home/course/allList.vm')</div>
+
+	<div class="page_num">
+		<div id="pg" name="pg" style="display:none"></div>
+	</div>
+	
+	<div id="viewInfo">#parse('home/course/viewInfo.vm')</div>
+	<div id="viewList" style="display:none" class="univ_table2 type1">#parse('home/course/viewList.vm')</div>
+		
+		
+	<!-- kocw 공개강의 -->
+	<div id="kocwApiSearch_K">#parse('home/course/kocwApiSearch_K.vm')</div>
+
+	<!-- 학위논문 -->
+	<div id="kocwApiSearch_A">#parse('home/course/kocwApiSearch_A.vm')</div>
+	
+	
+</div>
+
+<div id="viewList" class="univ_table2 type1">#parse('home/course/viewList.vm')</div>
+
+
+</body>
+</html>

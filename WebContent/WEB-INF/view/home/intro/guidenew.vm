@@ -1,0 +1,45 @@
+<head>
+	<title>사이버대학이란?</title>
+</head>
+<body>
+
+<p class="location">
+	<a href="/home/index.main.action">홈</a> <span>></span> <a href="/home/intro/summary.sub.action?gnb=11">사이버대학 안내</a> <span>></span> <a href="/home/intro/summary.sub.action?gnb=11">사이버대학이란?</a>
+</p>
+<h3><img src="/home/images/intro/title1_02.gif" alt="사이버대학이란?" /></h3>
+
+#*<div class="feature"><img src="/home/images/intro/guidenew_title1.gif" alt="신입학/편입학 안내" /></div>
+<p class="t_center"><img src="/home/images/intro/guidenew_text1.gif" alt="신입생은 대학(교) 1학년으로 입학하여 소정의 교육과정을 이수하면 학위와 총장명의 졸업증을 수여받을 수 있습니다.
+편입생은 대학교 2, 3학년으로 편입이 가능하고 소정의 교육과정을 이수하면 학위와 총장명의 졸업증을 수여받을 수 있습니다. 
+  ※ 1학년의 경우 신입생이기 때문에 편입학이 불가능합니다.    " /></p>
+*#  
+		
+<dl class="feature">
+  <dt><img src="/home/images/intro/guidenew_stitle1.gif" alt="수업 기간" /></dt>
+    <dd>졸업에 필요한 기간으로 4년제의 경우 4년(8학기), 2년제의 경우 2년(4학기)으로 되어있으며, 졸업요건을 충족하고 평점 평균이<br/>3.5~4.0 이상(학교마다 다름)인 경우 조기졸업이 가능하다. 재학연한은 제한 두지 않는다.<br />
+※ 학교마다 졸업요건 및 조기졸업요건이 상이하기 때문에 지원하는 학교에 직접 문의해야 한다. </dd>
+</dl>
+
+<dl class="feature">
+  <dt><img src="/home/images/intro/guidenew_stitle2.gif"  alt="학년도/학기 구분 및 수업일수"/></dt>
+    <dd class="no t_center p_t20 p_b20"><img src="/home/images/intro/guidenew_img1.gif"  alt="학년도/학기 구분 및 수업일수" />
+</dd>
+    ##<dd>매 학년도는 3월 초부터 다음 해 2월 말까지</dd>
+    ##<dd>1학기 : 3월 초부터 8월 말까지</dd>
+    ##<dd>2학기 : 9월 초부터 다음 해 2월 말까지</dd>
+    <dd>수업일수 : 매 학기 15주로 구성</dd>
+</dl>
+
+
+<dl class="feature">
+  <dt><img src="/home/images/intro/guidenew_stitle3.gif"  alt="학년도/학기 구분 및 수업일수"/></dt>
+   <dd class="no t_center p_t20 p_b20"><img src="/home/images/intro/guidenew_img2.gif"  alt="학년도/학기 구분 및 수업일수" /></dd>
+</dl>
+ <span>※ 수강 및 평가 방법은 각 학교마다 다를 수 있으니 해당 학교 홈페이지에서 확인바랍니다.</span>
+
+
+
+
+</body>
+</html>
+

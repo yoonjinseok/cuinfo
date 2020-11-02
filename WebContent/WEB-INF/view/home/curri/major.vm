@@ -1,0 +1,199 @@
+<head>
+	<title>학과 개설 현황</title>
+	<link rel="stylesheet" type="text/css" href="/home/css/course.css" />
+	<script type="text/javascript" language="javascript">
+	
+	$(document).ready(function(){
+		if("$!univId" != "" && "$!univId" != "0"){
+			sidecourseSearch("$!univId");
+		}		
+	});
+	
+	function searchUnivList(gubunId)
+	{
+		
+		jQuery.post('majorList.ajax.action', 
+					{gubunId:gubunId}, 
+					function(data) {
+        				$("#list").html(data);
+        				
+						$(".tab_type2 a").removeClass();
+					
+						if(gubunId == '')
+							$(".tab_type2 .tab1 a").addClass("on");
+						else if(gubunId == '51')
+							$(".tab_type2 .tab2 a").addClass("on");
+						else if(gubunId == '52')
+							$(".tab_type2 .tab3 a").addClass("on");
+						else if(gubunId == '163')
+							$(".tab_type2 .tab4 a").addClass("on");
+							
+						//$("#info").html("<center class='p_t10 p_b10'><img src='/home/images/intro/no_school.gif' /></center>");
+						
+						$("#list a").each(function(){
+							$(this).click(function(){
+								$("#list a").removeClass();
+								$(this).attr("class","on");
+							});
+						});
+		});
+		
+	}
+	
+	
+	function popupUrl(urlIndex, academy_id)
+	{
+		
+		if(urlIndex == 1){
+			showWin($("#urlpattern1").val().replace("[SCHCODE]", academy_id).replace("[YYYY]", $("#selectYear").val()).replace("[YYYY]", $("#selectYear").val()), 'majorwin', 1024, 768);
+		} else if(urlIndex == 2) {
+			showWin($("#urlpattern2").val().replace("[SCHCODE]", academy_id).replace("[YYYY]", $("#selectYear").val()).replace("[YYYY]", $("#selectYear").val()), 'majorwin', 1024, 768);
+		} else if(urlIndex == 3) {
+			showWin($("#urlpattern3").val().replace("[SCHCODE]", academy_id).replace("[YYYY]", $("#selectYear").val()).replace("[YYYY]", $("#selectYear").val()), 'majorwin', 1024, 768);
+		} else if(urlIndex == 4) {
+			showWin($("#urlpattern4").val().replace("[SCHCODE]", academy_id).replace("[YYYY]", $("#selectYear").val()).replace("[YYYY]", $("#selectYear").val()), 'majorwin', 1024, 768);
+		} else if(urlIndex == 5) {
+			showWin($("#urlpattern5").val().replace("[SCHCODE]", academy_id).replace("[YYYY]", $("#selectYear").val()).replace("[YYYY]", $("#selectYear").val()), 'majorwin', 1024, 768);
+		} else if(urlIndex == 6) {
+			showWin($("#urlpattern6").val().replace("[SCHCODE]", academy_id).replace("[YYYY]", $("#selectYear").val()).replace("[YYYY]", $("#selectYear").val()), 'majorwin', 1024, 768);
+		} else if(urlIndex == 7) {
+			showWin($("#urlpattern7").val().replace("[SCHCODE]", academy_id).replace("[YYYY]", $("#selectYear").val()).replace("[YYYY]", $("#selectYear").val()), 'majorwin', 1024, 768);
+		} else if(urlIndex == 8) {
+			showWin($("#urlpattern8").val().replace("[SCHCODE]", academy_id).replace("[YYYY]", $("#selectYear").val()).replace("[YYYY]", $("#selectYear").val()), 'majorwin', 1024, 768);
+		} else if(urlIndex == 9) {
+			showWin($("#urlpattern9").val().replace("[SCHCODE]", academy_id).replace("[YYYY]", $("#selectYear").val()).replace("[YYYY]", $("#selectYear").val()), 'majorwin', 1024, 768);
+		} else if(urlIndex == 10) {
+			showWin($("#urlpattern10").val().replace("[SCHCODE]", academy_id).replace("[YYYY]", $("#selectYear").val()).replace("[YYYY]", $("#selectYear").val()), 'majorwin', 1024, 768);
+		} else if(urlIndex == 11) {
+			showWin($("#urlpattern11").val().replace("[SCHCODE]", academy_id).replace("[YYYY]", $("#selectYear").val()).replace("[YYYY]", $("#selectYear").val()), 'majorwin', 1024, 768);
+		}
+	}
+	
+	function sidecourseSearch(univId){
+			$("#univId").val(univId);
+		jQuery.post('major_sampleLecture.ajax.action',
+					{universityID:univId}, 
+					function(data) {
+        				$("#sample").html(data);
+		});
+		
+		jQuery.post('major_recommendLecture.ajax.action', 
+					{universityID:univId}, 
+					function(data) {
+        				$("#recommend").html(data);
+		});
+	}
+	function majorInfo(univName,univId) {
+	
+		$("#univName").val(univName);
+		$("#univId").val(univId);
+		$("#universityId").val(univId);
+		
+		//화면전환을 위하여 화면 전환방식 변경
+		$("#form").attr("method","post");
+		$("#form").attr("onsubmit","");
+		$("#form").attr("action","/home/curri/major.sub.action?gnb=322");
+		$("#form").submit();
+		
+		//location.href="/home/curri/major.sub.action?gnb=322&univId="+univId+"&univName="+univName;
+		
+		/*
+		jQuery.post('majorInfo.ajax.action?gnb=322&univId="+univId+"&univName="+univName', 
+					{univ_name:univName,university_id:univId}, 
+					function(data) {
+					
+						//alert($("#univName").val() + ":" + $("#univId").val(univId));
+        				$("#info").html(data);
+        				sidecourseSearch(univId);
+		});
+		*/
+	}
+	
+	//커리큘럼보기 클릭시
+	function viewCurriculum(univdeptId){
+		$("#univdeptId").val(univdeptId);
+	
+		if($("#universityId").val() == "" || $("#univdeptId").val() == ""){
+			alert("선택된 내용이 없습니다.");
+			return;
+		} 
+		$("#form").attr("method","post");
+		$("#form").attr("onsubmit","");
+		$("#form").attr("action","/home/curri/curriculum.sub.action?gnb=31");
+		$("#form").submit();
+	}
+	
+	function viewDetail(courseId, title)
+	{
+	
+		//필요 변수 셋팅
+		$("#text").val(title);
+		$("#hidetext").val(title);
+		$("#courseId").val(courseId);
+		
+		//onsubmit 속성을 비워주어야 submit이 된다.
+		$("#form").attr("method","post");
+		$("#form").attr("onsubmit","");
+		$("#form").attr("action","/home/course/courseSearchView.sub.action?gnb=41");
+		$("#form").submit();
+		
+	}
+	
+		
+</script>
+</head>
+<body>
+	
+	<p class="location">
+		<a href="/home/index.main.action">홈</a> <span>></span> <a href="/home/curri/areadept.sub.action?gnb=31">교과과정</a> <span>></span> <a href="/home/curri/navigationMajorArea.sub.action?gnb=32">학과정보</a> 
+	</p>
+	<h3>
+		<img src="/home/images/title/h3_condition_subject.gif" alt="학과 개설 현황" /> <img src="/home/images/title/c_07.gif" alt="대학별 학과 개설현황 및 인기학과 및 추천학과를 볼 수 있습니다." />
+	</h3>	
+
+<form class="" id="form" name="form" action="#" onsubmit="try{search();}catch(e){alert(e);}return false;"><!-- box_type01 Start -->
+
+<input type="hidden" id="showCnt" name="showCnt" value="999"/>
+<input type="hidden" id="currPage" name="currPage" value="1"/>
+
+<input type="hidden" id="classifyId" name="classifyId" value=""/>
+<input type="hidden" id="deptName" name="deptName" value=""/>
+<input type="hidden" id="deptId" name="deptId" value=""/>
+<input type="hidden" id="univId" name="univId" value=""/>
+<input type="hidden" id="univName" name="univName" value=""/>
+<input type="hidden" id="univdeptId" name="univdeptId" value=""/>
+<input type="hidden" id="universityId" name="universityId" value="$!univId"/>
+<input type="hidden" id="text" name="text" value=""/>
+<input type="hidden" id="hidetext" name="hidetext" value=""/>
+<input type="hidden" id="courseId" name="courseId" value=""/>
+
+<!-- viewGubn : 종합, 인사말, 비전, 홍보센, 오시는길 선택값 [기본 : 종합]  -->
+<input type="hidden" id="viewGubn" name="viewGubn" value="1"/>
+
+<div class="contentWrap">
+	<h4 class="preview_h4"><img src="/home/images/curri/txt_sel_college.gif" alt="대학선택" /></h4>
+	<ul class="tab_type2">
+		<li class="tab1"><a href="javascript:searchUnivList('')" class="on">전체</a> </li>
+		<li class="tab2"><a href="javascript:searchUnivList('51')">사이버대학(4년제)</a> </li>
+		<li class="tab3"><a href="javascript:searchUnivList('52')">사이버대학(2년제)</a> </li>
+		<li class="tab4"><a href="javascript:searchUnivList('163')">원격대학 형태의 평생교육 시설</a> </li>
+	</ul>
+
+	<!-- 대학리스트 화면 -->
+	<div id="list">#parse('home/curri/majorList.vm')</div>
+	<!-- 대학리스트 화면 -->
+
+	
+
+	<!-- 대학 정보 -->
+	<div id="info">#parse('home/curri/majorInfo.vm')</div>
+	<!-- 대학 정보 -->
+	
+	
+
+</div>
+
+</form>
+</body>
+</html>
+

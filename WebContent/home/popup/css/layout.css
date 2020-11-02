@@ -1,0 +1,521 @@
+body{
+    margin: 0px;
+    padding: 0px;
+}
+.body_first_00 {
+    background: url('/home/popup/images/bg/CUinfo_main_00_bg.png') no-repeat;
+    background-color: #ffffff;
+    top: 0px;
+    left: 0px;
+    width: 990px;
+    height: 630px;
+    position: absolute;
+}
+.body_first_00 img{
+    width: 990px;
+    height: 630px;
+}
+
+.body_first_11 {
+    background: url('/home/popup/images/bg/CUinfo_main_01_bg.png') no-repeat;
+    background-color: #ffffff;
+    top: 0px;
+    left: 0px;
+    width: 990px;
+    height: 630px;
+    position: absolute;
+}
+.body_first_11 img{
+    width: 990px;
+    height: 630px;
+}
+
+.body_first_22 {
+    background: url('/home/popup/images/bg/CUinfo_main_02_bg.png') no-repeat;
+    background-color: #ffffff;
+    top: 0px;
+    left: 0px;
+    width: 990px;
+    height: 630px;
+    position: absolute;
+}
+.body_first_22 img{
+    width: 990px;
+    height: 630px;
+}
+
+.body_first_33 {
+    background: url('/home/popup/images/bg/CUinfo_main_03_bg.png') no-repeat;
+    background-color: #ffffff;
+    top: 0px;
+    left: 0px;
+    width: 990px;
+    height: 630px;
+    position: absolute;
+}
+.body_first_33 img{
+    width: 990px;
+    height: 630px;
+}
+
+.body_first_44 {
+    background: url('/home/popup/images/bg/CUinfo_main_04_bg.jpg') no-repeat;
+    background-color: #ffffff;
+    top: 0px;
+    left: 0px;
+    width: 990px;
+    height: 630px;
+    position: absolute;
+}
+.body_first_44 img{
+    width: 990px;
+    height: 630px;
+}
+
+.body_first_55 {
+    background: url('/home/popup/images/bg/CUinfo_main_05_bg.png') no-repeat;
+    background-color: #ffffff;
+    top: 0px;
+    left: 0px;
+    width: 990px;
+    height: 630px;
+    position: absolute;
+}
+.body_first_55 img{
+    width: 990px;
+    height: 630px;
+}
+
+.body_second_00 {
+    background: url('/home/popup/images/bg/CUinfo_second_00_bg.png') no-repeat;
+    background-color: #ffffff;
+    top: 0px;
+    left: 0px;
+    width: 990px;
+    height: 630px;
+    position: absolute;
+    
+}
+
+.body_second_11 {
+    background: url('/home/popup/images/bg/CUinfo_second_01_bg.png') no-repeat;
+    background-color: #ffffff;
+    top: 0px;
+    left: 0px;
+    width: 990px;
+    height: 630px;
+    position: absolute;
+}
+
+.body_second_22 {
+    background: url('/home/popup/images/bg/CUinfo_second_02_bg.png') no-repeat;
+    background-color: #ffffff;
+    top: 0px;
+    left: 0px;
+    width: 990px;
+    height: 630px;
+    position: absolute;
+}
+
+.body_second_33 {
+    background: url('/home/popup/images/bg/CUinfo_second_03_bg.png') no-repeat;
+    background-color: #ffffff;
+    top: 0px;
+    left: 0px;
+    width: 990px;
+    height: 630px;
+    position: absolute;
+}
+
+.body_second_44 {
+    background: url('/home/popup/images/bg/CUinfo_second_04_bg.jpg') no-repeat;
+    background-color: #ffffff;
+    top: 0px;
+    left: 0px;
+    width: 990px;
+    height: 630px;
+    position: absolute;
+}
+
+.body_second_55 {
+    background: url('/home/popup/images/bg/CUinfo_second_05_bg.png') no-repeat;
+    background-color: #ffffff;
+    top: 0px;
+    left: 0px;
+    width: 990px;
+    height: 630px;
+    position: absolute;
+}
+
+.body_third_00 {
+    background: url('/home/popup/images/bg/CUinfo_third_00_bg.png') no-repeat;
+    background-color: #ffffff;
+    top: 0px;
+    left: 0px;
+    width: 990px;
+    height: 630px;
+    position: absolute;
+}
+
+.body_third_00 img{
+    width: 990px;
+    height: 630px;
+}
+
+.body_third_11 {
+    background: url('/home/popup/images/bg/CUinfo_third_01_bg.png') no-repeat;
+    background-color: #ffffff;
+    top: 0px;
+    left: 0px;
+    width: 990px;
+    height: 630px;
+    position: absolute;
+}
+
+.body_third_22 {
+    background: url('/home/popup/images/bg/CUinfo_third_02_bg.png') no-repeat;
+    background-color: #ffffff;
+    top: 0px;
+    left: 0px;
+    width: 990px;
+    height: 630px;
+    position: absolute;
+}
+
+.body_third_33 {
+    background: url('/home/popup/images/bg/CUinfo_third_03_bg.jpg') no-repeat;
+    background-color: #ffffff;
+    top: 0px;
+    left: 0px;
+    width: 990px;
+    height: 630px;
+    position: absolute;
+}
+
+.body_third_44 {
+    background: url('/home/popup/images/bg/CUinfo_third_04_bg.jpg') no-repeat;
+    background-color: #ffffff;
+    top: 0px;
+    left: 0px;
+    width: 990px;
+    height: 630px;
+    position: absolute;
+}
+
+.body_third_55 {
+    background: url('/home/popup/images/bg/CUinfo_third_05_bg.png') no-repeat;
+    background-color: #ffffff;
+    top: 0px;
+    left: 0px;
+    width: 990px;
+    height: 630px;
+    position: absolute;
+}
+
+.body_third_66 {
+    background: url('/home/popup/images/bg/CUinfo_third_06_bg.jpg') no-repeat;
+    background-color: #ffffff;
+    top: 0px;
+    left: 0px;
+    width: 990px;
+    height: 630px;
+    position: absolute;
+}
+
+.navi{
+    position: fixed;
+    left: 20px;
+    top: 0px;
+    width: 180px;
+    background-color: #ffffff;
+    display: block;
+    border-color: #C3BFE8;
+}
+
+.navi > .side-top{
+    background: url('/home/popup/images/bg/CUinfo_main_00_top.gif') no-repeat;
+    width: 180px;
+    height: 53px;
+    position: absolute;
+    top: 0px;
+}
+.navi > .side-top img{
+    width: 180px;
+    height: 53px;
+    border: 0px;
+}
+
+.navi > .side-top dl dt{
+    width: 100%;
+    margin: 0px;
+    padding: 0px;
+    width: 100%;
+    text-align: center;
+}
+
+.navi > .side-top dl dt img{
+    width: 30px;
+    height: 30px;
+    border: 0px;
+}
+.navi >.side-logo{
+    height: 130px;
+    position: absolute;
+    top: 53px;
+}
+.navi >.side-logo img{
+    width: 180px;
+    height: 130px;
+    border: 0px;
+}
+
+.navi > .sidebar {
+    background: url('/home/popup/images/bg/CUinfo_main_00_navibg.gif') no-repeat;
+    position: absolute;
+    top: 182px;
+    height: 365px;
+    width: 180px;
+}
+
+
+
+
+
+/* sidebar ui */
+.navi > .sidebar > .sub1_00 a{
+    text-align: center;
+    position: absolute;
+    width: 180px;
+    height: 100px;
+    background-color: #ffffff;
+    top: 11px;
+    bottom: 10px;
+    cursor:pointer;
+    background:url('/home/popup/images/menu/sidebarmenu.png') 0 0 no-repeat;
+}
+
+/* selected_11 */
+.navi > .sidebar > .sub1_11 a{
+    text-align: center;
+    position: absolute;
+    width: 202px;
+    height: 131px;
+    background-color: #ffffff;
+    left: -10px;
+    top: -9px;
+    cursor:pointer;
+    background:url('/home/popup/images/menu/CUinfo_main_00_navihv.gif') no-repeat;
+}
+
+.navi > .sidebar > .sub1_00 a:hover {
+    text-align: center;
+    position: absolute;
+    width: 170px;
+    height: 100px;
+    background-color: #ffffff;
+    top: 11px;
+    cursor:pointer;
+    background:url('/home/popup/images/menu/sidehovermenu.png') 0 0 no-repeat;
+    zoom: 105%;
+}
+
+.navi > .sidebar > .sub2_00 a{
+    text-align: center;
+    position: absolute;
+    width: 180px;
+    height: 100px;
+    background-color: #ffffff;
+    top: 132px;
+    bottom: 100px;
+    cursor:pointer;
+    background:url('/home/popup/images/menu/sidebarmenu.png') 0 -105px no-repeat;
+}
+
+/* selected_22 */
+.navi > .sidebar > .sub2_22 a{
+    text-align: center;
+    position: absolute;
+    width: 202px;
+    height: 231px;
+    background-color: #ffffff;
+    left: -10px;
+    top: 115px;
+    bottom: 10px;
+    cursor:pointer;
+    background:url('/home/popup/images/menu/CUinfo_main_01_navihv.png') no-repeat;
+}
+
+.navi > .sidebar > .sub2_00 a:hover {
+    text-align: center;
+    position: absolute;
+    width: 170px;
+    height: 100px;
+    background-color: #ffffff;
+    top: 132px;
+    bottom: 10px;
+    cursor:pointer;
+    background:url('/home/popup/images/menu/sidehovermenu.png') 0 -105px no-repeat;
+    zoom: 105%;
+
+}
+
+.navi > .sidebar > .sub3_00 a{
+    text-align: center;
+    position: absolute;
+    width: 180px;
+    height: 100px;
+    background-color: #ffffff;
+    top: 253px;
+    bottom: 10px;
+    cursor:pointer;
+    background:url('/home/popup/images/menu/sidebarmenu.png') 0 -240px no-repeat;
+}
+
+/* selected_33 */
+.navi > .sidebar > .sub3_33 a{
+    text-align: center;
+    position: absolute;
+    width: 202px;
+    height: 131px;
+    background-color: #ffffff;
+    left: -10px;
+    top: 236px;
+    bottom: 10px;
+    cursor:pointer;
+    background:url('/home/popup/images/menu/CUinfo_main_02_navihv.png') no-repeat;
+}
+.navi > .sidebar > .sub3_00 a:hover {
+    text-align: center;
+    position: absolute;
+    width: 170px;
+    height: 100px;
+    background-color: #ffffff;
+    top: 253px;
+    cursor:pointer;
+    background:url('/home/popup/images/menu/sidehovermenu.png') -10 -210px no-repeat;
+    zoom: 105%;
+}
+
+.navi > .sidebar > .bottom {
+	left: -10px;
+    top: 233px;
+    width: 180px;
+    height: 800px;
+   	background-color: #ffffff;
+}	
+
+.next_first_00 a{
+    height: 22px;
+    width: 66px;
+    top: 300px;
+    left: 269px;
+    position: relative;
+    cursor: pointer;
+}
+
+.next_first_00 img{
+    height: 22px;
+    width: 66px;
+    border: 0px;
+}
+.next_first_00_mod a{
+    height: 22px;
+    width: 66px;
+    top: 345px;
+    left: 269px;
+    position: relative;
+    cursor: pointer;
+}
+
+.next_first_00_mod img{
+    height: 22px;
+    width: 66px;
+    border: 0px;
+}
+
+.next_first_11 a{
+    height: 35px;
+    width: 106px;
+    top: 524px;
+    left: 834px;
+    position: relative;
+    cursor: pointer;
+}
+
+.next_first_11 img{
+    height: 35px;
+    width: 106px;
+    border: 0px;
+}
+
+.next_first_22 a{
+    height: 35px;
+    width: 236px;
+    top: 519px;
+    left: 474px;
+    position: relative;
+    cursor: pointer;
+}
+
+.next_first_22 img{
+    height: 35px;
+    width: 236px;
+    border: 0px;
+}
+
+.next_first_33 a{
+    height: 63px;
+    width: 198px;
+    top: 283px;
+    left: 505px;
+    position: relative;
+    cursor: pointer;
+}
+
+.next_first_33 img{
+    height: 63px;
+    width: 198px;
+    border: 0px;
+}
+
+.next_last a{
+    height: 137px;
+    width: 138px;
+    top: 485px;
+    left: 834px;
+    position: absolute;
+    cursor: pointer;
+}
+
+.next_last img{
+    height: 137px;
+    width: 138px;
+    border: 0px;
+}
+
+.next_first_lecture a{
+    height: 34px;
+    width: 256px;
+    top: 466px;
+    left: 445px;
+    position: absolute;
+    cursor: pointer;
+}
+
+.next_first_lecture img{
+    height: 34px;
+    width: 256px;
+    border: 0px;
+}
+
+#campusLife {
+	position: absolute;
+    width: 270px;
+    height: 131px;
+    background-color: #ffffff;
+    left: 257px;
+    top: 71px;
+	display: none;
+}
+
+

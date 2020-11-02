@@ -1,0 +1,41 @@
+<!-- 대학교 현황 -->
+
+
+<div>
+	<br/>
+	<center> 
+	시스템 점검중 입니다.
+	</center>
+</div>
+	
+
+<div class="graphWrap" id="chart_div" style="display: none;">	
+</div>
+	
+<script type="text/javascript">      
+	google.load('visualization', '1', {packages: ['corechart']});
+	function drawVisualization() {
+	  // Create and populate the data table.
+	  var data = google.visualization.arrayToDataTable([
+	    ['Year', '10대초', '20대초', '20대후', '30대', '40대', '50대', '60대']
+    	 ,['2012', 0, 0, 0, 0, 0, 0, 0]
+	  ]);
+
+	// Create and draw the visualization.
+	  new google.visualization.BarChart(document.getElementById('chart_div')).
+	      draw(data,
+	           {'isStacked': true,	           
+	            width:600, height:400,
+	            vAxis: {title: "년도별"},
+	            hAxis: {title: "백분율(%)"}
+	           }
+	      );
+	 }
+	
+	google.setOnLoadCallback(drawVisualization);
+
+</script>
+
+
+					
+		

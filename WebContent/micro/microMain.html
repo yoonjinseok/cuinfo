@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<!-- <meta http-equiv="Cache-Control" content="no-cache"/>  -->
+<!-- <meta http-equiv="Expires" content="0"/> -->
+<!-- <meta http-equiv="Pragma" content="no-cache"/>  -->
+<meta http-equiv="X-UA-Compatible" content="IE=edge" >
+<title>사이버대학 체험관</title>
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.2/themes/smoothness/jquery-ui.css">
+<style type="text/css">
+	body		{margin: 0px; width: 990px; height: 630px; overflow: hidden;}
+	img			{border: 0px;}
+	
+	.bg			{position: absolute; z-index: 1;width: 990px; top: 0; left: 0;}
+	.rotate			{position: absolute; z-index: 2;width: 990px; top: 0; left: 0;}
+	.leftDiv	{border: 1px dashed #b4b4b4;border-top:hidden;border-bottom:hidden; margin-left:20px;width: 180px;background: #ffffff;position: absolute;top: 0;height: 100%;z-index: 20;background-color: #ffffff;}
+	.leftMenu	{height: 136px;}
+	
+	.text1		{position: absolute; z-index: 2; display: none; top: 0; left: 0; width: 990px;}
+	.text2		{position: absolute; z-index: 2; display: none; top: 0; left: 0;}
+	
+	.underDot	{background: url('/micro/images/bg/leftdot.png') no-repeat scroll center bottom rgba(0, 0, 0, 0);}
+	.enterBtn	{position: absolute; z-index: 10;top:380px;left: 265px; display: none;}
+	#enterBtn	{position: absolute; z-index: 10;top:380px;left: 265px; display: none;}
+	.enterBtn2	{position: absolute; z-index: 10;top:280px;left: 495px; display: none;}
+	.prevBtn	{position: absolute; z-index: 3; display: none; top:530px; left: 202px;}
+	.nextBtn	{position: absolute; z-index: 3; display: none; top:530px; left: 884px;}
+	.endBtn 	{position: absolute; z-index: 3; display: none; top:530px; left: 500px;}
+	.lastBtn	{position: absolute; z-index: 3; display: none; top:490px; left: 845px;}
+</style>
+<script type="text/javascript" src="/micro/js/jquery-2.1.3.min.js"></script>
+<script type="text/javascript" src="/micro/js/jquery-ui.js"></script>
+<script>
+	
+	//레프트 메뉴 번호
+	var menuNo = 0;
+	//컨텐츠 번호
+	var stepNo = 0;
+	//배경이미지
+	var src_bg = "";
+	
+	//setInterval
+	var si1 = null;
+	var si2 = null;
+	var si3 = null;
+	
+	//setTimeout
+	var st1 = null;
+	var st2 = null;
+	var st3 = null;
+	
+	var st3;
+	
+	//페이지 로딩후 액션
+	$(document).ready(function(){
+		
+		imgCahcing(0);
+		
+		$("*").not($(".leftDiv").find("*")).css("position","fixed");
+		$("#enterBtn,#enterBtn2").css("position","absolute");
+		
+		setTimeout(function(){
+			effects1();
+		}, 500);	
+		
+		//기본적으로 highlight 클래스는 mouseenter 시 pulsate 효과.
+		$(".highlight").mouseenter(function(){
+			$(this).effect( "pulsate" , {times  : 2});
+		});
+	});
+	
+	//애니메이션 효과
+	//사이버대학 소개 효과
+	
+	function clearEffects1(){
+		
+		$("#text1").hide();
+		$("#text2").hide();
+		
+		//이벤트중 메뉴 변경시를 위한 offset 초기화
+		$("#text1").css("top", "0");
+		
+		$("*").each(function(){
+			$(this).stop(true, true);
+		});
+		
+		clearInterval(si1);
+		clearInterval(si2);
+		clearInterval(si3);
+		clearTimeout(st1);
+		clearTimeout(st2);
+		clearTimeout(st3);
+		
+		$("#bg1").stop().fadeOut(100, function(){$(this).hide().css("top", "0px")});
+		$("#bg2").stop().fadeOut(100, function(){$(this).hide().css("top", "0px")});
+		$("#bg3").stop().fadeOut(100, function(){$(this).hide().css("top", "0px")});
+		
+		$("#bg1").hide();
+		$("#bg2").hide();
+		$("#bg3").hide();
+		
+		$("#playBtn").hide();		
+		$("#text1").hide();
+		$("#text2").hide();
+		$("#enterBtn").hide();
+		$("#enterBtn2").hide();
+		$("#prevBtn").hide();
+		$("#nextBtn").hide();
+		$("#endBtn").hide();
+		$("#lastBtn").hide();
+		
+		//동영상 재생관련		
+		$("#playBtn").hide();
+		$("#layer").hide();
+		$("#video").hide();
+		
+		$("*").not($(".leftDiv").find("*")).css("position","fixed");
+		$("#enterBtn,#enterBtn2").css("position","absolute").css("z-index","20");
+	}
+	function clearEffects2(){
+		$("*").each(function(){
+			$(this).stop(true, true);
+		});
+	}
+	
+	//사이버대학 소개 메인
+	function effects1(){
+		$("#enterBtn").css("top","380px");
+		
+		$("#text1").attr("src", "/micro/images/step1/text1.png");
+		$("#text2").attr("src", "/micro/images/step1/text2.png");
+		$("#text1").css("top", "0");
+		$("#text2").css("top", "0");
+		
+		/*
+		$("#text1").slideDown(1500, "easeOutBounce" , function(){
+			$("#text2").fadeIn(800, "easeInOutQuint", function(){
+				$("#enterBtn").css("left","135px");
+				$("#enterBtn").show();
+				$("#enterBtn").animate({left:"265px"}, 1500, "easeOutElastic");
+			});
+		});
+		*/
+		
+		$("#text1").fadeIn(500);
+		$("#text2").fadeIn(500);
+		$("#enterBtn").fadeIn(500);
+		
+// 		$("#text1").fadeIn(300, "easeOutBounce" , function(){
+// 			$("#text2").fadeIn(0, "easeInOutQuint", function(){
+// 				$("#enterBtn").show();
+// 			});
+// 		});
+	}
+
+	//캠퍼스 라이프 메인
+	function effects2(){
+		$(".enterBtn").css("top","265px");
+		$("#text1").attr("src", "/micro/images/step2/text1.png");
+		$("#text2").css("top", "-40px").attr("src", "/micro/images/step2/text2.png");
+		
+		
+		if($("#text1").is(":visible"))
+			$("#text1").hide();
+		
+		/*
+		$("#text1").show( "bounce", { times: 1, distance: 40} , 1500, function(){
+			
+			//offset 틀어질경우 0으로 초기화
+			if($("#text1").offset().top != 0){
+				$("#text1").animate({top:"0px", left:"0px"}, 800, "easeOutExpo");
+			}
+			
+			//안보일경우 보이도록
+			if(!$("#text1").is(":visible"))
+				$("#text1").fadeIn("fast");
+			
+			$("#text2").fadeIn(700, "easeInOutQuint", function(){
+				$("#enterBtn").show(200, function(){
+					$("#enterBtn").effect( "pulsate" , {times  : 1}, function(){
+						clearEffects2();
+					});
+				});
+			});
+		});
+		*/
+		
+		$("#text1").fadeIn(500);
+		$("#text2").fadeIn(500);
+		$("#enterBtn").fadeIn(500);
+	}
+	
+	//사이버 스터디 하드
+	function effects3(){
+		
+		$("#enterBtn2").fadeIn(1000, "easeInQuint", function(){
+			clearEffects2();
+		});
+	}
+	
+	//left menu 클릭 이벤트
+	function menu(no){
+		
+		imgCahcing(no);
+		
+		clearEffects1();
+		clearEffects2();
+		
+		stepNo = 0;
+		menuNo = no;
+		menuNo++;
+		
+		menuImgChange();
+		
+		setTimeout(function(){
+			if(menuNo == 1){
+				effects1();
+			}else if(menuNo == 2){
+				effects2();
+			}else if(menuNo == 3){
+				effects3();
+			}
+		}, 400);
+		
+		var str;
+		
+		if(menuNo == 1)
+			str = "사이버대학 소개";
+		else if(menuNo == 2)
+			str = "캠퍼스 LIFE";
+		else if(menuNo == 3)
+			str = "사이버 Study hard";
+		
+		//통계자료
+	    dcsMultiTrack('DCS.dcssip','www.cuinfo.net','DCS.dcsuri','/micro/microMain.html?menuNo=' + menuNo,'DCS.qri','','WT.ti','체험관  -' + str,'WT.sp','micro');
+	}
+	
+	//레프트 메뉴 변경 및 초기bg 변경.
+	function menuImgChange(){
+		var src = "";
+		$(".leftMenu").each(function(){
+			var img = $(this).find("img");
+			src = img.attr("src").replace("_on", "_off");
+			img.css("margin", "0 0 0 0").prop("src", src);
+		});
+		src = $(".leftMenu:eq("+ (menuNo - 1) +") img").attr("src");
+		src = src.replace("_off", "_on");
+		$(".leftMenu:eq("+ (menuNo - 1) +") img").css("opacity","0").css("margin", "0 0 0 -10px").prop("src", src);
+		$(".leftMenu:eq("+ (menuNo - 1) +") img").fadeTo(500,1, function(){
+			//메뉴가 변경된 후 배경이미지를 변경한다
+		});
+		
+		src_bg = "";
+		
+		$("#bg").fadeTo(400, 0, function(){
+			src_bg = "/micro/images/step"+menuNo+"/bg.png";
+			$(this).attr("src", src_bg).fadeTo(1000, 1);
+		});
+		
+	}
+	
+	//이전버튼 기능
+	function prevContent(){
+		stepNo--;
+		stepNo--;
+		
+		if(stepNo < 0){
+			menu(--menuNo);
+			return;
+		}
+		
+		nextContent();
+	}
+	
+	//컨텐츠보기
+	function nextContent(){
+		clearEffects1();
+		
+		stepNo++;
+		
+		if(menuNo == 0)
+			menuNo++;
+		
+		//content 는 menu1_step1.png 의 명명 규칙이다.
+		src_bg = "/micro/images/step"+menuNo+"/menu"+menuNo+"_step"+stepNo+".png";
+		
+		$("#endBtn").hide();
+		$("#prevBtn").hide("slide", {direction : "left"});
+		$("#nextBtn").hide("slide", {direction : "right"});
+		
+		$("#bg").fadeOut(500, function(){
+			$(this).css("width","990px").attr("src", src_bg).fadeIn(700, function(){
+
+				//사이버대학 소개
+				if(menuNo == 1){
+					if(stepNo == 5){
+						$("#prevBtn").show("slide", {direction : "left"});
+						
+						$("#lastLink").attr("href","javascript:menu(1);");
+						$("#lastBtn").attr("src","/micro/images/icon/lastBtn01.png");
+						
+						$("#endLink").attr("href","http://cuinfo.net/home/intro/successStory.sub.action?gnb=15");
+						$("#endBtn").css("top", "514px").css("left","475px");
+						$("#endBtn").attr("src","/micro/images/icon/CUinfo_main_02_next.gif");
+						
+						$("#endBtn").fadeIn(500, function(){
+							$("#endBtn").effect( "pulsate" , {times  : 1});
+						});
+						
+						$("#lastBtn").fadeIn(800);
+					}else{
+						setTimeout(function(){
+// 							if(stepNo > 1)
+								$("#prevBtn").show("slide", {direction : "left"});
+							$("#nextBtn").show("slide", {direction : "right"});
+						},500);
+					}
+				}
+				
+				//campus life
+				if(menuNo == 2){
+					
+					if(stepNo == 5){
+						$("#prevBtn").show("slide", {direction : "left"});
+						
+						$("#lastLink").attr("href","javascript:menu(2);");
+						$("#lastBtn").attr("src","/micro/images/icon/lastBtn02.png");
+						$("#endBtn").attr("src","/micro/images/icon/btncenter2.png");
+						$("#lastBtn").fadeIn(1000);
+					}else if(stepNo == 2){
+						
+						$("#bg1").prop("src","/micro/images/step2/menu2_step2_r1.png");
+						$("#bg2").prop("src","/micro/images/step2/menu2_step2_r2.png");
+						$("#bg3").prop("src","/micro/images/step2/menu2_step2_r3.png");
+						
+						$("#bg1").fadeIn(300, function(){
+							$("#bg1").effect("shake", {times : 1, distance : 5, direction : "down"}, function(){
+// 								si1 = setInterval(function(){
+// 									$("#bg1").effect("shake", {times : 1, distance : 5, direction : "down"});
+// 								}, 3000);
+							});
+						});
+						st2 = setTimeout(function(){$("#bg2").fadeIn(500, function(){
+							$("#bg2").effect("shake", {times : 1, distance : 5, direction : "down"}, function(){
+// 								si2 = setInterval(function(){
+// 									$("#bg2").effect("shake", {times : 1, distance : 5, direction : "down"});
+// 								}, 4800);
+							});
+						});}, 100);
+						st3 = setTimeout(function(){$("#bg3").fadeIn(500, function(){
+							$("#bg3").effect("shake", {times : 1, distance : 5, direction : "down"},function(){
+// 								si3 = setInterval(function(){
+// 									$("#bg3").effect("shake", {times : 1, distance : 5, direction : "down"});
+// 								}, 3400);
+							});
+						});}, 200);
+						
+					}else if(stepNo == 3){
+						
+						$("#bg1").prop("src","/micro/images/step2/menu2_step3_r1.png");
+						$("#bg2").prop("src","/micro/images/step2/menu2_step3_r2.png");
+						$("#bg3").prop("src","/micro/images/step2/menu2_step3_r3.png");
+						
+						$("#bg1").fadeIn(300, function(){
+							$("#bg1").effect("shake", {times : 1, distance : 5, direction : "down"},function(){
+// 								si1 = setInterval(function(){
+// 									$("#bg1").effect("shake", {times : 1, distance : 5, direction : "down"});
+// 								}, 3000);
+							});
+						});
+						st2 = setTimeout(function(){$("#bg2").fadeIn(500, function(){
+							$("#bg2").effect("shake", {times : 1, distance : 5, direction : "down"},function(){
+// 								si2 = setInterval(function(){
+// 									$("#bg2").effect("shake", {times : 1, distance : 5, direction : "down"});
+// 								}, 4800);
+							});
+						});}, 100);
+						st3 = setTimeout(function(){$("#bg3").fadeIn(500, function(){
+							$("#bg3").effect("shake", {times : 1, distance : 5, direction : "down"},function(){
+// 								si3 = setInterval(function(){
+// 									$("#bg3").effect("shake", {times : 1, distance : 5, direction : "down"});
+// 								}, 3400);
+							});
+						});}, 200);
+						
+					}else if(stepNo == 4){
+						
+						$("#bg1").prop("src","/micro/images/step2/menu2_step4_r1.png");
+						$("#bg2").prop("src","/micro/images/step2/menu2_step4_r2.png");
+						$("#bg3").prop("src","/micro/images/step2/menu2_step4_r3.png");
+						
+						$("#bg1").fadeIn(300, function(){
+							$("#bg1").effect("shake", {times : 1, distance : 5, direction : "down"},function(){
+// 								si1 = setInterval(function(){
+// 									$("#bg1").effect("shake", {times : 1, distance : 5, direction : "down"});
+// 								}, 3000);
+							});
+						});
+						st2 = setTimeout(function(){$("#bg2").fadeIn(500, function(){
+							$("#bg2").effect("shake", {times : 1, distance : 5, direction : "down"},function(){
+// 								si2 = setInterval(function(){
+// 									$("#bg2").effect("shake", {times : 1, distance : 5, direction : "down"});
+// 								}, 4800);
+							});
+						});}, 100);
+						st3 = setTimeout(function(){$("#bg3").fadeIn(500, function(){
+							$("#bg3").effect("shake", {times : 1, distance : 5, direction : "down"},function(){
+// 								si3 = setInterval(function(){
+// 									$("#bg3").effect("shake", {times : 1, distance : 5, direction : "down"});
+// 								}, 3400);
+							});
+						});}, 200);
+						
+					}else{
+						
+						if(stepNo == 1){
+							//플레이버튼 보이기
+							$("#playBtn").show();
+						}
+						
+					}
+					
+					setTimeout(function(){
+						
+// 					if(stepNo > 1)
+						$("#prevBtn").show("slide", {direction : "left"});
+					if(stepNo < 5)
+						$("#nextBtn").show("slide", {direction : "right"});
+					},500);
+				}
+				
+				//사이버 스터디 하드
+				if(menuNo == 3){
+					
+					if(stepNo == 1){
+					
+					$("#bg1").prop("src","/micro/images/step3/menu3_step1_r1.png");
+					$("#bg2").prop("src","/micro/images/step3/menu3_step1_r2.png");
+					
+					$("#bg1").fadeIn(300, function(){
+						$("#bg1").effect("shake", {times : 1, distance : 5, direction : "down"});
+// 						si1 = setInterval(function(){
+// 							$("#bg1").effect("shake", {times : 1, distance : 5, direction : "down"});
+// 						}, 3000);
+					});
+					st2 = setTimeout(function(){$("#bg2").fadeIn(500, function(){
+						$("#bg2").effect("shake", {times : 1, distance : 5, direction : "down"});
+// 						si2 = setInterval(function(){
+// 							$("#bg2").effect("shake", {times : 1, distance : 5, direction : "down"});
+// 						}, 4800);
+					});}, 100);
+					
+					}else if(stepNo == 3){
+						
+						$("#bg1").css("top","30px").prop("src","/micro/images/step3/menu3_step3_r1.png");
+						
+						$("#bg1").fadeIn(300, function(){
+							$("#bg1").effect("shake", {times : 1, distance : 5, direction : "down"});
+// 							si1 = setInterval(function(){
+// 								$("#bg1").effect("shake", {times : 1, distance : 5, direction : "down"});
+// 							}, 3000);
+						});
+						
+					}else if(stepNo == 6){
+						$("#prevBtn").show("slide", {direction : "left"});
+						
+						$("#lastLink").attr("href","javascript:menu(0);");
+						$("#lastBtn").attr("src","/micro/images/icon/lastBtn03.png");
+						
+						$("#endLink").attr("href","http://cuinfo.net/home/course/sampleCourse.sub.action?gnb=44");
+						$("#endBtn").attr("src","/micro/images/icon/btncenter2.png");
+						$("#endBtn").css("top", "440px").css("left","444px");
+						$("#endBtn").fadeIn(600, function(){
+							$("#endBtn").effect( "pulsate" , {times  : 1});
+						});
+						
+						$("#lastBtn").fadeIn(1000);
+					}else{
+// 						if(stepNo > 1)
+							$("#prevBtn").show("slide", {direction : "left"});
+						$("#nextBtn").show("slide", {direction : "right"});
+					}
+					setTimeout(function(){
+						
+// 					if(stepNo > 1)
+						$("#prevBtn").show("slide", {direction : "left"});
+					if(stepNo < 6)
+						$("#nextBtn").show("slide", {direction : "right"});
+					},500);
+				}
+			});	
+		});
+	}
+	
+	//동영상 재생
+	function showVideo(){
+		$("#layer").fadeToggle(100, function(){
+			$("#video").fadeToggle(500);
+			
+			//재생시간을 0초로 돌리고, 자동 새쟁시킨다.
+			var v = document.getElementById("video");
+			v.currentTime = 0;
+			v.muted = "muted";
+			v.play();
+			
+		});
+	}
+	
+	function hideVideo(){
+		//video 태크 컨트롤은 DOM 객체로 접근해야한다.
+		var v = document.getElementById("video");
+		v.pause();
+		$("#video").hide();
+		$("#layer").hide();
+	}
+	
+	//이미지들을 캐싱
+	function imgCahcing(no){
+		var img1  = new Image();
+		var img2  = new Image();
+		var img3  = new Image();
+		var img4  = new Image();
+		var img5  = new Image();
+		var img6  = new Image();
+		var img7  = new Image();
+		var img8  = new Image();
+		var img9  = new Image();
+		var img10 = new Image();
+		var img11 = new Image();
+		var img12 = new Image();
+		var img13 = new Image();
+		var img14 = new Image();
+		var img15 = new Image();
+		var img16 = new Image();
+		var img17 = new Image();
+		var img18 = new Image();
+		var img19 = new Image();
+		var img20 = new Image();
+		var img21 = new Image();
+		var img22 = new Image();
+		var img23 = new Image();
+		var img24 = new Image();
+		var img25 = new Image();
+		var img26 = new Image();
+		var img27 = new Image();
+		var img28 = new Image();
+		var img29 = new Image();
+		var img30 = new Image();
+		var img31 = new Image();
+		var img32 = new Image();
+		var img33 = new Image();
+		var img34 = new Image();
+		var img35 = new Image();
+		var img36 = new Image();
+		
+		if(no == 0){
+			img1.src = "/micro/images/step1/bg.png";
+			img2.src = "/micro/images/step1/text1.png";
+			img3.src = "/micro/images/step1/text2.png";
+			img4.src = "/micro/images/step1/menu1_step1.png";
+			img5.src = "/micro/images/step1/menu1_step2.png";
+			img6.src = "/micro/images/step1/menu1_step3.png";
+			img7.src = "/micro/images/step1/menu1_step4.png";
+			img8.src = "/micro/images/step1/menu1_step5.png";
+		}else if(no == 1){
+			img9.src = "/micro/images/step2/bg.png";
+			img10.src = "/micro/images/step2/text1.png";
+			img11.src = "/micro/images/step2/text2.png";
+			img12.src = "/micro/images/step2/menu2_step1.png";
+			img13.src = "/micro/images/step2/menu2_step2.png";
+			img14.src = "/micro/images/step2/menu2_step2_r1.png";
+			img15.src = "/micro/images/step2/menu2_step2_r2.png";
+			img16.src = "/micro/images/step2/menu2_step2_r3.png";
+			img17.src = "/micro/images/step2/menu2_step3.png";
+			img18.src = "/micro/images/step2/menu2_step3_r1.png";
+			img19.src = "/micro/images/step2/menu2_step3_r2.png";
+			img20.src = "/micro/images/step2/menu2_step3_r3.png";
+			img21.src = "/micro/images/step2/menu2_step4.png";
+			img22.src = "/micro/images/step2/menu2_step4_r1.png";
+			img23.src = "/micro/images/step2/menu2_step4_r2.png";
+			img24.src = "/micro/images/step2/menu2_step4_r3.png";
+			img25.src = "/micro/images/step2/menu2_step5.png";
+		}else if(no == 2){
+			img26.src = "/micro/images/step3/bg.png";
+			img29.src = "/micro/images/step3/menu3_step1.png";
+			img30.src = "/micro/images/step3/menu3_step1_r1.png";
+			img31.src = "/micro/images/step3/menu3_step1_r2.png";
+			img32.src = "/micro/images/step3/menu3_step2.png";
+			img33.src = "/micro/images/step3/menu3_step3.png";
+			img34.src = "/micro/images/step3/menu3_step3_r1.png";
+			img35.src = "/micro/images/step3/menu3_step4.png";
+			img36.src = "/micro/images/step3/menu3_step5.png";
+		}
+	}
+	
+	
+</script>
+</head>
+<body>
+<div style="width: 990px; height: 630px;">
+
+	<div id="layer" style="border: 0px solid red;z-index: 22;text-align: center; display: none; width:990px; height: 630px; position: absolute;background:none repeat scroll 0 0 #111111;opacity:0.8;" onclick="javascript:hideVideo();">
+		
+	</div>
+	<!-- 
+	<video id="video" preload="auto" style="border: 0px solid black;z-index: 30;left: 180px; top: 85px; width: 600px; position: absolute; display: none;" poster="http://www.cuinfo.net/images/cuinfo2013.jpg" controls="controls">
+		<source src="http://210.102.100.235/cuinfo/cuinfo2013.mp4" type="video/mp4"></source>
+	</video>
+	 -->
+
+	<!-- 배경이미지 -->
+	<img id="bg" class="bg" alt="bg" src="/micro/images/step1/bg.png"/>
+	
+	<!-- rotate test -->
+	<img id="bg1" class="rotate" alt="bg1" src="/micro/images/step2/menu2_step2_r1.png" style="display: none; position: absolute;"/>
+	<img id="bg2" class="rotate" alt="bg2" src="/micro/images/step2/menu2_step2_r2.png" style="display: none; position: absolute;"/>
+	<img id="bg3" class="rotate" alt="bg3" src="/micro/images/step2/menu2_step2_r3.png" style="display: none; position: absolute;"/>
+	
+	<!-- 플레이 버튼  -->
+<!-- 	<a href="javascript:showVideo();"><img id="playBtn" class="playBtn" alt="playBtn" src="/micro/images/btn/playBtn.png" style="display: none; position: absolute; z-index: 21; top: 400px; left: 835px;"/></a> -->
+	
+	
+	<!-- text1 -->
+	<img id="text1" class="text1" alt="text1" src="/micro/images/step1/text1.png"/>
+	
+	<!-- text2 -->
+	<img id="text2" class="text2" alt="text2" src="/micro/images/step1/text2.png" style=""/>
+	
+	<!-- enter button -->
+	<a href="javascript:nextContent();" style="z-index:10;">
+		<img id="enterBtn" class="enterBtn" alt="enterBtn" src="/micro/images/btn/enterBtn.png"/>
+	</a>
+	
+	<!-- enter2 button -->
+	<a href="javascript:nextContent();" style="z-index:10;">
+		<img id="enterBtn2" class="enterBtn2" alt="enterBtn2" src="/micro/images/btn/enterBtn2.png"/>
+	</a>
+	
+	<!-- prevBtn -->
+	<a href="javascript:prevContent();" style="z-index:10;">
+		<img id="prevBtn" class="prevBtn" alt="prevBtn" src="/micro/images/btn/prevBtn.gif"/>
+	</a>
+	
+	<!-- nextBtn -->
+	<a href="javascript:nextContent();" style="z-index:10;">
+		<img id="nextBtn" class="nextBtn" alt="nextBtn" src="/micro/images/btn/nextBtn.gif"/>
+	</a>
+	
+	<!-- endBtn -->
+	<a id="endLink" target="_blank" href="#" style="z-index:10;">
+		<img id="endBtn" class="endBtn" alt="endBtn" src="/micro/images/btn/endBtn.png"/>
+	</a>
+	
+	<!-- lastBtn -->
+	<a id="lastLink" href="#" style="z-index:10;">
+		<img id="lastBtn" class="lastBtn" alt="lastBtn" src="/micro/images/icon/lastBtn01.png"/>
+	</a>
+
+	<!-- left -->
+	<div class="leftDiv">
+				
+		<!-- 상단 버튼 2개 -->
+		<div>
+			<table style="width: 100%; height: 50px;">
+				<tr>
+					<td align="right">
+						<a href="/micro/microMain.html"><img class="highlight" alt="homeBtn" src="/micro/images/icon/icon-home.gif"/></a>
+					</td>
+					<td>&nbsp;</td>
+					<td align="left">
+						<a href="javascript:return false;"><img class="highlight" alt="homeBtn" src="/micro/images/icon/icon-sitemap.gif"/></a>
+					</td>
+				</tr>			
+			</table>
+		</div>
+		
+		<!-- 사이버대학 체험관 텍스트 -->
+		<div>
+			<a href="/micro/microMain.html"><img alt="" src="/micro/images/bg/logo.gif"/></a>
+		</div>
+		
+		<!-- 사이버대학 소개 -->	
+		<div class="leftMenu underDot">
+			<a href="javascript:menu(0);"><img alt="" src="/micro/images/menu/left1_on.png" style="margin: 0 0 0 -10px;"/></a>
+		</div>
+		
+		<!-- 캠퍼스 라아프 -->
+		<div class="leftMenu underDot">
+			<a href="javascript:menu(1);"><img alt="" src="/micro/images/menu/left2_off.png"/></a>
+		</div>
+		
+		<!-- 사이버 study hard -->
+		<div class="leftMenu">
+			<a href="javascript:menu(2);"><img alt="" src="/micro/images/menu/left3_off.png"/></a>
+		</div>
+	</div>
+</div>
+</body>
+</html>

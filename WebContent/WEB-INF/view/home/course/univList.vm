@@ -1,0 +1,9 @@
+<ul class="overall_tab_list">
+	#foreach($list in $univList)
+	#if($!list.cnt==0)
+	<li><span>$!list.univName</span></li>
+	#else
+	<li><a href="javascript:selectUnivId('$list.universityId','$!list.univName')">$!list.univName</a></li>
+	#end	
+	#end
+</ul>

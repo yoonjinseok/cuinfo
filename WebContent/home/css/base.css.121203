@@ -1,0 +1,154 @@
+ /*********************** Base Reset Style ***********************/
+* {text-decoration:none;outline:0;padding:0;margin:0;}
+html, body{font-size:12px;padding:0;margin:0;}
+body{color:#666;font-family:Verdana,Gulim,AppleGothic;}
+div, p, ul, li, img, a, table, td, th, tr, h1, h2, h3, h4, h5, h6, form, input, span, iframe, dl, dt, dd {margin:0;padding:0;}
+fieldset{border:none;}
+img, a{border:0 none;vertical-align:baseline;}
+* html img, a{border:0 none;}
+em{font-style:normal;}
+address{font-style:normal;}
+table{border-collapse:collapse;}
+
+ul,ol {margin:0;padding:0;list-style:none;}
+li, dl, dd, dt{margin:0;padding:0;list-style:none;}
+hr{visibility:hidden;overflow:hidden;position:absolute;width:0;height:0;font-size:0;line-height:0;}
+td *, div *, li *, span *, p *{vertical-align:middle;}
+font {vertical-align: top;}
+
+input.type_img, li img{vertical-align:middle;/* For IE image margin */}
+input.inputText, textarea, select{border:1px solid #c9c9c9;background:#fff;}
+input, select, textarea{vertical-align:middle;font-family:inherit;font-size:100%;color:#666;}
+
+
+legend, caption{font-size:0px;color:#fff;line-height:0;}
+
+a, a:link, a:visited{text-decoration:none;color:#666;vertical-align:baseline;} a:hover, a:active{text-decoration:none;color:#339999;}
+
+
+em{font-style:normal;font-weight:inherit;line-height:inherit;vertical-align:baseline;color:inherit;}
+a{font-style:normal;font-weight:inherit;line-height:inherit;color:inherit;vertical-align:baseline;text-decoration:inherit;}
+b{font-style:normal;line-height:inherit;vertical-align:baseline;color:inherit;}
+
+
+
+/*********************** anchor ***********************/
+
+
+
+
+/*********************** Padding Style ***********************/
+.p_t0{padding-top:0px ! important;}
+.p_t5{padding-top:5px ! important;}
+.p_t10{padding-top:10px ! important;}
+.p_t20{padding-top:20px ! important;}
+.p_t30{padding-top:30px ! important;}
+.p_t40{padding-top:40px ! important;}
+.p_t50{padding-top:50px ! important;}
+
+
+.p_l0{padding-left:0px ! important;}
+.p_l5{padding-left:5px ! important;}
+.p_l10{padding-left:10px ! important;}
+.p_l13{padding-left:13px ! important;}
+.p_l20{padding-left:20px ! important;}
+.p_l30{padding-left:30px ! important;}
+.p_l40{padding-left:40px ! important;}
+.p_l50{padding-left:50px ! important;}
+.p_l180{padding-left:180px ! important;}
+.p_l20{padding-left:18px ! important;}
+
+
+.p_r0{padding-right:0px ! important;}
+.p_r5{padding-right:5px ! important;}
+.p_r10{padding-right:10px ! important;}
+.p_r20{padding-right:20px ! important;}
+.p_r25{padding-right:25px ! important;}
+.p_r30{padding-right:30px ! important;}
+.p_r40{padding-right:40px ! important;}
+.p_r50{padding-right:50px ! important;}
+/*12.14선임수정*/
+.p_r18{padding-right:18px ! important;}
+
+.p_b0{padding-bottom:0px ! important;}
+.p_b5{padding-bottom:5px ! important;}
+.p_b10{padding-bottom:10px ! important;}
+.p_b20{padding-bottom:20px ! important;}
+.p_b30{padding-bottom:30px ! important;}
+.p_b40{padding-bottom:40px ! important;}
+.p_b50{padding-bottom:50px ! important;}
+
+
+/*********************** Margin Style ***********************/
+.m_t0{margin-top:0px ! important;}
+.m_t5{margin-top:5px ! important;}
+.m_t10{margin-top:10px ! important;}
+.m_t20{margin-top:20px ! important;}
+.m_t30{margin-top:30px ! important;}
+.m_t40{margin-top:40px ! important;}
+.m_t50{margin-top:50px ! important;}
+.m_t100{margin-top:100px ! important;}
+
+.m_r0{margin-right:0px ! important;}
+.m_r5{margin-right:5px ! important;}
+.m_r10{margin-right:10px ! important;}
+.m_r15{margin-right:15px ! important;}
+.m_r20{margin-right:20px ! important;}
+.m_r30{margin-right:30px ! important;}
+.m_r40{margin-right:40px ! important;}
+.m_r50{margin-right:50px ! important;}
+
+.m_l0{margin-left:0px ! important;}
+.m_l5{margin-left:5px ! important;}
+.m_l10{margin-left:10px ! important;}
+.m_l13{margin-left:13px ! important;}
+.m_l15{margin-left:15px ! important;}
+.m_l20{margin-left:20px ! important;}
+.m_l25{margin-left:25px ! important;}
+.m_l30{margin-left:30px ! important;}
+.m_l40{margin-left:40px ! important;}
+.m_l50{margin-left:50px ! important;}
+
+.m_b0{margin-bottom:0px ! important;}
+.m_b5{margin-bottom:5px ! important;}
+.m_b10{margin-bottom:10px ! important;}
+.m_b20{margin-bottom:20px ! important;}
+.m_b30{margin-bottom:30px ! important;}
+.m_b35{margin-bottom:35px ! important;}
+.m_b40{margin-bottom:40px ! important;}
+.m_b50{margin-bottom:50px ! important;}
+
+
+/*********************** Float Style ***********************/
+.f_left{float:left ! important;}
+.f_right{float:right ! important;}
+.f_clear{clear:both ! important;}
+
+
+/*********************** Text Align Style ***********************/
+.t_left{text-align:left ! important;}
+.t_right{text-align:right ! important;}
+.t_center{text-align:center ! important;}
+
+
+/*********************** Vertical Align Style ***********************/
+.v_top{vertical-align:top ! important;}
+.v_middle{vertical-align:middle ! important;}
+.v_bottom{vertical-align:bottom ! important;}
+
+
+/*********************** Font Color Style ***********************/
+.orange{color:#F46007 ! important;}
+.red{color:#ED4323 ! important;}
+.blue{color:#5372B4 ! important;}
+.black{color:#000 ! important;}
+.white{color:#fff ! important;}
+.yellow{color:#FFA25E ! important;}
+.green{color:#3F9D46 ! important;}
+.skyblue{color:#6BAFE0 ! important;}
+.gray{color:#696C71 ! important;}
+
+.bold_none{font-weight:normal ! important;}
+
+.f_11{font-size:11px ! important;}
+.f_12{font-size:12px ! important;}

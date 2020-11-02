@@ -1,0 +1,33 @@
+
+
+<ul class="list_type1">
+
+	#foreach($list in $boardNews_list)
+	<li>
+		<a href="$!list.newsLink" target="_blank" onClick="dcsMultiTrack('DCS.dcssip','$!list.sip','DCS.dcsuri','$!list.uri','DCS.qry','$!list.qri','WT.ti','Offsite Link - $!list.sp','WT.sp','$!list.sp')">$!list.newsTitle #if($list.newYN == 'Y')<img name="image" src="/home/images/icon/new.gif" alt="new"/> #end</a>
+		<!-- $dateformatter.print($!list.regDate, $locale) -->
+		<em class="gray">( $dateformatter.print($!list.newsRegDate, $locale) )</em>
+		<p>$!list.newsDesc</p>
+	</li>
+	#end
+	
+	#set($cnt = $boardNews_list.size() + 1)
+	#if($cnt < $showCnt)
+	#foreach($blank in [$cnt..$showCnt])
+	<li>
+		<a href="#">&nbsp;</a>
+		<em class="gray">&nbsp;</em>
+		<p>&nbsp;</p>
+	</li>
+	#end
+	#end
+	#*
+	*#
+	
+</ul>
+
+<script>
+	#if($boardNews_list)
+	setRecordCnt($totalCnt, $currPage, $totalPage, $showCnt);
+	#end
+</script>

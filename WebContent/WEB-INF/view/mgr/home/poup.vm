@@ -1,0 +1,128 @@
+<head>
+	<title>팝업 관리</title>
+	<link type="text/css" href="/css/jquery.datepicker.css" rel="stylesheet"/>
+	<script type="text/javascript" src="/js/jquery.ui.core.js"></script>
+	<script type="text/javascript" src="/js/jquery.ui.datepicker.js"></script>
+	<script type="text/javascript" src="/js/jquery.ui.datepicker-ko.js"></script>
+	<script type="text/javascript" language="javascript">
+	function search()
+	{
+		goPage(1);
+	}
+	
+	function setRecordCnt(totalCnt, currPage, totalPage, showCnt)
+	{
+		$("#tCnt").text(totalCnt);
+		$("#cPage").text(currPage);
+		$("#tPage").text(totalPage);
+		
+		setPaging($("#pg"), totalCnt, showCnt, currPage);
+	}
+	
+	function goPage(page)
+	{
+		if(typeof(page) != "undefined")
+			$("#currPage").val(page);
+		
+		jQuery.post('poup_list.ajax.action', 
+				$("#searchForm").formSerialize(), 
+				function(data) {
+        			$("#list").html(data);
+		});
+	}
+	
+	function modify(poupNum)
+	{
+		showWin('/mgr/home/poup_modify.pop.action?poupNum=' + poupNum , 'modwin', 820, 630);
+	}
+	
+	function reg()
+	{
+		showWin('/mgr/home/poup_write.pop.action', 'regwin', 820, 630);
+	}
+	
+	function priviewDB(poupNum, width, height)
+	{	
+		sWidth = parseInt(width) + 20;
+		sHeight = parseInt(height) + 30;
+		viewTpye = 2;
+
+		showWin('/mgr/home/poup_Preview.pop.action?viewTpye='+ viewTpye + '&poupNum=' + poupNum  , 'prevwin', sWidth, sHeight);
+		
+	}
+	
+	$(document).ready(function() {
+		search();
+    });
+	
+
+	</script>
+</head>
+<body>
+
+	<!-- MainCopyBox  Start (페이지별 location 정보 표시.)-->
+	<div id="location_box">
+		<h3><img src="/mgr/images/home/title7.gif" alt="팝업관리" /></h3>
+		<ul class="location">
+			<li><a href="/mgr/main.sub.action">Home</a></li>
+			<li><a href="/mgr/home/newsFeed.sub.action?gnb=41">홈페이지관리</a></li>
+			<li>팝업관리</li>
+		</ul>
+	</div>
+	<!-- MainCopyBox  End -->
+	
+<form class="search_box01" id="searchForm" name="searchForm" action="#" onsubmit="try{search();}catch(e){alert(e);}return false;"><!-- box_type01 Start -->
+<input type="hidden" id="showCnt" name="showCnt" value="10"/>
+<input type="hidden" id="currPage" name="currPage" value="1"/>
+<input type="hidden" id="selectyn" name="selectyn" value=""/>
+
+	<fieldset class="inner">
+		<table cellspacing="0" cellpadding="0" summary="팝업 검색" class="border_none_table">
+			<caption>팝업  검색</caption>
+			<colgroup>
+				<col width="40%"/>
+				<col width="*%"/>
+			</colgroup>
+			<tbody>
+				<tr>
+					<td>
+						<label for="selectyn">게시여부</label>
+						<select	id="selectyn" name="selectyn" >
+							<option value="">전체 </option>
+							<option value="Y"> 예 </option>
+							<option value="N">아니오</option>
+						</select>
+					</td>
+					<td>
+						<label for="radio-1"><input type="radio" name="selectRadio1" id="radio-1" value="1" checked > 제목</label>
+						<label for="radio-2"><input type="radio" name="selectRadio1" id="radio-2" value="2"> 내용</label>
+						<input type="text" id="searchword" name="searchword" size="20" title="검색어(제목/내용) 입력"/>
+						<a href="#"><img name="image" src="/mgr/images/btn/search.gif" alt="검색" /></a>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</fieldset>
+</form><!-- box_type01 End -->
+
+<div class="list_top01">
+	<span>각 항목 클릭 시 관리 페이지로 이동합니다.</span>
+	<span class="f_right">
+		total : <em id="tCnt">00</em>건(<em id="cPage">1</em>/<em id="tPage">10</em>page)
+	</span>
+</div>
+
+
+
+<div id="list">#parse('mgr/home/poup_list.vm')</div>
+
+
+
+<div class="page_num">
+	<div id="pg" name="pg"></div>
+	<a class="f_right" href="javascript:reg();"><img src="/mgr/images/btn/enter.gif" alt="등록" /></a>
+</div>
+
+
+</body>
+</html>

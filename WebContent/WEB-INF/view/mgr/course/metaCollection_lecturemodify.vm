@@ -1,0 +1,192 @@
+<head>
+	<title>강의정보수정</title>
+	<script type="text/javascript" language="javascript">
+	function save()
+	{
+	
+		if($("#writeForm").formSerialize().indexOf("\'") != -1) {
+			alert("' 는 사용할 수 없습니다.\n    \" 를 사용해주세요.");
+			return;
+		}
+	
+		jQuery.post('metaCollection_lectureupdate.json', 
+				$("#writeForm").formSerialize(), 
+				function(data) {
+        			if(data.errors == true)
+        			{
+        				eval(data.message);
+        			}
+        			else
+        			{
+						alert('수정하였습니다.');
+						document.location.href='metaCollection_lectureread.pop.action?courseId=$!lecture.courseId&lectureId=$!lecture.lectureId';
+        			}
+		});
+	}
+	
+	function del()
+	{
+		jQuery.post('metaCollection_lecturedelete.json', 
+				$("#writeForm").formSerialize(), 
+				function(data) {
+        			if(data.errors == true)
+        			{
+        				eval(data.message);
+        			}
+        			else
+        			{
+						alert('삭제하였습니다.');
+						document.location.href='metaCollection_read.pop.action?courseId=$!lecture.courseId';
+        			}
+		});
+	}
+	
+	function addFile(fileId, location, title)
+	{
+        $("#fileTB").append('<tr id=\''+fileId+'\'><td><input type="hidden" id="fileId" name="fileId" value="'+fileId+'"/><input type="text" style="width:95%" maxlength="2000" id="fileLocation" name="fileLocation" value="'+location+'"/></td><td><input type="text" style="width:95%" maxlength="2000" id="fileTitle" name="fileTitle" value="'+title+'"/></td><td onclick="javascript:delFile(this.parentNode.rowIndex);"><img src="/mgr/images/btn/btn_delete.gif" alt="취소"/></td></tr>');
+	}
+	function delFile(delInx)
+	{
+		$("#fileTB").find('tr:nth-child('+(delInx+1)+')').remove();
+	}
+	</script>
+	
+	<style type="text/css">
+	.comment {background:#FAFAFA;} 
+	.mandatory{color:red;font-weight:bold;}
+	</style>
+</head>
+<body>
+<div style="width:90%;padding-left:30px;padding-top:30px;">
+<form id="writeForm" action="#" onsubmit="try{save();}catch(e){alert(e);}return false;">
+<input type="hidden" id="courseId" name="courseId" value="$!lecture.courseId"/>
+<input type="hidden" id="lectureId" name="lectureId" value="$!lecture.lectureId"/>
+<input type="hidden" id="lectureIdentifier" name="lectureIdentifier" value="$!lecture.lectureIdentifier"/>
+<h2>강의정보 수정</h2>	
+<table style="width:100%" cellspacing="0" cellpadding="0" class="form_type01" summary="강의정보관리"><!-- list_type01 Start -->
+	<caption>강의정보관리</caption>
+	<colgroup>
+		<col width="13%" />
+		<col width="27%" />
+		<col width="13%" />
+		<col width="27%" />
+		<col width="20%" />
+	</colgroup>
+	<tbody>
+		<tr>
+			<th scope="row"><span class="mandatory">*</span>차시번호</th>
+			<td>
+				<select id="groups" name="groups">
+				<script>
+				for(var i = 1; i <= 30; i++)
+				{
+					document.writeln('<option value="'+i+'">'+i+'차시</option>');
+				}
+				</script>
+				</select>
+				<script>
+				$("#groups").val('$!lecture.groups');
+				</script>
+			</td>
+			<th scope="row"><span class="mandatory">*</span>강의번호</th>
+			<td>
+				<select id="orders" name="orders">
+				<script>
+				for(var i = 1; i <= 30; i++)
+				{
+					document.writeln('<option value="'+i+'">'+i+'번</option>');
+				}
+				</script>
+				</select>
+				<script>
+				$("#orders").val('$!lecture.orders');
+				</script>
+			</td>
+			<td class="comment">차시별 강의순서 입력 예)1차시의 3번째 강의</td>
+		</tr>
+		<tr>
+			<th scope="row"><span class="mandatory">*</span>제목</th>
+			<td><input type="text" style="width:100%" maxlength="50" title="제목" name="title" id="title" value="$!lecture.title"/></td>
+			<th scope="row">부제목</th>
+			<td><input type="text" style="width:100%" maxlength="50" title="부제목" name="subtitle" id="subtitle" value="$!lecture.subtitle"/></td>
+			<td class="comment">강의의 제목 기술</td>
+		</tr>
+		<tr>
+			<th scope="row">키워드</th>
+			<td colspan="3"><input type="text" style="width:100%" maxlength="500" title="키워드" name="keyword" id="keyword" value="$!lecture.keyword"/></td>
+			<td class="comment">콘텐츠를 설명하는 키워드 또는 관용구</td>
+		</tr>
+		<tr>
+			<th scope="row">교수자</th>
+			<td colspan="3">
+				<input type="text" size="15" id="master" name="master" value="$!lecture.master"/>
+			</td>
+			<td class="comment">강의 교수자</td>
+		</tr>
+		<tr>
+			<th scope="row">설명</th>
+			<td colspan="3">
+                <textarea id="description" name="description" rows="6" style="width:100%">$!lecture.description</textarea>
+			</td>
+			<td class="comment">개요 및 요약을 입력</td>
+		</tr>
+		<tr>
+			<th scope="row">강의컨텐츠</th>
+			<td colspan="3">
+				<input type="text" style="width:100%" maxlength="500" title="강의컨텐츠" name="movLocation" id="movLocation" value="$!lecture.movLocation"/></td>
+			</td>
+			<td class="comment">강의 동영상 URL또는 물리적 경로</td>
+		</tr>
+		<tr>
+			<th scope="row">관련자료</th>
+			<td colspan="3">
+				<table id="fileTB" border="1" style="width:100%;margin-bottom : 5px;" class="list_type02">
+				<colgroup>
+        			<col width="50%" />
+        			<col width="40%" />
+                    <col width="10%" />
+        		</colgroup>
+				<tr>
+        			<th scope="row">location</th>
+        			<th scope="row">설명</th>
+					<th scope="row">&nbsp;</th>
+        		</tr>
+				</table>
+				<script>
+				#foreach($item in $lecture.getLecFileList())
+				addFile('$!item.attfileId','$!item.location','$!item.title');
+				#end	
+				</script>
+				<p class="t_center">
+				<a href="javascript:addFile('', '', '');"><img src="/mgr/images/btn/btn_edit.gif" alt="추가" /></a>
+				</p>
+			</td>
+			<td class="comment">강의 관련자료의 URL</td>
+		</tr>
+		<tr>
+			<th scope="row">등록일시</th>
+			<td>
+				 $!{lecture.register}($datetimeformatter.print($!lecture.regDate, $!locale))
+			</td>
+			<th scope="row">수정일시</th>
+			<td>
+				$!{lecture.modifier}($datetimeformatter.print($!lecture.modDate, $!locale))
+			</td>
+			<td class="comment">&nbsp;</td>
+		</tr>
+	</tbody>
+</table><!-- list_type01 End -->
+
+
+<div class="btn_box_type03" style="text-align:left;">
+	#if($!lockCourse == 'N')
+	<a href="javascript:save();" id="saveBtn"><img src="/mgr/images/btn/save.gif" alt="저장" /></a>
+	<a href="javascript:del();"><img src="/mgr/images/btn/delete.gif" alt="삭제" /></a>
+	#end
+	<a href="javascript:history.back();"><img src="/mgr/images/btn/btn_previous.gif" /></a>
+</div>
+
+</form>
+</div>
+</body>
+</html>

@@ -1,0 +1,59 @@
+<table cellspacing="0" cellpadding="0" summary="교과과정 보기"><!-- table_type1 st01 Start -->
+<caption>교과과정 보기</caption>
+<colgroup>
+	<col width="10%">
+	<col width="35%">
+	<col width="10%">
+	<col width="35%">
+	<col width="10%">
+</colgroup>
+<thead>
+	<tr>
+		<th scope="col" rowspan="2">학년</th>
+		<th scope="col" colspan="2">1학기</th>
+		<th scope="col" colspan="2">2학기</th>
+	</tr>
+	<tr class="row_top">
+		<th scope="col">교과목명</th>
+		<th scope="col">학점</th>
+		<th scope="col">교과목명</th>
+		<th scope="col">학점</th>
+	</tr>
+</thead>
+<tbody>
+	#if($deptDetailList.size() > 0)
+	#foreach($list in $curriculumList)
+	<tr>
+		<th>1학년</th>
+		<td class="t_left">
+			<p><a href="#">국어작문</a></p>
+			<p><a href="#">국어작문</a></p>
+			<p><a href="#">국어작문</a></p>
+		</td>
+		<td>
+			<a href="#"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기" /></a>
+			3
+		</td>
+		<td class="t_left">
+			<p><a href="#">국어작문</a></p>
+			<p><a href="#">국어작문</a></p>
+		</td>
+		<td>
+			<a href="#"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기" /></a>
+			3
+		</td>
+	</tr>
+	#end
+	#else
+	<tr>
+		<td colspan="5">검색 결과가 없습니다.</td>	
+	</tr>
+	#end
+   </tbody>
+</table>
+<script>
+	#if($curriculumList)
+	$("#totalCnt").text($totalCnt);
+	setRecordCnt($totalCnt, $currPage, $totalPage, $showCnt);
+	#end
+</script>

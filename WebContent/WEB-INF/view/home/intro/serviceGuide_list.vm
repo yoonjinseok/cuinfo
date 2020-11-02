@@ -1,0 +1,34 @@
+<div class="contentWrap">
+	<!--s:컨텐츠영역-->
+	<div id="firstStep">
+		<h4 class="preview_h4"><img src="/home/images/intro/h4_txt_01.gif" alt="01. 아래 항목 중 해당하는 항목을 선택하여 주세요." /></h4>
+		<div class="box_preview">
+			<div class="inner_box_preview">
+				<ol class="select_list">
+					#foreach($list in $questionList)
+					<li><a href="javascript:selectStep1('$!list.guideNo')"><span class="num"></span>$!list.question<span class="bg_bottom"></span></a></li>
+					#end
+				</ol>
+			</div>
+		</div>
+	</div>
+	
+##	<div id="secondStep" style="display:none;">
+##		<h4 class="preview_h4">
+##		##$questionList.guideNo
+##			<img id="secondStepImg" src="/home/images/intro/h4_txt_02.gif" alt="02. 1학년 신입학에 진학하게 됩니다. 해당하는 항목을 선택하여 주세요." />
+##		</h4>
+##		<div class="box_preview">
+##			<div class="inner_box_preview">
+##				<ol class="select_list">
+##					#foreach($list in $answerList)
+##					<li><a href="javascript:selectStep2('$!list.answerId')"><span class="num"></span>$!list.answer<span class="bg_bottom"></span></a></li>
+##					#end
+##				</ol>
+##			</div>
+##		</div>
+##	</div>
+	
+		##<div class="btn_area_new"><a href="#"><img src="/home/images/btn/btn_pre_level.gif" alt="이전 단계" /></a></div>
+	<!--e:컨텐츠영역-->
+</div>

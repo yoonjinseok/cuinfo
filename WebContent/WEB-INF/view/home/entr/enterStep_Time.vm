@@ -1,0 +1,93 @@
+<head>
+	<title>입학 구분 및 절차</title>
+	<script>
+		function showMore(){
+				$("#moreBtn").toggle();
+				$("#closeBtn").toggle();
+				$("#hide1").toggle("fast");
+			}
+	</script>
+</head>
+<body>
+
+<p class="location">
+	<a href="/home/index.main.action">홈</a> <span>></span> <a href="/home/entr/enterStep_New.sub.action?gnb=211">입학안내</a> <span>></span> <a href="/home/entr/enterStep_New.sub.action?gnb=211">입학 구분 및 절차</a>
+</p>
+<h3><img src="/home/images/entr/title1.gif" alt="사이버대학이란?" /></h3>
+	
+<dl class="feature3">
+	<dt><img src="/home/images/entr/enterstep_title2.gif" alt="시간제등록 안내" /></dt>
+  	<dd>
+	사이버대학에서는 정규과정(4년제, 2년제, 대학원 등) 외에도 매 학기 모집기간에 '시간제등록'을 신청하여 정규학생과 동일한 <br/> 
+	수업 진행 및 평가를 받은 후 평생교육진흥원의 학점인정 신청을 통해 학점을 부여 받을 수 있습니다.<br/>
+	</dd> 
+	
+  	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  	<a id="moreBtn"  href="javascript:showMore();"><b style="color:#7289B3;text-decoration:underline;">자세히 보기 +</b></a></span>
+	<a id="closeBtn" href="javascript:showMore();" style="display:none;"><b style="color:#7289B3;text-decoration:underline;">자세히 보기 -</b></a></span>
+	<br/>
+	
+	<div id="hide1" style="display:none;">
+		
+	<!-- 시간제등록이란? -->
+	  <dt><img src="/home/images/intro/guidetime_stitle1.gif" alt="시간제 등록이란? " /></dt>
+	    <dd>학점은행제로 학위를 취득하기 위하여 학점을 이수하는 여러 가지 방법(평가인정기관 수강, 무형문화재 전수, 자격증 학점 인정,<br/>독학사 시험, 시간제 등록 등) 중 하나로  대학교에 학적을 두지 않고,  매 학기 모집기간에 시간제로  등록하여 정규학생과 동일한<br/> 수업 진행 및 평가를 받는 교육제도이다.</dd>
+	    <dd>평생교육진흥원을 통해 학점의 이수를 인정받아 학위취득이나 타 대학의 학점으로 활용할 수 있는 제도이다. <br />(상세 내용은  평생교육진흥원 - 학점은행 참조 <a target="_blank" href="http://www.cb.or.kr/">http://www.cb.or.kr/</a>)
+	    	<br/>
+	    	<br/>
+	    	<img src="/home/images/intro/guidetime_img1.gif"  alt="학년도/학기 구분 및 수업일수" />
+		</dd>
+		
+
+	<!-- 학점인정 신청 및 인정 방법 -->
+	  <dt><img src="/home/images/intro/guidetime_stitle2.gif"  alt="학점인정 신청 및 인정 방법"/></dt>
+	    <dd>학점인정 신청 : 학기가 끝난 후 성적증명서를 발급받아 평생교육진흥원에 학점인정을 신청하면 평생교육진흥원에서<br/>수강한 과목들에 대하여 학점을 부여받는다.</dd>
+	    <dd>시간제 등록생은 매 학기 단위로 등록하고 성적을 부여받는다. 따라서 시간제 등록생은<br/>매 학기 지원서 작성, 수강신청, 등록절차를 거쳐야 한다.</dd>
+	    <dd>학점 취득 전에 본인의 전공에 맞는 전공필수, 전공선택, 교양으로 고시된 학습과목을 반드시 확인해야 한다.
+		</dd>
+	    <dd class=" no univ_table1">이수제한학점
+	    	<br/>
+	    	<br/>
+	      <table cellspacing="0" cellpadding="0" summary="과정관리"><!-- table_type1 st01 Start -->
+			<caption>과정관리</caption>
+			<colgroup>
+				<col width="*%" />
+	            <col width="25%" />
+				<col width="25%" />
+			</colgroup>
+			<thead>
+				<tr>
+					<th scope="col">구분</th>
+					<th scope="col">연간 이수 제한학점</th>
+	                <th scope="col">학기당 이수 제한학점</th>
+				</tr>
+			</thead>
+			<tbody>
+	            <tr>
+					<th>학점은행 취득가능학점</th>
+	                <td class="t_center">42</td>
+	                <td class="t_center">24</td>
+	            </tr>
+	            <tr>
+					<th>1개교당 취득가능학점</td>
+	                <td class="t_center">24</td>
+	                <td class="t_center">12</td>
+	             </tr>
+	           </tbody>
+	      </table>
+	      <span>※ 단, 세계사이버대와 영남사이버대의 경우, 매 학기 취득기준학점(18학점)의 2분의 1(9학점) 이내임(계절학기 포함)</span>
+	    </dd>
+	</div>
+	
+  	
+  	<dt><img src="/home/images/entr/enterstep_title3.gif" alt="지원자격" /></dt>
+  	<dd>고등학교 졸업자나 이에 상응하는 학력 소지자</dd> 
+  	<dt><img src="/home/images/entr/enterstep_title6.gif" alt="신•편입학 입학 절차" /></dt>
+  	<dd>※ 각 학교마다 입학 절차는 다를 수 있으니 정확한 안내는 각 학교 홈페이지에서 확인 바랍니다.</dd> 
+</dl>
+<ul class="m_t20">
+  <li><img src="/home/images/entr/enterstep_img2.gif" alt="개설과목확인 및 지원서 작성" /></li>
+</ul>
+
+</body>
+</html>

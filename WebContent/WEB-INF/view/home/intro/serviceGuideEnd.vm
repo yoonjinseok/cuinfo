@@ -1,0 +1,17 @@
+<div class="box_preview">
+	<div class="inner_box_preview bg_preview">
+		<img class="txt_my_prev" src="/home/images/intro/txt_my_result02.gif" alt="나에게 어울리는 전형은?" />
+		<p class="result02">&quot; $!answer &quot;</p>
+		<div class="btn_area_new02">
+			#if($!param.selectStep1 == "4")
+			<a href="/home/intro/summary.sub.action?gnb=111"><img src="/home/images/btn/btn_link_addmission.gif" alt="입학안내 바로가기" /></a>
+			#else
+			<a href="/home/entr/enterStep_New.sub.action?gnb=211"><img src="/home/images/btn/btn_link_addmission02.gif" alt="신입학/편입학 바로가기" /></a>
+			#end
+		</div>
+	</div>
+</div>
+<div class="btn_area_new">
+	<a href="/home/intro/serviceGuide.sub.action?gnb=141"><img src="/home/images/btn/btn_first_level.gif" alt="처음부터 다시하기" /></a> 
+	<a href="javascript:history.back();"><img src="/home/images/btn/btn_pre_level.gif" alt="이전 단계" /></a>
+</div>

@@ -1,0 +1,240 @@
+<head>
+	<title>공개강의자료 일괄등록</title>
+	<link href="/mgr/images/upload/neo_common.css" rel="stylesheet" type="text/css" />
+	<link href="/mgr/css/jquery.progressbar.css" rel="stylesheet" type="text/css">
+	<script language="JAVAScript" src="/mgr/js/jquery.progressbar.js"></script>
+	<script type="text/javascript" language="javascript">
+	function save()
+	{
+		startUploadStatusUpdater();
+		
+		document.writeForm.submit();
+	}
+	
+	function addRow(id, lectureId){
+		var table = document.getElementById("res_table_"+id);
+	     var row= table.insertRow();
+	     var index = table.clickedRowIndex+1;
+	     row.onmouseover=function(){table.clickedRowIndex=this.rowIndex}; 
+		   
+		   var cell1 = row.insertCell();
+		   cell1.innerHTML = "관련자료 : <input type=\"file\" id=\"lecfile"+lectureId+"\" name=\"lecfile"+lectureId+"\" style=\"width:84%\" style=\"height:20px\"/>"+
+		   										"<br/>"+
+												"관련자료 설명 : <input type=\"text\" id=\"lectitle"+lectureId+"\" name=\"lectitle"+lectureId+"\" style=\"width:70%\" style=\"height:20px\"/> "+
+											  "<img onclick=\"delRow('"+id+"')\" border=\"0\" align=\"absmiddle\" name=\"Image25\" style=\"cursor:pointer;\" src=\"/mgr/images/upload/point_39.gif\">";
+		 cell1.style.cssText="text-align:left";
+	}
+	
+	function delRow(id){
+	 	var table = document.getElementById("res_table_"+id);
+		var index = table.clickedRowIndex;
+			
+		for(var i = 0 ; i<1 ; i++){
+			table.deleteRow(index--);
+		}
+	}
+	
+	function delFileRow(id, fileId){
+	 	delRow(id);
+		
+		addHiddenField(this.writeForm,"delfileId",fileId);
+	}
+	
+	function hdnLecture(lectureId) {
+		$('#lecspan'+lectureId).html('<input type="file" id="lecture'+lectureId+'" name="lecture'+lectureId+'" style="width:84%" style="height:20px"/>');
+	}
+	
+	function addHiddenField(form, inputName, inputValue) {
+		var input = document.createElement("input");
+		input.name = inputName;
+		input.type = "hidden";
+		input.value = inputValue;
+		
+		form.appendChild(input);
+	}
+	
+	var uploadTimerID;
+	var statusing = false;
+	function startUploadStatusUpdater() {
+		$("#progressbar").reportprogress(0);
+		$('#progressbar_tb').show();
+		
+	    uploadTimerID = setInterval(updateUploadStatus, 50);
+	}
+	
+	function endUploadStatusUpdater(){
+		$('#progressbar_tb').hide();
+		clearInterval(uploadTimerID);
+		statusing = false;
+	}
+	
+	function updateUploadStatus() {
+		if(statusing == false)
+		{
+			statusing = true;
+			
+			jQuery.post('/mgr/common/file_status.json', 
+					function(data) {
+						$("#progressbar").reportprogress(data.status);
+						$('#total').text(data.total);
+						$('#current').text(data.current);
+				
+						if(data.status == 100)
+	        				endUploadStatusUpdater();
+						else
+							statusing = false;
+					});
+		}
+	}
+	
+	function setDivCenter(divId) 
+    { 
+      var centerWidth = parseInt(window.innerWidth/2);  //화면중앙 width 
+      var centerHeight = parseInt(window.innerHeight/2);  //화면중앙 height 
+      var divWidth = $('#'+divId).css('width').replace('px','');  
+      var divHeight = $('#'+divId).css('height').replace('px','');  
+      var centerDivWidth = parseInt(divWidth/2);  //div width사이즈절반 
+      var centerDivHeight = parseInt(divHeight/2); //div height사이즈 절반 
+      
+      var centerLeft = centerWidth - centerDivWidth;  //화면중앙width - div width사이즈절반 
+      var centerTop = centerHeight - centerDivHeight + $(window).scrollTop(); //화명중앙height - div height사이즈절반
+
+       $('#'+divId).css({'left':centerLeft, 'top': centerTop});  //div 스타일변경 
+	   
+	   //$('#progressbar_tb').show();
+    } 
+	
+	jQuery(document).ready(function () {
+    });
+	</script>
+</head>
+<body>
+<div style="width:90%;padding-left:30px;padding-top:30px;">
+<form id="writeForm" name="writeForm" action="/mgr/common/kocw_upload.do.action?confKey=att" method="post" enctype="multipart/form-data">
+<input type="hidden" id="courseId" name="courseId" value="$!course.courseId"/>
+<input type="hidden" id="returnPage" name="returnPage" value="$!returnPage"/>
+<table width="810" height="370" class="table02 mgb_10">
+ <tr> 
+		<td height="65" valign="top" background="/mgr/images/upload/Pop_bg.gif" align="left"><img src="/mgr/images/upload/Pop8_20_N.gif" height="65"></td>
+	 </tr>
+	<tr>
+		<td align="center" valign="top">
+		<div class="bgcover2">
+		<table width="100%" class="table01">
+			<caption>강좌정보</caption>
+			<colgroup>
+				<col width="20%" />
+				<col width="80%" />
+			</colgroup>
+			<tbody>
+				<tr>
+					<td style="font-weight: bold; background: #f1f1f1; font-size: 14px; text-align: center;" scope="col" rowspan="2">강좌정보</td>
+					<td scope="col">제목 : $!course.title</td>
+				</tr>
+				<tr>
+				<td scope="col">교수자 : $!course.manager </td>
+			</tr>
+		 </tbody>
+		</table>
+		</div>
+		<div style="width:30%;float:left;text-align:left;font-size:11pt;font-weight:bold;padding-left:30px;"><img src="/mgr/images/upload/dot_header.gif" valign="absmiddle"> 강의정보</div>
+		<div style="width:50%;float:right;text-align:right">
+		  
+		</div>
+		<div class="bgcover" style="clear:both;">
+			<table width="100%" class="table01">	
+ 			<caption>open file</caption>
+					<colgroup>
+						<col width="10%" />
+						<col width="30" />
+						<col width="60%" />
+					</colgroup>
+				<thead>
+					<tr>
+						<th scope="col">차시</th>
+						<th scope="col">강의명</th>
+  						<th scope="col">강의자료</th>
+					</tr>
+				</thead>
+				<tbody>
+				#foreach($lecture in $course.getLectureList())
+    				<input type="hidden" id="lectureId" name="lectureId" value="$!lecture.lectureId"/>
+    				<tr >
+    					<td>$!lecture.groups - $!lecture.orders</td>
+    			 	     <td style="text-align:left">$!lecture.title</td>		
+    			 	     <td  style="text-align:left">
+    				#if($!{lecture.getMovLocation()} == '' || !$!{lecture.getMovLocation()})
+    					<div id="dv_1_i">
+    						강의 자료 : <input type="file" id="lecture$!lecture.lectureId" name="lecture$!lecture.lectureId" style="width:84%" style="height:20px"/>
+    					 </div>
+    				#else
+    					<div id="dv_1_i">
+    						강의 자료 : <span id="lecspan$!lecture.lectureId">$!lecture.movLocation<a href="javascript:hdnLecture('$!lecture.lectureId')"><img src="/mgr/images/upload/btn_remove.gif" valign="absmiddle" style="margin-left:3px;margin-top:3px;"></a></span>
+    					 </div>
+    				#end
+    				
+    				<table id="res_table_$velocityCount" style="width:100%">
+    				#if($lecture.getLecFileList().size() == 0)
+    						<tr onmouseover="res_table_${velocityCount}.clickedRowIndex=this.rowIndex">
+    		 	 				 <td style="text-align:left">
+    		 	     			관련자료 : <input type="file" id="lecfile$!lecture.lectureId" name="lecfile$!lecture.lectureId" style="width:85%" style="height:20px"/>
+    		 	     			<br/>
+    		 	     			관련자료 설명 : <input type="text" id="lectitle$!lecture.lectureId" name="lectitle$!lecture.lectureId" style="width:70%" style="height:20px"/>
+    		 	   				<img onclick="addRow($velocityCount)" border="0" align="absmiddle" name="Image25" style="cursor:pointer;" src="/mgr/images/upload/point_38.gif">
+    		 	  				</td>
+    						</tr>
+    				#else
+						#set($lectureCount = $velocityCount)
+    					#foreach($lecfile in $lecture.getLecFileList())
+    						<tr onmouseover="res_table_${lectureCount}.clickedRowIndex=this.rowIndex">
+    		 	 				 <td style="text-align:left" id="filespan$!lecfile.attfileId">
+    		 	     			관련자료 : $!lecfile.location
+    		 	     			<br/>
+    		 	     			관련자료 설명 : $!lecfile.title
+								<img onclick="delFileRow($lectureCount, $!lecfile.attfileId)" border="0" align="absmiddle" name="Image25" style="cursor:pointer;" src="/mgr/images/upload/point_39.gif">
+    		 	   				</td>
+    						</tr>
+						#end
+						<tr onmouseover="res_table_${velocityCount}.clickedRowIndex=this.rowIndex">
+		 	 				 <td style="text-align:left">
+		 	     			관련자료 : <input type="file" id="lecfile$!lecture.lectureId" name="lecfile$!lecture.lectureId" style="width:85%" style="height:20px"/>
+		 	     			<br/>
+		 	     			관련자료 설명 : <input type="text" id="lectitle$!lecture.lectureId" name="lectitle$!lecture.lectureId" style="width:70%" style="height:20px"/>
+		 	   				<img onclick="addRow($velocityCount)" border="0" align="absmiddle" name="Image25" style="cursor:pointer;" src="/mgr/images/upload/point_38.gif">
+		 	  				</td>
+						</tr>
+    				#end
+    				</table>
+			 	  </td>
+			 	  </tr>
+				 #end
+				</tbody>	
+			 </table>
+		 </div>
+    </td>
+  </tr>
+</table>
+
+<span id="progressbar_tb" style="display:none;text-align:center;vertical-align:middle;width:650;height:100;position:absolute;background:white;padding:5px;border:solid 1px gray;">
+<table style="width:100%">
+<tr>
+	<td style="width:100%;text-align:left;vertical-align:middle"><img src="/mgr/images/icon/arrow_up.png" width="30" height="30"/><b>일괄업로드</b></td>
+</tr>
+<tr>
+	<td style="width:100%;"><span class="f_left"><span id="current">0</span>byte</span> <span class="f_right"><span id="total">0</span>byte</span></td>
+</tr>
+<tr>
+	<td><div   id="progressbar" style="width: 500px;" > </div></td>	
+</tr>
+</table>
+</span>
+
+<div class="btn_box_type03" style="text-align:left;">
+	<a href="javascript:setDivCenter('progressbar_tb');save();" id="saveBtn"><img src="/mgr/images/btn/save.gif" alt="저장" /></a>
+	<a href="javascript:window.close();"><img src="/mgr/images/btn/cancel.gif" alt="취소" /></a>
+</div>
+
+</form>
+</div>
+</body>
+</html>

@@ -1,0 +1,25 @@
+<html>
+<head>
+</head>
+<body>
+<script type="text/javascript" language="javascript" src="/mgr/js/jquery-1.4.4.min.js"></script>
+<script>
+/*
+message : $!message
+*/
+
+jQuery(document).ready(function () {
+	if('$!errors' != 'true')
+    {
+		alert('업로드를 완료하였습니다.');
+    	document.location.href = '$!returnPage';
+    }
+    else
+	{
+    	alert('불편을 드려 대단히 죄송합니다.\n잠시후에 다시 시도해 주시기 바랍니다.');
+		history.back();
+	}
+});
+</script>
+</body>
+</html>

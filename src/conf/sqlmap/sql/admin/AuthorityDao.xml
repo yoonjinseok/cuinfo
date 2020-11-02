@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="EUC-KR"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="AuthorityDao">
+	<typeAlias alias="authority" type="com.cyberup.model.admin.Authority"/>
+	
+	<select id="selectGroupList" resultClass="authority"  parameterClass="map">
+		SELECT DISTINCT B.GROUP_ID as groupId
+        FROM CU_ADMIN_MENU_AUTHORITY A, CU_ADMIN_MENU B
+        WHERE A.MENU_ID = B.MENU_ID 
+        	AND B.USE_YN = #useYn,javaType=String# 
+        	AND A.AUTH_LEVEL_ID = #authLevelId,javaType=Integer#
+        ORDER BY B.GROUP_ID ASC
+	</select>
+	
+	<select id="selectList" resultClass="authority"  parameterClass="map">
+		SELECT A.AUTH_LEVEL_ID as authLevelId, A.MENU_ID as menuId
+            , A.REGISTER as register, A.REG_DATE as regDate
+            , B.MENU_NAME as menuName, B.GROUP_ID as groupId, B.MENU_PATH as menuPath, B.USE_YN as useYn
+        FROM CU_ADMIN_MENU_AUTHORITY A, CU_ADMIN_MENU B
+        WHERE A.MENU_ID = B.MENU_ID 
+        	AND B.USE_YN=#useYn,javaType=String# 
+        	AND A.AUTH_LEVEL_ID = #authLevelId,javaType=Integer#
+        ORDER BY B.GROUP_ID ASC, A.MENU_ID ASC
+	</select>
+	
+	<select id="selectInfo" resultClass="authority"  parameterClass="map">
+		SELECT A.AUTH_LEVEL_ID as authLevelId, A.MENU_ID as menuId, A.AUTH_YN as authYn
+			, A.REGISTER as register, A.REG_DATE as regDate, A.MODIFIER as modifier
+			, A.MOD_DATE as modDate
+			, B.MENU_NAME as menuName, B.GROUP_ID as groupId, B.MENU_PATH as menuPath, B.USE_YN as useYn
+		FROM CU_ADMIN_MENU_AUTHORITY A, CU_ADMIN_MENU B
+		WHERE A.MENU_ID = B.MENU_ID AND A.AUTH_LEVEL_ID = #authLevelId,javaType=Integer#
+			AND A.MENU_ID = #menuId,javaType=String#
+	</select>
+	
+	<insert id="insertInfo" parameterClass="authority">
+		INSERT INTO CU_ADMIN_MENU_AUTHORITY 
+			(AUTH_LEVEL_ID, MENU_ID
+			, REGISTER, REG_DATE)
+		 values(#authLevelId#, #menuId#
+			, #register#, SYSDATE)
+	</insert>
+	
+	<delete id="deleteInfo"  parameterClass="map">
+		DELETE FROM CU_ADMIN_MENU_AUTHORITY 
+		WHERE 
+			AUTH_LEVEL_ID = #authLevelId,javaType=Integer#
+			AND MENU_ID = #menuId,javaType=String#
+	</delete>
+
+</sqlMap>

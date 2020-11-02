@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<decorators defaultdir="/WEB-INF/layout">
+    <!-- Any urls that are excluded will never be decorated by Sitemesh -->
+    <excludes>
+        <pattern>/include/*</pattern>
+		<pattern>/*.ax</pattern>
+		<pattern>/*/css/*</pattern>
+        <pattern>/*.css</pattern>
+		<pattern>/*/js/*</pattern>
+        <pattern>/*/javascript/*</pattern>
+        <pattern>/*.js</pattern>
+		<pattern>/*/images/*</pattern>
+        <pattern>/*/image/*</pattern>
+        <pattern>/*/img/*</pattern>
+        <pattern>/*.gif</pattern>
+        <pattern>/*.jpg</pattern>
+        <pattern>/*.jpeg</pattern>
+        <pattern>/*.htm</pattern>
+        <pattern>/*.html</pattern>
+        <pattern>/*.jsp</pattern>
+        <pattern>/*.json</pattern>
+        <pattern>/*.xml</pattern>
+    </excludes>
+
+    <!-- 메인페이지 -->
+	<decorator name="main" page="main.jsp">
+		<pattern>/*.main.*</pattern>
+	</decorator>
+	<!-- 메인페이지(대학원) -->
+	<decorator name="main2" page="main2.jsp">
+		<pattern>/*.main2.*</pattern>
+	</decorator>
+	<!-- 통합검색페이지 -->
+	<decorator name="search" page="search.jsp">
+		<pattern>/*.search.*</pattern>
+	</decorator>
+	
+	<!-- 통합검색페이지 -->
+	<decorator name="search2" page="search2.jsp">
+		<pattern>/*.search2.*</pattern>
+	</decorator>
+	
+    <!-- 기본서브페이지 -->
+	<decorator name="sub" page="sub.jsp">
+		<pattern>/*.sub.*</pattern>
+	</decorator>
+	
+	 <!-- 기본서브페이지(대학원) -->
+	<decorator name="sub2" page="sub2.jsp">
+		<pattern>/*.sub2.*</pattern>
+	</decorator>
+    
+    <!-- popup 페이지 -->
+    <decorator name="pop" page="pop.jsp">
+        <pattern>/*.pop.*</pattern>
+    </decorator>
+    
+    <decorator name="ifm" page="iframe.jsp">
+        <pattern>/*.ifm.*</pattern>
+    </decorator>
+    
+    <!-- admin layout 페이지 -->
+    <decorator name="admmain" page="admmain.jsp">
+        <pattern>/mgr/*.main.*</pattern>
+    </decorator>
+    <decorator name="admsub" page="admsub.jsp">
+        <pattern>/mgr/*.sub.*</pattern>
+    </decorator>
+    <decorator name="admpop" page="admpop.jsp">
+        <pattern>/mgr/*.pop.*</pattern>
+    </decorator>
+    <decorator name="admifm" page="admiframe.jsp">
+        <pattern>/mgr/*.ifm.*</pattern>
+    </decorator>
+    
+    <!-- ajax 페이지 -->
+    <decorator name="ajx" page="ajx.jsp">
+        <pattern>/*.ajax.*</pattern>
+    </decorator>
+    
+    <!-- do 페이지 -->
+    <decorator name="do" page="do.jsp">
+        <pattern>/*.do.*</pattern>
+    </decorator>
+</decorators>

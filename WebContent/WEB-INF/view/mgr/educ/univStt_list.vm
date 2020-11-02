@@ -1,0 +1,74 @@
+
+<table cellspacing="0" cellpadding="0" class="list_type01" summary="게시판관리"><!-- list_type01 Start -->
+	<caption>통계자료관리</caption>
+	<colgroup>
+		<col width="6%" />
+		<col width="15%" />		
+		<col width="8%" />		
+		<col width="12%" />		
+		<col width="*%" />		
+		<col width="12%" />		
+		<col width="12%" />
+	</colgroup>
+	<thead>
+		<tr>
+			<th scope="col">NO</th>
+			<th scope="col">학교명</th>
+			<th scope="col">구분</th>
+			<th scope="col">등록일</th>
+			<th scope="col">통계명</th>
+			<th scope="col">상태</th>
+			<th scope="col">양식파일</th>
+		</tr>
+	</thead>
+	<tbody>
+		#foreach($stt in $univSttList)
+		<tr>
+			<td>$stt.rowNum</td>
+			<td>$stt.univName</td>
+			<td>
+				#if($stt.termState == 'Y') 정기 
+				#else 비정기
+				#end
+			</td>
+			<td>$dateformatter.print($!stt.regDate, $!locale)</td>
+			<td class="t_left">
+				<a href="javascript:modify('$stt.sttUnivID', '$stt.sttID', '$stt.universityID');">$stt.sttName</a>
+				 #if($stt.newYN == 'Y')<img name="image" src="/mgr/images/icon/new.gif" alt="new"/> #end 
+			</td>
+			<td>
+				#if($stt.putState == 'Y') 업로드완료
+				#else 미등록				 
+				#end				
+			</td>
+			<td>
+				##<a href="javascript:selSttFileDown('$stt.upfileID','$stt.sttID');">
+				<a href="javascript:selSttFileDown('$!stt.upfileID');">
+				다운로드
+				</a>
+			</td>
+		</tr>
+		#end
+		
+		#set($cnt = $univSttList.size() + 1)
+		#if($cnt < $showCnt)
+		#foreach($blank in [$cnt..$showCnt])
+		<tr>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+		</tr>
+		#end
+		#end
+	</tbody>
+</table><!-- list_type01 End -->
+<script>
+	#if($univSttList)
+	setRecordCnt($totalCnt, $currPage, $totalPage, $showCnt);
+	#end
+	$("#currPage").val("$!currPage");
+</script>

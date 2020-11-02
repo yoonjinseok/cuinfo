@@ -1,0 +1,110 @@
+<!-- 학년도별 원격대학교  총 졸업생수  -->
+<table cellspacing="0" cellpadding="0" class="table_type1 st01 st02 th_2line" summary="학년도별 원격대학 총 졸업생 수"><!-- table_type1 st01 Start -->
+	<caption>직업별 등록생 비율 현황</caption>
+	<colgroup>
+		<col width="9%">
+		<col width="22%">
+		<col width="%">
+		<col width="%">
+		<col width="%">
+		<col width="%">
+		<col width="%">
+		<col width="%">
+		<col width="%">
+	</colgroup>
+	<thead>
+		<tr>
+			<th scope="col" rowspan="2" colspan="2" class="first bg02">구분/학교</th>
+			<th scope="col" colspan="7">총 졸업생 수</th>
+		</tr>
+		<tr>
+		
+			<th scope="col">이전</th>
+			#if($sttYear == '2013')
+			<th scope="col">2008</th>
+			<th scope="col">2009</th>
+			<th scope="col">2010</th>
+			<th scope="col">2011</th>
+			<th scope="col">2012</th>
+			#elseif($sttYear == '2012')
+			<th scope="col">2007</th>
+			<th scope="col">2008</th>
+			<th scope="col">2009</th>
+			<th scope="col">2010</th>
+			<th scope="col">2011</th>
+			#end
+			<th scope="col">누계</th>
+		</tr>
+	</thead>
+	<tbody>
+		#foreach($list in $statisiticsList)
+			<tr>
+				#if($list.RN2 == 1 && $list.GID == 0 && $list.RN == 1 && $list.GUBUN_ID == 51)
+				<td rowspan="$list.ROWSPAN1">학사</td>
+				#elseif($list.RN2 == 1 && $list.GID == 0 && $list.RN == 1 && $list.GUBUN_ID == 52)
+				<td rowspan="$list.ROWSPAN2">전문학사</td>
+				#elseif($list.RN2 == 1 && $list.GID == 0 && $list.RN == 2 && $list.GUBUN_ID == 163)
+				<td>학사</td>
+				#elseif($list.RN2 == 2 && $list.GID == 0 && $list.RN == 2  && $list.GUBUN_ID == 163)
+				<td>전문학사</td>
+				#end
+				
+				#set($size = $!list.ROWSPAN1+$!list.ROWSPAN2)
+				#if($list.RN2 == 1 && $list.GID == 5 && $list.RN == 1)
+				<td colspan="2">사이버대학 $!size 개교</td>
+				#elseif($list.RN2 == 1 && $list.GID == 5 && $list.RN == 2)
+				<td colspan="2">원격대학형태의 평생 교육시설 $!list.ROWSPAN3 개교</td>
+				#elseif($list.RN2 == 1 && $list.GID == 7)
+				<td colspan="2">합계</td>
+				#else
+				<td>$!list.UNIV_NAME</td>
+				#end
+				
+				<td>$!list.BEFORECNT</td>
+				<td>$!list.GRADUATE_CNT1</td>
+				<td>$!list.GRADUATE_CNT2</td>
+				<td>$!list.GRADUATE_CNT3</td>
+				<td>$!list.GRADUATE_CNT4</td>
+				<td>$!list.GRADUATE_CNT5</td>
+				<td>$!list.SUMCNT</td>
+			</tr>		
+		#end
+	</tbody>
+</table><!-- list_type01 End -->
+
+<script>	
+#set($rowCnt = $!trCnt - 6)
+ $("#titilehs").attr("rowspan", "$!rowCnt");
+</script>
+
+<div class="graphWrap" id="chart_div" style="display: none;">	
+</div>
+
+<script type="text/javascript">      
+	google.load('visualization', '1', {packages: ['corechart']});
+	function drawVisualization() {
+	  // Create and populate the data table.
+	  var data = google.visualization.arrayToDataTable([
+	    ['Year', '10대초', '20대초', '20대후', '30대', '40대', '50대', '60대']
+    	 ,['2012', 0, 0, 0, 0, 0, 0, 0]
+	  ]);
+
+	// Create and draw the visualization.
+	  new google.visualization.BarChart(document.getElementById('chart_div')).
+	      draw(data,
+	           {'isStacked': true,	           
+	            width:600, height:400,
+	            vAxis: {title: "년도별"},
+	            hAxis: {title: "백분율(%)"}
+	           }
+	      );
+	 }
+	
+	google.setOnLoadCallback(drawVisualization);
+
+	//$("#chart_div").toggle();
+</script>
+			
+			
+			
+		

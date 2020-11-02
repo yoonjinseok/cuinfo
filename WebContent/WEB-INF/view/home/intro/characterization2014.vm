@@ -1,0 +1,966 @@
+<head>
+	<title>교육부지원사업</title>
+	<script>
+		$("#chkBtn").click(function(){
+			alert('start');
+		});
+		function openCourseClose(){
+			//alert($("div[id^=publicCourse]").hide());
+			
+			$("div[id^=publicCourse]").mouseleave(function(){
+				$("div[id^=publicCourse]").hide("fast");
+			});
+		}	
+		
+		function openCourse(no){
+			$("#publicCourse"+no).toggle('fast');
+			$("#publicCourse"+no).find("tr").css("line-height","30px");
+			$("#publicCourse"+no).find("a").css("line-height","30px");
+			$("#publicCourse"+no).find("tr:not(.subject):even").find("td:eq(0)").css("background","#F6F6F6");
+			$("#publicCourse"+no+" .subject").css("background","#FAF4DC");
+			
+			openCourseClose();
+		}
+		
+		$(document).ready(function(){
+			$(".table_type1 td").each(function(){
+				$(this).css("background","#ffffff");
+			});
+
+			
+			$("#table1 tr").each(function(){
+				//$(this).children().eq(2).hide();
+			});
+		});
+		
+		function popupUniv(url){
+			
+			window.open(url);
+		}
+	</script>
+</head>
+<body>
+	<p class="location">
+		<a href="/home/index.main.action">홈</a> <span>></span> <a href="/home/intro/summary.sub.action?gnb=11">사이버대학 안내</a> <span>></span> <a href="/home/intro/characterization.sub.action?gnb=16">교육부지원사업</a> 
+	</p>
+	<h3><img src="/home/images/title/title_56_1.gif" alt="사이버대학 국가직무능력표준(NCS) 기반 교육과정 개편․운영 소개 및 특징 " /></h3>
+	
+	<div class="contentWrap">
+		<!--s:컨텐츠영역-->
+		<dl class="feature">
+			<dt style="background:#ffffff;"><img src="/home/images/intro/body_stitle1.gif"></dt>
+			
+			<dd style="background:#ffffff;">○ 국가직무능력표준* 기반의 현장중심 교육 제공으로 산업수요에 맞는 인재 양성 및 이들의 평생직업능력 개발 도모를 위한 <br/>&nbsp;&nbsp;&nbsp;&nbsp;교육과정 개편‧운영</dd>
+			<dd style="background:#ffffff;">&nbsp;&nbsp;&nbsp;&nbsp;※ 국가직무능력표준(National Competency Standards)이란?<br/>
+			&nbsp;&nbsp;&nbsp;&nbsp;- (개념) 산업현장에서 직무를 성공적으로 수행하기 위하여 요구되는 지식·기술·소양을 국가가 산업부문별·수준별로<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 체계화한 것<br/>
+			&nbsp;&nbsp;&nbsp;&nbsp;- (활용) 산업현장의 직무수요를 체계적으로 분석하여 제시함으로써 교육·훈련과 자격이 현장(일)에 맞게 운영되도록 하는<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 연결 기제<br/>
+			</dd>
+			##<dd>사업 신청한 대학 중 우수한 평가를 받은 총 4개 대학 선정<br/>
+			<dd style="background:#ffffff;">○ 사업 공모 및 제안 평가를 통한 특성화사업 지원대학을 다음과 같이 선정함<br/>
+			 ##- 2014년 선정대학 : 부산디지털대학교, 세종사이버대학교, 영진사이버대학, 한양사이버대학교<br/>
+			 	&nbsp;&nbsp;&nbsp;&nbsp;<table id="table1" class="table_type1 st01 st02" style="width:450px;">
+			 		<colgroup>
+			 			<col width="40%"/>
+			 			<col width="60%"/>
+		 			</colgroup>
+			 		<thead>
+			 		<tr>
+			 			<th style="background:none repeat scroll 0 center rgba(0, 0, 0, 0);height:46px;" class="first" rowspan="2">선정 대학</th>
+			 			<th rowspan="2">관련 학과</th>
+		 			</tr>
+		 			<tr>
+			 		</tr>
+		 			</thead>
+		 			<tbody>
+		 			<tr>
+		 				<td style="cursor:pointer" onclick=popupUniv("http://www.bdu.ac.kr");>부산디지털대학교</td>
+		 				<td style="cursor:pointer" onclick=popupUniv("http://www.bdu.ac.kr/swbdu/Main.do");>사회복지학과 개편</td>
+			 		</tr>
+		 			<tr>
+		 				<td style="cursor:pointer" onclick=popupUniv("http://portal.sjcu.ac.kr");>세종사이버대학교</td>
+		 				<td style="cursor:pointer" onclick=popupUniv("http://home.sjcu.ac.kr/major06/02intro");>조리산업경영학과 개편</td>
+			 		</tr>
+		 			<tr>
+		 				<td style="cursor:pointer" onclick=popupUniv("http://www.ycc.ac.kr");>영진사이버대학</td>
+		 				<td style="cursor:pointer" onclick=popupUniv("http://www.ycc.ac.kr/jsp/main/iwc_main/departments/dep_09_01.jsp");>뷰티케어학과 개편</td>
+			 		</tr>
+		 			<tr>
+		 				<td style="cursor:pointer" onclick=popupUniv("http://www.hycu.ac.kr");>한양사이버대학교</td>
+		 				<td style="cursor:pointer" onclick=popupUniv("http://www.hycu.ac.kr/lesinfo/?dept=30047");>디지털건축도시전공 개편</td>
+			 		</tr>
+			 		</tbody>
+	 			</table>
+			</dd>
+			
+		</dl>	
+		
+		<br/>
+		
+		<div class="feature_list2  p_t30px">
+			
+			<!-- 2014 -->
+			
+			<dl class="feature">
+				<dt><img src="/home/images/intro/body_stitle9.gif"></dt>
+			</dl>
+			
+			<dl>##부산디지털대학교 사회복지학과
+				<dd><a href="#" class="faq_q_box"><img src="/home/images/new/refer_cyber_02_1.gif"></a>		
+					<div>
+						<ul>
+							<!--<li class="p_l13 p_t10 t_right"><span style="color:#E85050;margin-right: 30px;"><b>※ 학과는 2014년 개설 예정</b></span><br/></li>-->
+							<li class="p_l13 p_t10 t_right"><a href="http://www.bdu.ac.kr/swbdu/Main.do" target="_blank"><img src="/home/images/btn/btn_navigation_dept.gif"></a><br/></li>
+							<li class="p_l20 p_t5">
+								<br/><br/>
+								○ <b>추진배경 및 목적</b><br/>
+								- 산업현장에서 직무수행능력과 직업교육-훈련-자격간의 불일치되는 인적자원개발의 비효율적인 문제 해결을 위해 산업현장에서<br/>
+								직무수행에 요구되는 지식, 기술, 소양 등을 산업별, 수준별로 체계화한 국가직무능력표준(NCS)을 사회복지학부 교육과정에의<br/>적용을 통해 NCS 기반의 현장중심교육과정으로 개편⋅운영함으로써 직무중심 교육과 현장중심형 인재양성 및 평생직업능력 개발을<br/> 목적으로 함.<br/>
+								
+								<br/>
+								
+								○ <b>실무수행능력 향상을 위한 교과목 수업운영 계획</b><br/>
+								- NCS 기반의 사회복지학부 교육과정개편 후, 편성한 교과목은 이론 교과목 22개 교과목이며, 실무 교과목 19개, 현장실습 교과목<br/>
+								1개 총 42개 교과목이며, 그 중 NCS 기반의 교과목은 28개임.<br/>
+								- NCS 기반 교과목 28개 중, 실습 및 실무 교과목은 19개임.<br/>
+							</li>
+							<li class="p_l13 p_t10 t_center">
+								<br/>
+								
+								사회복지사 자격 취득을 위한 NCS 기반 사회복지학부 교육과정
+								<table cellspacing="0" cellpadding="0" class="table_type1 st01 st02" style="width:100%;">
+									<colgroup>
+										<col width="6%">
+										<col width="10%">
+										<col width="3%">
+										<col width="12%">
+										<col width="26%">
+										<col width="5%">
+										<col width="26%">
+										<col width="5%">
+										<col width="*">
+									</colgroup>
+									<thead>
+									<tr>
+										<th class="first" rowspan="2">학년</th>	
+										<th rowspan="2" colspan="3">이수구분</th>	
+										<th colspan="2">1학기</th>	
+										<th colspan="2">2학기</th>	
+										<th rowspan="2">비고</th>	
+									</tr>	
+									<tr>
+										<th>교과목명</th>	
+										<th>학점</th>	
+										<th>교과목명</th>	
+										<th>학점</th>	
+									</tr>
+									</thead>
+									
+									<tbody>
+										<tr>
+											<td>1-4</td>
+											<td colspan="3">교양필수</td>
+											<td>직업기초능력※</td>
+											<td>3</td>
+											<td>직업기초능력※</td>
+											<td>3</td>
+											<td></td>
+										</tr>
+										
+										<tr>
+											<td>1</td>	
+											<td rowspan="7" colspan="2" style="border-bottom: 1px solid #c7c7c7 !important;">학부<br/>활동</td>	
+											<td>기초(필수)</td>	
+											<td>사회복지개론*</td>	
+											<td></td>	
+											<td>인간행동과 사회환경◎*</td>	
+											<td></td>	
+											<td></td>	
+										</tr>
+										
+										<tr>
+											<td rowspan="2">2</td>
+											<td>이론(필수)</td>
+											<td>사회복지법제론※⋆</td>
+											<td>3</td>
+											<td></td>
+											<td></td>
+											<td rowspan="2"></td>
+										</tr>
+										
+										<tr>
+											<td>이론(선택)</td>	
+											<td>지역사회복지론※⋆<br/>사회복지실천론◎⋆<br/>사회문제론◎▣</td>	
+											<td>3<br/>3<br/>3</td>	
+											<td>사회복지행정론※⋆<br/>장애인복지론▣</td>	
+											<td style="border-right: 1px solid #c7c7c7 !important">3<br/>3</td>	
+										</tr>
+										<tr>
+											<td rowspan="2">3</td>	
+											<td>이론(필수)</td>	
+											<td>사회복지실천기술론◎⋆</td>	
+											<td>3</td>	
+											<td></td>	
+											<td></td>	
+											<td rowspan="2"></td>	
+										</tr>
+										<tr>
+											<td>이론(선택)</td>	
+											<td>사회복지정책론◎⋆</td>	
+											<td>3</td>	
+											<td>사례관리※<br/>사회보장론<br/>사회복지조사론◎⋆</td>	
+											<td style="border-right: 1px solid #c7c7c7 !important">3<br/>3<br/>3</td>	
+										</tr>
+										<tr>
+											<td>4</td>	
+											<td>실습(필수)</td>	
+											<td>사회복지현장실습(공통)◎⋆</td>	
+											<td>3</td>	
+											<td>사회복지현장실습(공통)⋆</td>	
+											<td>3</td>	
+											<td></td>	
+										</tr>
+										<tr>
+											<td rowspan="2">3-4</td>	
+											<td>NCS실무<br/>(학기별<br/> 택1 필수)</td>	
+											<td>사회복지조사실무※</td>	
+											<td>3</td>	
+											<td>사회복지행정실무※<br/>지역사회복지실무※</td>	
+											<td>3<br/>3</td>	
+											<td></td>	
+										</tr>
+										<tr>
+											<th colspan="3" style="background-color:#a1bed4;color:#ffffff;" colspan="3">소계</th>
+											<th colspan="2" style="background-color:#a1bed4;color:#ffffff;" colspan="2">27</th>
+											<th colspan="2" style="background-color:#a1bed4;color:#ffffff;" colspan="2">27</th>
+											<td></td>	
+										</tr>
+										
+										<tr>
+											<td rowspan="2">1</td>
+											<td rowspan="6">사회<br/>복지학</td>
+											<td rowspan="2">기본</td>
+											<td>전공필수</td>
+											<td>자원봉사론▣</td>
+											<td>3</td>
+											<td></td>
+											<td></td>
+											<td rowspan="2"></td>
+										</tr>
+										<tr>
+											<td>전공선택</td>
+											<td></td>
+											<td></td>
+											<td>사회복지와 인권</td>
+											<td style="border-right: 1px solid #c7c7c7 !important">3</td>
+										</tr>
+										
+										<tr>
+											<td rowspan="2">2</td>
+											<td rowspan="2">심화</td>
+											<td>전공필수</td>
+											<td>정신건강론▣</td>
+											<td>3</td>
+											<td></td>
+											<td></td>
+											<td rowspan="2"></td>
+										</tr>
+										<tr>
+											<td>전공선택</td>
+											<td></td>
+											<td></td>
+											<td></td>
+											<td style="border-right: 1px solid #c7c7c7 !important"></td>
+										</tr>
+										
+										<tr>
+											<td rowspan="3">3-4</td>
+											<td rowspan="2">응용</td>
+											<td>전공필수</td>
+											<td>사회복지상담실무※</td>
+											<td>3</td>
+											<td>사회복지윤리와 철학▣<br/>가족복지론▣</td>
+											<td>3<br/>3</td>
+											<td rowspan="2"></td>
+										</tr>
+										
+										<tr>
+											<td>전공선택</td>
+											<td>정신보건사회복지론◎</td>
+											<td>3</td>
+											<td>사례관리실무※</td>
+											<td style="border-right: 1px solid #c7c7c7 !important">3</td>
+										</tr>
+										
+										<tr>
+											<th style="background-color:#a1bed4;color:#ffffff;" colspan="3">소계</th>
+											<th style="background-color:#a1bed4;color:#ffffff;" colspan="2">12</th>
+											<th style="background-color:#a1bed4;color:#ffffff;" colspan="2">12</th>
+											<td></td>
+										</tr>
+										
+										<tr>
+											<td rowspan="2">1</td>	
+											<td rowspan="6" style="border-bottom: 1px solid #c7c7c7 !important;">사회복지<br/>경영학</td>	
+											<td rowspan="2">기본</td>	
+											<td>전공필수</td>	
+											<td></td>	
+											<td></td>	
+											<td></td>	
+											<td></td>	
+											<td rowspan="2"></td>	
+										</tr>
+										<tr>
+											<td>전공선택</td>
+											<td></td>
+											<td></td>
+											<td></td>
+											<td style="border-right: 1px solid #c7c7c7 !important"></td>
+										</tr>
+										
+										<tr>
+											<td rowspan="2">2</td>	
+											<td rowspan="2">심화</td>	
+											<td>전공필수</td>	
+											<td>사회복지품질경영론</td>	
+											<td>3</td>	
+											<td></td>	
+											<td></td>	
+											<td rowspan="2"></td>	
+										</tr>
+										<tr>
+											<td>전공선택</td>
+											<td></td>
+											<td></td>
+											<td></td>
+											<td style="border-right: 1px solid #c7c7c7 !important"></td>
+										</tr>
+										
+										<tr>
+											<td rowspan="3">3-4</td>	
+											<td rowspan="2">응용</td>	
+											<td>전공필수</td>	
+											<td>프로그램개발과 평가※<br/>사회복지프로그램운영실무※</td>	
+											<td>3<br/>3</td>	
+											<td>사회복지지도감독론◎▣<br/>사회복지시설운영론※</td>	
+											<td>3<br/>3</td>	
+											<td rowspan="2"></td>	
+										</tr>
+										<tr>
+											<td>전공선택</td>
+											<td>경영전략론</td>
+											<td>3</td>
+											<td>인적자원관리론<br/>사회복지모금개발론</td>
+											<td style="border-right: 1px solid #c7c7c7 !important">3</td>
+										</tr>
+										<tr>
+											<th style="background-color:#a1bed4;color:#ffffff;" colspan="3">소계</th>
+											<th style="background-color:#a1bed4;color:#ffffff;" colspan="2">12</th>
+											<th style="background-color:#a1bed4;color:#ffffff;" colspan="2">12</th>
+											<td></td>
+										</tr>
+										<tr>
+											<td rowspan="2">1</td>	
+											<td rowspan="6" style="border-bottom: 1px solid #c7c7c7 !important;">사회복지<br/>경영학</td>	
+											<td rowspan="2">기본</td>	
+											<td>전공필수</td>	
+											<td></td>	
+											<td></td>	
+											<td></td>	
+											<td></td>	
+											<td rowspan="2"></td>	
+										</tr>
+										<tr>
+											<td>전공선택</td>
+											<td></td>
+											<td></td>
+											<td></td>
+											<td style="border-right: 1px solid #c7c7c7 !important"></td>
+										</tr>
+										
+										<tr>
+											<td rowspan="2">2</td>	
+											<td rowspan="2">심화</td>	
+											<td>전공필수</td>	
+											<td>사회복지품질경영론</td>	
+											<td>3</td>	
+											<td></td>	
+											<td></td>	
+											<td rowspan="2"></td>	
+										</tr>
+										<tr>
+											<td>전공선택</td>
+											<td></td>
+											<td></td>
+											<td></td>
+											<td style="border-right: 1px solid #c7c7c7 !important"></td>
+										</tr>
+										
+										<tr>
+											<td rowspan="3">3-4</td>	
+											<td rowspan="2">응용</td>	
+											<td>전공필수</td>	
+											<td>프로그램개발과 평가※<br/>사회복지프로그램운영실무※</td>	
+											<td>3<br/>3</td>	
+											<td>사회복지지도감독론◎▣<br/>사회복지시설운영론※</td>	
+											<td>3<br/>3</td>	
+											<td rowspan="2"></td>	
+										</tr>
+										<tr>
+											<td>전공선택</td>
+											<td>경영전략론</td>
+											<td>3</td>
+											<td>인적자원관리론<br/>사회복지모금개발론</td>
+											<td style="border-right: 1px solid #c7c7c7 !important">3</td>
+										</tr>
+										<tr>
+											<th style="background-color:#a1bed4;color:#ffffff;" colspan="3">소계</th>
+											<th style="background-color:#a1bed4;color:#ffffff;" colspan="2">12</th>
+											<th style="background-color:#a1bed4;color:#ffffff;" colspan="2">12</th>
+											<td></td>
+										</tr>
+										
+										<tr>
+											<td rowspan="2">1</td>	
+											<td rowspan="6" style="border-bottom: 1px solid #c7c7c7 !important;">노인<br/>복지학</td>	
+											<td rowspan="2">기본</td>	
+											<td>전공필수</td>	
+											<td></td>	
+											<td></td>	
+											<td>자원봉사관리론※</td>	
+											<td>3</td>	
+											<td rowspan="2"></td>	
+										</tr>
+										<tr>
+											<td>전공선택</td>
+											<td></td>
+											<td></td>
+											<td></td>
+											<td style="border-right: 1px solid #c7c7c7 !important"></td>
+										</tr>
+										
+										<tr>
+											<td rowspan="2">2</td>	
+											<td rowspan="2">심화</td>	
+											<td>전공필수</td>	
+											<td></td>	
+											<td></td>	
+											<td>노인복지론▣</td>	
+											<td>3</td>	
+											<td rowspan="2"></td>	
+										</tr>
+										<tr>
+											<td>전공선택</td>
+											<td>케어복지개론◎</td>
+											<td>3</td>
+											<td></td>
+											<td style="border-right: 1px solid #c7c7c7 !important"></td>
+										</tr>
+										
+										<tr>
+											<td rowspan="3">3-4</td>	
+											<td rowspan="2">응용</td>	
+											<td>전공필수</td>	
+											<td>재가서비스실무※<br/>케어기술론※</td>	
+											<td>3<br/>3</td>	
+											<td>재가서비스관리※</td>	
+											<td>3</td>	
+											<td rowspan="2"></td>	
+										</tr>
+										<tr>
+											<td>전공선택</td>
+											<td>노인상담심리◎</td>
+											<td>3</td>
+											<td>노인레크리에이션</td>
+											<td style="border-right: 1px solid #c7c7c7 !important">3</td>
+										</tr>
+										<tr>
+											<th style="background-color:#a1bed4;color:#ffffff;" colspan="3">소계</th>
+											<th style="background-color:#a1bed4;color:#ffffff;" colspan="2">12</th>
+											<th style="background-color:#a1bed4;color:#ffffff;" colspan="2">12</th>
+											<td></td>
+										</tr>
+										
+										<tr>
+											<th style="background-color:#92afc5;color:#ffffff;" colspan="4">계</th>
+											<th style="background-color:#92afc5;color:#ffffff;" colspan="4">126</th>
+											<td></td>
+											<t></td>
+										</tr>
+										
+										
+									</tbody>
+								</table>
+								
+								<div style="text-align:left;display:block;">
+								- NCS 교과목 (총28개 교과목) : ◎ NCS 기반 기존유지(11개) / ※ 수정 교과목 (17개)<br/>
+								- 사회복지사 자격교과목(총 18개 교과목) : ⋆ 법정필수(10개) / ▣ 법정선택(8과목)
+								</div>
+							</li>
+						</ul>
+					</div>
+				</dd>
+			</dl>
+			
+			<dl>##세종사이버대학교 조리산업경영학과
+				<dd><a href="#" class="faq_q_box"><img src="/home/images/new/refer_cyber_02_2.gif"></a>		
+					<div>
+						<ul>
+							<!--<li class="p_l13 p_t10 t_right"><span style="color:#E85050;margin-right: 30px;"><b>※ 학과는 2014년 개설 예정</b></span><br/></li>-->
+							<li class="p_l13 p_t10 t_right"><a href="http://home.sjcu.ac.kr/major06/02intro" target="_blank"><img src="/home/images/btn/btn_navigation_dept.gif"></a><br/></li>
+							<li class="p_l20 p_t5">
+								<br/><br/>
+								○ <b>추진배경 및 목적</b><br/>
+								- 국내 조리외식산업의 성장 및 인력수요 급증<br/>
+  								- 조리외식관련 산업체 및 학생들의 직무능력 향상 요구 증가<br/>
+  								- 국가직무능력표준(NCS) 기반 교육과정 개편･운영을 통한 창의적 신지식 및 실용적 기술을 갖춘 글로벌 조리산업 리더 양성<br/>
+								<br/>
+								○ <b>기존 교과과정 분석 및 NCS 기반 교육과정으로의 개편</b><br/>
+								- '창의적이고 실용적인 교육을 통한 글로벌 조리산업전문인 양성'이세종사이버대학교 조리산업경영학과의 교육목적이며, 이러한<br/> 목적을 이루기 위해서 기존 교과과정의 점진적인 개편을 추진하고자 하였음.<br/>
+								- NCS기반 교과과정 개편 사업을 통해 기존 교과과정의 호텔관광산업분야와 관련된 일부 교과목을 없애고 조리산업 분야에 관련된 실질적인 교과목을 보강함.<br/>
+							</li>
+							<li class="p_l13 p_t10 t_center">
+								<br/>
+								
+								- 교과과정 개편(안)
+								<table cellspacing="0" cellpadding="0" class="table_type1 st01 st02" style="width:100%;">
+									<colgroup>
+										<col width="*">
+										<col width="8%">
+										<col width="30%%">
+										<col width="8%">
+										<col width="8%">
+										<col width="30%">
+										<col width="8%">
+									</colgroup>
+									<thead>
+									<tr>
+										<th class="first" rowspan="2">학년</th>	
+										<th colspan="3">1학기</th>	
+										<th colspan="3">2학기</th>	
+									</tr>	
+									<tr>
+										<th>이수구분</th>	
+										<th>과목명</th>	
+										<th>학점</th>	
+										<th>이수구분</th>	
+										<th>과목명</th>	
+										<th>학점</th>	
+									</tr>
+									</thead>
+									<tbody>
+										<tr>
+											<td rowspan="4">1</td>	
+											<td>교필</td>	
+											<td>컴퓨터활용</td>	
+											<td>3</td>	
+											<td>교필</td>	
+											<td>교양영어2</td>	
+											<td>3</td>	
+										</tr>
+										<tr>
+											<td>교필</td>	
+											<td>국어작문1</td>	
+											<td>3</td>	
+											<td>전선</td>	
+											<td>** 식품조리의이해</td>	
+											<td>3</td>	
+										</tr>
+										<tr>
+											<td>전선</td>	
+											<td>세계음식문확사</td>	
+											<td>3</td>	
+											<td>전선</td>	
+											<td>* 음식과관광</td>	
+											<td>3</td>	
+										</tr>
+										<tr>
+											<td>전선</td>	
+											<td>여가산업론</td>	
+											<td>3</td>	
+											<td>전선</td>	
+											<td>서비스매너</td>	
+											<td>3</td>	
+										</tr>
+										
+										<tr>
+											<td rowspan="5">2</td>	
+											<td>전필</td>	
+											<td>** 외식서비스실무론</td>	
+											<td>3</td>	
+											<td>전필</td>	
+											<td>조리기획상품론</td>	
+											<td>3</td>	
+										</tr>
+										<tr>
+											<td>전선</td>	
+											<td>서비스소비자행동론</td>	
+											<td>3</td>	
+											<td>전선</td>	
+											<td>푸드디자인(사진과색채)</td>	
+											<td>3</td>	
+										</tr>
+										<tr>
+											<td>전선</td>	
+											<td>** 한식조리이론및실습1</td>	
+											<td>3</td>	
+											<td>전선</td>	
+											<td>** 한식조리이론및실습2</td>	
+											<td>3</td>	
+										</tr>
+										<tr>
+											<td>전선</td>	
+											<td>** 제과제빵이론및실습1</td>	
+											<td>3</td>	
+											<td>전선</td>	
+											<td>** 제과제빵이론및실습2</td>	
+											<td>3</td>	
+										</tr>
+										<tr>
+											<td>전선</td>	
+											<td>조리산업인적자원관리</td>	
+											<td>3</td>	
+											<td>전선</td>	
+											<td>* 영양학</td>	
+											<td>3</td>	
+										</tr>
+										
+										<tr>
+											<td rowspan="6">3</td>	
+											<td>전필</td>	
+											<td>조리학</td>	
+											<td>3</td>	
+											<td>전선</td>	
+											<td>** 메뉴디자인</td>	
+											<td>3</td>	
+										</tr>
+										<tr>
+											<td>전선</td>	
+											<td>** 양식조리이론및실습1</td>	
+											<td>3</td>	
+											<td>전선</td>	
+											<td>** 양식조리이론및실습2</td>	
+											<td>3</td>	
+										</tr>
+										<tr>
+											<td>전선</td>	
+											<td>** 주장관리론</td>	
+											<td>3</td>	
+											<td>전선</td>	
+											<td>* 푸드스타일링</td>	
+											<td>3</td>	
+										</tr>
+										<tr>
+											<td>전선</td>	
+											<td>* 식품관련법규</td>	
+											<td>3</td>	
+											<td>전선</td>	
+											<td>* 커피의이해</td>	
+											<td>3</td>	
+										</tr>
+										<tr>
+											<td>전선</td>	
+											<td>외식산업론</td>	
+											<td>3</td>	
+											<td>전선</td>	
+											<td>HIS(호텔외식정보시스템)</td>	
+											<td>3</td>	
+										</tr>
+										<tr>
+											<td>전선</td>	
+											<td>기초회계</td>	
+											<td>3</td>	
+											<td>전선</td>	
+											<td>* 주방안전위생관리론</td>	
+											<td>3</td>	
+										</tr>
+										
+										<tr>
+											<td rowspan="5">4</td>	
+											<td>전필</td>	
+											<td>레스토랑디자인</td>	
+											<td>3</td>	
+											<td>전필</td>	
+											<td>호텔관광조사방법론</td>	
+											<td>3</td>	
+										</tr>
+										<tr>
+											<td>전선</td>	
+											<td>* 식품품질구매관리</td>	
+											<td>3</td>	
+											<td>전선</td>	
+											<td>* 호텔외식원가관리</td>	
+											<td>3</td>	
+										</tr><tr>
+											<td>전선</td>	
+											<td>식품발효학</td>	
+											<td>3</td>	
+											<td>전선</td>	
+											<td>음식과평론</td>	
+											<td>3</td>	
+										</tr><tr>
+											<td>전선</td>	
+											<td>외식서비스경영전략</td>	
+											<td>3</td>	
+											<td>전선</td>	
+											<td>급식경영론</td>	
+											<td>3</td>	
+										</tr><tr>
+											<td>전선</td>	
+											<td>* 와인서비스실무론(WEST)</td>	
+											<td>3</td>	
+											<td>전선</td>	
+											<td>체인식당경영세미나</td>	
+											<td>3</td>	
+										</tr>
+										
+									</tbody>
+								</table>
+								
+								<div style="text-align:left;display:block;">
+								- * NCS기반 기존 교과목 재제작
+								- ** NCS기반 신규 교과목 개발
+								</div>
+							</li>
+						</ul>
+					</div>
+				</dd>
+			</dl>
+			
+			<dl>##영진사이버대학 뷰티케어학과
+				<dd><a href="#" class="faq_q_box"><img src="/home/images/new/refer_cyber_02_3.gif"></a>		
+					<div>
+						<ul>
+							<!--<li class="p_l13 p_t10 t_right"><span style="color:#E85050;margin-right: 30px;"><b>※ 학과는 2014년 개설 예정</b></span><br/></li>-->
+							<li class="p_l13 p_t10 t_right"><a href="http://www.ycc.ac.kr/jsp/main/iwc_main/departments/dep_09_01.jsp" target="_blank"><img src="/home/images/btn/btn_navigation_dept.gif"></a><br/></li>
+							
+							<li class="p_l20 p_t5">
+								<br/><br/>
+								○ <b>추진배경 및 목적</b><br/>
+								- 인력양성 목표<br/> 
+  								: 뷰티케어학과의 인력양성 목표는 토탈 뷰티스타일 전문가, 토탈 에스테틱 전문가로 멀티경쟁력을 갖춘 인재양성임.<br/> 
+  								- 인력양성 목표 달성을 위한 필수 요소<br/>
+  								: 인력양성 목표에 부합하는 졸업생들을 배출하기 위한 교육의 필수 요소는 현장 직무능력 중심 교육, 전문성 향상을 위한 교육<br/> 등 2가지로 정리할 수 있음.<br/> 
+								
+								<br/>
+								
+								○ <b>현장 직무능력 중심의 교육과정 개편</b><br/>
+								- 교육과정 개편의 방향을 설정하고 구체적인 강의계획서 작성하는 데 있어 산업체 현장전문가의 의견을 반영함.<br/>
+     							- 이를 통해 산업현장에서 실제로 요구하는 직무능력 중심으로 교육과정을  개편함.<br/>
+ 								- 또한, NCS에서 제시하고 있는 지식, 기술, 태도 중 산업현장과 괴리가 있는 내용은 교육과정에서 제외하여 교육의 효과성과<br/> 효율성을 향상시킴.<br/>
+ 								
+ 								<br/>
+								
+								○ <b>전문성 향상을 위한 교육과정 개편</b><br/>
+								- 기존의 교과목 중 헤어커트와 펌의 경우, NCS의 내용을 비교적 잘 반영하고 있으나, 교육의 전문성 향상을 위해 헤어커트와<br/> 헤어펌 등 2개의 교과목으로 분리하고 각각 NCS 기반 교육과정으로 개편하기로 결정함.<br/>
+     							- NCS의 능력단위 중 ‘기기관리’의 경우 현 교육과정에 거의 반영되지 않은 상황임.<br/>
+     							- NCS의 모든 내용이 업무현장에서 필요한 것이므로 ‘피부미용기기관리학’을 신규 설계하여 교육체계에 반영함.<br/>
+							</li>
+ 							<br/>
+							<li class="p_l13 p_t10 t_center"><img src="/home/images/intro/yj1.bmp"></li>
+ 							<br/>
+							<li class="p_l13 p_t10 t_center"><img src="/home/images/intro/yj2.bmp"></li>
+						</ul>
+					</div>
+				</dd>
+			</dl>
+			
+			<dl>##한양사이버대학교 디지털건축도시전공
+				<dd><a href="#" class="faq_q_box"><img src="/home/images/new/refer_cyber_02_4.gif"></a>		
+					<div>
+						<ul>
+							<!--<li class="p_l13 p_t10 t_right"><span style="color:#E85050;margin-right: 30px;"><b>※ 학과는 2014년 개설 예정</b></span><br/></li>-->
+							<li class="p_l13 p_t10 t_right"><a href="http://www.hycu.ac.kr/lesinfo/?dept=30047" target="_blank"><img src="/home/images/btn/btn_navigation_dept.gif"></a><br/></li>
+							
+							<li class="p_l20 p_t5">
+								<br/><br/>
+								○ <b>추진배경 및 목적</b><br/>
+								- ‘국가기간·전략산업 및 고부가서비스산업분야 기술인력 양성 확대’ 보도자료에 따르면 2014년 고용 유발 효과가 큰 고부가가치<br/> 서비스 산업 분야의 인력 양성을 확대하기 위해 직종 체계를 개편하였으며,<br/> 이 중 건축도시 분야와 관련된 BIM(Building Information Modeling)이 추가적으로 신설됨(고용노동부, 2014)<br/>
+  								- 본교의 ‘첨단건축도시 창조를 위한 융복합 인력양성 NCS기반 사이버교육 특성화 사업’은 국가직무능력표준을 기반으로 한 디지털<br/> 건축도시 전공 특성화를 통해 미래 건축도시 분야의 인력 수요에 대응하고자 함<br/>
+  								- NCS 기반 능력 중심 교육과정 개발을 통해 건축도시 분야의 산업계(수요자)의 요구를 충족시키는 종합적인 사업 수행 역량을 <br/>가진 융복합 인력 양성<br/>
+  								<br/>
+  								○ <b>실무수행능력 향상을 위한 교과목 수업운영 계획</b><br/>
+								- 한양사이버대학교는 2014년 NCS 특성화 사업에 선정되어, 기존 신설된 ‘디지털 건축도시 전공’을 NCS 기반으로 새롭게 신설<br/>하였으며, 학과 전체 교과목 중 NCS 능력단위 기반 교과목 비율을 2015년 2월 기준 70%이상(73%) 운영할 계획임<br/>
+							</li>
+							<li class="p_l13 p_t10 t_center">
+								<br/>
+								
+								2015년도 부동산도시미래학부 디지털건축도시전공 교육과정 (NCS 기반 교육 과정 개편)
+								<table cellspacing="0" cellpadding="0" class="table_type1 st01 st02" style="width:100%;">
+									<colgroup>
+										<col width="*">
+										<col width="15%">
+										<col width="30%">
+										<col width="10%">
+										<col width="30%">
+										<col width="10%">
+									</colgroup>
+									<thead>
+									<tr>
+										<th class="first" rowspan="2">학년</th>	
+										<th rowspan="2">과목구분</th>	
+										<th colspan="2">1학기</th>	
+										<th colspan="2">2학기</th>	
+									</tr>	
+									<tr>
+										<th>교과목명</th>	
+										<th>학점</th>	
+										<th>교과목명</th>	
+										<th>학점</th>	
+									</tr>
+									</thead>
+									<tbody>
+										
+										<tr>
+											<td rowspan="4">1</td>	
+											<td rowspan="2">전공필수</td>	
+											<td>건축학개론</td>	
+											<td>3</td>	
+											<td>도시건축과BIM(*)</td>	
+											<td>3</td>	
+										</tr>
+										<tr>
+											<td>부동산학원론</td>	
+											<td>3</td>	
+											<td></td>	
+											<td></td>	
+										</tr>
+										<tr>
+											<td rowspan="2">전공선택</td>	
+											<td>토지이용계획(*)</td>	
+											<td>3</td>	
+											<td>건축캐드</td>	
+											<td>3</td>	
+										</tr>
+										<tr>
+											<td>&nbsp;</td>	
+											<td></td>	
+											<td></td>	
+											<td></td>	
+										</tr>
+										
+										<tr>
+											<td rowspan="5">2</td>	
+											<td rowspan="2">전공필수</td>	
+											<td>도시계획(*)</td>	
+											<td>3</td>	
+											<td>단지계획및개발(*)</td>	
+											<td>3</td>	
+										</tr>
+										<tr>
+											<td>BIM통합설계프로젝트(*)</td>	
+											<td>3</td>	
+											<td></td>	
+											<td></td>	
+										</tr>
+										<tr>
+											<td rowspan="3">전공선택</td>	
+											<td>공동주거론</td>	
+											<td>3</td>	
+											<td>디지털건축구조(*)</td>	
+											<td>3</td>	
+										</tr>
+										<tr>
+											<td>관광학개론</td>	
+											<td>3</td>	
+											<td>부동산정책론</td>	
+											<td>3</td>	
+										</tr>
+										<tr>
+											<td></td>	
+											<td></td>	
+											<td>관광계획및개발론</td>	
+											<td>3</td>	
+										</tr>
+										
+										<tr>
+											<td rowspan="6">3</td>	
+											<td rowspan="2">전공필수</td>	
+											<td>부동산자산관리</td>	
+											<td>3</td>	
+											<td>도시재생과 복합개발</td>	
+											<td>3</td>	
+										</tr>
+										<tr>
+											<td></td>	
+											<td></td>	
+											<td>디지털건설경영(CM)(*)</td>	
+											<td>3</td>	
+										</tr>
+										<tr>
+											<td rowspan="4">전공선택</td>	
+											<td>도시안전방재</td>	
+											<td>3</td>	
+											<td>디지털생산관리및자동화(*)</td>	
+											<td>3</td>	
+										</tr>
+										<tr>
+											<td>부동산시장론</td>	
+											<td>3</td>	
+											<td>스마트교통시스템(*)</td>	
+											<td>3</td>	
+										</tr>
+										<tr>
+											<td>기업법무론</td>	
+											<td>3</td>	
+											<td>부동산경제론</td>	
+											<td>3</td>	
+										</tr>
+										<tr>
+											<td>경매ㆍ중개법론</td>	
+											<td>3</td>	
+											<td></td>	
+											<td></td>	
+										</tr>
+										
+										<tr>
+											<td rowspan="5">4</td>	
+											<td rowspan="2">전공필수</td>	
+											<td>졸업프로젝트</td>	
+											<td>2</td>	
+											<td>미래도시인프라(*)</td>	
+											<td>3</td>	
+										</tr>
+										<tr>
+											<td></td>	
+											<td></td>	
+											<td>졸업프로젝트</td>	
+											<td>2</td>	
+										</tr>
+										
+										<tr>
+											<td rowspan="3">전공선택</td>	
+											<td>건축환경에너지시스템(*)</td>	
+											<td>3</td>	
+											<td>부동산금융론</td>	
+											<td>3</td>	
+										</tr>
+										<tr>
+											<td>도시마케팅</td>	
+											<td>3</td>	
+											<td>부동산세무실무</td>	
+											<td>3</td>	
+										</tr>
+										<tr>
+											<td>주택경제론</td>	
+											<td>3</td>	
+											<td>근현대공간디자인의이해</td>	
+											<td>3</td>	
+										</tr>
+										
+									</tbody>
+								</table>
+								
+								<div style="text-align:left;display:block;">
+								* : NCS 기반 디지털 건축도시 전공 교과목
+								</div>
+							</li>
+						</ul>
+					</div>
+				</dd>
+			</dl>
+			
+			<br/>
+			
+		</div>
+	</div>
+</body>

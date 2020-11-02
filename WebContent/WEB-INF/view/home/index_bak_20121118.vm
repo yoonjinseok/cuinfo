@@ -1,0 +1,406 @@
+<head>
+	<title>사이버대학 종합 정보</title>
+	<script type="text/javascript" language="javascript">
+		
+		var interval;
+		var rno = 0;
+		var maxno = 0;
+		var flag = 1;
+		var univListArr = new Array();
+		
+		// 지정된 범위의 정수 1개를 랜덤하게 반환하는 함수
+		// n1 은 "하한값", n2 는 "상한값"
+		function randomRange(n1, n2) {
+			return Math.floor( (Math.random() * (n2 - n1 + 1)) + n1 );
+		}
+		
+		function nextUnivList(gubn)
+		{
+			if(flag != gubn)
+			{
+				flag = gubn;
+				for(var i=0; i<5; i++)
+				{
+					if(gubn == 1)
+					{
+						if(rno == maxno)
+							rno = 1;
+						else
+							rno--;
+					}
+					else
+					{
+						for(var j=0;j<2;j++){
+						
+						if(rno == 1)
+							rno = maxno;
+						else
+							rno--;
+						}
+					}
+				}
+			}
+			$("li[id^=indexUnivList_]").hide();
+			
+			var str = "";
+			for(var i=0; i<5; i++)
+			{
+				//$("#hideUnivList_"+rno).show();
+				
+				str += univListArr[rno-1];
+				
+				if(rno == maxno)
+					rno = 1;
+				else
+					rno++;
+				
+				/*
+				if(gubn == 1)
+				{
+					if(rno == maxno)
+						rno = 1;
+					else
+						rno++;
+				}
+				else
+				{
+					if(rno == 1)
+						rno = maxno;
+					else
+						rno--;
+				}
+				*/
+			}
+			$("#showUnivList").html(str);
+			$("#showUnivList li").show();
+		}
+		
+		function firstUnivListShow(){
+			maxno 	= $univCourseList.size();
+			rno 	= randomRange(1,maxno);
+			
+			univListArr = $("#hideUnivList").html().split("+");
+			
+			//alert(univListArr[0]);
+			nextUnivList(1);
+			
+		}
+		
+		$(document).ready(function(){
+		
+			//페이지 로딩시 대학리스트 랜덤으로 보이도록한다.
+			firstUnivListShow();
+		
+			var num = randomRange(1, Math.ceil($univCourseList.size()/5));
+			var num1 = randomRange(1, Math.ceil($univPublicList.size()/4));
+			
+			$("#univ_list_"+num).show();
+			$("#publicCoureList_"+num1).show();
+			
+			interval = setInterval("nextUnivList(1);nextPublicCoureList(1);", 5000);
+			
+		});
+		
+		function nextPublicList(no){
+		
+			var id = $("ul[id^=public_list_]:visible").attr("id");
+			
+			if(typeof(id) == "undefined")
+				return;
+			
+			var cutId = id.substring(0,id.lastIndexOf("_") + 1)
+			var nextId = parseInt(id.substring(id.lastIndexOf("_") + 1)) + no;
+			var maxNum = Math.ceil($univPublicList.size()/2);
+			
+			if(nextId > Math.ceil($univPublicList.size()/2))
+				nextId = 1;
+			else if(nextId < 1)
+				nextId = Math.ceil($univPublicList.size()/2);
+
+			$("ul[id^=public_list_]").hide();
+			
+			//포커스를 이동안하면 화면 틀어짐..
+			$("#more").focus();
+			
+			$("#public_list_"+nextId).show();
+		}
+		
+		function nextPublicCoureList(no){
+					//포커스를 이동안하면 화면 틀어짐..
+			
+			if(no != "undefined")
+			{
+			
+			if(!$("ul[id^=publicCoureList_]:visible").attr("id"))
+				return;
+			
+			$("#more").focus();
+			var id = $("ul[id^=publicCoureList_]:visible").attr("id");
+			var cutId = id.substring(0,id.lastIndexOf("_") + 1)
+			var nextId = parseInt(id.substring(id.lastIndexOf("_") + 1)) + no;
+			var maxNum = Math.ceil($publicCoureList.size()/4);
+			
+			if(nextId > Math.ceil($publicCoureList.size()/4))
+				nextId = 1;
+			else if(nextId < 1)
+				nextId = Math.ceil($publicCoureList.size()/4);
+				
+			$("ul[id^=publicCoureList_]").hide();
+			
+			//포커스를 이동안하면 화면 틀어짐..
+			$("#more").focus();
+			
+			$("#publicCoureList_"+nextId).show();
+			}
+
+		}
+		
+		
+		
+		function clickTab1(no)
+		{
+			$("#gubn1").val(no);
+			
+			jQuery.post("/home/indexSearch.ajax.action", 
+   				{gubn:$("#gubn1").val()}, 
+   				function(data) {
+   				
+   				$("#mainList").html(data);
+   				
+				//탭 이미지 변경
+				$("#mainListTab li").each(function(index){
+				
+					$(this).removeClass();
+					if((index+1) == no)
+					{
+						$(this).addClass("tab"+(index+1)+" on");				
+					}
+					else
+					{
+						$(this).addClass("tab"+(index+1));
+					}
+				});
+   			});
+		}
+		
+		function clickTab2(no)
+		{
+			$("#gubn2").val(no);
+			$("div[id^=courseList]").hide();
+			$("#courseList"+no).show();
+			$("#subListTab li").each(function(index){
+				
+				$(this).removeClass();
+				if((index+1) == no)
+				{
+					$(this).addClass("tab"+(index+1)+" on");				
+				}
+				else
+				{
+					$(this).addClass("tab"+(index+1));
+				}
+			});
+		
+		}
+		
+		function viewMore1(){
+		
+			var gubn = $("#gubn1").val();
+			
+			//alert(gubn);
+			
+			switch(parseInt(gubn))
+			{
+				case 1:
+					document.location.href = "/home/refer/boardNews.sub.action?gnb=42";
+					break;
+				case 2:
+					document.location.href = "/home/refer/boardUniv.sub.action?gnb=43";
+					break;
+				case 3:
+					document.location.href = "/home/refer/board.sub.action?gnb=44&gID=152";
+					break;
+				case 4:
+					document.location.href = "/home/refer/board.sub.action?gnb=45&gID=154";
+					break;
+			}
+		}
+		
+		function viewMore2(){
+		
+			var gubn = $("#gubn2").val();
+			
+			switch(parseInt(gubn))
+			{
+				case 1:
+					document.location.href = "/home/course/recommendByUniv.sub.action?gnb=35";
+					break;
+				case 2:
+					document.location.href = "/home/course/tasterLectureByUniv.sub.action?gnb=34";
+					break;
+			}
+			
+		}
+		
+		//학교홍보관,학교소개 더보기
+		function viewMore3(){
+			document.location.href = "/home/intro/overall.sub.action?gnb=12";
+		}
+				
+		//공개강의
+		function viewMore4(){
+			document.location.href = "/home/course/courseSearch.sub.action?gnb=31&publicYn=Y";
+		}
+		
+	</script>
+</head>
+<body>
+
+
+
+<div id="container"><!-- container Start -->
+	<form class="" id="form" name="form" action="#" onsubmit="try{search();}catch(e){alert(e);}return false;"><!-- box_type01 Start -->
+		<input type="hidden" id="gubn1" name="gubn1" value="1"/>
+		<input type="hidden" id="gubn2" name="gubn2" value="1"/>
+	</form>
+	
+	
+	<div class="main_visual"><!-- main_visual  Start -->
+	#**
+	<!-- 플레시 부분 시작-->
+    <object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" width="913" height="244" id="FlashID" title="CU info에서 사이버대학의 모든 것을 알려드립니다.">
+		<param name="movie" value="/home/swf/main.swf" />
+		<param name="quality" value="high" />
+		<param name="menu" value="false" />
+		<param name="wmode" value="transparent" />
+		<param name="swfversion" value="8.0.35.0" />
+		<!-- This param tag prompts users with Flash Player 6.0 r65 and higher to download the latest version of Flash Player. Delete it if you don't want users to see the prompt. -->
+		<!-- Next object tag is for non-IE browsers. So hide it from IE using IECC. -->
+		
+		<!--[if !IE]>-->
+		<object type="application/x-shockwave-flash" data="/home/swf/main.swf" width="913" height="244" title="CU info에서 사이버대학의 모든 것을 알려드립니다.">
+			<param name="quality" value="high" />
+		  	<param name="menu" value="false" />
+		  	<param name="wmode" value="transparent" />
+		  	<param name="swfversion" value="8.0.35.0" />
+		  	<!-- The browser displays the following alternative content for users with Flash Player 6.0 and older. -->
+			<div>
+				<p><img src="/home/images/test/07.gif" alt="CU info에서 사이버대학의 모든 것을 알려드립니다." usemap="#Map"/></p>
+				<map name="Map" id="Map"><area shape="rect" coords="44,121,309,246" href="/home/refer/serviceGuide.sub.action?gnb=46" target="_self" /><area shape="rect" coords="313,120,450,245" href="/home/refer/faq.sub.action?gnb=47&gID=156"  target="_self" />
+					<area shape="rect" coords="180,3,319,115" href="/home/intro/summary.sub.action?gnb=11" target="_self"/>
+				</map>
+			</div>
+		</object>
+		<!--<![endif]-->
+	</object>
+	**#
+	
+	<object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" width="960" height="244" id="FlashID" title="CU info에서 사이버대학의 모든 것을 알려드립니다.">
+		<param name="movie" value="/home/swf/main.swf" />
+		<param name="quality" value="high" />
+		<param name="menu" value="false" />
+		<param name="wmode" value="transparent" />
+		<param name="swfversion" value="8.0.35.0" />
+		
+		<!-- This param tag prompts users with Flash Player 6.0 r65 and higher to download the latest version of Flash Player. Delete it if you don't want users to see the prompt. -->
+		<!-- Next object tag is for non-IE browsers. So hide it from IE using IECC. -->
+		<!--[if !IE]>-->
+		
+		<object type="application/x-shockwave-flash" data="/home/swf/main.swf" width="960" height="244" title="CU info에서 사이버대학의 모든 것을 알려드립니다.">
+		  <param name="quality" value="high" />
+		  <param name="menu" value="false" />
+		  <param name="wmode" value="transparent" />
+		  <param name="swfversion" value="8.0.35.0" />
+		  <!-- The browser displays the following alternative content for users with Flash Player 6.0 and older. -->
+		  <div>
+			<p><img src="/home/images/test/07.gif" alt="CU info에서 사이버대학의 모든 것을 알려드립니다." usemap="#Map"  /></p>
+			<map name="Map" id="Map">  <area shape="rect" coords="46,2,313,117" href="/home/refer/serviceGuide.sub.action?gnb=46" />
+				<area shape="rect" coords="43,122,178,241" href="/home/intro/summary.sub.action?gnb=11" />
+				<area shape="rect" coords="314,121,450,242" href="#"/home/refer/faq.sub.action?gnb=47&gID=156" />
+			</map>
+		  </div>
+ 
+		</object>
+		<!--<![endif]-->
+	</object>
+			
+	<script type="text/javascript">
+		//Flash('flash','movie/main.swf','960','245','#ffffff','transparent');
+	</script>
+	<noscript>
+				
+			<p><img src="/home/images/test/07.gif" alt="CU info에서 사이버대학의 모든 것을 알려드립니다." usemap="#Map"  /></p>
+            <map name="Map" id="Map"><area shape="rect" coords="44,121,309,246" href="/home/refer/serviceGuide.sub.action?gnb=46" target="_self" /><area shape="rect" coords="313,120,450,245" href="/home/refer/faq.sub.action?gnb=47&gID=156"  target="_self" />
+  			<area shape="rect" coords="180,3,319,115" href="/home/intro/summary.sub.action?gnb=11" target="_self"/>
+		</map>
+			</noscript>
+			
+	
+	</div><!-- main_visual  End -->
+	
+
+	<div class="main_top"><!-- main_top  Start -->
+		<div class="f_left">
+			<span><img src="/home/images/main/top_banner1_1.gif" alt="입학및제도안내" /></span>
+			<a href="/home/intro/guidenew.sub.action?gnb=112"><img src="/home/images/main/top_banner1_2.gif" alt="신/편입학안내" /></a>
+			<a href="/home/intro/guideTime.sub.action?gnb=113"><img src="/home/images/main/top_banner1_3.gif" alt="시간제등록제도" /></a>
+			<a href="/home/entr/enterStep_New.sub.action?gnb=211"><img src="/home/images/main/top_banner1_4.gif" alt="입학절차안내" /></a>
+			<a href="/home/entr/enterGuide.sub.action?gnb=22"><img src="/home/images/main/top_banner1_5.gif" alt="모집요강안내" /></a>
+			
+		</div>
+		<div class="f_left">
+			<span><img src="/home/images/main/top_banner2_1.gif" alt="학위취득/자격증" /></span>
+			<a href="/home/intro/certificate1.sub.action?gnb=151"><img src="/home/images/main/top_banner2_2.gif" alt="사회복지사" /></a>
+			<a href="/home/intro/certificate2.sub.action?gnb=152"><img src="/home/images/main/top_banner2_3.gif" alt="보육교사" /></a>
+			<a href="/home/intro/certificate3.sub.action?gnb=153"><img src="/home/images/main/top_banner2_4.gif" alt="평생교육사" /></a>
+			<a href="/home/intro/certificate4.sub.action?gnb=154"><img src="/home/images/main/top_banner2_5.gif" alt="건강가정사" /></a>
+		</div>
+		<div class="f_right">
+			<ul>
+				<li><a href="/home/intro/overall.sub.action?gnb=12"><img src="/home/images/main/right_banner1.gif" alt="학과네비게이션" /></a></li>
+				<li><a href="/home/intro/navigationMajorArea.sub.action?gnb=13"><img src="/home/images/main/right_banner2.gif" alt="학교홍보관" /></a></li>
+			</ul>
+		</div>
+	</div><!-- main_top  End -->
+
+	<div class="main_tab_box"><!-- main_tab_box  Start -->
+	
+		<div class="f_left">
+			<ul id="mainListTab" class="main_tab1">
+				<li class="tab1 on"><a href="javascript:clickTab1(1);">사이버대학뉴스</a> </li>
+				<li class="tab2"><a href="javascript:clickTab1(2);">대학행사 안내</a> </li>
+				<li class="tab3"><a href="javascript:clickTab1(3);">원대협</a> </li>
+				<li class="tab4"><a href="javascript:clickTab1(4);">공지사항</a> </li>
+			</ul>
+			<a class="more" href="javascript:viewMore1();"><img src="/home/images/main/top_banner3_5.gif" alt="더보기" /></a>
+			<!-- 사이버대학뉴스,대학행사안내,협의회동정,공지사항 -->
+			<div id="mainList">#parse('home/common/mainList.vm')</div>
+		</div>
+		<div class="main_top1">
+			<div class="f_right1">
+    			<span><img src="/home/images/main/tap_right.gif" alt="공개강의" /></span>
+    			<a class="more" href="javascript:viewMore4();"><img src="/home/images/main/top_banner3_5.gif" alt="더보기" /></a>
+    			<a class="pre" href="javascript:nextPublicCoureList(-1);"><img src="/home/images/main/top_banner3_3.gif" alt="이전" /></a>
+    			<a class="next" href="javascript:nextPublicCoureList(1);"><img src="/home/images/main/top_banner3_4.gif" alt="다음" /></a>
+				<div id="publicCoureList">#parse('home/common/publicCoureList.vm')</div>
+            </div>
+        </div>
+	</div><!-- main_tab_box  End -->
+
+	<div class="bottom_box"><!-- bottom_box  Start -->
+		<a class="more" href="javascript:viewMore3();"><img src="/home/images/main/top_banner3_5.gif" alt="더보기" /></a>
+		<a class="pre"  href="javascript:nextUnivList(-1);"><img src="/home/images/main/bottom_2.gif" alt="이전" /></a>
+		<a class="next" href="javascript:nextUnivList(1);"><img src="/home/images/main/bottom_3.gif" alt="다음" /></a>
+		<!-- 학교소개 -->
+		<div id="univList">#parse('home/common/univList.vm')</div>
+		
+	</div><!-- bottom_box  End -->
+
+	<div class="main_popup"><!-- copy_box  Start -->
+		<div id="poup">#parse('home/common/poup.vm')</div>
+	</div><!-- copy_box  End -->
+
+
+</div><!-- container End -->  
+</body>
+</html>

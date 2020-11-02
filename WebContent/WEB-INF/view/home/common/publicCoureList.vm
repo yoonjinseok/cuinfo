@@ -1,0 +1,64 @@
+
+
+#set($cnt = $publicCoureList.size())
+
+#foreach($list in $publicCoureList)
+
+	#if($velocityCount == 1 || $velocityCount % 4 == 1)
+	<ul id="publicCoureList_$list.mod"  style="display:none;" >
+	#end
+
+		<li>
+			<a href="javascript:viewDetail1('$!list.courseId','$!list.courseIdentifier', '$!list.title');">
+    			#if($list.thumbNailUriYN == 'Y')
+    			<span class="img"><img src="$list.thumbNailUri" alt="썸네일이미지" /></span>
+    			#else
+    			<span class="img"><img src="/home/refer/board_File_download.json?fileGid=$list.logoUpfileGid&fileID=1"/></span>
+    			#end
+    		</a>
+			<ul>
+			    <li>
+					<a class="hight" href="javascript:viewDetail1('$!list.courseId','$!list.courseIdentifier', '$!list.title');">$!list.mainTitle</a>
+            		<a class="hight1">#if($!list.contName)( $!list.contName )#end</a>
+        		</li>
+			</ul>	
+		</li>
+		
+	#if($velocityCount % 4 == 0)
+	</ul>
+	#end
+	
+#end
+
+#if($cnt % 4 != 0)
+
+	#set($moreCnt = $cnt % 4)
+	#foreach($list in $publicCoureList)
+		#if($moreCnt != 4)
+			#if($list.rdmCnt == 1) 
+    	<li>
+    	
+    		<a href="javascript:viewDetail1('$!list.courseId','$!list.courseIdentifier', '$!list.title');">
+    			#if($list.thumbNailUriYN == 'Y')
+    			<span class="img"><img src="$list.thumbNailUri" alt="썸네일이미지" /></span>
+    			#else
+    			<span class="img"><img src="/home/refer/board_File_download.json?fileGid=$list.logoUpfileGid&fileID=1"/></span>
+    			#end
+    		</a>
+    		<ul>
+    		    <li>
+    				<a class="hight" href="javascript:viewDetail1('$!list.courseId','$!list.courseIdentifier', '$!list.title');">
+            			$!list.mainTitle
+                    </a>
+            		<a class="hight1">
+            			#if($!list.contName)( $!list.contName ) #end
+            		</a>
+        		</li>
+    		</ul>	
+    	</li>
+			#set($moreCnt = $moreCnt + 1)
+			#end
+		#end
+	#end
+	</ul>
+#end

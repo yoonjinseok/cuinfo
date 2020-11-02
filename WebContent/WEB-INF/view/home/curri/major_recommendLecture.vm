@@ -1,0 +1,16 @@
+#if($recommendList)
+<dl class="rank_box02">
+	<dt>
+		<img src="/home/images/course/recommand_movie.gif" alt="추천 강의">
+		##<a href="#" target="_blank" class="btn_more"><img alt="more" src="/home/images/btn/more2.gif"></a>
+	</dt>
+	#foreach($list in $recommendList)
+	##<dd class="num$velocityCount"><a href='/home/course/viewDetail1_header.sub.action?courseId=$!list.courseID&courseIdentifier=$!list.courseIdentifier&gnb=35'>$!list.title</a></dd>
+	<dd class="num$velocityCount"><a href="javascript:viewDetail('$!list.courseID','$!list.title')">$!list.title</a></dd>
+	#end
+	#set($cnt = $recommendList.size() + 1)
+    #if($cnt == 1)
+    	<br/><center>등록된 추천 강의가 없습니다.</center>
+    #end
+</dl>
+#end

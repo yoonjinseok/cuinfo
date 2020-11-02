@@ -1,0 +1,41 @@
+
+<table cellspacing="0" cellpadding="0" summary="학과 네비게이션 관리"><!-- list_type01 Start -->
+	<caption>학과 네비게이션 관리</caption>
+	<colgroup>
+		<col width="20%" />
+		<col width="*%" />
+	</colgroup>
+	<thead>
+		<tr>
+			<th scope="col">분&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;야</th>
+			<th scope="col">학&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;과</th>
+		</tr>
+	</thead>
+	<tbody>
+		
+		#*
+			rn1 = 분야에 속하는 학과 값. 
+			rn2 = 1일경우 분야를 표시하고 학과의 td 를 열고 rn1 값과 일치할경우 td 를 닫는다.
+		*#
+		#foreach($list in $deptList)
+			#if($list.rn2 == 1)
+			<tr>
+			<th scope="row">$list.classifyName ($list.rn1)</th>
+			<td>
+			#end
+			
+			<a class="bul" href="javascript:showDetail('$!list.deptId');">$!list.deptName</a>
+			
+			#if($list.rn1 == $list.rn2)
+			</td>
+			</tr>
+			#end
+		#end
+			</td>
+        </tr>
+	</tbody>
+	<script type="text/javascript" language="javascript">
+	
+    </script>
+</table><!-- list_type01 End -->
+

@@ -1,0 +1,319 @@
+<head>
+	<title>학과 내비게이션</title>
+	<link rel="stylesheet" type="text/css" href="/home/css/course.css" />
+	<script type="text/javascript" language="javascript">
+	
+	$(document).ready(function() {
+		//search();
+    });
+    function viewDetail(title)
+	{
+		
+		
+		//필요 변수 셋팅
+		$("#text").val(title);
+		$("#deptId").val("GS11");
+		$("#univId").val("40");
+		
+		//onsubmit 속성을 비워주어야 submit이 된다.
+		$("#form").attr("method","post");
+		$("#form").attr("onsubmit","");
+		$("#form").attr("action","/home/course/courseSearch3View.sub2.action?gnb=41");
+		$("#form").submit();
+		
+	}
+    	//유사강의검색
+	function viewDetail2(courseId, title)
+	{
+	
+		//필요 변수 셋팅
+		$("#text").val(title);
+		$("#hidetext").val(title);
+		$("#courseId").val(courseId);
+		$("#deptId").val("");
+		
+		//onsubmit 속성을 비워주어야 submit이 된다.
+		$("#form").attr("method","post");
+		$("#form").attr("onsubmit","");
+		$("#form").attr("action","/home/course/courseSearch2.sub2.action?gnb=41&pageType=1&checkbox3=2");
+		$("#form").submit();
+		
+	}
+	</script>
+</head>
+	
+<body id="intro">
+
+	<p class="location">
+		<a href="">홈</a> <span>&gt;</span> <a href="">학과/교과과정</a> <span>&gt;</span> <a href="">교과과정 보기</a> 
+	</p>
+	<h3><img src="/home/images/title/h3_sub_view.gif" alt="교과과정 보기"></h3>
+		
+	
+	<div class="contentWrap">
+		<!--s:컨텐츠영역-->
+			
+			<div class="path_major">
+				<a>세종사이버대학원</a><span>&gt;</span>
+				<a>정보보호대학원</a><span>&gt;</span>
+				<a>정보보호학과</a>
+				<a target="_blank" href="http://graduate.sjcu.ac.kr/major02/intro" class="btn_info_major"><img src="/home/images/btn/btn_info_major.gif" alt="학과안내 페이지 바로가기"></a>
+																																																																																																												</div>
+			
+			<div id="list" class="univ_table m_l0">
+				<table cellspacing="0" cellpadding="0" summary="교과과정 보기"><!-- table_type1 st01 Start -->
+				<caption>교과과정 보기</caption>
+				<colgroup>
+					<col width="20%">
+					<col width="40%">
+					<col width="20%">
+				</colgroup>
+				<thead>
+					<tr>
+						<th scope="col">학기</th>
+						<th scope="col">교과목명</th>
+						<th scope="col">학점</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr class="line02">
+						<th class="line02" rowspan="5">1</th>
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('암호이론');"><p>암호이론</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','암호이론');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>
+					<tr>
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('정보보호컨설팅');"><p>정보보호컨설팅</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','정보보호컨설팅');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>																			
+					<tr>
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('디지털포렌식');"><p>디지털포렌식</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','디지털포렌식');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>
+					<tr>
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('IT융합보안');"><p>IT융합보안</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','IT융합보안');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>
+					<tr class="line01">
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('네트워크보안');"><p>네트워크보안</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','네트워크보안');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>
+					
+					<tr class="line02">
+						<th class="line02" rowspan="6">2</th>
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('정보보호프로토콜');"><p>정보보호프로토콜</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','정보보호프로토콜');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>
+					<tr>
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('시스템보안');"><p>시스템보안</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','시스템보안');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>																			
+					<tr>
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('사이버전');"><p>사이버전</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','사이버전');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>
+					<tr>
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('최신해킹기법');"><p>최신해킹기법</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','최신해킹기법');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>
+					<tr>
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('정보보호정책');"><p>정보보호정책</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','정보보호정책');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>
+					<tr class="line01">
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('정보보호제품개발방법론');"><p>정보보호제품개발방법론</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','정보보호제품개발방법론');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>
+					
+					<tr class="line02">
+						<th class="line02" rowspan="5">3</th>
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('보안모듈구현실습');"><p>보안모듈구현실습</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','보안모듈구현실습');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>																		
+					<tr>
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('해킹과바이러스실습');"><p>해킹과바이러스실습</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','해킹과바이러스실습');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>
+					<tr>
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('역공학기법');"><p>역공학기법</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','역공학기법');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>
+					<tr>
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('스마트디바이스보안');"><p>스마트디바이스보안</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','스마트디바이스보안');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>
+					<tr class="line01">
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('산업보안특론');"><p>산업보안특론</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','산업보안특론');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>
+					
+					
+					<tr class="line02">
+						<th class="line02" rowspan="5">4</th>
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('고급정보보호이론');"><p>고급정보보호이론</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','고급정보보호이론');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>
+					
+					<tr>
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('사이버수사특론');"><p>사이버수사특론</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','사이버수사특론');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>																			
+					
+					<tr>
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('서비스보안특론');"><p>서비스보안특론</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','서비스보안특론');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>
+					<tr>
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('논문연구지도1');"><p>논문연구지도1</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','논문연구지도1');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 0
+						</td>
+					</tr>
+					<tr class="line01">
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('논문연구지도2');"><p>논문연구지도2</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','논문연구지도2');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 0
+						</td>
+					</tr>
+					
+					<tr class="line02">
+						<th class="line02" rowspan="4">5</th>
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('무선통신보안');"><p>무선통신보안</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','무선통신보안');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>
+					<tr>
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('개인정보보호');"><p>개인정보보호</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','개인정보보호');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>
+					<tr>
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('논문연구지도1');"><p>논문연구지도1</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','논문연구지도1');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 0
+						</td>
+					</tr>
+					<tr class="line01">
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('논문연구지도2');"><p>논문연구지도2</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','논문연구지도2');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 0
+						</td>
+					</tr>
+					
+
+					
+				</tbody>
+				</table>	
+				※ 5학기는 졸업논문 혹은 논문대체과목 중 선택
+			</div>
+			
+			<p class="m_b5"><img src="/home/images/course/txt_info_search.gif" alt="전체 사이버대학을 대상으로 유사강의 검색"></p>
+			<br>
+			
+		<!--e:컨텐츠영역-->
+	</div>
+
+	
+	<form class="search_box01" id="form" name="form" action="#" onsubmit="try{search();}catch(e){alert(e);}return false;"><!-- box_type01 Start -->
+        <input type="hidden" id="courseId" name="courseId" />
+        <input type="hidden" id="hidetext" name="hidetext" />
+        <input type="hidden" id="text" name="text" />
+        <input type="hidden" id="deptId" name="deptId" value="" />
+        <input type="hidden" id="univId" name="univId" value="" />
+	</form>
+
+	<div class="page_num">
+		<div id="pg" name="pg"></div>
+	</div>
+
+</body>
+</html>

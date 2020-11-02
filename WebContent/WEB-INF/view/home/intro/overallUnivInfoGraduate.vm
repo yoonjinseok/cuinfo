@@ -1,0 +1,321 @@
+<script type="text/javascript" src="/home/js/flowplayer-3.2.6.min.js"></script>
+#if(!$univTotalInfo)
+	<!-- 학교가 선택되지 않았을경우 이미지를 보여준다.  -->
+	<center class="p_t10 p_b10">
+	<img src="/home/images/intro/no_school.gif" />
+	</center>
+	
+#else
+	
+	
+	## 대학정보현황 링크 정보
+	<input type="hidden" id="selectYear" name="selectYear" value="$selectYear"/>
+    <input type="hidden" id="urlpattern1" name="urlpattern1" value="$academyinfoLinkList.get(0).infoUrlpattern"/>
+    <input type="hidden" id="urlpattern2" name="urlpattern2" value="$academyinfoLinkList.get(1).infoUrlpattern"/>
+    <input type="hidden" id="urlpattern3" name="urlpattern3" value="$academyinfoLinkList.get(2).infoUrlpattern"/>
+    <input type="hidden" id="urlpattern4" name="urlpattern4" value="$academyinfoLinkList.get(3).infoUrlpattern"/>
+    <input type="hidden" id="urlpattern5" name="urlpattern5" value="$academyinfoLinkList.get(4).infoUrlpattern"/>
+    <input type="hidden" id="urlpattern6" name="urlpattern6" value="$academyinfoLinkList.get(5).infoUrlpattern"/>
+    <input type="hidden" id="urlpattern7" name="urlpattern7" value="$academyinfoLinkList.get(6).infoUrlpattern"/>
+    <input type="hidden" id="urlpattern8" name="urlpattern8" value="$academyinfoLinkList.get(7).infoUrlpattern"/>
+    <input type="hidden" id="urlpattern9" name="urlpattern9" value="$academyinfoLinkList.get(8).infoUrlpattern"/>
+    <input type="hidden" id="urlpattern10" name="urlpattern10" value="$academyinfoLinkList.get(9).infoUrlpattern"/>
+    <input type="hidden" id="urlpattern11" name="urlpattern11" value="$academyinfoLinkList.get(10).infoUrlpattern"/>
+	#set($infoName1  = $academyinfoLinkList.get(0).infoName)
+	#set($infoName2  = $academyinfoLinkList.get(1).infoName)
+	#set($infoName3  = $academyinfoLinkList.get(2).infoName)
+	#set($infoName4  = $academyinfoLinkList.get(3).infoName)
+	#set($infoName5  = $academyinfoLinkList.get(4).infoName)
+	#set($infoName6  = $academyinfoLinkList.get(5).infoName)
+	#set($infoName7  = $academyinfoLinkList.get(6).infoName)
+	#set($infoName8  = $academyinfoLinkList.get(7).infoName)
+	#set($infoName9  = $academyinfoLinkList.get(8).infoName)
+	#set($infoName10  = $academyinfoLinkList.get(9).infoName)
+	#set($infoName11  = $academyinfoLinkList.get(10).infoName)	
+	
+	##탭을 표현할것인가 결정
+	
+	#set($type_total 	= $univTotalInfo.img_type_id)
+	#set($type_greeting = $univTotalInfo.greeting_type_id)
+	#set($type_vision 	= $univTotalInfo.vision_type_id)
+	#set($type_public 	= $univTotalInfo.public_type_id)
+	#set($type_location = $univTotalInfo.location_type_id)	
+
+#*
+	[ $type_total ]
+	[ $type_greeting ]
+	[ $type_vision ]
+	[ $type_public ]
+	[ $type_location ]	
+*#
+
+
+<div class="univ_box">
+	<h4 id="univName" class="type1">$!univTotalInfo.univ_name</h4>
+	<div  id="viewGubnTab" class="tab_type3">
+	  <ul>
+		<li>
+			<a class="tab1 on" href="javascript:viewGubn(0);">종합</a>#if($type_greeting != 0)<a class="tab2" href="javascript:viewGubn(1);">인사말</a>#end#if($type_vision != 0)<a class="tab3" href="javascript:viewGubn(2);">비전</a>#end#if($type_public != 0)<a class="tab4" href="javascript:viewGubn(3);">홍보센터</a>#end#if($type_location != 0)<a class="tab5" href="javascript:viewGubn(4);">오시는길</a>#end
+		</li>
+	  </ul>
+	</div>
+
+	<!-- -종합 Start -->		
+	<div class="info_box">
+	
+		##종합		
+		<!-- 형태구분코드 [ H : html, I : image, M : map ] -->
+		<div id="tab_1">			
+			<div class="univ_logo">
+				
+				##$univTotalInfo.upfileId0
+				##<img src="/mgr/common/file_download_id.json?upfileId=$!univTotalInfo.logo_upfile_gid"/>
+				<a target="_blank" href="$!univTotalInfo.univ_homepage">
+					<img src="/mgr/common/file_download_id.json?upfileId=$!univTotalInfo.logo_upfile_gid" />
+				</a>				
+				
+			</div>
+			<ul class="univ_info1">
+				<li>$!univTotalInfo.core_slogan</li>
+			</ul>
+			<ul class="text1">
+				<li>$!univTotalInfo.univFeature</li>
+			</ul>
+			
+			 <div class="univ_table_t  m_t100">
+				<table cellspacing="0" cellpadding="0" summary="대학종합정보"><!-- table_type1 st01 Start -->
+					<caption>대학종합정보</caption>
+					<colgroup>
+						<col width="60%" />
+						<col width="*%" />
+					</colgroup>
+					<thead>
+						<tr>
+            				<th scope="col"><img src="/home/images/intro/text_tit3.gif" alt="대학원 주요정보" /></th>
+            				<th scope="col" class="line"><img src="/home/images/intro/text_tit4.gif" alt="대학원정보 현황" /></th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td scope="row"> 
+								<ul>
+                                    <li><img src="/home/images/intro/s_title1.gif" alt="유형" /> $!univTotalInfo.gubunName</li>
+                                    <li><img src="/home/images/intro/s_title2.gif" alt="소재지" /> $!univTotalInfo.localName</li>
+                                    <li><img src="/home/images/intro/s_title4.gif" alt="학사정보" />
+										#if($univLinkGraduate.size() > 0) 
+                        					#foreach($list in $univLinkGraduate)
+                        						#if($velocityCount == 1)
+                        						<a href="$list.link_url" target="_blank" onclick="dcsMultiTrack('DCS.dcssip','$!list.sip','DCS.dcsuri','$!list.uri','DCS.qry','$!list.qri','WT.ti','Offsite Link - $!list.sp','WT.sp','$!list.sp')">$list.link_name</a>
+                        						#else
+                        						 , <a href="$list.link_url" target="_blank" onclick="dcsMultiTrack('DCS.dcssip','$!list.sip','DCS.dcsuri','$!list.uri','DCS.qry','$!list.qri','WT.ti','Offsite Link - $!list.sp','WT.sp','$!list.sp')">$list.link_name</a>
+                        						#end
+                        					#end
+                        				#end
+									</li>
+                                    <li><img src="/home/images/intro/s_title5.gif" alt="입시정보" /> 
+                        				#if($univLinkEntrance.size() > 0)
+                        					#foreach($list in $univLinkEntrance)
+                        						#if($velocityCount == 1)
+                        						<a href="$list.link_url" target="_blank" onclick="dcsMultiTrack('DCS.dcssip','$!list.sip','DCS.dcsuri','$!list.uri','DCS.qry','$!list.qri','WT.ti','Offsite Link - $!list.sp','WT.sp','$!list.sp')">$list.link_name</a>
+                        						#else
+                        						, <a href="$list.link_url" target="_blank" onclick="dcsMultiTrack('DCS.dcssip','$!list.sip','DCS.dcsuri','$!list.uri','DCS.qry','$!list.qri','WT.ti','Offsite Link - $!list.sp','WT.sp','$!list.sp')">$list.link_name</a>
+                        						#end
+                        					#end
+                        				#end
+									</li>
+                                    #if($univLinkSchool.size() > 0)
+									<li><img src="/home/images/intro/s_title3.gif" alt="학교정보" />                       				
+                        					#foreach($list in $univLinkSchool)
+                        						#if($velocityCount == 1)
+                        						<a href="$list.link_url" target="_blank" onclick="dcsMultiTrack('DCS.dcssip','$!list.sip','DCS.dcsuri','$!list.uri','DCS.qry','$!list.qri','WT.ti','Offsite Link - $!list.sp','WT.sp','$!list.sp')">$list.link_name</a>
+                        						#else
+                        						, <a href="$list.link_url" target="_blank" onclick="dcsMultiTrack('DCS.dcssip','$!list.sip','DCS.dcsuri','$!list.uri','DCS.qry','$!list.qri','WT.ti','Offsite Link - $!list.sp','WT.sp','$!list.sp')">$list.link_name</a>
+                        						#end
+                        					#end                        				
+									</li>
+									#end
+                                    #if($univLinkAttached.size() > 0)
+									<li><img src="/home/images/intro/s_title9.gif" alt="부속기관" />                       				
+                        					#foreach($list in $univLinkAttached)
+                        						#if($velocityCount == 1)
+                        						<a href="$list.link_url" target="_blank" onclick="dcsMultiTrack('DCS.dcssip','$!list.sip','DCS.dcsuri','$!list.uri','DCS.qry','$!list.qri','WT.ti','Offsite Link - $!list.sp','WT.sp','$!list.sp')">$list.link_name</a>
+                        						#else
+                        						, <a href="$list.link_url" target="_blank" onclick="dcsMultiTrack('DCS.dcssip','$!list.sip','DCS.dcsuri','$!list.uri','DCS.qry','$!list.qri','WT.ti','Offsite Link - $!list.sp','WT.sp','$!list.sp')">$list.link_name</a>
+                        						#end
+                        					#end                        				
+									</li>
+									#end
+									<li><img src="/home/images/intro/s_title6.gif" alt="위치정보" /> $!univTotalInfo.univ_address </li>
+                                    <li><img src="/home/images/intro/s_title7.gif" alt="대표전화" />	 $!univTotalInfo.univ_phone </li>  
+                                    <li><img src="/home/images/intro/s_title8.gif" alt="FAX" /> $!univTotalInfo.univ_fax </li>
+								</ul>
+							</th>
+							<td class="line_a">
+								
+								#if($!univTotalInfo.academy_id)								
+								<ul class="list_b">
+##									<li>	
+##                                        <a href="javascript:popupUrl(1, '$!univTotalInfo.academy_id');"><img src="/home/images/btn/btn_intro1.gif" alt="$infoName1" /></a>
+##                    					<a href="javascript:popupUrl(2, '$!univTotalInfo.academy_id');"><img src="/home/images/btn/btn_intro2.gif" alt="$infoName2" /></a>
+##                    					<a href="javascript:popupUrl(3, '$!univTotalInfo.academy_id');"><img src="/home/images/btn/btn_intro3.gif" alt="$infoName3" /></a
+##									</li>
+##									<li class="list_b">
+##                    					<a href="javascript:popupUrl(4, '$!univTotalInfo.academy_id');"><img src="/home/images/btn/btn_intro5.gif" alt="$infoName4" /></a>
+##                    					<a href="javascript:popupUrl(5, '$!univTotalInfo.academy_id');"><img src="/home/images/btn/btn_intro4.gif" alt="$infoName5" /></a>
+##                                        <a href="javascript:popupUrl(6, '$!univTotalInfo.academy_id');"><img src="/home/images/btn/btn_intro6.gif" alt="$infoName6" /></a>
+##									</li>
+									<li class="list_b ">
+                                        <a href="javascript:popupUrl(7, '$!univTotalInfo.academy_id');"><img src="/home/images/btn/btn_intro7.gif" alt="$infoName7" /></a>
+                    					<a href="javascript:popupUrl(8, '$!univTotalInfo.academy_id');"><img src="/home/images/btn/btn_intro8.gif" alt="$infoName8" /></a>
+                    					<a href="javascript:popupUrl(9, '$!univTotalInfo.academy_id');"><img src="/home/images/btn/btn_intro9.gif" alt="$infoName9" /></a>
+									</li>
+									<li class="list_b ">
+										<a href="javascript:popupUrl(10, '$!univTotalInfo.academy_id');"><img src="/home/images/btn/btn_intro3.gif" alt="$infoName10" /></a>
+										<a href="javascript:popupUrl(11, '$!univTotalInfo.academy_id');"><img src="/home/images/btn/btn_intro10.gif" alt="$infoName11" /></a>
+									</li>
+                                </ul>
+                                #else
+                                대학공시정보 등록 예정 입니다.
+                                #end
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+             </div>
+			 <p class="p_t30"></p>		
+			 
+			
+
+			#if($!univTotalInfo.img_type_id == '22')
+				$!univTotalInfo.content
+			#elseif($!univTotalInfo.img_type_id == '23')
+				<img src="/mgr/common/file_download_id.json?upfileId=$!univTotalInfo.img_upfile_gid1" alt="종합이미지" />
+			#elseif($!univTotalInfo.img_type_id == '24')
+			
+			<!-- 이미지맵일경우 -->
+			<div class="univ_banner">
+				#if($!univTotalInfo.videoUpfilePath)
+				<!-- 동영상 -->				
+				<div class="flash_box">
+					<div id="mediaplayer">JW Player goes here</div>
+					<script>
+						//alert("$!univTotalInfo.videoUpfilePath");
+						jwplayer("mediaplayer").setup({
+							flashplayer: "/home/mediaplayer/player.swf",
+							file: "$!univTotalInfo.videoUpfilePath",
+							width :"260" ,
+							height :"185"
+						});
+					</script>
+           		</div> 
+				#end
+           		<!-- 이미지맵 -->
+				<img usemap="#banner01" src="/mgr/common/file_download_id.json?upfileId=$!univTotalInfo.img_upfile_gid1" alt="이미지맵1" /><img usemap="#banner02" src="/mgr/common/file_download_id.json?upfileId=$!univTotalInfo.img_upfile_gid2" alt="이미지맵2" /><img usemap="#banner03" src="/mgr/common/file_download_id.json?upfileId=$!univTotalInfo.img_upfile_gid3" alt="이미지맵3" /><img usemap="#banner04" src="/mgr/common/file_download_id.json?upfileId=$!univTotalInfo.img_upfile_gid4" alt="이미지맵4" />
+				<map name="banner01">
+				$!univTotalInfo.img_map_tag1
+				</map>
+				<map name="banner02">
+				$!univTotalInfo.img_map_tag2
+				</map>
+				<map name="banner03">
+				$!univTotalInfo.img_map_tag3
+				</map>
+				<map name="banner04">
+				$!univTotalInfo.img_map_tag4
+				</map>
+			</div>
+				<!-- 이미지맵 -->
+			#end
+			
+			#if($univDeptList.size() > 0)
+				
+			<p><h5 class="type1">학과소개</h4></p>
+
+			<div class="univ_table">
+				<div class="table_info">학과를 선택하시면 해당학과로 전체학교의 학과가 검색됩니다.</div>
+	
+				<table cellspacing="0" cellpadding="0" summary="과정관리"><!-- table_type1 st01 Start -->
+					<caption>과정관리</caption>
+					<colgroup>
+						<col width="20%" />
+						<col width="*%" />
+					</colgroup>
+					<thead>
+						<tr>
+							<th scope="col">분&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;야</th>
+							<th scope="col">학&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;과</th>
+						</tr>
+					</thead>
+					<tbody>
+						
+						#foreach($list in $univDeptList)
+						
+							#if($velocityCount != 1 && $list.cnt == 1)
+							</td>
+						</tr>	
+							#end
+						
+							#if($list.cnt == 1)
+							<tr>
+								<th scope="row"><a href="javascript:moveArea('$list.classifyId');">$list.classifyName</a></th>
+								<td>
+							#end
+							
+									<a class="bul" href="javascript:moveCode('$list.classifyId','$list.deptName');">$list.univdeptName</a>
+						#end
+							</td>
+						</tr>
+						
+					</tbody>
+				</table>
+			</div>
+			#end			
+		</div>
+		<!-- -종합 End -->
+		##인사말
+		<div id="tab_2">		
+			#if($type_greeting == '18')
+				$!univTotalInfo.greeting_content
+			#elseif($type_greeting == '20')
+				$htmlUtils.lineChange($!univTotalInfo.greeting_content)
+			#elseif($type_greeting == '19')
+				<img src="/mgr/common/file_download_id.json?upfileId=$!univTotalInfo.greeting_img_upfile_id"/>
+			#end
+		</div>
+		
+		##비전
+		<div id="tab_3">
+			#if($type_vision == '18' )
+				$!univTotalInfo.vision_content
+			#elseif($type_vision == '20')
+				$htmlUtils.lineChange($!univTotalInfo.vision_content)
+			#elseif($type_vision == '19')
+				<img src="/mgr/common/file_download_id.json?upfileId=$!univTotalInfo.vision_img_upfile_id"/>
+			#end
+		</div>
+		
+		##홍보센터
+		<div id="tab_4">	
+			#if($type_public == '18' )
+				$!univTotalInfo.public_content
+			#elseif($type_public == '20')
+				$htmlUtils.lineChange($!univTotalInfo.public_content)
+			#elseif($type_public == '19')
+				<img src="/mgr/common/file_download_id.json?upfileId=$!univTotalInfo.public_img_upfile_id"/>
+			#end
+		</div>
+		
+		##오시는길
+		<div id="tab_5">
+			#if($type_location == '18')
+				$!univTotalInfo.location_content
+			#elseif ($type_location == '20')
+				$htmlUtils.lineChange($!univTotalInfo.location_content)
+			#elseif($type_location == '19')
+				<img src="/mgr/common/file_download_id.json?upfileId=$!univTotalInfo.location_img_upfile_id"/>
+			#end
+		</div>	
+	</div>
+</div>
+
+#end

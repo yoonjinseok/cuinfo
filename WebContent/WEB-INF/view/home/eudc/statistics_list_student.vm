@@ -1,0 +1,161 @@
+<!-- 재학생수 현황 -->
+<div class="m_b10 oh">
+	<span class="bul fl"><b>대학별 재학생 현황</b></span>
+	<span class="fr m_t20"><b>(단위 : 명)</b></span>
+</div>
+<table cellspacing="0" cellpadding="0" class="table_type1 st01 st02 th_2line" summary="재학생수 현황"><!-- table_type1 st01 Start -->
+	<caption>대학별 재학생 현황</caption>
+	<colgroup>
+		<col width="22%">
+		<col width="%">
+		<col width="%">
+		<col width="%">
+		<col width="%">
+		<col width="%">
+		<col width="%">
+		<col width="%">
+	</colgroup>
+	<thead>
+		<tr>
+			<th scope="col" rowspan="2" class="first bg02">학교명</th>
+			<th scope="col" rowspan="2">편제정원</th>
+			<th scope="col" colspan="3">재학생수</th>
+			<th scope="col" rowspan="2">시간제 등록생(3=1명)</th>
+			<th scope="col" rowspan="2">총계</th>
+		</tr>
+		<tr>
+			<th scope="col">정원내</th>
+			<th scope="col">정원외</th>
+			<th scope="col">합계</th>
+		</tr>
+	</thead>
+	<tbody>		
+		#foreach($stt in $statisiticsList)
+			#if($velocityCount != $statisiticsList.size())
+		<tr>
+			<td>$!stt.UNIV_NAME</td>
+			<td>$!stt.FORMATION_CNT</td>
+			<td>$!stt.STUDENT_IN_CNT</td>
+			<td>$!stt.STUDENT_OUT_CNT</td>
+			<td>$!stt.IN_OUT_SUM</td>
+			<td>$!stt.STUDENT_HOUR_CNT</td>
+			<td>$!stt.IN_OUT_HOUR_SUM</td>
+		</tr>
+			#else		
+	</tbody>
+	<tfoot>
+		<tr>
+			<th>합계</th>
+			<th>$!stt.FORMATION_CNT</th>
+			<th>$!stt.STUDENT_IN_CNT</th>
+			<th>$!stt.STUDENT_OUT_CNT</th>
+			<th>$!stt.IN_OUT_SUM</th>
+			<th>$!stt.STUDENT_HOUR_CNT</th>
+			<th class="end">$!stt.IN_OUT_HOUR_SUM</th>
+		</tr>
+			#end
+		#end
+	</tfoot>
+</table><!-- list_type01 End -->
+
+
+<div class="m_b10 oh">
+	<span class="bul fl"><b>정원외 재학생 현황</b></span>
+	<span class="fr m_t20"><b>(단위 : 명)</b></span>
+</div>
+<div class="m_b30">
+<table cellspacing="0" cellpadding="0" class="table_type1 st02 th_2line" summary="정원외 재학생 현황"><!-- table_type1 Start -->
+	<caption>정원외 재학생 현황</caption>
+	<colgroup>
+		<col width="22%">
+		<col width="%">
+		<col width="%">
+		<col width="%">
+		<col width="%">
+		<col width="%">
+		<col width="%">
+		<col width="%">
+		<col width="%">
+		<col width="%">
+	</colgroup>
+	<thead>
+		<tr>
+			<th scope="col"class="first bg02" style="background-color:#92afc5;">학교명</th>
+			<th scope="col"style="background-color:#92afc5;">산업체<br />위탁생</th>
+			<th scope="col"style="background-color:#92afc5;">군<br />위탁생</th>
+			<th scope="col"style="background-color:#92afc5;">재외 국민<br />및<br />외국인</th>
+			<th scope="col"style="background-color:#92afc5;">3학년<br />학사편입</th>
+			<th scope="col"style="background-color:#92afc5;">특수교육<br />대상자</th>
+			<th scope="col"style="background-color:#92afc5;">외국에서 우리나라<br />초․중등교육과정을<br />이수한 재외국민<br />및 외국인</th>
+			<th scope="col"style="background-color:#92afc5;">기초 생활<br />수급자</th>
+			<th scope="col"style="background-color:#92afc5;">기타<br />(북한<br />이탈주민)</th>
+			<th scope="col"style="background-color:#92afc5;">총계</th>
+		</tr>
+	</thead>
+	<tbody>		
+		#foreach($stt in $statisiticsList2)
+			#if($velocityCount != $statisiticsList2.size())
+		<tr>
+			<td>$!stt.UNIV_NAME</td>
+			<td>$!stt.INDUSTRY</td>
+			<td>$!stt.SOLDIER</td>
+			<td>$!stt.ALIEN</td>
+			<td>$!stt.GRADE_THREE</td>
+			<td>$!stt.SPECIAL</td>
+			<td>$!stt.CHANGE</td>
+			<td>$!stt.NATIONAL_BASIC</td>
+			<td>$!stt.OTHER</td>
+			<td>$!stt.TOTAL</td>		
+		</tr>
+			#else
+	</tbody>
+	<tfoot>
+		<tr>
+			<th>합계</th>
+			<th>$!stt.INDUSTRY</th>
+			<th>$!stt.SOLDIER</th>
+			<th>$!stt.ALIEN</th>
+			<th>$!stt.GRADE_THREE</th>
+			<th>$!stt.SPECIAL</th>
+			<th>$!stt.CHANGE</th>
+			<th>$!stt.NATIONAL_BASIC</th>
+			<th>$!stt.OTHER</th>
+			<th class="end">$!stt.TOTAL</th>
+		</tr>
+			#end
+		#end
+	</tfoot>
+</table><!-- list_type01 End -->
+</div>
+<div class="graphWrap" id="chart_div" style="display: none;">	
+</div>
+
+<script type="text/javascript">      
+	google.load('visualization', '1', {packages: ['corechart']});
+	function drawVisualization() {
+	  // Create and populate the data table.
+	  var data = google.visualization.arrayToDataTable([
+	    ['Year', '10대초', '20대초', '20대후', '30대', '40대', '50대', '60대']
+    	 ,['2012', 0, 0, 0, 0, 0, 0, 0]
+	  ]);
+
+	// Create and draw the visualization.
+	  new google.visualization.BarChart(document.getElementById('chart_div')).
+	      draw(data,
+	           {'isStacked': true,	           
+	            width:600, height:400,
+	            vAxis: {title: "년도별"},
+	            hAxis: {title: "백분율(%)"}
+	           }
+	      );
+	 }
+	
+	google.setOnLoadCallback(drawVisualization);
+
+
+ 
+	//$("#chart_div").toggle();
+</script>			
+			
+			
+		

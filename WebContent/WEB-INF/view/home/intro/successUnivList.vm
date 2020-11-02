@@ -1,0 +1,11 @@
+<ul class="overall_tab_list">
+	
+	#foreach($list in $univList)
+		#if($!list.successStory.length() > 100)
+		<li><a href="javascript:overallUnivInfo('$list.univ_name','$list.university_id')">$!list.univ_name</a></li>
+		#else
+		<li><span>$!list.univ_name</span></li>
+		#end
+	#end
+	
+</ul>

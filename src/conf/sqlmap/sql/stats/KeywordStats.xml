@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="EUC-KR"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="KeywordStatsDao">
+	<typeAlias alias="keywordStats" type="com.cyberup.model.stats.KeywordStats"/>
+	
+	<select id="selectList" resultClass="keywordStats"  parameterClass="keywordStats">
+      	WITH DT AS(
+     	 		SELECT	                   
+                   KEYWORD as keyword, 
+                   SUM(SEARCH_CNT) as hitsCnt,
+                   COUNT (*) OVER () totalCnt
+             FROM CU_LOG_SEARCHS B
+             WHERE 1=1
+             	<isNotEmpty property="searchSDT" prepend="">
+             		<isNotEmpty property="searchEDT" prepend="AND">
+              		 SEARCH_DT BETWEEN #searchSDT# AND #searchEDT#
+              		</isNotEmpty>
+              	</isNotEmpty>
+              	<isNotEmpty property="searchKeyword" prepend="AND">		    	
+			    	KEYWORD LIKE concat(concat('%',#searchKeyword#),'%')
+		    	</isNotEmpty> 
+		    GROUP BY  KEYWORD
+      	)
+      	SELECT * 
+      	FROM (
+	      	SELECT 
+	      		ROW_NUMBER () OVER ($sortString$) AS recNum, 
+	      		DT.*, 
+	      		SUM(hitsCnt) OVER() as hitsTotalCnt,
+	      		CASE WHEN SUM(hitsCnt) OVER()>0 THEN 
+	      			ROUND(hitsCnt/SUM(hitsCnt) OVER() * 100 ,2) ELSE 0 END  as hitsRate
+	      	FROM DT
+	      	$sortString$
+         )  
+		 WHERE CEIL (recNum / #showCnt,javaType=Integer#) = #currPage,javaType=Integer#
+<!--		 AND recnum BETWEEN 1 AND 10-->
+		order by recNum
+	</select>	
+		
+	
+	<statement id="insKeywordHits" parameterClass="map">		    
+	    MERGE INTO CU_LOG_SEARCHS  A
+	    USING  DUAL 
+	    ON  (A.KEYWORD = trim(#keyword#)
+	           AND  A.SEARCH_DT = to_char(sysdate,'yyyymmdd'))
+	    WHEN MATCHED THEN 
+	          UPDATE SET A.SEARCH_CNT = A.SEARCH_CNT + 1
+	    WHEN NOT MATCHED THEN 
+	          INSERT(A.SEARCH_DT, A.KEYWORD, A.SEARCH_CNT)
+	          VALUES(to_char(sysdate,'yyyymmdd'),trim(#keyword#),1)
+	</statement>
+</sqlMap>

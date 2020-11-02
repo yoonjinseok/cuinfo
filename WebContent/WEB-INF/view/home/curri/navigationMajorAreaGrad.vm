@@ -1,0 +1,374 @@
+<head>
+	<title>학과 내비게이션</title>
+	<link rel="stylesheet" type="text/css" href="/home/css/course.css" />
+	<script type="text/javascript" language="javascript">
+	
+
+    
+    //대학 롤업 감추기
+    function hidelayST(){
+    	$(".items").mouseleave(function(){
+    		$("div .layST").hide();
+    	});
+    }
+    
+    function showTab(gubn){
+    	$("#gubn").val(gubn);
+		$("#form").attr("method","post");
+		$("#form").attr("onsubmit","");
+		$("#form").attr("action","/home/curri/navigationMajorArea.sub.action?gnb=32");
+		$("#form").submit();
+    	
+    	/*
+    	if(gubn == "1"){
+			$("#areaList").show();
+			$("#list").hide();   
+			$("#tab").removeClass().addClass("tab_type2");
+			$(".tab9 a").removeClass();
+			$(".tab8 a").addClass("on");
+    	}else {
+    		$("#deptList").html("<center><img src='/home/images/course/visual_part.gif' alt='학과선택'/></center>");
+			$("#areaList").hide();    	
+			$("#list").show();    	
+			$("#tab").removeClass().addClass("tab_type2 tab_no_bottom"); 
+			$(".tab8 a").removeClass();
+			$(".tab9 a").addClass("on");
+    	}
+    	*/
+    }
+    
+	function search()
+	{
+		jQuery.post('navigationMajorArea_list.ajax.action',  
+				function(data) {
+        			$("#list").html(data);
+		});
+	}
+	
+	function moveArea(classifyId)
+	{
+		$("#classifyId").val(classifyId);
+		document.form.action="/home/intro/searchMajor.sub.action?gnb=14";
+		document.form.method = "post";
+		document.form.submit();
+		
+	}
+
+	function moveCode(classifyId, deptName)
+	{
+		$("#classifyId").val(classifyId);
+		$("#deptName").val(deptName);
+		document.form.action="/home/intro/searchMajor.sub.action?gnb=14";
+		document.form.method = "post";
+		document.form.submit();
+	}
+	
+	function selectClassifyItem(classifyName,classifyId){
+		$("#selectUnivList").hide();
+		
+		$("#classifyId").val(classifyId);
+		$("#classifyName").val(classifyName);
+		$("#form").attr("method","post");
+		$("#form").attr("onsubmit","");
+		$("#form").attr("action","/home/curri/navigationMajorArea.sub.action?gnb=32");
+		$("#form").submit();
+		
+		
+		/*
+		jQuery.post('deptList.ajax.action',
+					{classifyName:classifyName,classifyId:classifyId},  
+					function(data) {
+        				$("#deptList").html(data);
+		});
+		*/
+	}
+
+//분야별보기에서 사용할 대학리스트	
+	function selectDeptItem(gubun){
+	
+	if(gubun =='01'){
+		var valval =  "<a href='/home/curri/curriKH3.sub2.action?gnb=31'><li>경희사이버대학원</li></a>";
+	}else if(gubun =='02'){
+		var valval =  "<a href='/home/curri/curriSJCU1.sub2.action?gnb=31'><li>세종사이버대학원</li></a>";
+	}else if(gubun =='03'){
+		var valval =  "<a href='/home/curri/curriHYCU1.sub2.action?gnb=31'><li>한양사이버대학원</li></a>";		
+	}else if(gubun =='04'){
+		var valval =  "<a href='/home/curri/curriHYCU2.sub2.action?gnb=31'><li>한양사이버대학원</li></a>";
+	}else if(gubun =='05'){
+		var valval =  "<a href='/home/curri/curriHYCU3.sub2.action?gnb=31'><li>한양사이버대학원</li></a>";
+	}else if(gubun =='06'){
+		var valval =  "<a href='/home/curri/curriKH4.sub2.action?gnb=31'><li>경희사이버대학원</li></a>";
+	}else if(gubun =='07'){
+		var valval =  "<a href='/home/curri/curriHYCU4.sub2.action?gnb=31'><li>한양사이버대학원</li></a>";
+	}else if(gubun =='08'){
+		var valval =  "<a href='/home/curri/curriHYCU5.sub2.action?gnb=31'><li>한양사이버대학원</li></a>";
+	}else if(gubun =='09'){
+		var valval =  "<a href='/home/curri/curriHYCU8.sub2.action?gnb=31'><li>한양사이버대학원</li></a>";
+	}else if(gubun =='11'){
+		var valval =  "<a href='/home/curri/curriTESOL.sub2.action?gnb=31'><li>사이버한국외국어대학원</li></a>";
+	}else if(gubun =='12'){
+		var valval =  "<a href='/home/curri/curriHYCU6.sub2.action?gnb=31'><li>한양사이버대학원</li></a>";
+	}else if(gubun =='21'){
+		var valval =  "<a href='/home/curri/curriDCU.sub2.action?gnb=31'><li>대구사이버대학원</li></a>";
+	}else if(gubun =='22'){
+		var valval =  "<a href='/home/curri/curriWDU.sub2.action?gnb=31'><li>원광디지털대학원</li></a>";
+	}else if(gubun =='31'){
+		var valval =  "<a href='/home/curri/curriBDU1.sub2.action?gnb=31'><li>부산디지털대학원</li></a>";
+	}else if(gubun =='32'){
+		var valval =  "<a href='/home/curri/curriISCU1.sub2.action?gnb=31'><li>서울사이버대학원</li></a>";
+	}else if(gubun =='33'){
+		var valval =  "<a href='/home/curri/curriHYCU9.sub2.action?gnb=31'><li>한양사이버대학원</li></a>";
+	}else if(gubun =='34'){
+		var valval =  "<a href='/home/curri/curriHYCU10.sub2.action?gnb=31'><li>한양사이버대학원</li></a>";
+	}else if(gubun =='41'){
+		var valval =  "<a href='/home/curri/curriBDU2.sub2.action?gnb=31'><li>부산디지털대학원</li></a>";
+	}else if(gubun =='42'){
+		var valval =  "<a href='/home/curri/curriISCU2.sub2.action?gnb=31'><li>서울사이버대학원</li></a>";
+	}else if(gubun =='51'){
+		var valval =  "<a href='/home/curri/curriHYCU7.sub2.action?gnb=31'><li>한양사이버대학원</li></a>";
+	}else if(gubun =='52'){
+		var valval =  "<a href='/home/curri/curriKH1.sub2.action?gnb=31'><li>경희사이버대학원</li></a>";
+	}else if(gubun =='61'){
+		var valval =  "<a href='/home/curri/curriCUK.sub2.action?gnb=31'><li>고려사이버대학원</li></a>";
+	}else if(gubun =='62'){
+		var valval =  "<a href='/home/curri/curriSJCU2.sub2.action?gnb=31'><li>세종사이버대학원</li></a>";
+	}else if(gubun =='71'){
+		var valval =  "<a href='/home/curri/curriKH2.sub2.action?gnb=31'><li>경희사이버대학원</li></a>";
+	}else{
+		return;
+	}
+	
+					
+		$("#"+gubun).html(valval);
+		$("#"+gubun).show();
+		hidelayST();
+	
+	}
+	function viewCurriculum(universityId, univdeptId, deptId ,cnt){
+		$("#universityId").val(universityId);
+		$("#univdeptId").val(univdeptId);
+		$("#deptId").val(deptId);
+		$("#cnt").val(cnt);
+		
+		if($("#universityId").val() == "" || $("#univdeptId").val() == ""){
+			alert("선택된 내용이 없습니다.");
+			return;
+		} 
+		
+		$("#form").attr("method","post");
+		$("#form").attr("onsubmit","");
+		
+		if(cnt == 1)
+			$("#form").attr("action","/home/curri/curriculum.sub.action?gnb=31");		
+		else
+			$("#form").attr("action","/home/curri/deptDetail.sub.action?gnb=31");
+		$("#form").submit();
+	}
+	
+	</script>
+</head>
+	
+<body id="curri">
+	<p class="location">
+		<a href="/home/index2.main2.action">대학원 홈</a> <span>></span> <a href="/home/curri/major2.sub2.action?gnb=31">교과과정</a> <span>></span> <a href="/home/curri/navigationMajorAreaGrad.sub2.action?gnb=32">학과정보</a> 
+	</p>
+	<h3>
+		<img src="/home/images/title/h3_subject_navigation.gif" alt="학과 내비게이션" />
+		<img src="/home/images/title/c_05.gif" alt="분야 및 학과를 선택하시면 학과검색으로 이동됩니다.">
+	</h3>
+
+	
+		
+
+<div class="contentWrap">
+	<!--s:컨텐츠영역-->
+	
+
+	<div id="list" class="univ_table m_l0">
+
+
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    
+
+
+<table cellspacing="0" cellpadding="0" summary="학과 네비게이션 관리"><!-- list_type01 Start -->
+	<caption>학과 네비게이션 관리</caption>
+	<colgroup>
+		<col width="20%">
+		<col width="*%">
+	</colgroup>
+	<thead>
+		<tr>
+			<th scope="col">분&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;야</th>
+			<th scope="col">학&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;과</th>
+		</tr>
+	</thead>
+	<tbody>
+		
+		<tr>
+			<th scope="row">경상</th>
+			<td class="t_left">
+				<li class="items">
+					<a href="javascript:selectDeptItem('01');">호텔외식MBA</a>
+					<div id="01" class="layST" style="display:none;"/>
+            	</li>
+				<li class="items">
+					<a href="javascript:selectDeptItem('02');">MBA학과</a>
+					<div id="02" class="layST" style="display:none;"/>
+            	</li>
+            	<li class="items">
+					<a href="javascript:selectDeptItem('03');">MBA</a>
+					<div id="03" class="layST" style="display:none;"/>
+            	</li>
+            	<li class="items">
+					<a href="javascript:selectDeptItem('04');">그린텍MBA</a>
+					<div id="04" class="layST" style="display:none;"/>
+            	</li>
+				<li class="items">
+					<a href="javascript:selectDeptItem('05');">외식프랜차이즈MBA</a>
+					<div id="05" class="layST" style="display:none;"/>
+            	</li>
+            	<li class="items">
+					<a href="javascript:selectDeptItem('06');">관광레저항공MBA</a>
+					<div id="06" class="layST" style="display:none;"/>
+            	</li>
+            	<li class="items">
+					<a href="javascript:selectDeptItem('07');">IT MBA</a>
+					<div id="07" class="layST" style="display:none;"/>
+            	</li>
+				<li class="items">
+					<a href="javascript:selectDeptItem('08');">미디어MBA</a>
+					<div id="08" class="layST" style="display:none;"/>
+            	</li>
+            	<li class="items">
+					<a href="javascript:selectDeptItem('09');">부동산</a>
+					<div id="09" class="layST" style="display:none;"/>
+            	</li>
+			</td>
+		</tr>
+		<tr>
+			<th scope="row">교육학</th>
+			<td class="t_left">
+				<li class="items">
+					<a href="javascript:selectDeptItem('11');">TESOL</a>
+					<div id="11" class="layST" style="display:none;"/>
+            	</li>
+				<li class="items">
+					<a href="javascript:selectDeptItem('12');">교육공학</a>
+					<div id="12" class="layST" style="display:none;"/>
+            	</li>
+			</td>
+		</tr>
+		<tr>
+			<th scope="row">건강치료</th>
+			<td class="t_left">
+				<li class="items">
+					<a href="javascript:selectDeptItem('21');">미술상담(미술치료)학과</a>
+					<div id="21" class="layST" style="display:none;"/>
+            	</li>
+				<li class="items">
+					<a href="javascript:selectDeptItem('22');">자연건강학과</a>
+					<div id="22" class="layST" style="display:none;"/>
+            	</li>
+			</td>
+		</tr>
+		<tr>
+			<th scope="row">상담심리</th>
+			<td class="t_left">
+				<li class="items">
+					<a href="javascript:selectDeptItem('31');">상담심리학과</a>
+					<div id="31" class="layST" style="display:none;"/>
+            	</li>
+				<li class="items">
+					<a href="javascript:selectDeptItem('32');">상담심리전공</a>
+					<div id="32" class="layST" style="display:none;"/>
+            	</li>
+            	<li class="items">
+					<a href="javascript:selectDeptItem('33');">아동가족</a>
+					<div id="33" class="layST" style="display:none;"/>
+            	</li>
+            	<li class="items">
+					<a href="javascript:selectDeptItem('34');">상담 및 임상심리</a>
+					<div id="34" class="layST" style="display:none;"/>
+            	</li>
+			</td>
+		</tr>
+		<tr>
+			<th scope="row">복지학</th>
+			<td class="t_left">
+				<li class="items">
+					<a href="javascript:selectDeptItem('41');">사회복지상담학과</a>
+					<div id="41" class="layST" style="display:none;"/>
+            	</li>
+				<li class="items">
+					<a href="javascript:selectDeptItem('42');">사회복지전공</a>
+					<div id="42" class="layST" style="display:none;"/>
+            	</li>
+			</td>
+		</tr>
+		<tr>
+			<th scope="row">문화•예술</th>
+			<td class="t_left">
+				<li class="items">
+					<a href="javascript:selectDeptItem('51');">디자인기획</a>
+					<div id="51" class="layST" style="display:none;"/>
+            	</li>
+				<li class="items">
+					<a href="javascript:selectDeptItem('52');">미디어문예창작</a>
+					<div id="52" class="layST" style="display:none;"/>
+            	</li>
+			</td>
+		</tr>
+		<tr>
+			<th scope="row">컴퓨터정보통신</th>
+			<td class="t_left">
+				<li class="items">
+					<a href="javascript:selectDeptItem('61');">융합정보학</a>
+					<div id="61" class="layST" style="display:none;"/>
+            	</li>
+				<li class="items">
+					<a href="javascript:selectDeptItem('62');">정보보호학과</a>
+					<div id="62" class="layST" style="display:none;"/>
+            	</li>
+			</td>
+		</tr>
+		
+		<tr>
+			<th scope="row">어문학</th>
+			<td class="t_left">
+				<li class="items">
+					<a href="javascript:selectDeptItem('71');">어문학</a>
+					<div id="71" class="layST" style="display:none;"/>
+            	</li>
+			</td>
+		</tr>
+    
+	</tbody>
+	
+</table><!-- list_type01 End -->
+
+
+
+</div>
+
+		
+		
+		
+		
+	<form class="search_box01" id="form" name="form" action="#" onsubmit="try{search();}catch(e){alert(e);}return false;"><!-- box_type01 Start -->
+        <input type="hidden" id="universityId" name="universityId">
+        <input type="hidden" id="univdeptId" name="univdeptId">
+        <input type="hidden" id="classifyId" name="classifyId">
+        <input type="hidden" id="classifyName" name="classifyName">
+        <input type="hidden" id="deptId" name="deptId">
+        <input type="hidden" id="deptName" name="deptName">
+        <input type="hidden" id="tabGubn" name="tabGubn" value="1">
+		<input type="hidden" id="cnt" name="cnt">
+		<input type="hidden" id="gubn" name="gubn">
+	</form>
+
+ <!----  END OF :: 컨텐츠 영역 ---->
+
+</body>
+</html>

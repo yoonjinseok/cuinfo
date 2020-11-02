@@ -1,0 +1,13 @@
+#if($selectUnivList)
+	#if($selectUnivList.size() > 0)
+	##<p>
+		#foreach($list in $selectUnivList)
+		<a href="javascript:viewCurriculum('$!list.universityId','$!list.univdeptId', '$!list.deptId' ,$!list.cnt)"><li>$!list.universityName</li></a>
+		#end
+	##</p>
+	#else
+	
+	<p>검색된 내용이 없습니다.</p>
+	
+	#end
+#end

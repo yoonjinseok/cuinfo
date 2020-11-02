@@ -1,0 +1,197 @@
+<head>
+	<title>강좌정보 관리</title>
+	<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+	<script type="text/javascript" language="javascript">
+	
+	function search()
+	{
+		goPage(1);
+	}
+	
+	function setRecordCnt(totalCnt, currPage, totalPage, showCnt)
+	{
+		$("#tCnt").text(totalCnt);
+		$("#cPage").text(currPage);
+		$("#tPage").text(totalPage);
+		
+		setPaging($("#pg"), totalCnt, showCnt, currPage);
+	}
+	
+	function goPage(page)
+	{
+		if(typeof(page) != "undefined")
+			$("#currPage").val(page);
+		$("#chart_div").html("");
+		jQuery.post('courseByPeriod_list.ajax.action', 
+				$("#searchForm").formSerialize(), 
+				function(data) {
+        			$("#list").html(data);
+        			
+					if($("#pageGubn").val() == "1"){
+						$("#t1").removeClass().addClass("tab1 on");
+						$("#t2").removeClass().addClass("tab2");
+					}else{
+						$("#t1").removeClass().addClass("tab1");
+						$("#t2").removeClass().addClass("tab2 on");
+					}
+					
+        			//차트생성
+        			drawVisualization();
+		});
+	}
+	
+	function modify(courseId)
+	{
+		showModalWin('/mgr/course/courseMgr_modify.pop.action?courseId=' + courseId, '800px', '700px');
+	}
+	
+    $(document).ready(function() {
+    	//수집일 달력표시
+		showCalendar($('#startDate'));
+		showCalendar($('#endDate'));
+	
+		search();
+		
+    });
+    
+    function showChart(){
+    	$("#chart_div").toggle();
+    }
+    
+    //페이지구분 [1:년도별, 2:년월별] 
+    function changeGubn(no){
+    	$("#pageGubn").val(no);
+    	goPage(1);
+    }
+    
+	</script>
+</head>
+<body>
+
+<div id="location_box">
+		<h3><img src="/mgr/images/stats/title1.gif" alt="기간별통계" /></h3>
+		<ul class="location">
+			<li><a href="/mgr/main.sub.action">Home</a></li>
+			<li><a href="#">통계현황조회</a></li>
+			<li>기간별통계</li>
+		</ul>
+</div>
+
+<ul class="tab_type1 num1">
+	<li class="tab1 on"><a href="courseByPeriod.sub.action?gnb=31">기간별 강좌 등록통계</a></li>
+	<li class="tab2"><a href="courseByUniv.sub.action?gnb=31">학교별 등록통계</a></li>
+	<li class="tab3"><a href="courseByClass.sub.action?gnb=31">학과분야별 등록통계</a></li>
+</ul>
+
+<form class="search_box01" id="searchForm" name="searchForm" action="#" onsubmit="try{search();}catch(e){alert(e);}return false;"><!-- box_type01 Start -->
+<input type="hidden" id="currPage" name="currPage" value="1"/>
+<input type="hidden" id="showCnt" name="showCnt" value="100"/>
+<input type="hidden" id="pageGubn" name="pageGubn" value="1"/>
+	<fieldset class="inner">
+		<table cellspacing="0" cellpadding="0" summary="메타데이터 검색" class="border_none_table">
+			<caption>메타데이터 검색</caption>
+			<colgroup>
+				<col width="45%"/>
+				<col width="*%"/>
+			</colgroup>
+			<tbody>
+				<tr>
+					<td colspan="2">
+						<label for="input-1">수집일</label>
+						<input type="text" id="startDate" name="startDate" size="12" title="수집시작일" value="$!passday"/> 
+						~
+						<input type="text" id="endDate" name="endDate" size="12" title="수집종료일" value="$!today"/> 
+					</td>
+					<td for="select-1">
+						<label for="select-1">상태</label>
+						<select	id="svcStatus" name="svcStatus" style="width:145px;">
+							<option value="">전체</option>
+							##상태리스트
+							#foreach($status in $statusCodeList)
+							<option value="$status.value">$status.name</option>
+							#end
+						</select>
+					</td>				
+				</tr>
+				<tr>
+					<td>
+						<label for="input-2">학교명</label>
+						<input type="text" id="universityName" name="universityName" value="$!login.universityName" #if($!login.isUniversityOper())readonly="readonly"#end size="20" title="학교명입력"/> 
+					</td>
+					<td colspan="2">
+						<label for="input-3">학과명</label>
+						<input type="text" id="departmentName" name="departmentName" size="20" title="학과명입력"/> 
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<label for="select-1">강의유형</label>
+						<select	id="type" name="type" style="width:145px;">
+							<option value="">전체</option>
+							#foreach($type in $typeCodeList)
+							<option value="$type.value">$type.name</option>
+							#end
+						</select> 
+					</td>
+					<td colspan="2">
+						<label for="select-1">공개범위</label>
+						<select	id="grants" name="grants" style="width:145px;">
+							<option value="">전체</option>
+							<option value="Y">공개</option>
+							<option value="N">비공개</option>
+						</select> 
+					</td>
+				</tr>
+				<tr>
+					<td>
+					<label for="input-2">개설연도</label>
+						<select id="termYearStart" name="termYearStart">
+						<script>
+						var currYear = new Date().getFullYear();
+						for(var i = currYear; i >= currYear - 10; i--)
+						{
+							document.writeln('<option value="'+i+'">'+i+'년</option>');
+						}
+						</script>
+						</select>
+						~
+						<select id="termYearEnd" name="termYearEnd">
+						<script>
+						for(var i = currYear; i >= currYear - 10; i--)
+						{
+							document.writeln('<option value="'+i+'">'+i+'년</option>');
+						}
+						</script>
+						</select>
+					</td>
+					<td colspan="2" align="right">
+						<a><input type="image" style="width:52px;height:21px;border:0px;" src="/mgr/images/btn/search.gif" alt="검색" /></a>
+						&nbsp;&nbsp;&nbsp;
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</fieldset>
+</form><!-- box_type01 End -->
+
+#**
+<div class="list_top01">
+	<span>제목 클릭 시 메타 편집기  수정할 수 있습니다.</span>
+	<span class="f_right">total : <em id="tCnt">00</em>건(<em id="cPage">1</em>/<em id="tPage">10</em>page)
+		<select id="showCnt" name="showCnt" onchange="$('#searchForm #showCnt').val(this.value);search();">
+		<option value="20" selected>20개씩</option>
+		<option value="50">50개씩</option>
+		<option value="100">100개씩</option>
+		</select>
+	</span>
+</div>
+**#
+
+<div id="list" name="list">#parse('mgr/stats/courseByPeriod_list.vm')</div>
+
+<div class="page_num">
+	<div id="pg" name="pg"></div>
+</div>
+<div id="chart_div" style="border:1px solid gray;width: 710px; height: 500px;display: none;"></div>
+</body>
+</html>

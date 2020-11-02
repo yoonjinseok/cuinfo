@@ -1,0 +1,820 @@
+<?xml version="1.0" encoding="EUC-KR"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="UnivDao">
+	<typeAlias alias="univ" type="com.cyberup.model.univ.Univ"/>
+	
+	<select id="selectUnivDept" parameterClass="univ" resultClass="univ">
+		SELECT * FROM (
+	        SELECT 
+	            ROW_NUMBER() OVER(PARTITION BY C.CLASSIFY_ID ORDER BY C.CLASSIFY_ORDER) CNT
+	            ,C.CLASSIFY_ID classifyId
+	            ,C.CLASSIFY_NAME classifyName
+	            ,A.UNIVERSITY_ID universityId
+	            ,A.UNIVDEPT_NAME univdeptName
+	            ,A.DEPT_ID deptId
+	            ,B.DEPT_NAME deptName
+	        FROM CU_UNIV_DEPT A, CU_REPT_DEPT B, CU_REPT_CLASSIFICATION C
+	        WHERE A.DEPT_ID = B.DEPT_ID
+	        AND B.CLASSIFY_ID = C.CLASSIFY_ID
+	        AND A.use_yn = 'Y'
+	        AND A.UNIVERSITY_ID = #university_id#
+	        AND c.classify_id != '0'
+	        ORDER BY classifyname,cnt)
+	        UNION ALL
+	        (SELECT 
+	            ROW_NUMBER() OVER(PARTITION BY C.CLASSIFY_ID ORDER BY C.CLASSIFY_ORDER) CNT
+	            ,C.CLASSIFY_ID classifyId
+	            ,C.CLASSIFY_NAME classifyName
+	            ,A.UNIVERSITY_ID universityId
+	            ,A.UNIVDEPT_NAME univdeptName
+	            ,A.DEPT_ID deptId
+	            ,B.DEPT_NAME deptName
+	        FROM CU_UNIV_DEPT A, CU_REPT_DEPT B, CU_REPT_CLASSIFICATION C
+	        WHERE A.DEPT_ID = B.DEPT_ID
+	        AND B.CLASSIFY_ID = C.CLASSIFY_ID
+	        AND A.use_yn = 'Y'
+	        AND A.UNIVERSITY_ID = #university_id#
+	        AND c.classify_id = '0'
+        )	
+	</select>
+	
+	<select id="selectUnivInfoList" resultClass="univ" parameterClass="univ">
+	SELECT   a.*
+            FROM 
+            (
+				SELECT 
+                        ROW_NUMBER() OVER(ORDER BY A.univ_name asc) as recNum
+                        , COUNT (*) OVER () as totalCnt
+                        ,A.UNIVERSITY_ID
+                        ,A.UNIV_EMAIL as univEmail
+                        ,A.UNIV_NAME||CASE WHEN a.university_id = '19' and #gubunId# != '0' THEN '(학사학위과정)' WHEN a.university_id ='20' and #gubunId# != '0' THEN '(전문학사학위과정)' END UNIV_NAME
+                        ,A.UNIV_HOMEPAGE
+                        ,A.LOGO_UPFILE_GID
+                        ,CASE WHEN A.UNIVERSITY_ID IS NOT NULL THEN 'O' ELSE 'X' END AS basic_type
+                        ,CASE WHEN C.IMG_TYPE_ID IS NULL then 'X'
+					                when C.IMG_TYPE_ID = '0' then 'X'
+					                when C.IMG_TYPE_ID = '22' and content is not null then 'O'
+					                when C.IMG_TYPE_ID = '23' and C.IMG_UPFILE_GID1 is not null then 'O'
+					                when C.IMG_TYPE_ID = '24' and (C.IMG_UPFILE_GID1 is not null 
+				                                                OR C.IMG_UPFILE_GID2 is not null 
+				                                                OR C.IMG_UPFILE_GID3 is not null 
+				                                                OR C.IMG_UPFILE_GID4 is not null) then 'O'
+                      				else 'X'
+             			   END total_type
+                        ,CASE WHEN B.GREETING_TYPE_ID IS NULL or B.GREETING_TYPE_ID = '0' then 'X'
+                                    when B.GREETING_TYPE_ID = '19' and nvl(b.greeting_img_upfile_id,'0') != '0' then 'O'
+                                    when B.GREETING_TYPE_ID in ('18','20') and greeting_content is not null then 'O'
+                                    else 'X'
+                           END greeting_type
+                         ,CASE WHEN B.VISION_TYPE_ID IS NULL or B.VISION_TYPE_ID = '0' then 'X'
+                                when B.VISION_TYPE_ID = '19' and nvl(b.VISION_IMG_UPFILE_ID,'0') != '0' then 'O'
+                                when B.VISION_TYPE_ID in ('18','20') and VISION_CONTENT is not null then 'O'
+                                else 'X'
+                       END vision_type
+                         ,CASE WHEN B.LOCATION_TYPE_ID IS NULL or B.LOCATION_TYPE_ID = '0' then 'X'
+                                when B.LOCATION_TYPE_ID = '19' and nvl(b.LOCATION_IMG_UPFILE_ID,'0') != '0' then 'O'
+                                when B.LOCATION_TYPE_ID in ('18','20') and LOCATION_CONTENT is not null then 'O'
+                                else 'X'
+                       END location_type
+                         ,CASE WHEN B.PUBLIC_TYPE_ID IS NULL or B.PUBLIC_TYPE_ID = '0' then 'X'
+                                when B.PUBLIC_TYPE_ID = '19' and nvl(b.PUBLIC_IMG_UPFILE_ID,'0') != '0' then 'O'
+                                when B.PUBLIC_TYPE_ID in ('18','20') and PUBLIC_CONTENT is not null then 'O'
+                                else 'X'
+                       END public_type
+                         ,CASE WHEN NVL((SELECT SUM(NVL2(DEADLINK_ERR_CODE,1,0)) FROM CU_UNIV_LINK D WHERE D.UNIVERSITY_ID = A.UNIVERSITY_ID),0) = 0 THEN 'O' 
+                                ELSE TO_CHAR((SELECT SUM(NVL2(DEADLINK_ERR_CODE,1,0)) FROM CU_UNIV_LINK D WHERE D.UNIVERSITY_ID = A.UNIVERSITY_ID)) END
+                         AS DLCNT  , a.success_story as successStory, a.success_link as successLink
+                FROM CU_UNIV_INFO A, CU_UNIV_OPTION B, CU_UNIV_OVERALL C
+                WHERE 1=1
+                AND A.USE_YN = 'Y'
+                AND A.UNIVERSITY_ID = B.UNIVERSITY_ID(+)
+                AND A.UNIVERSITY_ID = C.UNIVERSITY_ID(+)
+		        <isEmpty property="gubunId">
+	                and a.gubun_id in ('51','52','163')
+		        </isEmpty>
+		        <isNotEmpty property="gubunId">
+		        	<isEqual property="gubunId" compareValue="0">
+	                and a.gubun_id in ('51','52','163')
+		        	</isEqual>
+		        	<isNotEqual property="gubunId" compareValue="0">
+					AND	A.GUBUN_ID = #gubunId#							        
+		        	</isNotEqual>
+		        </isNotEmpty>
+		        <isNotEmpty property="text">
+			        <isEqual property="radio" compareValue="name">
+			        AND	A.UNIV_NAME LIKE '%'||#text#||'%'
+			        </isEqual>
+			        <isEqual property="radio" compareValue="code">
+			        AND	A.UNIVERSITY_ID = #text#
+			        </isEqual>
+		        </isNotEmpty>
+                ) a
+        WHERE CEIL (recNum / #showCnt,javaType=Integer#) = #currPage,javaType=Integer#
+        ORDER BY recNum ASC
+	</select>
+	
+	<!-- 대학원리스트 lv1 -->
+	<select id="selectGraduateUnivList" resultClass="univ" parameterClass="univ">
+	SELECT DISTINCT univ_name 
+	FROM (
+	    SELECT 
+	        CASE WHEN instr(univ_name,'(') > 1 THEN substr(univ_name, 1, instr(univ_name,'(') - 1) ELSE univ_name END univ_name 
+	    FROM cu_univ_info
+	    WHERE gubun_id = '169'
+	)
+	ORDER BY univ_name
+	</select>
+	
+	<select id="selectUnivInfo" resultClass="univ" parameterClass="Integer">
+		SELECT 
+		    UNIVERSITY_ID
+		    ,(select UPFILE_PATH from cu_svc_attfileupload where upfile_gid = VIDEO_UPFILE_GID and upfile_gid != 0) videoUpfilePath
+		    ,UNIV_NAME
+		    ,GUBUN_ID
+		    ,CORE_SLOGAN
+		    ,UNIV_ZIPCODE
+		    ,UNIV_ADDRESS
+		    ,UNIV_EMAIL
+		    ,UNIV_HOMEPAGE
+		    ,getSip(UNIV_HOMEPAGE) as sip
+		    ,getUri(UNIV_HOMEPAGE) as uri
+		    ,getQri(UNIV_HOMEPAGE) as qri
+		    ,getSp(UNIV_HOMEPAGE) as sp
+		    ,UNIV_PHONE
+		    ,UNIV_ENTER_PHONE
+		    ,UNIV_FAX
+		    ,LOGO_UPFILE_GID
+		    ,(select UPFILE_FILENAME from cu_svc_attfileupload where upfile_id = LOGO_UPFILE_gid ) originalFilename_0
+	        ,(select UPFILE_PATH from cu_svc_attfileupload where upfile_id = LOGO_UPFILE_gid) srcName_0
+	        ,(select UPFILE_SIZE from cu_svc_attfileupload where upfile_id = LOGO_UPFILE_gid) fileSize_0
+	        ,(select upfile_id from cu_svc_attfileupload where upfile_id = LOGO_UPFILE_gid) upfileId0
+		    ,VIDEO_IMG_UPFILE_GID
+		    ,(select UPFILE_FILENAME from cu_svc_attfileupload where upfile_id = VIDEO_IMG_UPFILE_GID and upfile_gid != 0) originalFilename_1
+	        ,(select UPFILE_PATH from cu_svc_attfileupload where upfile_id = VIDEO_IMG_UPFILE_GID) srcName_1
+	        ,(select UPFILE_SIZE from cu_svc_attfileupload where upfile_id = VIDEO_IMG_UPFILE_GID) fileSize_1
+	        ,(select upfile_id from cu_svc_attfileupload where upfile_id = VIDEO_IMG_UPFILE_GID) upfileId1
+		    ,VIDEO_UPFILE_GID
+		    ,(select UPFILE_FILENAME from cu_svc_attfileupload where upfile_id = VIDEO_UPFILE_GID) originalFilename_2
+	        ,(select UPFILE_PATH from cu_svc_attfileupload where upfile_id = VIDEO_UPFILE_GID) srcName_2
+	        ,(select UPFILE_SIZE from cu_svc_attfileupload where upfile_id = VIDEO_UPFILE_GID) fileSize_2
+	        ,(select upfile_id from cu_svc_attfileupload where upfile_id = VIDEO_UPFILE_GID) upfileId2
+	        , entermodel
+		    ,(select UPFILE_FILENAME from cu_svc_attfileupload where upfile_id = entermodel) originalFilename_3
+	        ,(select UPFILE_PATH from cu_svc_attfileupload where upfile_id = entermodel) srcName_3
+	        ,(select UPFILE_SIZE from cu_svc_attfileupload where upfile_id = entermodel) fileSize_3
+	        ,(select upfile_id from cu_svc_attfileupload where upfile_id = entermodel) upfileId3
+		    ,ACADEMY_ID
+		    ,USE_YN
+		    ,REGISTER as register
+		    ,REG_DATE as regDate
+		    ,MODIFIER as modifier
+		    ,MOD_DATE as modDate
+		    ,LOCAL_ID 
+		    ,UNIV_FEATURE as univFeature
+		    ,SUCCESS_STORY successStory
+		    ,SUCCESS_LINK successLink
+		    , CHARIMAN chairman
+		    , PRINCIPAL principal
+		    , SUP_OPEN supOpen
+		    , SAME_CORP sameCorp
+		FROM CU_UNIV_INFO
+
+		WHERE UNIVERSITY_ID = #universityId#
+	</select>
+	
+	<select id="selectChairmanInfo" resultClass="String" parameterClass="Integer">
+		SELECT CHARIMAN as chairman
+  			FROM CU_UNIV_INFO
+ 			WHERE UNIVERSITY_ID = #universityId#
+	</select>
+	
+	<update id="updateChairmanInfo" parameterClass="Univ">
+		UPDATE CU_UNIV_INFO SET CHARIMAN = #chairman# WHERE UNIVERSITY_ID = #universityId#
+	</update>
+	
+	<select id="selectPrincipalInfo" resultClass="String" parameterClass="Integer">
+		SELECT PRINCIPAL as principal
+  			FROM CU_UNIV_INFO
+ 			WHERE UNIVERSITY_ID = #universityId#
+	</select>
+	
+	<update id="updatePrincipalInfo" parameterClass="Univ">
+		UPDATE CU_UNIV_INFO SET PRINCIPAL = #principal# WHERE UNIVERSITY_ID = #universityId#
+	</update>
+	
+	<select id="selectUnivLinkList" resultClass="Univ" parameterClass="Integer">
+		SELECT 
+	        LINK_ID
+	        ,UNIVERSITY_ID
+	        ,LINK_GUBUN_ID
+	        ,(SELECT CODE_NAME FROM CU_COM_CODE WHERE CODE_GROUP = '13' AND CODE_ID = LINK_GUBUN_ID) LINK_GUBUN_NM
+	        ,LINK_NAME
+	        ,LINK_URL
+	        ,LINK_ORDER
+	        ,nvl(DEADLINK_ERR_CODE,'O') DEADLINK_ERR_CODE
+		    ,REGISTER as register
+		    ,REG_DATE as regDate
+		    ,MODIFIER as modifier
+		    ,MOD_DATE as modDate
+		FROM CU_UNIV_LINK
+		WHERE 1=1
+			and UNIVERSITY_ID = #university_Id#
+		ORDER BY LINK_ORDER
+	</select>
+	
+	<update id="updateUnivInfo" parameterClass="Univ">
+	UPDATE CU_UNIV_INFO
+	SET 
+		GUBUN_ID               =#gubun_id#
+		,CORE_SLOGAN           =#core_slogan#
+		,UNIV_ZIPCODE          =replace(#univ_zipcode#,'-','')
+		,UNIV_ADDRESS          =#univ_address#
+		,UNIV_EMAIL            =#univ_email#
+		,UNIV_HOMEPAGE         =#univ_homepage#
+		,UNIV_PHONE            =#univ_phone#
+		,UNIV_ENTER_PHONE      =#univ_enter_phone#
+		,UNIV_FAX              =#univ_fax#
+		,LOGO_UPFILE_GID       =#logo_upfile_gid#
+		,VIDEO_IMG_UPFILE_GID  =#video_img_upfile_gid#
+		,VIDEO_UPFILE_GID      =#video_upfile_gid#
+		,MODIFIER              =#modifier#
+		,MOD_DATE              =SYSDATE
+		,LOCAL_ID              =#local_id#	  
+		,UNIV_FEATURE          =#univFeature#	   
+		,SUCCESS_STORY			=#successStory# 
+		,SUCCESS_LINK			=#successLink# 
+		,entermodel			=#entermodel#
+		, CHARIMAN	=#chairman#
+	    , PRINCIPAL	=#principal#
+		, SUP_OPEN	=#supOpen#
+		, SAME_CORP	=#sameCorp#		
+	WHERE UNIVERSITY_ID	=#university_id#
+		
+	</update>
+	
+	<update id="modifyUnivInfo_file" parameterClass="Univ">
+	UPDATE CU_UNIV_INFO
+	SET 
+		LOGO_UPFILE_GID       =#logo_upfile_gid#
+		,VIDEO_IMG_UPFILE_GID  =#video_img_upfile_gid#
+		,VIDEO_UPFILE_GID      =#video_upfile_gid#
+		,MODIFIER              =#modifier#
+		,MOD_DATE              =#modDate#
+	WHERE UNIVERSITY_ID = #university_id#
+		
+	</update>
+	
+		
+	<select id="selectUnivLinkInfo" parameterClass="Integer" resultClass="Univ">
+	SELECT 
+        LINK_ID
+        ,(SELECT univ_name FROM cu_univ_info WHERE university_id = A.university_id) UNIV_NAME
+        ,UNIVERSITY_ID
+        ,LINK_GUBUN_ID
+        ,LINK_NAME
+        ,LINK_URL
+        ,LINK_ORDER
+     FROM CU_UNIV_LINK A
+    WHERE LINK_ID = #link_id#
+	</select>
+	
+	<update id="updateLinkInfo" parameterClass="Univ">
+	UPDATE CU_UNIV_LINK
+	SET 
+		LINK_GUBUN_ID 	= #link_gubun_id#
+		,LINK_NAME 		= #link_name#
+		,LINK_URL 		= #link_url#
+		,LINK_ORDER		= #link_order#
+		,MODIFIER = #modifier#
+		,MOD_DATE = SYSDATE
+	WHERE LINK_ID = #link_id#
+		
+	</update>
+	
+	<insert id="insertLinkInfo" parameterClass="Univ">
+	INSERT INTO CU_UNIV_LINK
+	(
+	        LINK_ID
+	        ,UNIVERSITY_ID
+	        ,LINK_GUBUN_ID
+	        ,LINK_NAME
+	        ,LINK_URL
+	        ,LINK_ORDER
+	        ,REGISTER
+	        ,REG_DATE
+	)
+	VALUES
+	(
+	        (select max(link_id) + 1 from cu_univ_link)
+	        ,#university_id#
+	        ,#link_gubun_id#
+	        ,#link_name#
+	        ,#link_url#
+	        ,#link_order#
+	        ,#register#
+	        ,SYSDATE
+	)
+	</insert>
+	
+	<select id="selectUnivOptionInfo" parameterClass="Integer" resultClass="Univ">
+	
+        SELECT 
+                UNIVERSITY_ID
+                ,(SELECT univ_name FROM cu_univ_info WHERE university_id = A.university_id) univ_name
+                ,(SELECT univ_name FROM cu_univ_info WHERE university_id = A.university_id) university_name
+                ,GREETING_TYPE_ID
+                ,GREETING_CONTENT GREETING_CONTENT
+                ,GREETING_IMG_UPFILE_ID
+                ,(SELECT UPFILE_FILENAME FROM cu_svc_attfileupload WHERE upfile_id = GREETING_IMG_UPFILE_ID ) originalFilename_0
+                ,(SELECT UPFILE_PATH FROM cu_svc_attfileupload WHERE upfile_id = GREETING_IMG_UPFILE_ID) srcName_0
+                ,(SELECT UPFILE_SIZE FROM cu_svc_attfileupload WHERE upfile_id = GREETING_IMG_UPFILE_ID) fileSize_0
+                ,(SELECT upfile_id FROM cu_svc_attfileupload WHERE upfile_id = GREETING_IMG_UPFILE_ID) upfileId0
+                ,VISION_TYPE_ID
+                ,VISION_CONTENT VISION_CONTENT
+                ,VISION_IMG_UPFILE_ID
+                ,(SELECT UPFILE_FILENAME FROM cu_svc_attfileupload WHERE upfile_id = VISION_IMG_UPFILE_ID ) originalFilename_1
+                ,(SELECT UPFILE_PATH FROM cu_svc_attfileupload WHERE upfile_id = VISION_IMG_UPFILE_ID) srcName_1
+                ,(SELECT UPFILE_SIZE FROM cu_svc_attfileupload WHERE upfile_id = VISION_IMG_UPFILE_ID) fileSize_1
+                ,(SELECT upfile_id FROM cu_svc_attfileupload WHERE upfile_id = VISION_IMG_UPFILE_ID) upfileId1
+                ,LOCATION_TYPE_ID
+                ,location_content LOCATION_CONTENT
+                ,LOCATION_IMG_UPFILE_ID
+                ,(SELECT UPFILE_FILENAME FROM cu_svc_attfileupload WHERE upfile_id = LOCATION_IMG_UPFILE_ID ) originalFilename_2
+                ,(SELECT UPFILE_PATH FROM cu_svc_attfileupload WHERE upfile_id = LOCATION_IMG_UPFILE_ID) srcName_2
+                ,(SELECT UPFILE_SIZE FROM cu_svc_attfileupload WHERE upfile_id = LOCATION_IMG_UPFILE_ID) fileSize_2
+                ,(SELECT upfile_id FROM cu_svc_attfileupload WHERE upfile_id = LOCATION_IMG_UPFILE_ID) upfileId2
+                ,PUBLIC_TYPE_ID
+                ,PUBLIC_CONTENT PUBLIC_CONTENT
+                ,PUBLIC_IMG_UPFILE_ID
+                ,(SELECT UPFILE_FILENAME FROM cu_svc_attfileupload WHERE upfile_id = PUBLIC_IMG_UPFILE_ID ) originalFilename_3
+                ,(SELECT UPFILE_PATH FROM cu_svc_attfileupload WHERE upfile_id = PUBLIC_IMG_UPFILE_ID) srcName_3
+                ,(SELECT UPFILE_SIZE FROM cu_svc_attfileupload WHERE upfile_id = PUBLIC_IMG_UPFILE_ID) fileSize_3
+                ,(SELECT upfile_id FROM cu_svc_attfileupload WHERE upfile_id = PUBLIC_IMG_UPFILE_ID) upfileId3
+                ,SHOW_YN
+                ,REGISTER AS REGISTER
+                ,REG_DATE AS regDate
+                ,MODIFIER AS modifier
+                ,MOD_DATE AS modDate   
+        FROM CU_UNIV_OPTION A		WHERE UNIVERSITY_ID = #university_id#
+	</select>
+	
+	<insert id="insertUnivOption" parameterClass="Univ">
+		INSERT INTO CU_UNIV_OPTION
+		(
+		        UNIVERSITY_ID
+		        ,GREETING_TYPE_ID
+		        ,GREETING_CONTENT
+		        ,GREETING_IMG_UPFILE_ID
+		        ,VISION_TYPE_ID
+		        ,VISION_CONTENT
+		        ,VISION_IMG_UPFILE_ID
+		        ,LOCATION_TYPE_ID
+		        ,LOCATION_CONTENT
+		        ,LOCATION_IMG_UPFILE_ID
+		        ,PUBLIC_TYPE_ID
+		        ,PUBLIC_CONTENT
+		        ,PUBLIC_IMG_UPFILE_ID
+		        ,SHOW_YN
+		        ,REGISTER
+		        ,REG_DATE
+		)
+		VALUES
+		(
+		        #univ_id#
+		        ,#greeting_type_id#
+		        ,#greeting_content#
+		        ,#greeting_img_upfile_id#
+		        ,#vision_type_id#
+		        ,#vision_content#
+		        ,#vision_img_upfile_id#
+		        ,#location_type_id#
+		        ,#location_content#
+		        ,#location_img_upfile_id#
+		        ,#public_type_id#
+		        ,#public_content#
+		        ,#public_img_upfile_id#
+		        ,'Y'
+		        ,#register#
+		        ,SYSDATE
+		)
+	</insert>
+
+
+	
+	<update id="modifyUnivOption" parameterClass="Univ">
+	
+		UPDATE CU_UNIV_OPTION
+		SET
+			UNIVERSITY_ID			= #university_id#          
+	        ,GREETING_TYPE_ID		= #greeting_type_id#       
+	        ,GREETING_CONTENT		= #greeting_content#
+	        ,GREETING_IMG_UPFILE_ID	= #greeting_img_upfile_id# 
+	        ,VISION_TYPE_ID			= #vision_type_id#         
+	        ,VISION_CONTENT			= #vision_content#         
+	        ,VISION_IMG_UPFILE_ID	= #vision_img_upfile_id#   
+	        ,LOCATION_TYPE_ID		= #location_type_id#       
+	        ,LOCATION_CONTENT		= #location_content#       
+	        ,LOCATION_IMG_UPFILE_ID	= #location_img_upfile_id# 
+	        ,PUBLIC_TYPE_ID			= #public_type_id#         
+	        ,PUBLIC_CONTENT			= #public_content#         
+	        ,PUBLIC_IMG_UPFILE_ID	= #public_img_upfile_id#   
+	        ,SHOW_YN				= 'Y'                      
+	        ,MODIFIER				= #modifier#               
+	        ,MOD_DATE				= sysdate      
+	    WHERE UNIVERSITY_ID = #university_id#
+	</update>
+	
+	<update id="modifyUnivOption_file" parameterClass="Univ">
+	
+		UPDATE CU_UNIV_OPTION
+		SET
+			UNIVERSITY_ID			= #university_id#          
+	        ,GREETING_TYPE_ID		= #greeting_type_id#       
+	        ,GREETING_CONTENT		= #greeting_content#
+	        ,GREETING_IMG_UPFILE_ID	= #greeting_img_upfile_id# 
+	        ,VISION_TYPE_ID			= #vision_type_id#         
+	        ,VISION_CONTENT			= #vision_content#         
+	        ,VISION_IMG_UPFILE_ID	= #vision_img_upfile_id#   
+	        ,LOCATION_TYPE_ID		= #location_type_id#       
+	        ,LOCATION_CONTENT		= #location_content#       
+	        ,LOCATION_IMG_UPFILE_ID	= #location_img_upfile_id# 
+	        ,PUBLIC_TYPE_ID			= #public_type_id#         
+	        ,PUBLIC_CONTENT			= #public_content#         
+	        ,PUBLIC_IMG_UPFILE_ID	= #public_img_upfile_id#   
+	        ,SHOW_YN				= 'Y'                      
+	        ,MODIFIER				= #modifier#               
+	        ,MOD_DATE				= sysdate      
+	    WHERE UNIVERSITY_ID = #university_id#
+	</update>
+
+	<select id="selectUnivOverallInfo" parameterClass="Integer" resultClass="Univ">
+		SELECT 
+			UNIVERSITY_ID as university_id
+	        ,(select univ_name from cu_univ_info where university_id = a.university_id) univ_name
+	        ,(select univ_name from cu_univ_info where university_id = a.university_id) university_name,
+			PUBLIC_VOD_UPFILE_ID2 as publicVodUpfileId2,
+			IMG_TYPE_ID as imgTypeId,
+			CONTENT CONTENT ,
+			IMG_UPFILE_GID1 as imgUpfileGid0
+			,(select UPFILE_FILENAME from cu_svc_attfileupload where upfile_id = IMG_UPFILE_GID1 ) originalFilename_0
+	        ,(select UPFILE_PATH from cu_svc_attfileupload where upfile_id = IMG_UPFILE_GID1) srcName_0
+	        ,(select UPFILE_SIZE from cu_svc_attfileupload where upfile_id = IMG_UPFILE_GID1) fileSize_0
+	        ,(select upfile_id from cu_svc_attfileupload where upfile_id = IMG_UPFILE_GID1) upfileId0
+			,IMG_MAP_TAG1 as imgMapTag0,
+			IMG_UPFILE_GID2 as imgUpfileGid1
+			,(select UPFILE_FILENAME from cu_svc_attfileupload where upfile_id = IMG_UPFILE_GID2 ) originalFilename_1
+	        ,(select UPFILE_PATH from cu_svc_attfileupload where upfile_id = IMG_UPFILE_GID2) srcName_1
+	        ,(select UPFILE_SIZE from cu_svc_attfileupload where upfile_id = IMG_UPFILE_GID2) fileSize_1
+	        ,(select upfile_id from cu_svc_attfileupload where upfile_id = IMG_UPFILE_GID2) upfileId1
+			,IMG_MAP_TAG2 as imgMapTag1,
+			IMG_UPFILE_GID3 as imgUpfileGid2
+			,(select UPFILE_FILENAME from cu_svc_attfileupload where upfile_id = IMG_UPFILE_GID3 ) originalFilename_2
+	        ,(select UPFILE_PATH from cu_svc_attfileupload where upfile_id = IMG_UPFILE_GID3) srcName_2
+	        ,(select UPFILE_SIZE from cu_svc_attfileupload where upfile_id = IMG_UPFILE_GID3) fileSize_2
+	        ,(select upfile_id from cu_svc_attfileupload where upfile_id = IMG_UPFILE_GID3) upfileId2
+			,IMG_MAP_TAG3 as imgMapTag2,
+			IMG_UPFILE_GID4 as imgUpfileGid3
+			,(select UPFILE_FILENAME from cu_svc_attfileupload where upfile_id = IMG_UPFILE_GID4 ) originalFilename_3
+	        ,(select UPFILE_PATH from cu_svc_attfileupload where upfile_id = IMG_UPFILE_GID4) srcName_3
+	        ,(select UPFILE_SIZE from cu_svc_attfileupload where upfile_id = IMG_UPFILE_GID4) fileSize_3
+	        ,(select upfile_id from cu_svc_attfileupload where upfile_id = IMG_UPFILE_GID4) upfileId3
+			,IMG_MAP_TAG4 as imgMapTag3,
+			SHOW_YN as showYn
+		    ,REGISTER as register
+		    ,REG_DATE as regDate
+		    ,MODIFIER as modifier
+		    ,MOD_DATE as modDate
+		FROM CU_UNIV_OVERALL a
+		WHERE UNIVERSITY_ID = #university_id#
+	</select>
+	
+	<insert id="insertUnivOverallInfo" parameterClass="Univ">
+		INSERT
+		INTO CU_UNIV_OVERALL
+		(
+		    UNIVERSITY_ID,
+		    PUBLIC_VOD_UPFILE_ID2,
+		    IMG_TYPE_ID,
+		    CONTENT,
+		    IMG_UPFILE_GID1, IMG_MAP_TAG1,
+			IMG_UPFILE_GID2, IMG_MAP_TAG2,
+			IMG_UPFILE_GID3, IMG_MAP_TAG3,
+			IMG_UPFILE_GID4, IMG_MAP_TAG4,
+		    SHOW_YN,
+		    REGISTER, REG_DATE
+		)
+		VALUES
+		(
+	        #univ_id#
+			,#publicVodUpfileId2#
+			,#imgTypeId#
+			,#content#
+			,#imgUpfileGid0#, #imgMapTag0#
+			,#imgUpfileGid1#, #imgMapTag1#
+			,#imgUpfileGid2#, #imgMapTag2#
+			,#imgUpfileGid3#, #imgMapTag3#
+			,#showYn#
+			,#register#, SYSDATE		
+		)
+	</insert>
+	
+	<update id="updateUnivOverallInfo" parameterClass="Univ">
+		UPDATE CU_UNIV_OVERALL 
+		SET
+			UNIVERSITY_ID = #univ_id#, 
+			PUBLIC_VOD_UPFILE_ID2 = #publicVodUpfileId2#, 
+			IMG_TYPE_ID = #imgTypeId#, 
+			CONTENT = #content#, 
+			IMG_UPFILE_GID1 = #imgUpfileGid0#, IMG_MAP_TAG1 = #imgMapTag0#, 
+			IMG_UPFILE_GID2 = #imgUpfileGid1#, IMG_MAP_TAG2 = #imgMapTag1#, 
+			IMG_UPFILE_GID3 = #imgUpfileGid2#, IMG_MAP_TAG3 = #imgMapTag2#, 
+			IMG_UPFILE_GID4 = #imgUpfileGid3#, IMG_MAP_TAG4 = #imgMapTag3#, 
+			SHOW_YN = #showYn#, 
+			MODIFIER = #modifier#, 
+			MOD_DATE = SYSDATE
+		WHERE UNIVERSITY_ID = #university_id#
+	</update>
+	
+	<!-- 파일이 삭제되었으면 부모테이블의 그룹 파일 값 NULL으로 세팅 -->	
+	<update id="initFileOverall" parameterClass="Univ">
+		UPDATE  CU_UNIV_OVERALL SET
+	        IMG_UPFILE_GID1 = #imgUpfileGid0#,
+	        IMG_UPFILE_GID2 = #imgUpfileGid1#,
+	        IMG_UPFILE_GID3 = #imgUpfileGid2#,
+	        IMG_UPFILE_GID4 = #imgUpfileGid3#
+		WHERE UNIVERSITY_ID = #university_id#
+	</update>
+	
+	<update id="initFileOption" parameterClass="map">
+		UPDATE  CU_UNIV_OPTION SET
+			<dynamic> 
+				<isEqual property="fileIndex" compareValue="0"> Greeting_img_upfile_id = #updateGid# </isEqual>
+				<isEqual property="fileIndex" compareValue="1"> Vision_img_upfile_id = #updateGid# </isEqual>
+				<isEqual property="fileIndex" compareValue="2"> Location_img_upfile_id = #updateGid# </isEqual>
+				<isEqual property="fileIndex" compareValue="3"> Public_img_upfile_id = #updateGid# </isEqual>
+			</dynamic>	
+
+		WHERE UNIVERSITY_ID = #university_id#
+	</update>
+
+	<update id="initFileDefault" parameterClass="map">
+		UPDATE  CU_UNIV_INFO SET
+			<dynamic> 
+				<isEqual property="fileIndex" compareValue="0"> Logo_upfile_gid = #updateGid# </isEqual>
+				<isEqual property="fileIndex" compareValue="1"> Video_img_upfile_gid = #updateGid# </isEqual>
+				<isEqual property="fileIndex" compareValue="2"> Video_upfile_gid = #updateGid# </isEqual>
+			</dynamic>	
+		WHERE UNIVERSITY_ID = #university_id#
+	</update>
+	
+	
+	<select id="selectUnivTotalInfo" parameterClass="Univ" resultClass="Univ">
+		SELECT 
+					
+	                A.UNIVERSITY_ID
+	                ,(CASE WHEN gubun_id = 169 THEN
+                        (CASE WHEN instr(A.univ_name,'(') > 0 THEN substr(univ_name,instr(univ_name,'(') + 1,instr(univ_name,')')- (instr(univ_name,'(') + 1))||'대학원' ELSE A.univ_name END)
+                      ELSE A.univ_name END) AS UNIV_NAME
+	                ,A.UNIV_ADDRESS
+	                ,A.UNIV_PHONE
+	                ,A.UNIV_FAX
+	                ,A.UNIV_EMAIL
+	                ,A.LOGO_UPFILE_GID
+	                ,A.UNIV_HOMEPAGE	                
+	                ,(select UPFILE_PATH from cu_svc_attfileupload where upfile_id = LOGO_UPFILE_GID) LOGO_UPFILE_PATH
+	                ,(select upfile_id from cu_svc_attfileupload where upfile_gid = LOGO_UPFILE_GID and upfile_gid != 0) upfileId0
+	                ,(select UPFILE_PATH from cu_svc_attfileupload where upfile_id = A.VIDEO_UPFILE_GID) videoUpfilePath
+	                ,A.VIDEO_UPFILE_GID
+	                ,A.VIDEO_IMG_UPFILE_GID
+	                ,<![CDATA[REPLACE( REPLACE( UPPER(CORE_SLOGAN),'/',''),'<BR>','') AS CORE_SLOGAN  ]]>
+	                ,A.UNIV_FEATURE as univFeature
+	                ,case when B.GREETING_TYPE_ID = '19' and GREETING_IMG_UPFILE_ID != '0' then B.GREETING_TYPE_ID
+	                		when B.GREETING_TYPE_ID in ('18','20') and B.GREETING_CONTENT is not null then B.GREETING_TYPE_ID
+	                		else 0 end GREETING_TYPE_ID
+	                ,B.GREETING_CONTENT GREETING_CONTENT
+	                ,B.GREETING_IMG_UPFILE_ID
+	                ,(select UPFILE_PATH from cu_svc_attfileupload where upfile_id = B.GREETING_IMG_UPFILE_ID) GREETING_IMG_UPFILE_PATH
+	                ,case when B.VISION_TYPE_ID = '19' and VISION_IMG_UPFILE_ID != '0' then B.VISION_TYPE_ID
+	                		when B.VISION_TYPE_ID in ('18','20') and B.VISION_CONTENT is not null then B.VISION_TYPE_ID
+	                		else 0 end VISION_TYPE_ID
+	                ,B.VISION_CONTENT VISION_CONTENT
+	                ,B.VISION_IMG_UPFILE_ID
+	                ,(select UPFILE_PATH from cu_svc_attfileupload where upfile_id = B.VISION_IMG_UPFILE_ID) VISION_IMG_UPFILE_PATH
+	                ,case when B.LOCATION_TYPE_ID = '19' and LOCATION_IMG_UPFILE_ID != '0' then B.LOCATION_TYPE_ID
+	                		when B.LOCATION_TYPE_ID in ('18','20') and B.LOCATION_CONTENT is not null then B.LOCATION_TYPE_ID
+	                		else 0 end LOCATION_TYPE_ID
+	                ,B.LOCATION_CONTENT LOCATION_CONTENT
+	                ,B.LOCATION_IMG_UPFILE_ID
+	                ,(select UPFILE_PATH from cu_svc_attfileupload where upfile_id = B.LOCATION_IMG_UPFILE_ID) LOCATION_IMG_UPFILE_PATH
+	                ,case when B.PUBLIC_TYPE_ID = '19' and PUBLIC_IMG_UPFILE_ID != '0' then B.PUBLIC_TYPE_ID
+	                		when B.PUBLIC_TYPE_ID in ('18','20') and B.PUBLIC_CONTENT is not null then B.PUBLIC_TYPE_ID
+	                		else 0 end PUBLIC_TYPE_ID
+	                ,B.PUBLIC_CONTENT PUBLIC_CONTENT
+	                ,B.PUBLIC_IMG_UPFILE_ID
+	                ,(select UPFILE_PATH from cu_svc_attfileupload where upfile_id = B.PUBLIC_IMG_UPFILE_ID) PUBLIC_IMG_UPFILE__PATH
+	                ,C.PUBLIC_VOD_UPFILE_ID2
+	                ,C.IMG_TYPE_ID
+	                ,C.CONTENT CONTENT
+	                ,C.IMG_UPFILE_GID1
+	                ,C.IMG_MAP_TAG1
+	                ,C.IMG_UPFILE_GID2
+	                ,C.IMG_MAP_TAG2
+	                ,C.IMG_UPFILE_GID3
+	                ,C.IMG_MAP_TAG3
+	                ,C.IMG_UPFILE_GID4
+	                ,C.IMG_MAP_TAG4	    
+	                ,ACADEMY_ID
+	                , (SELECT CODE_NAME FROM CU_COM_CODE WHERE CODE_GROUP=50 AND CODE_ID=A.GUBUN_ID) as gubunName
+	                , (SELECT CODE_NAME FROM CU_COM_CODE WHERE CODE_GROUP=67 AND CODE_ID=A.LOCAL_ID) as localName
+	        FROM CU_UNIV_INFO A, CU_UNIV_OPTION B, CU_UNIV_OVERALL C
+	        WHERE A.UNIVERSITY_ID = B.UNIVERSITY_ID(+)
+	        AND A.UNIVERSITY_ID = C.UNIVERSITY_ID(+)
+	        AND A.UNIVERSITY_ID = #university_id#
+	</select>
+	<select id="selectUnivLinkAttached" parameterClass="Univ" resultClass="Univ">
+		SELECT LINK_NAME,LINK_URL,
+		getSip(LINK_URL) as sip,
+		getUri(LINK_URL) as uri,
+		getQri(LINK_URL) as qri,
+		getSp(LINK_URL) as sp
+		FROM CU_UNIV_LINK
+        WHERE UNIVERSITY_ID = #university_id#
+        AND LINK_GUBUN_ID = '15' 
+        ORDER BY LINK_ORDER
+	</select>
+	<select id="selectUnivLinkSchool" parameterClass="Univ" resultClass="Univ">
+		SELECT LINK_NAME,LINK_URL,
+		getSip(LINK_URL) as sip,
+		getUri(LINK_URL) as uri,
+		getQri(LINK_URL) as qri,
+		getSp(LINK_URL) as sp 
+		FROM CU_UNIV_LINK
+        WHERE UNIVERSITY_ID = #university_id#
+        AND LINK_GUBUN_ID = '150' 
+        ORDER BY LINK_ORDER
+	</select>
+	<select id="selectUnivLinkGraduate" parameterClass="Univ" resultClass="Univ">
+		SELECT LINK_NAME,LINK_URL,
+		getSip(LINK_URL) as sip,
+		getUri(LINK_URL) as uri,
+		getQri(LINK_URL) as qri,
+		getSp(LINK_URL) as sp
+		FROM CU_UNIV_LINK
+        WHERE UNIVERSITY_ID = #university_id#
+        AND LINK_GUBUN_ID = '14' 
+        ORDER BY LINK_ORDER
+	</select>
+	<select id="selectUnivLinkEntrance" parameterClass="Univ" resultClass="Univ">
+		SELECT LINK_NAME,LINK_URL,
+		getSip(LINK_URL) as sip,
+		getUri(LINK_URL) as uri,
+		getQri(LINK_URL) as qri,
+		getSp(LINK_URL) as sp 
+		FROM CU_UNIV_LINK
+        WHERE UNIVERSITY_ID = #university_id#
+        AND LINK_GUBUN_ID = '16' 
+        ORDER BY LINK_ORDER
+	</select>
+	 
+	<select id="selectUnivList" resultClass="univ" parameterClass="Integer">
+		SELECT UNIVERSITY_ID,
+			UNIV_NAME,
+			GUBUN_ID,
+			CORE_SLOGAN,
+			UNIV_ZIPCODE,
+			UNIV_ADDRESS,
+			UNIV_EMAIL,
+			UNIV_HOMEPAGE,
+			UNIV_PHONE,
+			UNIV_ENTER_PHONE,
+			UNIV_FAX,
+			A.LOGO_UPFILE_GID, 
+			(select upfile_id from cu_svc_attfileupload where upfile_gid = A.LOGO_UPFILE_GID and upfile_gid != 0) upfileId0,
+			ACADEMY_ID,
+			USE_YN,
+		    REGISTER as register,
+		    REG_DATE as regDate,
+		    MODIFIER as modifier,
+		    MOD_DATE as modDate,
+			LOCAL_ID
+		FROM CU_UNIV_INFO A
+		WHERE ROWNUM = case when 0 = #rowNum,javaType=Integer# then ROWNUM else #rowNum,javaType=Integer# end
+		and a.gubun_id in ('51','52','163')							        
+        ORDER BY UNIV_NAME
+	</select>
+	<select id="selectUnivList2" resultClass="univ" parameterClass="Integer">
+		SELECT
+			ROW_NUMBER () OVER (PARTITION BY substr(univ_name,1, instr(univ_name,'(')-1) ORDER BY UNIV_NAME) as RN2,
+			COUNT (*) OVER (PARTITION BY substr(univ_name,1, instr(univ_name,'(')-1)) RN1, 
+		    UNIVERSITY_ID,
+			UNIV_NAME,
+			SUBSTR ( univ_name,
+                     INSTR (univ_name, '(') + 1,
+                     INSTR (univ_name, ')') - (INSTR (univ_name, '(') + 1))
+               || '대학원' UNIVGRADNAME,
+			GUBUN_ID,
+			CORE_SLOGAN,
+			UNIV_ZIPCODE,
+			UNIV_ADDRESS,
+			UNIV_EMAIL,
+			UNIV_HOMEPAGE,
+			UNIV_PHONE,
+			UNIV_ENTER_PHONE,
+			UNIV_FAX,
+			A.LOGO_UPFILE_GID, 
+			(select upfile_id from cu_svc_attfileupload where upfile_gid = A.LOGO_UPFILE_GID and upfile_gid != 0) upfileId0,
+			ACADEMY_ID,
+			USE_YN,
+		    REGISTER as register,
+		    REG_DATE as regDate,
+		    MODIFIER as modifier,
+		    MOD_DATE as modDate,
+			LOCAL_ID
+		FROM CU_UNIV_INFO A
+		WHERE ROWNUM = case when 0 = #rowNum,javaType=Integer# then ROWNUM else #rowNum,javaType=Integer# end
+		and a.gubun_id in ('169')
+        and UNIV_NAME like '%(%'						        
+        ORDER BY UNIV_NAME
+	</select>
+	
+	
+	<select id="selectMajorList" parameterClass="univ" resultClass="univ">
+		WITH data1
+			     AS (SELECT university_id, univdept_id
+			           FROM (SELECT university_id,
+			                        univdept_id,
+			                        cnt,
+			                        ROW_NUMBER () OVER (ORDER BY cnt DESC) rn
+			                   FROM (  SELECT university_id,
+			                                  univdept_id,
+			                                  SUM (CLICKS_CNT) cnt
+			                             FROM CU_LOG_UNIV_CLICKS
+			                            WHERE     university_id = #university_id#
+			                                  AND univdept_id IS NOT NULL
+			                         GROUP BY university_id, univdept_id))
+			          WHERE rn <![CDATA[<]]> 6) 
+			SELECT ROW_NUMBER ()
+			          OVER (PARTITION BY C.CLASSIFY_NAME ORDER BY C.CLASSIFY_NAME)
+			          rn2,
+			       COUNT (*) OVER (PARTITION BY C.CLASSIFY_NAME) rn1,
+			       C.CLASSIFY_NAME AS classifyName,
+			       A.UNIVDEPT_NAME AS univdeptName,
+			       (CASE WHEN d.univdept_id IS NOT NULL THEN 'Y' END) AS popularYn,
+			       A.RECOMMEND_YN AS recommendYn,
+			       A.univdept_id AS univdeptId
+			  FROM CU_UNIV_DEPT A,
+			       CU_REPT_DEPT B,
+			       CU_REPT_CLASSIFICATION C,
+			       data1 d
+			 WHERE     A.DEPT_ID = B.DEPT_ID
+			       AND B.CLASSIFY_ID = C.CLASSIFY_ID
+			       AND a.university_id = d.university_id(+)
+			       AND a.univdept_id = d.univdept_id(+)
+			       AND A.UNIVERSITY_ID = #university_id#
+			       AND A.USE_YN = 'Y'
+			       ORDER BY  C.CLASSIFY_ORDER, rn2
+	</select>
+	
+	<select id="selectSuccessStory" parameterClass="univ" resultClass="java.lang.String">
+	SELECT SUCCESS_STORY successStory
+	FROM   cu_univ_info
+	WHERE  university_id = #universityId#
+	</select>
+	<select id="selectSuccessLink" parameterClass="univ" resultClass="java.lang.String">
+	SELECT SUCCESS_LINK successStoryLink
+	FROM   cu_univ_info
+	WHERE  university_id = #universityId#
+	</select>
+	
+	<select id="selectKerisEmail" resultClass="java.lang.String">
+	SELECT ADMIN_EMAIL
+  	FROM CU_ADMIN
+ 	WHERE ADMIN_ID = 'keris'
+	</select>
+	
+	<select id="getGubunId" resultClass="java.lang.String" parameterClass="java.lang.String">
+	SELECT B.GUBUN_ID
+	FROM cu_admin A, cu_univ_info b
+	WHERE A.university_id = b.university_id
+	AND A.admin_id = #adminId#
+	</select>
+
+	<select id="graduateList" parameterClass="java.lang.String" resultClass="univ">
+	SELECT 
+	    university_id AS universityId
+        , CASE WHEN instr(univ_name,'(') > 0 THEN substr(univ_name,instr(univ_name,'(') + 1,instr(univ_name,')')- (instr(univ_name,'(') + 1))||'대학원' ELSE univ_name END univName
+        ,(SELECT link_url
+            FROM cu_univ_link
+           WHERE     university_id = cu_univ_info.university_id
+                 AND link_gubun_id = '167'
+                 AND ROWNUM = '1')
+            univSampleLink 
+	FROM cu_univ_info
+	WHERE gubun_id = '169'
+	AND univ_name LIKE '%'||#univName#||'%'
+	AND univ_name != #univName#
+	ORDER BY univ_name
+	</select>
+	
+</sqlMap>

@@ -1,0 +1,10 @@
+<ul class="overall_tab_list">
+	
+	#foreach($list in $univList)
+		
+	<li><a href="javascript:overallUnivInfo('$list.univ_name','$list.university_id')">$!list.univ_name</a></li>
+	
+	#end
+	
+	
+</ul>

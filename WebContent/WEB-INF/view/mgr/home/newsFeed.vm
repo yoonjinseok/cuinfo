@@ -1,0 +1,124 @@
+<script type="text/javascript" language="javascript">
+		
+	$(document).ready(function() {
+		search();
+    });
+    
+	function search()
+	{
+		goPage(1);
+	}
+	
+	function setRecordCnt(totalCnt, currPage, totalPage, showCnt)
+	{
+		$("#tCnt").text(totalCnt);
+		$("#cPage").text(currPage);
+		$("#tPage").text(totalPage);
+		
+		setPaging($("#pg"), totalCnt, showCnt, currPage);
+	}
+	
+	function goPage(page)
+	{
+		$("#currPage").val(page);
+		
+		jQuery.post('newsFeed_list.ajax.action', 
+				$("#form").formSerialize(), 
+				function(data) {
+        			$("#list").html(data);
+		});
+	}
+	
+	function del()
+	{
+	
+		jQuery.post('newsFeed_delete.json', 
+			$("#form1").formSerialize(), 
+			function(data) {
+			
+    			if(data.errors == true)
+    			{
+    				eval(data.message);
+    			}
+    			else
+    			{
+					alert("삭제되었습니다.");
+
+					goPage($("#currPage").val());
+					
+    			}
+		});
+	}
+    
+    function allCheck()
+    {
+    	var c = $("#checkAll").attr('checked');
+    	
+		$("input[name=checkbox]").attr('checked',c);
+    }
+    
+    //120926_LJH 뉴스 등록기능 추가
+    function write()
+    {
+    	showWin('/mgr/home/newsFeed_write.pop.action', 'regwin', 800, 280);
+	}    
+</script>
+
+
+<div id="location_box">
+		<h3><img src="/mgr/images/home/title1.gif" alt="사이버대학뉴스" /></h3>	
+		<ul class="location">
+			<li><a href="/mgr/main.sub.action">Home</a></li>
+			<li><a href="/mgr/home/newsFeed.sub.action?gnb=41">홈페이지관리</a></li>
+			<li>사이버대학뉴스</li>
+		</ul>
+</div>
+	
+<form class="search_box01" id="form" name="form" action="#" onsubmit="try{search();}catch(e){alert(e);}return false;"><!-- box_type01 Start -->
+<input type="hidden" id="showCnt" name="showCnt" value="15"/>
+<input type="hidden" id="currPage" name="currPage" value="1"/>
+
+	<fieldset class="inner">
+		<table cellspacing="0" cellpadding="0" summary="강의 검색" class="border_none_table">
+			<caption>강의 검색</caption>
+			<colgroup>
+				<col width="45%"/>
+				<col width="*%"/>
+			</colgroup>
+			<tbody>
+				<tr>
+					<td colspan="2">
+						<label for="radio-1"><input type="radio" name="radio" id="radio1" value="title" checked="checked"/> 제목</label>
+						<label for="radio-2"><input type="radio" name="radio" id="radio2" value="content" /> 내용</label>
+						<input type="text" id="text" name="text" size="30" title="검색어입력"/> 
+						<a href="#"><img name="image" src="/mgr/images/btn/search.gif" alt="검색" /></a>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</fieldset>
+</form><!-- box_type01 End -->
+
+
+
+
+<div class="list_top01">
+	<span>제목 클릭 시 해당 링크로 이동합니다.</span>
+</div>
+
+<form class="" id="form1" name="form1" action="#"><!-- box_type01 Start -->
+<input type="hidden" id="showCnt" name="showCnt" value="15"/>
+<input type="hidden" id="currPage" name="currPage" value="1"/>
+<div id="list">#parse('mgr/home/newsFeed_list.vm')</div>
+</form>
+
+
+
+<div class="page_num">
+	<div id="pg" name="pg"></div>
+	<a class="f_right1" href="javascript:write();"><img src="/mgr/images/btn/enter.gif" alt="등록" /></a>
+	<a class="f_right" href="javascript:del();"><img src="/mgr/images/btn/delete.gif" alt="삭제" /></a>
+</div>
+
+
+

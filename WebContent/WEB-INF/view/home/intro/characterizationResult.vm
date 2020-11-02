@@ -1,0 +1,306 @@
+<head>
+<title>교육부지원사업</title>
+<script type="text/javascript" language="javascript">
+	$(document).ready(function(){
+		$("#list a").each(function(){
+			$(this).click(function(){
+				$("#list a").removeClass();
+				$(this).attr("class","on");
+			});
+		});
+		search();
+	});
+	
+	function search() {
+		goPage(1);
+	}
+		
+	function goPage(page){
+		setRecordCnt(12, page, 2, 9);
+		if(page == 1) {
+			$("#allInfo1").show();
+			$("#allInfo2").hide();
+			$("#univInfo1").hide();
+			$("#univInfo2").hide();
+			$("#univInfo3").hide();
+			$("#univInfo4").hide();
+		} else if(page == 2) {
+			$("#allInfo2").show();
+			$("#allInfo1").hide();
+			$("#univInfo1").hide();
+			$("#univInfo2").hide();
+			$("#univInfo3").hide();
+			$("#univInfo4").hide();
+		}
+	}
+	
+	function setRecordCnt(totalCnt, currPage, totalPage, showCnt) {
+		setPaging($("#pg"), totalCnt, showCnt, currPage);
+	}
+	
+	function allUnivInfo() {
+		setRecordCnt(12, 1, 2, 9);
+		$("#allInfo1").show();
+		$("#allInfo2").hide();
+		$("#univInfo1").hide();
+		$("#univInfo2").hide();
+		$("#univInfo3").hide();
+		$("#univInfo4").hide();
+	}
+	
+	function selectUnivInfo(gnb) {
+		if(gnb == 1) {
+			$("#univInfo1").show();
+			$("#allInfo1").hide();
+			$("#allInfo2").hide();
+			$("#univInfo2").hide();
+			$("#univInfo3").hide();
+			$("#univInfo4").hide();
+			setRecordCnt(4, 1, 1, 4);
+		} else if(gnb == 2) {
+			alert("대구사이버대학교는 교육용 컨텐츠, 학과개설 관련 보고서가 없습니다.");
+			$("#list a").removeClass();
+			search();
+		} else if(gnb == 3) {
+			$("#univInfo3").show();
+			$("#allInfo1").hide();
+			$("#allInfo2").hide();
+			$("#univInfo1").hide();
+			$("#univInfo2").hide();
+			$("#univInfo4").hide();
+			setRecordCnt(1, 1, 1, 1);
+		} else if(gnb == 4) {
+			alert("서울사이버대학교는 교육용 컨텐츠, 학과개설 관련 보고서가 없습니다.");
+			$("#list a").removeClass();
+			search();
+		}
+	}
+	
+	function viewDetail(courseId, title){
+			
+		//필요 변수 셋팅
+		$("#hidetext").val(title);
+		//$("#courseIdentifier").val(courseIdentifier);
+		$("#courseId").val(courseId);
+		
+		//onsubmit 속성을 비워주어야 submit이 된다.
+		$("#form").attr("method","post");
+		$("#form").attr("onsubmit","");
+		$("#form").attr("action","/home/course/courseSearchView.sub.action?gnb=41");
+		$("#form").submit();
+		
+	}
+</script>
+</head>
+<body>
+	<p class="location">
+		<a href="/home/index.main.action">홈</a> <span>></span> <a href="/home/intro/summary.sub.action?gnb=11">사이버대학 안내</a> <span>></span> <a href="/home/intro/characterization.sub.action?gnb=16">교육부지원사업</a> 
+	</p>
+	<h3><img src="/home/images/title/title_55.gif" alt="사업 선정 대학의 성과물" /></h3><br/>
+	
+<form class="" id="form" name="form" action="#" onsubmit="try{search();}catch(e){alert(e);}return false;">
+<input type="hidden" id="hidetext" name="hidetext" value=""/>
+<input type="hidden" id="courseId" name="courseId" value=""/>
+</form>	
+
+<div class="contentWrap">
+
+	<ul class="tab_type2">
+		<li class="tab10"><a class="on" href="javascript:allUnivInfo()"></a></li>
+	</ul>
+	
+	<div id="list">
+		<ul class="overall_tab_list2">
+			<li><a href="javascript:selectUnivInfo(1)">고려사이버대 전기전자공학과(6)</a></li>
+			<li><a href="javascript:selectUnivInfo(2)">대구사이버대 전기공학과(0)</a></li>
+			<li><a href="javascript:selectUnivInfo(3)">영진사이버대 정보통신학과(5)</a></li>
+			<li><a href="javascript:selectUnivInfo(4)">서울사이버대 뉴미디어콘텐츠공학과(0)</a></li>
+		</ul>
+	</div>
+	
+	<dl class="feature">
+		<dt><img src="/home/images/title/title_55_1.gif" alt="교육용 콘텐츠" /></dt>
+	</dl>
+		
+	<div id="info">
+		<ul class="open_lecture_list">
+		
+			<div id="allInfo1">
+				<li>
+					<a href="javascript:viewDetail('3140','IT가 만들어가는 세상')"  class="thumbnail"><img src="http://www.cuinfo.net/mgr/common/file_download_id.do.action?upfileId=474268" alt="썸네일" style="width:98%;" title=""/></a>
+					<p><a href="javascript:viewDetail('3140','IT가 만들어가는 세상')" class="title">IT가 만들어가는 세상</a></p>
+					<p>고려사이버대학교 / 남재덕</p>
+				</li>
+				<li>
+					<a href="javascript:viewDetail('3141','IT가 만들어가는 세상 (프로젝트관리편)')"  class="thumbnail"><img src="http://www.cuinfo.net/mgr/common/file_download_id.do.action?upfileId=474269" alt="썸네일" style="width:98%;" title=""/></a>
+					<p><a href="javascript:viewDetail('3141','IT가 만들어가는 세상 (프로젝트관리편)')" class="title">IT가 만들어가는 세상 (프로젝트관리편)</a></p>
+					<p>고려사이버대학교 / 남재덕</p>
+				</li>
+				<li>
+					<a href="javascript:viewDetail('3142','한국어교육의 현황 및 한국어교원자격증의 필요성')"  class="thumbnail"><img src="http://www.cuinfo.net/mgr/common/file_download_id.do.action?upfileId=474270" alt="썸네일" style="width:98%;" title=""/></a>
+					<p><a href="javascript:viewDetail('3142','한국어교육의 현황 및 한국어교원자격증의 필요성')" class="title">한국어교육의 현황 및 한국어교원자격증의 필요성</a></p>
+					<p>고려사이버대학교 / 강현화</p>
+				</li>
+				<li>
+					<a href="javascript:viewDetail('3143','이영돈PD와 함께하는 탐사보도 즐겁게 이해하기 1부')"  class="thumbnail"><img src="http://www.cuinfo.net/mgr/common/file_download_id.do.action?upfileId=474271" alt="썸네일" style="width:98%;" title=""/></a>
+					<p><a href="javascript:viewDetail('3143','이영돈PD와 함께하는 탐사보도 즐겁게 이해하기 1부')" class="title">이영돈PD와 함께하는 탐사보도 즐겁게 이해하기 1부</a></p>
+					<p>고려사이버대학교 / 이영돈</p>
+				</li>
+				<li>
+					<a href="javascript:viewDetail('3144','이영돈PD와 함께하는 탐사보도 즐겁게 이해하기 2부')"  class="thumbnail"><img src="http://www.cuinfo.net/mgr/common/file_download_id.do.action?upfileId=474272" alt="썸네일" style="width:98%;" title=""/></a>
+					<p><a href="javascript:viewDetail('3144','이영돈PD와 함께하는 탐사보도 즐겁게 이해하기 2부')" class="title">이영돈PD와 함께하는 탐사보도 즐겁게 이해하기 2부</a></p>
+					<p>고려사이버대학교 / 이영돈</p>
+				</li>
+				<li>
+					<a href="javascript:viewDetail('3145','동아시아중심시대의 문화전망')"  class="thumbnail"><img src="http://www.cuinfo.net/mgr/common/file_download_id.do.action?upfileId=474301" alt="썸네일" style="width:98%;" title=""/></a>
+					<p><a href="javascript:viewDetail('3145','동아시아중심시대의 문화전망')" class="title">동아시아중심시대의 문화전망</a></p>
+					<p>고려사이버대학교 / 최관</p>
+				</li>
+				<li>
+					<a href="javascript:viewDetail('3146','직장윤리와 인간관계')"  class="thumbnail"><img src="http://www.cuinfo.net/mgr/common/file_download_id.do.action?upfileId=474283" alt="썸네일" style="width:98%;" title=""/></a>
+					<p><a href="javascript:viewDetail('3146','직장윤리와 인간관계')" class="title">직장윤리와 인간관계</a></p>
+					<p>영진사이버대학 / 이재식</p>
+				</li>
+				<li>
+					<a href="javascript:viewDetail('3147','성공적인 업무성과 창출을 위한 자기관리')"  class="thumbnail"><img src="http://www.cuinfo.net/mgr/common/file_download_id.do.action?upfileId=474287" alt="썸네일" style="width:98%;" title=""/></a>
+					<p><a href="javascript:viewDetail('3147','성공적인 업무성과 창출을 위한 자기관리')" class="title">성공적인 업무성과 창출을 위한 자기관리</a></p>
+					<p>영진사이버대학교 / 이동식</p>
+				</li>
+				<li>
+					<a href="javascript:viewDetail('3148','창의공학적 발상기법')"  class="thumbnail"><img src="http://www.cuinfo.net/mgr/common/file_download_id.do.action?upfileId=474285" alt="썸네일" style="width:98%;" title=""/></a>
+					<p><a href="javascript:viewDetail('3148','창의공학적 발상기법')" class="title">창의공학적 발상기법</a></p>
+					<p>영진사이버대학교 / 신상호</p>
+				</li>
+			</div>
+			<div id="allInfo2">
+				<li>
+					<a href="javascript:viewDetail('3149','정보통신 품질관리의 이해')"  class="thumbnail"><img src="http://www.cuinfo.net/mgr/common/file_download_id.do.action?upfileId=474286" alt="썸네일" style="width:98%;" title=""/></a>
+					<p><a href="javascript:viewDetail('3149','정보통신 품질관리의 이해')" class="title">정보통신 품질관리의 이해</a></p>
+					<p>영진사이버대학교 / 이동기</p>
+				</li>
+				<li>
+					<a href="javascript:viewDetail('3150','텔레마케팅의 기초와 활용')"  class="thumbnail"><img src="http://www.cuinfo.net/mgr/common/file_download_id.do.action?upfileId=474290" alt="썸네일" style="width:98%;" title=""/></a>
+					<p><a href="javascript:viewDetail('3150','텔레마케팅의 기초와 활용')" class="title">텔레마케팅의 기초와 활용</a></p>
+					<p>영진사이버대학교 / 이수진</p>
+				</li>
+			</div>
+			
+			<div id="univInfo1">
+				<li>
+					<a href="javascript:viewDetail('3140','IT가 만들어가는 세상')"  class="thumbnail"><img src="http://www.cuinfo.net/mgr/common/file_download_id.do.action?upfileId=474268" alt="썸네일" style="width:98%;" title=""/></a>
+					<p><a href="javascript:viewDetail('3140','IT가 만들어가는 세상')" class="title">IT가 만들어가는 세상</a></p>
+					<p>고려사이버대학교 / 남재덕</p>
+				</li>
+				<li>
+					<a href="javascript:viewDetail('3141','IT가 만들어가는 세상 (프로젝트관리편)')"  class="thumbnail"><img src="http://www.cuinfo.net/mgr/common/file_download_id.do.action?upfileId=474269" alt="썸네일" style="width:98%;" title=""/></a>
+					<p><a href="javascript:viewDetail('3141','IT가 만들어가는 세상 (프로젝트관리편)')" class="title">IT가 만들어가는 세상 (프로젝트관리편)</a></p>
+					<p>고려사이버대학교 / 남재덕</p>
+				</li>
+				<li>
+					<a href="javascript:viewDetail('3142','한국어교육의 현황 및 한국어교원자격증의 필요성')"  class="thumbnail"><img src="http://www.cuinfo.net/mgr/common/file_download_id.do.action?upfileId=474270" alt="썸네일" style="width:98%;" title=""/></a>
+					<p><a href="javascript:viewDetail('3142','한국어교육의 현황 및 한국어교원자격증의 필요성')" class="title">한국어교육의 현황 및 한국어교원자격증의 필요성</a></p>
+					<p>고려사이버대학교 / 강현화</p>
+				</li>
+				<li>
+					<a href="javascript:viewDetail('3143','이영돈PD와 함께하는 탐사보도 즐겁게 이해하기 1부')"  class="thumbnail"><img src="http://www.cuinfo.net/mgr/common/file_download_id.do.action?upfileId=474271" alt="썸네일" style="width:98%;" title=""/></a>
+					<p><a href="javascript:viewDetail('3143','이영돈PD와 함께하는 탐사보도 즐겁게 이해하기 1부')" class="title">이영돈PD와 함께하는 탐사보도 즐겁게 이해하기 1부</a></p>
+					<p>고려사이버대학교 / 이영돈</p>
+				</li>
+				<li>
+					<a href="javascript:viewDetail('3144','이영돈PD와 함께하는 탐사보도 즐겁게 이해하기 2부')"  class="thumbnail"><img src="http://www.cuinfo.net/mgr/common/file_download_id.do.action?upfileId=474272" alt="썸네일" style="width:98%;" title=""/></a>
+					<p><a href="javascript:viewDetail('3144','이영돈PD와 함께하는 탐사보도 즐겁게 이해하기 2부')" class="title">이영돈PD와 함께하는 탐사보도 즐겁게 이해하기 2부</a></p>
+					<p>고려사이버대학교 / 이영돈</p>
+				</li>
+				<li>
+					<a href="javascript:viewDetail('3145','동아시아중심시대의 문화전망')"  class="thumbnail"><img src="http://www.cuinfo.net/mgr/common/file_download_id.do.action?upfileId=474301" alt="썸네일" style="width:98%;" title=""/></a>
+					<p><a href="javascript:viewDetail('3145','동아시아중심시대의 문화전망')" class="title">동아시아중심시대의 문화전망</a></p>
+					<p>고려사이버대학교 / 최관</p>
+				</li>
+			</div>
+			
+			<div id="univInfo2">
+			</div>
+			
+			<div id="univInfo3">
+				<li>
+					<a href="javascript:viewDetail('3146','직장윤리와 인간관계')"  class="thumbnail"><img src="http://www.cuinfo.net/mgr/common/file_download_id.do.action?upfileId=474283" alt="썸네일" style="width:98%;" title=""/></a>
+					<p><a href="javascript:viewDetail('3146','직장윤리와 인간관계')" class="title">직장윤리와 인간관계</a></p>
+					<p>영진사이버대학 / 이재식</p>
+				</li>
+				<li>
+					<a href="javascript:viewDetail('3147','성공적인 업무성과 창출을 위한 자기관리')"  class="thumbnail"><img src="http://www.cuinfo.net/mgr/common/file_download_id.do.action?upfileId=474287" alt="썸네일" style="width:98%;" title=""/></a>
+					<p><a href="javascript:viewDetail('3147','성공적인 업무성과 창출을 위한 자기관리')" class="title">성공적인 업무성과 창출을 위한 자기관리</a></p>
+					<p>영진사이버대학교 / 이동식</p>
+				</li>
+				<li>
+					<a href="javascript:viewDetail('3148','창의공학적 발상기법')"  class="thumbnail"><img src="http://www.cuinfo.net/mgr/common/file_download_id.do.action?upfileId=474285" alt="썸네일" style="width:98%;" title=""/></a>
+					<p><a href="javascript:viewDetail('3148','창의공학적 발상기법')" class="title">창의공학적 발상기법</a></p>
+					<p>영진사이버대학교 / 신상호</p>
+				</li>
+				<li>
+					<a href="javascript:viewDetail('3149','정보통신 품질관리의 이해')"  class="thumbnail"><img src="http://www.cuinfo.net/mgr/common/file_download_id.do.action?upfileId=474286" alt="썸네일" style="width:98%;" title=""/></a>
+					<p><a href="javascript:viewDetail('3149','정보통신 품질관리의 이해')" class="title">정보통신 품질관리의 이해</a></p>
+					<p>영진사이버대학교 / 이동기</p>
+				</li>
+				<li>
+					<a href="javascript:viewDetail('3150','텔레마케팅의 기초와 활용')"  class="thumbnail"><img src="http://www.cuinfo.net/mgr/common/file_download_id.do.action?upfileId=474290" alt="썸네일" style="width:98%;" title=""/></a>
+					<p><a href="javascript:viewDetail('3150','텔레마케팅의 기초와 활용')" class="title">텔레마케팅의 기초와 활용</a></p>
+					<p>영진사이버대학교 / 이수진</p>
+				</li>
+			</div>
+			
+			<div id="univInfo4">
+				
+			</div>
+		<ul>
+	</div>
+	<div class="page_num">
+			<div name="pg" id="pg"></div>
+	</div>
+	
+	<dl class="feature">
+		<dt><img src="/home/images/title/title_55_2.gif" alt="관련 보고서" /></dt>
+	</dl>
+	<table class="table_type1 st01" cellspacing="0" cellpadding="0" summary="학과개설 관련 보고서">
+		<caption>학과개설 관련 보고서</caption>
+		<colgroup>
+			<col width="7%">
+			<col width="*%">
+			<col width="18%">
+			<col width="12%">
+			<col width="15%">
+		</colgroup>
+		<thead>
+			<tr>
+				<th class="first" scope="col">NO</th>
+				<th scope="col">제목</th>
+				<th scope="col">대학</th>
+				<th scope="col">연구자</th>
+				<th scope="col">등록일</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td>2</td>
+				<td class="t_left">
+					<a href="/mgr/common/file_download_id.json?upfileId=8698">테스트 2번 글 테스트 제목&nbsp;<img src="/home/images/btn/pdf.gif" style="width:15px;height:15px;"></a>
+				</td>
+				<td>테스트사이버대학</td>
+				<td>테스터</td>
+				<td class="end">2013/07/11</td>
+			</tr>
+			<tr class="even">
+				<td>1</td>
+				<td class="t_left">
+					<a href="/mgr/common/file_download_id.json?upfileId=8698">테스트 2번 글 테스트 제목&nbsp;<img src="/home/images/btn/pdf.gif" style="width:15px;height:15px;"></a>
+				</td>
+				<td>테스트사이버대학</td>
+				<td>테스터</td>
+				<td class="end">2013/07/10</td>
+			</tr>
+		</tbody>
+	</table>
+
+</div>
+
+</body>

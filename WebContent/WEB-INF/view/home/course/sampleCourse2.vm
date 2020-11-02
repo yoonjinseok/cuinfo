@@ -1,0 +1,100 @@
+<html>
+	<head>
+		<title>학교별 강의 맛보기</title>
+		<script type="text/javascript" language="javascript">
+			
+			$(document).ready(function(){
+		
+			});
+			
+			//대학 맛보기 페이지 링크 팝업
+			function selectUnivSampleLink(univSampleLink){
+				showWin(univSampleLink, 'modwin', 1024, 768);
+				return;
+			}
+			
+			function searchUnivList(gubunId){
+				$("#gubunId").val(gubunId);
+				jQuery.post('univList2.ajax.action', 
+							{gubunId:gubunId}, 
+							function(data) {
+		        				$("#list").html(data);
+								$(".tab_type2 a").removeClass();
+							
+								if(gubunId == '')
+									$(".tab_type2 .tab1 a").addClass("on");
+								else if(gubunId == '51')
+									$(".tab_type2 .tab6 a").addClass("on");
+								else if(gubunId == '52')
+									$(".tab_type2 .tab7 a").addClass("on");
+								else if(gubunId == '163')
+									$(".tab_type2 .tab4 a").addClass("on");
+									
+								$("#list a:not([class=noclick])").each(function(){
+									$(this).click(function(){
+										$(this).attr("class","on");
+									});
+								});
+				});
+			}
+			
+			
+			
+	function overallUnivInfo(univName, univId)
+	{
+		
+	
+		$("#univName").val(univName);
+		
+		jQuery.post('/home/intro/graduateList2.ajax.action',
+					$("#form").formSerialize(), 
+					function(data) {
+						
+						$("#info").html("<center class='p_t10 p_b10'><img src='/home/images/intro/no_school.gif' /></center>");
+        				$("#graduateList2").html(data);
+        				
+		});
+	}
+		
+	function overallUnivInfo2(univSampleLink)
+	{
+	
+		//showWin(univSampleLink, 'modwin', 1024, 768);
+		showWin(univSampleLink, 'modwin', 1024, 768);
+		return;
+	}	
+	
+		</script>
+	</head>
+	<body>
+	
+	<p class="location">
+		<a href="/home/index.main.action">홈</a> <span>></span> <a href="/home/course/courseSearch.sub.action?gnb=41&pageType=1">강의검색</a> <span>></span> <a href="/home/course/sampleCourse.sub.action?gnb=44">학교별 강의 맛보기</a>
+	</p>
+	<h3><img src="/home/images/title/h3_taste_lecture.gif" alt="학교별 강의 맛보기" /></h3>
+	
+	<div class="contentWrap">
+	<form class="" id="form" name="form" action="#" onsubmit="try{search();}catch(e){alert(e);}return false;">
+		<input type="hidden" id="univName" name="univName" value=""/>
+		
+		<!--s:컨텐츠영역-->
+			<ul class="tab_type2">
+				<li class="tab5"><a class="on" href="#">대학원</a></li>
+			</ul>
+			
+			<!-- 대학리스트 화면 -->
+				<div id="list">#parse('home/intro/overallUnivList.vm')</div>
+				<!-- 대학리스트 화면 -->
+
+				<div id="graduateList2">#parse('home/intro/graduateList2.vm')</div>
+			
+			
+			
+			<div id="info">
+				<img src="/home/images/curriculum/visual_taste.gif" alt="맛보기 강의를 보시려면 원하는 학교를 선택하시기 바랍니다." />
+			</div>
+		<!--e:컨텐츠영역-->
+	</form>
+	</div>
+	</body>
+</html>

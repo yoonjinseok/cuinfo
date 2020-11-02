@@ -1,0 +1,22 @@
+
+/*********************** 저작권 신고  ***********************/
+
+.s_text {padding:0 0 0 15px; margin:0 0 0 15px;line-height:25px;background:url('/home/images/etc/dot_icon.gif') no-repeat left;}
+.s_text1 {padding:0px 0 0 10px; margin:5px 0 0 10px;line-height:25px;background:url('/home/images/etc/dot_icon1.gif') no-repeat left;}
+.s_title1 {padding:15px 0 10px 15px}
+
+/*********************** 오시는길  ***********************/
+
+.site_blank li{padding:0 0 15px 50px;}
+.site_blank li .bold{font-weight:bold; font-size:14px; color:#666}
+.s_tit li{padding:0 0 10px 80px; margin:0 0 15px 0}
+.s_tit span{ margin:0 0 0 5px; padding:0 0 0 20px; font-weight:bold; color:#666; background:url('/home/images/bul/gray.gif') no-repeat 5px 7px;}
+.green {color:#093; padding:0 0 20px 110px;}
+.blue {color:#093; padding:0 0 20px 110px;}
+.yellow { color:#dbe21b; padding:0 0 20px 110px;}
+.s_tit1 li{margin:15px 0 0 90px; padding:0 0 5px 20px; font-weight:bold; color:#666; background:url('/home/images/bul/gray.gif') no-repeat 5px 12px;}
+.ex {padding:15px 0 25px 110px; line-height:24px}
+.ex1 {margin:25px 0 25px 110px;line-height:22px; font-size:11px; color:#da9603}
+
+/*********************** 첨부파일 여러개일때 ***********************/
+.file_list {display:inline-block;}

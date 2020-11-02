@@ -1,0 +1,52 @@
+
+<table cellspacing="0" cellpadding="0" class="list_type01" summary="대표학과분야 관리"><!-- list_type01 Start -->
+	<caption>대표학과분야 관리</caption>
+	<colgroup>
+		<col width="8%" />
+		<col width="10%" />
+		<col width="*%" />
+		<col width="15%" />
+		<col width="15%" />
+	</colgroup>
+	<thead>
+		<tr>
+			<th scope="col">NO</th>
+			<th scope="col">코드</th>
+			<th scope="col">대표학과분야</th>
+			<th scope="col">사용여부 </th>
+			<th scope="col">순서 </th>			
+		</tr>
+	</thead>
+	<tbody>
+		#foreach($rc in $reptClassificationList)
+		<tr>
+			<td>$!rc.rowNum</td>
+			<td><a href="javascript:modify($!rc.classifyId);">$!rc.classifyId</a></td>
+			<td class="t_left">$!rc.classifyName</td>
+			<td>$!rc.useYn</td>
+			<td>$!rc.classifyOrder</td>
+			
+		</tr>
+		#end
+		
+		#set($cnt = $reptClassificationList.size() + 1)
+		#if($cnt < $showCnt)
+		#foreach($blank in [$cnt..$showCnt])
+		<tr>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+		</tr>
+		#end
+		#end
+
+	</tbody>
+</table><!-- list_type01 End -->
+
+<script>
+	#if($reptClassificationList)
+	setRecordCnt($totalCnt, $currPage, $totalPage, $showCnt);
+	#end
+</script>

@@ -1,0 +1,122 @@
+<head>
+	<title>대학행사안내</title>
+	<script type="text/javascript" language="javascript">
+	function search()
+	{
+		goPage(1);
+	}
+	
+	function setRecordCnt(totalCnt, currPage, totalPage, showCnt)
+	{
+		$("#tCnt").text(totalCnt);
+		$("#cPage").text(currPage);
+		$("#tPage").text(totalPage);
+		
+		setPaging($("#pg"), totalCnt, showCnt, currPage);
+	}
+	
+	function goPage(page)	{
+
+		$("#currPage").val(page);
+		
+		$("#borad_search").show();
+		$("#page_num").show();
+		
+		jQuery.post('boardUniv_list.ajax.action', 
+				$("#searchForm").formSerialize(), 
+				function(data) {
+        			$("#list").html(data);
+		});
+	}
+	
+	function view(bID)
+	{
+		$("#boardID").val(bID);
+		$("#borad_search").hide();
+		$("#page_num").hide();
+		
+		jQuery.post('boardUniv_view.ajax.action', 
+				$("#searchForm").formSerialize(), 
+				function(data) {
+        			$("#list").html(data);
+		});
+	}	
+
+	$(document).ready(function() {
+		search();
+    });
+	
+	//디비에 저장된 내용 다운로드
+    function downloadDB(fileGid,fileID)
+    {
+		//alert(fileGid +"," + fileID);
+    	document.location.href = 'board_File_download.json?fileGid=' + fileGid + '&fileID=' + fileID;
+    }
+	
+	//이벤트 상태
+	function eventState(state)
+	{	
+		$("#eventState").val(state);
+		
+		$("#tabmenu li > a").removeClass("on");		
+		if(state == 1){
+			$("#main_title").text("* 현재 진행중인 행사만 보여지며, 행사 시작일 기준 오름차순으로 정렬됩니다.");
+			$("#tab1").addClass("on");
+			
+		}else{
+			$("#main_title").text("* 지난 행사에 대해 보여지며, 행사 시작일 기준 내림차순으로 정렬됩니다.");
+			$("#tab2").addClass("on");			
+		}		
+		goPage(1);
+	}
+	
+	</script>
+</head>
+
+<body>
+<div id="location_box"><!-- MainCopyBox  Start -->
+	<h3><img src="/home/images/refer/title3.gif" alt="대학행사안내" /></h3>
+	<span class="sns_box" id="sns_box">
+		<a href="javascript:sns(1)"><img src="/home/images/icon/sns_1.gif" alt="트위터" /></a>
+		<a href="javascript:sns(2)"><img src="/home/images/icon/sns_2.gif" alt="페이스북" /></a>
+		<a href="javascript:sns(3)"><img src="/home/images/icon/sns_3.gif" alt="미투데이" /></a>
+		<a href="javascript:contentPrint()"><img src="/home/images/icon/sns_4.gif" alt="프린트" /></a>
+	</span>
+	<ul class="location">
+		<li><a href="/home/index.main.action?">Home</a></li>
+		<li><a href="/home/refer/board.sub.action?gnb=41&gID=153">정보자료실</a></li>
+		<li>대학행사안내</li>
+	</ul>
+</div><!-- MainCopyBox  End -->
+
+<div class="main_copy">사이버 대학의 오프라인 특강 및 행사에 대해 알려드립니다.</div>
+<ul id ="tabmenu" class="tab_type1 menu1">
+	<li class="tab1"><a class="on" id ="tab1" href="javascript:eventState(1)">진행중인 행사 보기</a> </li>
+	<li class="tab2"><a id ="tab2" href="javascript:eventState(2)">지난 행사 보기</a> </li>
+</ul>
+
+<form id="searchForm" name="searchForm" action="#" onsubmit="try{search();}catch(e){alert(e);}return false;"><!-- box_type01 Start -->
+<input type="hidden" id="showCnt" name="showCnt" value="10"/>
+<input type="hidden" id="currPage" name="currPage" value="1"/>
+<input type="hidden" id="gubunID" name="gubunID" value="$!gID"/><!-- 게시판 구분 -->
+<input type="hidden" id="boardID" name="boardID" value="0" />
+<input type="hidden" id="eventState" name="eventState" value="1" />
+<fieldset class="borad_search" id="borad_search">
+	<span class="dot">total : <b><em id="tCnt">0</em>건</b> (<em id="cPage">1</em>/<em id="tPage">0</em>page)</span>
+	<select	name="cbSearch" id="cbSearch">
+		<option value="">선택</option>
+		<option value="T" selected>제목</option>
+		<option value="C">내용</option>
+		<option value="N">작성자</option>
+	</select>
+	<input type="text" size="20" name="searchValue1" id="searchValue1" title="검색어입력"/>
+	<input type="image" src="/home/images/btn/search.gif" alt="검색" />
+</fieldset>
+</form><!-- box_type01 End -->
+<div class="m_l20" id="list">#parse('home/refer/boardUniv_list.vm')</div>
+<div id="main_title" class="main_right">* 현재 진행중인 행사만 보여지며, 행사 시작일 기준 오름차순으로 정렬됩니다.</div>	
+<div class="page_num" id ="page_num">
+	<div id="pg" name="pg"></div>
+</div>
+</body>
+</html>

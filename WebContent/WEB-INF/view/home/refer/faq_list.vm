@@ -1,0 +1,68 @@
+<script type="text/javascript" language="javascript">
+
+$(document).ready(function() {
+		$(".faq_q_box").click(function(){   
+			hitCount(this.id);
+			$(this).next().fadeSliderToggle();
+		    return false;
+	    });
+	})
+	
+	
+function viewImage(faqId,upfileGid){
+	/*
+		jQuery.get('faq_File_download.ajax.action?fileGid=$!step.upfileGid&fileID=1',
+					function(data){
+                    			    if(data.errors == true)
+                        			{
+                        				eval(data.message);
+                        			}
+		 		    });
+	*/   
+		displayControll_A(faqId);
+	}
+	
+function displayControll_A(faqId){
+		if(document.getElementById("id_" + faqId).style.display == "none" || document.getElementById("id_" + faqId).style.display == "" ){
+			document.getElementById("id_" + faqId).style.display = "block";
+		}else{
+			document.getElementById("id_" + faqId).style.display = "none";
+		}
+	}	
+</script>
+<ul class="faq_list">
+		#foreach($step in $faqList)
+			#if("$step.answer" == "" || $step.answer)
+    			#if(!$step.upfileGid && "$!step.upfileGid" == "") 
+    				#set($upfileGid = 0)			
+    			#else
+    			    #set($upfileGid = $!step.upfileGid)	
+    			#end
+    			<li>
+    	           <a href="#" id="$!step.faqId" class="faq_q_box" >$!step.question</a>
+    			   <p>$!step.answer</p>
+    			</li>
+    		#else
+    			<li>
+    			   <a href="javascript:viewImage('$!step.faqId','$!step.upfileGid');hitCount('$!step.faqId');">$!step.question</a>
+       		       <p id="id_$!step.faqId">#parse('home/refer/faq_img.vm')</p>
+    			</li>
+    		#end
+			<input type="hidden" id="cnt_$!step.faqId" value="0">
+		#end
+		#if(!$faqList.size() && "$!faqList.size()" == "")
+		<table width="100%">
+			<tr height="100" ><td align="center">검색된 데이터가 없습니다.</td></tr>
+		</table>
+		#end
+</ul>
+
+<script>
+	#if($faqList)
+	setRecordCnt($totalCnt, $currPage, $totalPage, $showCnt);
+	#else
+	setRecordCnt(0, 1, 1, 10);
+	#end
+
+</script>
+

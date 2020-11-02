@@ -1,0 +1,106 @@
+.whereslide{
+    left: 270px;
+    top: 190px;
+    width: 670px;
+    height: 370px;
+    position: absolute;
+    padding: 0px;
+    margin: 0px;
+    border: 4px solid;
+    border-color: #ffffff;
+    background: rgba(0, 0, 0, 0.8);
+    
+}
+
+.control {
+  display:block;
+  width:39px;
+  height:310px;
+  text-indent:-10000px;
+  position:absolute;
+  cursor: pointer;
+}
+
+#leftControl {
+  top: 130px;
+  left:0;
+  background:transparent url(/home/popup/images/slide/control_left.gif) no-repeat;
+  position: absolute;
+  height: 30px;
+}
+#rightControl {
+  top: 130px;
+  right: -9px;
+  background:transparent url(/home/popup/images/slide/control_right.gif) no-repeat;
+  position: absolute;
+  height: 30px;
+}
+
+#slideshow {
+    margin:0 auto;
+    width:640px;
+    height: 310px;
+    /* background:transparent url(/home/popup/images/slide/bg_slideshow.jpg) no-repeat 0 0; */
+    position:relative;
+    top: 30px;
+    
+}
+#slideshow #slidesContainer {
+  margin:0 auto;
+  width:560px;
+  height:310px;
+  overflow:auto; /* allow scrollbar */
+  position:relative;
+  border: 1px solid;
+  border-color: #ffffff;
+  background: rgba(0, 0, 0, 1);
+
+}
+#slideshow #slidesContainer .slide {
+  margin:0 auto;
+  width:540px; /* reduce by 20 pixels of #slidesContainer to avoid horizontal scroll */
+  height:263px;
+  background: rgba(0, 0, 0, 1);
+
+}
+
+/* .slide {
+  border: 1px solid;
+  border-color: #ffffff;
+} */
+
+.slide h2{
+  margin: 15px;
+  color: #FF3636;
+  font: italic 12px Georgia, "Times New Roman", Times, serif;
+}
+.slide p {
+  margin:15px;
+  color: #0054FF;
+  font:italic 15px Georgia, "Times New Roman", Times, serif;
+  float: left;
+  width: 30%;
+  padding-right: 0px;
+}
+.slide h2 {
+  font:italic 24px Georgia, "Times New Roman", Times, serif;
+  color: #FF3636;
+  letter-spacing:-1px;
+}
+.slide img {
+  float:right;
+  margin:0 15px;
+  color: #ffffff;
+  border: 2px solid;
+  width: 55%;
+  
+}
+
+.test {
+    position: absolute;
+    top: 500px;
+    left: 0px;
+    width: 100%;
+    background: rgba(0, 0, 0, 0);
+    
+}

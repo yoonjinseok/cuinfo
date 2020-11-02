@@ -1,0 +1,123 @@
+BODY {
+	COLOR: #555555; FONT-FAMILY: 돋음, 굴림, Arial,sans-serif,; FONT-SIZE: 9pt; LINE-HEIGHT: 145%
+}
+TD {
+	COLOR: #555555; FONT-FAMILY: 돋음, 굴림, Arial,sans-serif,; FONT-SIZE: 9pt; LINE-HEIGHT: 170%
+}
+TH {
+	COLOR: #555555; FONT-FAMILY: 돋음, 굴림, Arial,sans-serif,; FONT-SIZE: 9pt; LINE-HEIGHT: 170%
+}
+INPUT {
+	COLOR: #555555; FONT-FAMILY: 돋음, 굴림, Arial,sans-serif,; FONT-SIZE: 9pt; LINE-HEIGHT: 145%
+}
+FORM {
+	COLOR: #555555; FONT-FAMILY: 돋음, 굴림, Arial,sans-serif,; FONT-SIZE: 9pt; LINE-HEIGHT: 145%
+}
+TEXTAREA {
+	COLOR: #555555; FONT-FAMILY: 굴림, 굴림,  굴림,굴림,; FONT-SIZE: 9pt; LINE-HEIGHT: 145%
+}
+PRE {
+	COLOR: #555555; FONT-FAMILY: 돋음, 굴림, Arial,sans-serif,; FONT-SIZE: 9pt; LINE-HEIGHT: 145%
+}
+p { font-family: 굴림; font-size: 11pt; line-height: 150% }
+
+SELECT {
+	COLOR: #555555; FONT-FAMILY: 돋음, 굴림, Arial,sans-serif,; FONT-SIZE: 8pt
+}
+OPTION {
+	FONT-FAMILY: 돋음, 굴림, Arial,sans-serif,; FONT-SIZE: 8pt
+}
+BODY {
+	MARGIN: 0px
+}
+A:link {
+	COLOR: #555555; TEXT-DECORATION: none
+}
+A:visited {
+	COLOR: #555555; TEXT-DECORATION: none
+}
+A:hover {
+	COLOR: #0054a6; TEXT-DECORATION: none
+}
+TABLE.tatble2_box_w_1 {
+	BACKGROUND-COLOR: #ffffff; BORDER-BOTTOM: #cecfce 1px solid; BORDER-LEFT: #cecfce 1px solid; BORDER-RIGHT: #cecfce 1px solid; BORDER-TOP: #cecfce 1px solid; FONT-FAMILY: 돋음, 굴림, Arial,sans-serif
+}
+TABLE.tatble1_box_gray_1 {
+	BACKGROUND-COLOR: #efefef; BORDER-BOTTOM: #cecfce 1px solid; BORDER-LEFT: #cecfce 1px solid; BORDER-RIGHT: #cecfce 1px solid; BORDER-TOP: #cecfce 1px solid; FONT-FAMILY: 돋음, 굴림, Arial,sans-serif
+}
+TD.td1_title_top_Blue {
+	BACKGROUND-COLOR: #78a6ad; HEIGHT: 2px
+}
+TD.td2_title_top_Gray {
+	BACKGROUND-COLOR: #efefef
+}
+TD.td3_title_top_Gray {
+	BACKGROUND-COLOR: #a7c5c9; COLOR: #000033; FONT-FAMILY: "돋음, 굴림, Arial,sans-serif",; FONT-SIZE: 9pt; FONT-WEIGHT: bold; LINE-HEIGHT: 250%
+}
+TD.td4_title_top_Gray {
+	BACKGROUND-COLOR: #efefef; COLOR: #000033; FONT-FAMILY: "돋음, 굴림, Arial,sans-serif",; FONT-SIZE: 9pt; LINE-HEIGHT: 250%
+}
+TD.td4_title_top_Gray_ML {
+	BACKGROUND-COLOR: #efefef; COLOR: #000033; FONT-FAMILY: "돋음, 굴림, Arial,sans-serif",; FONT-SIZE: 9pt; LINE-HEIGHT: 120%
+}
+TD.td5_title_top_Gray {
+	COLOR: #267484; FONT-FAMILY: "돋음, 굴림, Arial,sans-serif",; FONT-SIZE: 9pt; FONT-WEIGHT: bold; LINE-HEIGHT: 200%
+}
+TD.td6_title_top_Gray {
+	BACKGROUND-COLOR: #efefef; COLOR: #000033; FONT-FAMILY: "돋음, 굴림, Arial,sans-serif",; FONT-SIZE: 9pt; LINE-HEIGHT: 180%; TEXT-ALIGN: right
+}
+TD.td7_title_top_Gray {
+	COLOR: #000033; FONT-FAMILY: "돋음, 굴림, Arial,sans-serif",; FONT-SIZE: 9pt; LINE-HEIGHT: 180%
+}
+TD.text_1 {
+	COLOR: #555555; FONT-FAMILY: 돋음, 굴림, Arial,sans-serif,; FONT-SIZE: 9pt; LINE-HEIGHT: 170%; TEXT-ALIGN: left
+}
+TD.td8_title_top_Gray {
+	BACKGROUND-COLOR: #dbe8ee; COLOR: #000033; FONT-FAMILY: "돋음, 굴림, Arial,sans-serif",; FONT-SIZE: 9pt; LINE-HEIGHT: 180%; TEXT-ALIGN: right
+}
+TD.td8_title_top_Gray_1 {
+	BACKGROUND-COLOR: #dbe8ee; COLOR: #000033; FONT-FAMILY: "돋음, 굴림, Arial,sans-serif",; FONT-SIZE: 9pt; LINE-HEIGHT: 180%
+}
+TD.td8_title_top_Gray_2 {
+	FONT-FAMILY: "돋음, 굴림, Arial,sans-serif",; FONT-SIZE: 9pt; LINE-HEIGHT: 180%; TEXT-ALIGN: right
+}
+TD.td9_title_top_Gray {
+	COLOR: #000033; FONT-FAMILY: "돋음, 굴림, Arial,sans-serif",; FONT-SIZE: 9pt; LINE-HEIGHT: normal; MARGIN-RIGHT: 50px; TEXT-ALIGN: right
+}
+TD.td10_title_top_Gray {
+	COLOR: #ff0000; FONT-FAMILY: "돋음, 굴림, Arial,sans-serif",; FONT-SIZE: 9pt; LINE-HEIGHT: normal; MARGIN-RIGHT: 50px; TEXT-ALIGN: center
+}
+TD.td11_title_top_Gray {
+	COLOR: #006699; FONT-FAMILY: "돋음, 굴림, Arial,sans-serif",; FONT-SIZE: 9pt; LINE-HEIGHT: normal; MARGIN-RIGHT: 50px; TEXT-ALIGN: center
+}
+TD.td12_title_top_Gray {
+	BACKGROUND-COLOR: #94cfdc; COLOR: #000033; FONT-FAMILY: "돋음, 굴림, Arial,sans-serif",; FONT-SIZE: 9pt; FONT-WEIGHT: bold; LINE-HEIGHT: 170%
+}
+TD.td13_title_top_Gray {
+	BACKGROUND-COLOR: #efefef; COLOR: #555555; FONT-FAMILY: "돋음, 굴림, Arial,sans-serif",; FONT-SIZE: 9pt; LINE-HEIGHT: 250%
+}
+TD.td4_title_top_White {
+	BACKGROUND-COLOR: #ffffff; COLOR: #000033; FONT-FAMILY: "돋음, 굴림, Arial,sans-serif",; FONT-SIZE: 9pt; LINE-HEIGHT: 250%
+}
+.sm             {COLOR: #555555; FONT-FAMILY: "돋음"; FONT-SIZE: 11px; LINE-HEIGHT: 145%}
+
+.univ           {COLOR: #5D5246; TEXT-DECORATION: none; line-height: 180%}
+.univ a:link    {COLOR: #5D5246; TEXT-DECORATION: none; line-height: 180%}
+.univ a:visited {COLOR: #5D5246; TEXT-DECORATION: none; line-height: 180%}
+.univ a:hover   {COLOR: #5D5246; TEXT-DECORATION: none; line-height: 180%; FONT-WEIGHT:BOLD}
+
+.new            {COLOR: #584A44; TEXT-DECORATION: none; line-height: 180%; FONT-SIZE: 8pt; FONT-FAMILY: "돋움"}
+.new  a:link    {COLOR: #584A44; TEXT-DECORATION: none; line-height: 180%; FONT-SIZE: 8pt; FONT-FAMILY: "돋움"}
+.new  a:visited {COLOR: #584A44; TEXT-DECORATION: none; line-height: 180%; FONT-SIZE: 8pt; FONT-FAMILY: "돋움"}
+.new  a:hover   {COLOR: #584A44; TEXT-DECORATION: none; line-height: 180%; FONT-SIZE: 8pt; FONT-FAMILY: "돋움";}
+
+.title           {COLOR: #555555; TEXT-DECORATION: none; line-height: 180%; FONT-WEIGHT:BOLD; FONT-SIZE: 12pt; FONT-FAMILY: "돋움"}
+.title a:link    {COLOR: #555555; TEXT-DECORATION: none; line-height: 180%}
+.title a:visited {COLOR: #555555; TEXT-DECORATION: none; line-height: 180%}
+.title a:hover   {COLOR: #555555; TEXT-DECORATION: none; line-height: 180%}
+
+.wrap        {word-break:break-all}
+.navi            {COLOR: #B37D49; TEXT-DECORATION: none; line-height: 180%; FONT-SIZE: 8pt; FONT-FAMILY: "돋움"}
+.navi  a:link    {COLOR: #B37D49; TEXT-DECORATION: none; line-height: 180%; FONT-SIZE: 8pt; FONT-FAMILY: "돋움"}
+.navi  a:visited {COLOR: #B37D49; TEXT-DECORATION: none; line-height: 180%; FONT-SIZE: 8pt; FONT-FAMILY: "돋움"}
+.navi  a:hover   {COLOR: #B37D49; TEXT-DECORATION: none; line-height: 180%; FONT-SIZE: 8pt; FONT-FAMILY: "돋움"}

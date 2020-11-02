@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="EUC-KR"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="FileUploadDao">
+	<typeAlias alias="fileUpload" type="com.cyberup.model.home.FileUpload"/>
+	
+	<select id="selectList" resultClass="fileUpload"  parameterClass="Integer">
+		SELECT UPFILE_ID as upfileId, UPFILE_GID as upfileGid, UPFILE_PATH as upfilePath, UPFILE_SIZE as upfileSize
+			, UPFILE_FILENAME as upfileFilename, UPFILE_SOURCE as upfileSource, UPFILE_REGISTER as upfileRegister
+			, UPFILE_REGDATE as upfileRegdate
+		FROM CU_SVC_ATTFILEUPLOAD
+		WHERE UPFILE_GID = #upfileGid,javaType=Integer#
+	</select>
+	
+	<select id="selectInfo" resultClass="fileUpload"  parameterClass="Integer">
+		SELECT UPFILE_ID as upfileId, UPFILE_GID as upfileGid, UPFILE_PATH as upfilePath, UPFILE_SIZE as upfileSize
+			, UPFILE_FILENAME as upfileFilename, UPFILE_SOURCE as upfileSource, UPFILE_REGISTER as upfileRegister
+			, UPFILE_REGDATE as upfileRegdate
+		FROM CU_SVC_ATTFILEUPLOAD
+		WHERE UPFILE_ID = #upfileId,javaType=Integer#
+	</select>
+	
+	<select id="selectGroupKey" resultClass="integer">
+		SELECT SEQ_FILE_GID.nextVal as upfileGid FROM dual
+	</select>
+	
+	<insert id="insertInfo" parameterClass="fileUpload">
+		<selectKey resultClass="Integer" keyProperty="upfileId">
+         SELECT SEQ_ATTFILE_ID.NEXTVAL as upfileId FROM dual
+        </selectKey>
+        
+		INSERT INTO CU_SVC_ATTFILEUPLOAD 
+			(UPFILE_ID, UPFILE_GID, UPFILE_PATH, UPFILE_SIZE
+			, UPFILE_FILENAME, UPFILE_SOURCE, UPFILE_REGISTER
+			, UPFILE_REGDATE)
+		 values(#upfileId#, #upfileGid#, #upfilePath#, #upfileSize#
+			, #upfileFilename#, #upfileSource#, #upfileRegister#
+			, SYSDATE)
+	</insert>
+	
+	<delete id="deleteInfo"  parameterClass="Integer">
+		DELETE FROM CU_SVC_ATTFILEUPLOAD 
+		WHERE 
+			UPFILE_ID = #upfileId,javaType=Integer#
+	</delete>
+	<delete id="deleteList"  parameterClass="Integer">
+		DELETE FROM CU_SVC_ATTFILEUPLOAD 
+		WHERE 
+			UPFILE_GID = #upfileGid,javaType=Integer#
+	</delete>
+	<select id="selectUploadCount" resultClass="Integer" parameterClass="String">
+		select count(*) from cu_svc_attfileupload
+		where (upfile_filename = #fileName# or upfile_path = #fileName#)
+	</select>
+
+</sqlMap>
+

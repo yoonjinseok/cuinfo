@@ -1,0 +1,47 @@
+<div class="list_btn">
+	<a href="javascript:viewList();"><img src="/home/images/btn/list2.gif" alt="목록" /></a>
+</div>
+
+<div class="view_top">
+	##<span>&nbsp;$!view_info.title</span>
+	<span>
+		#if($!view_info.univdeptlink)
+			<a target="_blank" href="$!view_info.univdeptlink"  onclick= "dcsMultiTrack('DCS.dcssip','$!view_info.univdeptlink','DCS.dcsuri','/','WT.ti','Offsite Link - $!view_info.title')">$!view_info.title</a>
+		#else
+			$!view_info.title
+		#end
+	</span>
+	##<span><a target="_blank" href="$!view_info.univdeptlink">$!view_info.title</a></span>
+	#if($!view_info.publicYn =="Y")
+	#if($!view_info.location != 0)
+	<a href="$!view_info.location" target="_blank" onclick= "dcsMultiTrack('DCS.dcssip','$!view_info.location','DCS.dcsuri','/','WT.ti','Offsite Link - $!view_info.location')">
+		<img src="/home/images/btn/view.gif" alt="맛보기" />
+	</a>
+	#end
+	#if($!view_info.location == 0)
+	<a href="#">
+		<img src="/home/images/btn/view.gif" alt="맛보기" />
+	</a>
+	#end
+	#end
+</div>
+
+<ul class="view_type2">
+		
+        #if($!view_info.universityName)<li><span>대학명 : </span>&nbsp;#if($!view_info.univHomePage)<a target="_blank" href="$!view_info.univHomePage" onclick= "dcsMultiTrack('DCS.dcssip','$!view_info.univHomePage','DCS.dcsuri','/','WT.ti','Offsite Link - $!view_info.universityName')">#end$!view_info.universityName#if($!view_info.univHomePage)</a>#end</li>#end
+    	##if($!view_info.clicksCnt)<li><span>열람횟수 : </span>&nbsp;$!view_info.clicksCnt</li>#end
+    	#if($!view_info.contName)<li><span>교수자 : </span>&nbsp;$!view_info.contName</li>#end
+    	#if($!view_info.department)<li><span>학과 : </span>&nbsp;#if($!view_info.univdeptlink)<a target="_blank" href="$!view_info.univdeptlink" onclick= "dcsMultiTrack('DCS.dcssip','$!view_info.univdeptlink','DCS.dcsuri','/','WT.ti','Offsite Link - $!view_info.universityName')">#end$!view_info.department#if($!view_info.univdeptlink)</a>#end</li>#end
+    	#if($!view_info.credit && $!list.credit != "0 학점"  && $!view_info.publicYn != "Y")<li><span>학점 : </span>&nbsp;$!view_info.credit</li>#end 
+    	#if($!view_info.svcStart && $!view_info.publicYn != "Y")<li><span>개설일 : </span>&nbsp;$!view_info.svcStart ~ $!view_info.svcEnd</li>#end
+    	#if($!view_info.grad)<li>#if($!view_info.grad)<span>권장학년 : </span>&nbsp;$!view_info.grad 학년 #end</li>#end
+    	#if($!view_info.attfileIdTitle1 && $!view_info.publicYn !="Y")<li><span>강의계획서 :&nbsp;$!view_info.attfileIdTitle1</span></li>#end
+    	#if($!view_info.termSemester && $!view_info.publicYn != "Y")<li><span>강의학기 : </span>&nbsp;$!view_info.termSemester 학기</li>#end
+    	#if($!view_info.attfileIdTitle2 && $!view_info.publicYn == "Y")<li><span>관련자료 : </span>&nbsp;$!view_info.attfileIdTitle2</li>#end
+    	
+</ul>        
+<ul class="view_type3">
+		#if($!view_info.description)<li class="block">강의설명 : <span>&nbsp;$!view_info.description </span></li>#end
+    	#if($!view_info.assessment)<li class="block">평가방법 : <span>&nbsp;$!view_info.assessment </span></li>#end	
+</ul>
+

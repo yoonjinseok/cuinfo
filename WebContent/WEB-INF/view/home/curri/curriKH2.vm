@@ -1,0 +1,289 @@
+<head>
+	<title>학과 내비게이션</title>
+	<link rel="stylesheet" type="text/css" href="/home/css/course.css" />
+	<script type="text/javascript" language="javascript">
+	
+	$(document).ready(function() {
+		//search();
+    });
+    function viewDetail(title)
+	{
+		
+		
+		//필요 변수 셋팅
+		$("#text").val(title);
+		$("#deptId").val("00840");
+		$("#univId").val("34");
+		
+		//onsubmit 속성을 비워주어야 submit이 된다.
+		$("#form").attr("method","post");
+		$("#form").attr("onsubmit","");
+		$("#form").attr("action","/home/course/courseSearch3View.sub2.action?gnb=41");
+		$("#form").submit();
+		
+	}
+    	//유사강의검색
+	function viewDetail2(courseId, title)
+	{
+	
+		//필요 변수 셋팅
+		$("#text").val(title);
+		$("#hidetext").val(title);
+		$("#courseId").val(courseId);
+		$("#deptId").val("");
+		
+		//onsubmit 속성을 비워주어야 submit이 된다.
+		$("#form").attr("method","post");
+		$("#form").attr("onsubmit","");
+		$("#form").attr("action","/home/course/courseSearch2.sub2.action?gnb=41&pageType=1&checkbox3=2");
+		$("#form").submit();
+		
+	}
+	</script>
+</head>
+	
+<body id="intro">
+
+	<p class="location">
+		<a href="">홈</a> <span>&gt;</span> <a href="">학과/교과과정</a> <span>&gt;</span> <a href="">교과과정 보기</a> 
+	</p>
+	<h3><img src="/home/images/title/h3_sub_view.gif" alt="교과과정 보기"></h3>
+		
+	
+	<div class="contentWrap">
+		<!--s:컨텐츠영역-->
+			
+			<div class="path_major">
+				<a>경희사이버대학원</a><span>&gt;</span>
+				<a>문화창조대학원</a><span>&gt;</span>
+				<a>글로벌한국학</a>
+				<a target="_blank" href="http://grad.khcu.ac.kr/grad/contents.jsp?m=21153&SITE_GRP=GRAD&lnb=3" class="btn_info_major"><img src="/home/images/btn/btn_info_major.gif" alt="학과안내 페이지 바로가기"></a>
+																																																																																																												</div>
+			
+			<div id="list" class="univ_table m_l0">
+				<table cellspacing="0" cellpadding="0" summary="교과과정 보기"><!-- table_type1 st01 Start -->
+				<caption>교과과정 보기</caption>
+				<colgroup>
+					<col width="20%">
+					<col width="40%">
+					<col width="20%">
+				</colgroup>
+				<thead>
+					<tr>
+						<th scope="col">학기</th>
+						<th scope="col">교과목명</th>
+						<th scope="col">학점</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr class="line02">
+						<th class="line02" rowspan="4">1</th>
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('한국 근ㆍ현대사 연구');"><p>한국 근ㆍ현대사 연구</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','한국 근ㆍ현대사 연구');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>
+					<tr>
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('다문화 사회론');"><p>다문화 사회론</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','다문화 사회론');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>
+																								
+					<tr>
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('한국어학 특강');"><p>한국어학 특강</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','한국어학 특강');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>
+					<tr class="line01">
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('한국어 교수법 특강');"><p>한국어 교수법 특강</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','한국어 교수법 특강*');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>
+					
+					
+					
+					<tr class="line02">
+						<th class="line02" rowspan="4">2</th>
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('한국학 연구방법론');"><p>한국학 연구방법론</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','한국학 연구방법론');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>
+					<tr>
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('한국 문화예술과 한류');"><p>한국 문화예술과 한류</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','한국 문화예술과 한류');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>
+																								
+					<tr>
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('문화 간 커뮤니케이션론');"><p>문화 간 커뮤니케이션론</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','문화 간 커뮤니케이션론');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>
+					<tr class="line01">
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('한국어 교육과정과 교재 연구');"><p>한국어 교육과정과 교재 연구</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','한국어 교육과정과 교재 연구');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>
+					
+					
+					
+					<tr class="line02">
+						<th class="line02" rowspan="6">3</th>
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('한국학 정책론');"><p>한국학 정책론</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','한국학 정책론');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>
+					<tr>
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('한국 현대문화 비평');"><p>한국 현대문화 비평</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','한국 현대문화 비평');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>
+																								
+					<tr>
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('한국 지역문화 연구');"><p>한국 지역문화 연구</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','한국 지역문화 연구');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>
+					<tr>
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('재외동포교육론');"><p>재외동포교육론</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','재외동포교육론');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>
+					<tr>
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('특수목적 한국어교육 특강');"><p>특수목적 한국어교육 특강</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','특수목적 한국어교육 특강');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>
+					<tr class="line01">
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('외국어 습득론');"><p>외국어 습득론</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','외국어 습득론');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>
+					
+					
+					
+					
+					<tr class="line02">
+						<th class="line02" rowspan="6">4</th>
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('한국 경제와 산업 연구');"><p>한국 경제와 산업 연구</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','한국 경제와 산업 연구');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>
+					<tr>
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('한국인의 의식과 가치관 연구');"><p>한국인의 의식과 가치관 연구</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','한국인의 의식과 가치관 연구');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>
+					<tr>
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('동아시아 비교문화론');"><p>동아시아 비교문화론</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','동아시아 비교문화론');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>
+					<tr>
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('사회언어학 연구');"><p>사회언어학 연구</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','사회언어학 연구');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>
+																								
+					<tr>
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('한국어 문법교육 연구');"><p>한국어 문법교육 연구</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','한국어 문법교육 연구');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>
+
+					<tr class="line01">
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('한국어교육 실습');"><p>한국어교육 실습(해당자)</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','한국어교육 실습(해당자)');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>
+
+					<tr class="line01">
+						<th class="line02">5</th>
+						<td class="t_left line02" colspan="2">
+							<p>학위논문 연구</p>
+						</td>
+					</tr>
+				</tbody>
+				</table>	
+			</div>
+			
+			<p class="m_b5"><img src="/home/images/course/txt_info_search.gif" alt="전체 사이버대학을 대상으로 유사강의 검색"></p>
+			<br>
+			
+		<!--e:컨텐츠영역-->
+	</div>
+
+	
+	<form class="search_box01" id="form" name="form" action="#" onsubmit="try{search();}catch(e){alert(e);}return false;"><!-- box_type01 Start -->
+        <input type="hidden" id="courseId" name="courseId" />
+        <input type="hidden" id="hidetext" name="hidetext" />
+        <input type="hidden" id="text" name="text" />
+        <input type="hidden" id="deptId" name="deptId" value="" />
+        <input type="hidden" id="univId" name="univId" value="" />
+	</form>
+
+	<div class="page_num">
+		<div id="pg" name="pg"></div>
+	</div>
+
+</body>
+</html>

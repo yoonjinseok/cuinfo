@@ -1,0 +1,309 @@
+<head>
+	<title>학위취득/국가자격증</title>
+	<script type="text/javascript">
+		function viewCourseList(text) {
+			##필요 변수 셋팅
+			$("#text").val(text);
+			
+			##onsubmit 속성을 비워주어야 submit이 된다.
+			$("#form").attr("method","post");
+			$("#form").attr("onsubmit","");
+			$("#form").attr("action","/home/intro/certificate_subjectInfo.sub.action?gnb=$gnb");
+			$("#form").submit();
+		}
+	</script>
+</head>
+<body>
+	
+<form method="post" id="form" name="form" action="#">
+	<input type="hidden" id="text" 		name="text" 	value="">
+	<input type="hidden" id="showCnt" 	name="showCnt" 	value="10"/>
+	<input type="hidden" id="currPage" 	name="currPage"	value="1"/>
+</form>
+<p class="location">
+	<a href="/home/index.main.action">홈</a> <span>></span> <a href="/home/intro/summary.sub.action?gnb=11">사이버대학 안내</a> <span>></span> <a href="/home/intro/certificate1.sub.action?gnb=13">학위취득/국가자격증</a> 
+</p>
+<h3>
+	<img src="/home/images/intro/title5_03.gif" alt="사회복지학 개론" />
+</h3>
+
+<div class="feature t_center"><img src="/home/images/intro/intro_title3.gif" alt="평생 교육사란?
+평생교육기관 및 시설에서 평생교육의 기획, 진행, 분석, 평가 및 교육업무 수행 을 담당하는 전문가입니다.
+" /></div>
+<dl class="feature">
+  <dt><img src="/home/images/intro/certificate2_stext1.gif" alt="보육교사란?" /></dt>
+<dd>
+##	평생교육법 제7조 제2항에서는 다음의 업무를 수행하는 역할로 규정하고 있다.<br/>
+	※관련근거 : 평생교육법 제7조 제2항<br/>
+    <span>- 평생교육프로그램에 대한 요구분석, 기획과 관련된 프로그래머로서의 역할</span><br/>
+    <span>- 개발된 교육과정을 효율적으로 진행ㆍ운영하는 운영자로서의 역할</span><br/>
+    <span>- 교육과정의 효과를 분석하고 평가하는 평가자로서의 역할</span><br/>
+    <span>- 학습자들에게 학습정보를 제공하고 생애개발을 지원하는 상담자로서의 역할</span><br/>
+    <span>- 개발된 교육과정을 학습자에게 전달하고 강의하는 교수자로서의 역할</span>
+  </dd>
+</dl>
+
+<dl class="feature">
+    <dt><img src="/home/images/intro/certificate_stext2.gif"  alt="자격기준 "/></dt>
+    <dd>
+        <span class="bold">평생교육사 3급</span><br/>
+##    <span>- 대학, 원격대학형태의 평생교육시설 또는 사내대학에서 관련과목을 21학점 이상 이수하고 졸업한 자</span> <br/>
+##    <span>- 관련 업무에 2년 이상 종사한 경력이 있는 자로서 진흥원장이나 지정양성기관이 운영하는 평생교육사 3급 양성과정을 이수한 자</span><br/>
+##    <span>- 관련 업무에 1년 이상 종사한 경력이 있는 공무원 및 「초ㆍ중등교육법」 제2조제2호부터 제6호까지 또는 학력인정 평생교육<br/>시설의 교원으로서 진흥원장이나 지정양성기관이 운영하는 평생교육사 3급 양성과정을 이수한 자 </span></dd>
+
+        <span>- (1호) 대학 또는 학점은행기관에서 평생교육 관련과목을 21학점 이상 이수하고 학위를 취득한 자 </span> <br/>
+        <span>- (2호) 대학을 졸업한 자로서 대학 또는 학점은행기관에서 평생교육 관련과목을 21학점 이수한 자 </span> <br/>
+    </dd>
+    <dd>
+        <span class="bold">평생교육사 2급</span> <br/>
+##        <span>-「고등교육법」 제29조 및 제30조에 따른 대학원에서 교육과학기술부령으로 정하는 평생교육과 관련된 과목 중 필수과목을<br/>15학점 이상 이수하고 석사 또는 박사학위를 취득한 자. 다만, 「고등교육법」 제2조에 따른 학교에서 필수과목을 이수한 경우<br/>선택과목으로 필수과목 학점을 대체할 수 있다. </span> <br/>
+##        <span>- 평생교육사 3급 자격증을 보유하고 관련 업무에 3년 이상 종사한 경력이 있는 자로서 진흥원장이나 지정양성기관이 운영하는 <br/>평생교육사 2급 승급과정을 이수한 자 </span>
+        <span>- (1호) 대학원에서 필수과목 15학점 이상 이수하고 석사 또는 박사학위를 취득한 자 </span> <br/>
+        <span>- (2호) 대학 또는 학점은행기관에서 평생교육 관련과목을 30학점 이수하고 학위를 취득한 자 </span> <br/>
+        <span>- (3호) 대학을 졸업한 자로서 대학 또는 학점은행기관에서 평생교육 관련과목을 30학점 이수한 자 </span> <br/>
+        <span>- 평생교육사 3급 자격증을 보유하고 평생교육 관련업무에 3년 이상 종사한 경력이 있는 자로서 국가 </span> <br/>
+        <span>- 평생교육진흥원이 운영하는 2급 승급과정을 이수한 자(3급 자격취득 이전/이후 경력 모두 인정) </span> <br/>
+    </dd>
+
+    <dd>
+        <span class="bold">평생교육사 1급</span>  <br/>
+##        <span>- 평생교육사 2급 자격증을 취득한 후, 교육과학기술부장관이 정하는 평생교육과 관련된 업무에 5년 이상 종사한 경력이 있는 자로서<br/> 진흥원장이 운영하는 평생교육사 1급 승급 과정을 이수한 자 </span>
+        <span>- 평생교육사 2급 자격증을 취득한 후 평생교육 관련업무 5년 이상 종사한 경력이 있는 자로서 국가 </span> <br/>
+        <span>- 평생교육진흥원이 운영하는 1급 승급과정을 이수한 자(2급 자격취득 이후 경력만 인정) </span> <br/>
+    </dd>
+</dl>
+##<dl class="feature">
+##  <dd>평생교육사 자격요건 요약표(개정법)</dd>
+##  <dd class="no univ_table1 m_l20">
+##      <table cellspacing="0" cellpadding="0" summary="과정관리"><!-- table_type1 st01 Start -->
+##		<caption>과정관리</caption>
+##		<colgroup>
+##			<col width="10%" />
+##            <col width="15%" />
+##            <col width="*" />
+##            <col width="17%" />
+##			<col width="16%" />
+##    </colgroup>
+##		<thead>
+##			<tr>
+##				<th scope="col">구분</th>
+##				<th scope="col"  colspan="3">대상 및 자격요건</th>
+##                <th scope="col">이수학점</th>
+##                <th scope="col" width="19%">비고</th>
+##			</tr>
+##		</thead>
+##		<tbody>
+##            <tr>
+##				<th>1급</th>
+##                <td  colspan="3">평생교육사2급 + 평생교육 관련업무 5년</td>
+##                <td>1급 승급과정</td>
+##                <td>평생교육진흥원운영</td>
+##            </tr>
+##            <tr>
+##				<th rowspan="7">2급</td>
+##                <td rowspan="3">학위과정</td>
+##                <td  colspan="2">대학원(석사 또는 박사학위 취득)</td>
+##                <td>15학점(필수5)</td>
+##                <td>2009년 이후<br/>입학생부터 적용</td>
+##             </tr>
+##               <tr>
+##			    <td  colspan="2">대학 재학생</td>
+##                <td rowspan="5">30학점<br />(필수5/선택5)</td>
+##                <td>2009년 이후<br/>입학생부터 적용</td>
+##             </tr>
+##              <tr>
+##			    <td colspan="2">학점은행제 학위취득 과정생</td>
+##                <td>2009.8.9 이후<br/>학위취득자부터 적용</td>
+##             </tr>
+##              <tr>
+##			    <td rowspan="4">비학위과정</td>
+##                <td rowspan="3">대학졸업생</td>
+##                 <td>대학(시간제등록)</td>
+##                <td rowspan="3">2008년 이후<br/>양성과정<br/>전업자부터 적용</td>
+##             </tr>
+##              <tr>
+##			    <td>지정양성기관</td>
+##              </tr>
+##              <tr>
+##			    <td>학점은행기관</td>
+##              </tr>
+##              <tr>
+##				<td colspan="2">교육사 3급 + 평생교육업무 3년</td>
+##                <td>2급 승급과정</td>
+##                <td>2010년<br/>시범운영</td>
+##             </tr>
+##
+##                 <tr>
+##				<th rowspan="7">3급</td>
+##                <td rowspan="2">학위과정</td>
+##                <td  colspan="2">대학 재학생</td>
+##                <td  rowspan="7">21학점<br />(필수5/선택2)</td>
+##                <td>2009년 이후<br/>입학생부터 적용</td>
+##             </tr>
+##               <tr>
+##			    <td  colspan="2">은행제 학위취득 과정생</td>
+##                <td>2009.8.9 이후<br/>학위취득자부터 적용</td>
+##             </tr>
+##              <tr>
+##			    <td rowspan="5">비학위과정</td>
+##                <td rowspan="3">대학졸업생</td>
+##                 <td>대학(시간제등록)</td>
+##                <td rowspan="5">2008년 이후<br/>양성과정<br/>전업자부터적용</td>
+##             </tr>
+##              <tr>
+##                <td>지정양성과정</td>
+##              </tr>
+##              <tr>
+##                <td>학점은행기관</td>
+##              </tr>
+##              <tr>
+##				<td>평생교육업무 2년 경력자</td>
+##                <td rowspan="2">지정양성기관</td>
+##             </tr>
+##              <tr>
+##				<td>공무원<br/>(평생교육업무 1년),<br/>교원</td>
+##             </tr>
+##           </tbody>
+##      </table>
+##    </dd>
+##</dl>
+<dl>
+    <dd  class="t_center"><img src="/home/images/intro/ex_box3.gif"  alt="(개정)평생교육법 시행규칙 부칙(제927호, 2009.2.18)의 경과조치에 의해 관련과목의 개정규정은 2009학년도 3월 1일 이후 대학 또는 대학원에 입학하는 자부터 적용한다."/></dd>
+</dl>
+<dl class="feature">
+    <dt><img src="/home/images/intro/certificate2_stext2.gif"  alt="평생교육사 2급 "/></dt>
+    <dd>교과목 이수기준</dd>
+    <dd class="no univ_table1 m_l20">
+        <table cellspacing="0" cellpadding="0" summary="과정관리"><!-- table_type1 st01 Start -->
+		    <caption>과정관리</caption>
+		    <colgroup>
+                <col width="50%" />
+                <col width="*" />
+		    </colgroup>
+		    <thead>
+            <tr>
+                <th scope="row">개정법 (2009년 신/편입생부터)</th>
+                <th scope="row">종전법 (2008년 신/편입생까지)</th>
+            </tr>
+		    </thead>
+		    <tbody>
+            <tr>
+                <td>
+                    <ul>
+                        <li>현행법령에 적용을 받음 <br/><span>- 취득자격 급수 : 평생교육사 2급(또는 3급) <br/>- 자격증 급수별 이수과목 </span></li>
+                        <li>평생교육사 2급 : 평생교육 관련 10과목<br />(필수 5과목(실습포함)+ 선택 5과목, 평균 80점 이상 </li>
+                        <li>평생교육사 3급 : 평생교육 관련 7과목<br />(필수 5과목(실습포함)+ 선택 2과목, 평균 80점 이상)</li>
+                        <li>- 현행법령에 의한 이수 교과목 <br />실습시간 : 4주, 160시간 이상 (실습면제 불가) </li>
+                    </ul>
+                </td>
+                <td>
+                    <ul>
+                        <li>종전법령에 적용을 받음 <br/><span>- 취득자격 급수 : 평생교육사 2급  <br/>- 이수과목: 평생교육 관련 10과목 </span>
+                            <span><br/>(필수 7과목 + 선택 3과목, 평균 80점 이상)</span>
+                        </li>
+                        <li>
+                            <br/>종전법령에 의한 이수교과목 <br />
+                            <span>- 실습시간 : 3주, 132시간 이상 </span><br />
+                            <span>- 실습면제 가능<br/>(평생교육기관에서 평생교육프로그램 관련 업무 3개월 이상) </span>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </dd>
+</dl>
+
+<dl class="feature">
+    <dd class="dot_a">이수교과목 – 개정법 적용자</dd>
+    <dd class="no dot_b"><a href="certificate3_pop.sub.action?gnb=133"><img src="/home/images/btn/btn_pop.gif"  alt="유사인정과목보기"/></a></dd>
+    <dd class="no univ_table1 m_l20">
+        <table cellspacing="0" cellpadding="0" summary="과정관리"><!-- table_type1 st01 Start -->
+		    <caption>과정관리</caption>
+		        <colgroup>
+			        <col width="10%" />
+                    <col width="15%" />
+                    <col width="*" />
+                    <col width="17%" />
+                    <col width="16%" />
+                </colgroup>
+		        <thead>
+                <tr>
+                    <th scope="col">영역</th>
+                    <th scope="col"  colspan="2">교과목</th>
+                    <th scope="col"  colspan="2">이수과목(점수)</th>
+			    </tr>
+		        </thead>
+		        <tbody>
+                <tr>
+                    <th>필수과목<br/> 5과목<br/> (15학점)</th>
+                    <td  colspan="2">
+                        <a href="javascript:viewCourseList('평생교육')">평생교육(개)론</a>,
+                        <a href="javascript:viewCourseList('평생교육경영')">평생교육경영(론)</a>,
+                        <a href="javascript:viewCourseList('평생교육프로그램개발론')">평생교육프로그램개발론</a>,<br/>
+                        <a href="javascript:viewCourseList('평생교육방법론')">평생교육방법론</a>,
+                        <a href="javascript:viewCourseList('평생교육실습')">평생교육실습</a>
+                    </td>
+                    <td colspan="2">5과목(15학점)</td>
+                </tr>
+                <tr>
+                    <th rowspan="2">선택과목<br/> 5과목<br/> (15학점)</th>
+##                    <td>평생교육대상 관련영역</td>
+                    <td>실천영역</td>
+                    <td>
+                        <a href="javascript:viewCourseList('아동교육론')">아동교육론</a>,
+                        <a href="javascript:viewCourseList('청소년교육론')">청소년교육론</a>,
+                        <a href="javascript:viewCourseList('여성교육론')">여성교육론</a>,<br/>
+                        <a href="javascript:viewCourseList('노인교육론')">노인교육론</a>,
+                        <a href="javascript:viewCourseList('시민교육론')">시민교육론</a>,
+                        <a href="javascript:viewCourseList('문자해득교육론')">문자해득교육론</a>,<br/>
+                        <a href="javascript:viewCourseList('특수교육론')">특수교육론</a>,
+                        <a href="javascript:viewCourseList('성인학습')">성인학습 및 상담</a>
+                    </td>
+                    <td>1과목 이상 선택 </td>
+                    <td rowspan="2">※ 선택과목<br/>영역별 1과목<br/>이상 반드시<br/>포함하여<br/>5과목(15학점) 이수  </td>
+                </tr>
+                <tr>
+##                    <td>평생교육내용 관련영역</td>
+                    <td>방법영역</td>
+                    <td>
+                        <a href="javascript:viewCourseList('교육사회학')">교육사회학</a>,
+                        <a href="javascript:viewCourseList('교육공학')">교육공학</a>,
+                        <a href="javascript:viewCourseList('교육복지론')">교육복지론</a>,<br/>
+                        <a href="javascript:viewCourseList('지역사회교육론')">지역사회교육론</a>,
+                        <a href="javascript:viewCourseList('문화예술교육')">문화예술교육(론)</a>,<br/>
+                        <a href="javascript:viewCourseList('인적자원개발론')">인적자원개발론</a>,
+                        <a href="javascript:viewCourseList('직업 진로설계')">직업·진로설계</a>,<br/>
+                        <a href="javascript:viewCourseList('원격 교육론')">원격(이러닝, 사이버)교육론</a>,
+                        <a href="javascript:viewCourseList('기업교육론')">기업교육론</a>,<br/>
+                        <a href="javascript:viewCourseList('환경교육론')">환경교육론</a>,
+                        <a href="javascript:viewCourseList('교수설계')">교수설계</a>,
+                        <a href="javascript:viewCourseList('교육조사방법론')">교육조사방법론</a>,<br/>
+                        <a href="javascript:viewCourseList('상담심리학')">상담심리학</a>
+                    </td>
+                    <td>1과목 이상 선택</td>
+                </tr>
+                </tbody>
+        </table>
+    </dd>
+</dl>
+<dl>
+    <dd  class="t_center"><img src="/home/images/intro/ex_box3.gif"  alt="(개정)평생교육법 시행규칙 부칙(제927호, 2009.2.18)의 경과조치에 의해 관련과목의 개정규정은 2009학년도 3월 1일 이후 대학 또는 대학원에 입학하는 자부터 적용한다."/></dd>
+</dl>
+   
+<dl class="feature">
+    <dt><img src="/home/images/intro/certificate_stext4.gif"  alt="자격증 신청"/></dt>
+    <dd class="no"><img src="/home/images/intro/certificate3_img1.gif"  alt="자격증 신청"/></dd>
+##    <dd>사단법인 한국평생교육사협회(<a target="_blank" href="http://kale.lll.or.kr" onclick="dcsMultiTrack('DCS.dcssip','http://kale.lll.or.kr','DCS.dcsuri','/','DCS.qry','','WT.ti','Offsite Link - kale','WT.sp','kale')">http://kale.lll.or.kr</a>)</dd>
+    <dd>한국평생교육사협회(<a target="_blank" href="http://www.kale.or.kr" onclick="dcsMultiTrack('DCS.dcssip','http://www.kale.or.kr','DCS.dcsuri','/','DCS.qry','','WT.ti','Offsite Link - kale','WT.sp','kale')">http://www.kale.or.kr</a>)</dd>
+    <dd>TEL : 02-3444-0536</dd>
+</dl>
+
+ #*
+<dl class="feature1">
+  <dd>※ 국가자격증 외 민간자격증의 '등록' 및 '공인' 여부는 '민간자격운영센터<a href="http://www.pqi.or.kr" target="_blank">(www.pqi.or.kr)</a>'에서 확인하여 주시기 바랍니다.</dd>
+ </dl>
+ *#
+</body>
+</html>
+ 

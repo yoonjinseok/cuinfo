@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="EUC-KR"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="OrganizationDao">
+	<typeAlias alias="organization" type="com.cyberup.model.course.Organization"/>
+	
+	<select id="selectInfo" resultClass="organization"  parameterClass="map">
+		SELECT ORG_ID as orgId, ORG_NAME as orgName, ADMIN_NAME as adminName
+			, ADMIN_EMAIL as adminEmail, ADMIN_TELNO as adminTelno, ETC as etc
+			, ORG_REGISTER as orgRegister, ORG_REGDATE as orgRegdate, ORG_MODIFIER as orgModifier
+			, ORG_MODDATE as orgModdate, CATALOG_NAME as catalogName
+		FROM CU_CTR_ORG
+		WHERE 1=1
+			<isNotEmpty property="orgId" prepend="AND">
+			ORG_ID = #orgId,javaType=String#
+			</isNotEmpty>
+	</select>
+	
+	<update id="updateInfo" parameterClass="organization">
+		UPDATE CU_CTR_ORG SET 
+			ORG_ID = #orgId#, ORG_NAME = #orgName#, ADMIN_NAME = #adminName#
+			, ADMIN_EMAIL = #adminEmail#, ADMIN_TELNO = #adminTelno#, ETC = #etc#
+			, ORG_MODIFIER = #orgModifier#
+			, ORG_MODDATE = SYSDATE, CATALOG_NAME = #catalogName#
+	</update>
+	
+	<insert id="insertInfo" parameterClass="organization">
+		INSERT INTO CU_CTR_ORG 
+		(ORG_ID, ORG_NAME, ADMIN_NAME
+			, ADMIN_EMAIL, ADMIN_TELNO, ETC
+			, ORG_REGISTER, ORG_REGDATE, ORG_MODIFIER
+			, ORG_MODDATE, CATALOG_NAME)
+		 values(#orgId#, #orgName#, #adminName#
+			, #adminEmail#, #adminTelno#, #etc#
+			, #orgRegister#, SYSDATE, #orgRegister#, SYSDATE, #catalogName#)
+	</insert>
+	
+	<delete id="deleteInfo"  parameterClass="String">
+		DELETE FROM CU_CTR_ORG 
+		WHERE 
+			ORG_ID = #orgId,javaType=String#
+	</delete>
+
+</sqlMap>

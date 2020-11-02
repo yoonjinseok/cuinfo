@@ -1,0 +1,312 @@
+<head>
+	<title>학위취득/국가자격증</title>
+	<script type="text/javascript">
+		function viewCourseList(text) {
+			##필요 변수 셋팅
+			$("#text").val(text);
+			
+			##onsubmit 속성을 비워주어야 submit이 된다.
+			$("#form").attr("method","post");
+			$("#form").attr("onsubmit","");
+			$("#form").attr("action","/home/intro/certificate_subjectInfo.sub.action?gnb=$gnb");
+			$("#form").submit();
+		}
+	</script>
+</head>
+<body>
+	
+<form method="post" id="form" name="form" action="#">
+	<input type="hidden" id="text" 		name="text" 	value="">
+	<input type="hidden" id="showCnt" 	name="showCnt" 	value="10"/>
+	<input type="hidden" id="currPage" 	name="currPage"	value="1"/>
+</form>
+<dl>
+  <dd class="univ_table1 m_l20">
+      <table cellspacing="0" cellpadding="0" summary="과정관리"><!-- table_type1 st01 Start -->
+		<caption>과정관리</caption>
+		<colgroup>
+			<col width="10%" />
+            <col width="10%" />
+            <col width="15%" />
+            <col width="*" />
+    </colgroup>
+		<thead>
+			<tr>
+				<th scope="col" colspan="2">구분</th>
+				<th scope="col">법령과목명</th>
+                <th scope="col">유사인정 과목명</th>
+			</tr>
+		</thead>
+		<tbody>
+            <tr>
+				<th colspan="2" rowspan="5">필수과목</th>
+                <td>평생교육론</td>
+                <td>
+                	<a href="javascript:viewCourseList('평생교육개론');">평생교육개론</a>, 
+                	<a href="javascript:viewCourseList('평생교육원론');">평생교육원론</a>, 
+                	<a href="javascript:viewCourseList('평생교육연구');">평생교육연구</a>, 
+                	<a href="javascript:viewCourseList('평생교육론연구');">평생교육론연구</a>, 
+                	<a href="javascript:viewCourseList('평생교육학연구');">평생교육학연구</a>,<br/> 
+                	<a href="javascript:viewCourseList('평생교육이슈');">평생교육이슈</a>, 
+                	<a href="javascript:viewCourseList('평생교육기초');">평생교육기초</a>, 
+                	<a href="javascript:viewCourseList('평생교육론기초');">평생교육론기초</a>, 
+                	<a href="javascript:viewCourseList('평생교육학기초');">평생교육학기초</a>, 
+                	<a href="javascript:viewCourseList('평생교육세미나');">평생교육세미나</a>,<br/> 
+                	<a href="javascript:viewCourseList('평생교육론세미나');">평생교육론세미나</a>, 
+                	<a href="javascript:viewCourseList('평생교육학세미나');">평생교육학세미나</a>
+				</td>
+            </tr>
+            <tr>
+              <td>평생교육경영론</td>
+              <td>
+              		<a href="javascript:viewCourseList('평생교육경영');">평생교육경영</a>, 
+              		<a href="javascript:viewCourseList('평생교육경영학');">평생교육경영학</a>, 
+              		<a href="javascript:viewCourseList('평생교육경영의 이론과 적용');">평생교육경영의 이론과 적용</a>, 
+              		<a href="javascript:viewCourseList('평생교육경영세미나');">평생교육경영세미나</a>,<br/> 
+              		<a href="javascript:viewCourseList('평생교육경영론세미나');">평생교육경영론세미나</a>, 
+              		<a href="javascript:viewCourseList('평생교육경영연구');">평생교육경영연구</a>, 
+              		<a href="javascript:viewCourseList('평생교육경영론연구');">평생교육경영론연구</a>, 
+              		<a href="javascript:viewCourseList('평생교육기관경영');">평생교육기관경영</a>, <br/>
+              		<a href="javascript:viewCourseList('평생교육기관경영연구');">평생교육기관경영연구</a> 
+              	</td>
+			</tr
+            <tr>
+              <td>평생교육방법론</td>
+              <td>
+              		<a href="javascript:viewCourseList('평생교육방법');">평생교육방법</a>, 
+              		<a href="javascript:viewCourseList('평생교육방법연구');">평생교육방법연구</a>, 
+              		<a href="javascript:viewCourseList('평생교육방법론연구');">평생교육방법론연구</a>, 
+              		<a href="javascript:viewCourseList('성인교육방법론');">성인교육방법론</a>, <br/>
+              		<a href="javascript:viewCourseList('평생교육방법론의 이해');">평생교육방법론의 이해</a>,
+              		<a href="javascript:viewCourseList('평생교육방법세미나');">평생교육방법세미나</a>, 
+              		<a href="javascript:viewCourseList('평생교육방법론세미나');">평생교육방법론세미나</a>  
+              	</td>
+			</tr>
+            <tr>
+              <td>평생교육<br />프로그램개발론</td>
+              <td>
+              		<a href="javascript:viewCourseList('평생교육프로그램개발');">평생교육프로그램개발</a>, 
+              		<a href="javascript:viewCourseList('평생교육프로그램개발연구');">평생교육프로그램개발연구</a>, 
+              		<a href="javascript:viewCourseList('평생교육프로그램개발론연구');">평생교육프로그램개발론연구</a>, <br/>
+              		<a href="javascript:viewCourseList('평생교육프로그램개발 이론과 실제');">평생교육프로그램개발 이론과 실제</a>, 
+              		<a href="javascript:viewCourseList('평생교육프로그램개발세미나');">평생교육프로그램개발세미나</a>, <br/>
+              		<a href="javascript:viewCourseList('평생교육프로그램개발론세미나');">평생교육프로그램개발론세미나</a>  
+              	</td>
+			</tr>
+            <tr>
+              <td>생교육실습</td>
+              <td>
+              		<a href="javascript:viewCourseList('평생교육실습세미나');">평생교육실습세미나</a>, 
+              		<a href="javascript:viewCourseList('평생교육실습연구');">평생교육실습연구</a>, 
+              		<a href="javascript:viewCourseList('평생교육실무실습');">평생교육실무실습</a> 
+              	</td>
+			</tr>
+            <tr>
+              <th rowspan="21">선 택 과 목</th>
+              <th rowspan="8">평 생 교 육 실 천 영 역</th>
+              <td>청소년교육론</td>
+              <td>
+          		<a href="javascript:viewCourseList('청소년교육');">청소년교육</a>, 
+          		<a href="javascript:viewCourseList('청소년교육개론');">청소년교육개론</a>, 
+          		<a href="javascript:viewCourseList('청소년교육세미나');">청소년교육세미나</a>, 
+          		<a href="javascript:viewCourseList('청소년교육론세미나');">청소년교육론세미나</a>, 
+          		<a href="javascript:viewCourseList('청소년교육연구');">청소년교육연구</a>, <br/>
+          		<a href="javascript:viewCourseList('청소년교육론연구');">청소년교육론연구</a>
+              	</td>
+            </tr>
+            <tr>
+              <td>노인교육론</td>
+              <td>
+          		 <a href="javascript:viewCourseList('노인교육');">노인교육</a>, 
+          		 <a href="javascript:viewCourseList('노인교육개론');">노인교육개론</a>, 
+          		 <a href="javascript:viewCourseList('노인교육세미나');">노인교육세미나</a>, 
+          		 <a href="javascript:viewCourseList('노인교육론세미나');">노인교육론세미나</a>, 
+          		 <a href="javascript:viewCourseList('노인교육연구');">노인교육연구</a>, <br/>
+          		 <a href="javascript:viewCourseList('노인교육론연구');">노인교육론연구</a> 
+              	</td>
+            </tr>
+            <tr>
+              <td>여성교육론</td>
+              <td>
+          		 <a href="javascript:viewCourseList('여성교육');">여성교육</a>, 
+          		 <a href="javascript:viewCourseList('여성교육개론');">여성교육개론</a>, 
+          		 <a href="javascript:viewCourseList('여성교육세미나');">여성교육세미나</a>,
+				 <a href="javascript:viewCourseList('여성교육론세미나');">여성교육론세미나</a>,
+				 <a href="javascript:viewCourseList('여성교육연구');">여성교육연구</a>,<br/>
+				 <a href="javascript:viewCourseList('여성교육론연구');">여성교육론연구</a> </td>
+            </tr>
+            <tr>
+              <td>시민교육론</td>
+              <td>
+              	 <a href="javascript:viewCourseList('시민교육');">시민교육</a>,
+				 <a href="javascript:viewCourseList('시민교육개론');">시민교육개론</a>,
+				 <a href="javascript:viewCourseList('시민교육세미나');">시민교육세미나</a>,
+				 <a href="javascript:viewCourseList('시민교육론세미나');">시민교육론세미나</a>,
+				 <a href="javascript:viewCourseList('시민교육연구');">시민교육연구</a>,<br/>
+				 <a href="javascript:viewCourseList('시민교육론연구');">시민교육론연구</a> </td>
+            </tr>
+            <tr>
+              <td>특수교육론</td>
+              <td>
+              	 <a href="javascript:viewCourseList('특수교육');">특수교육</a>,
+				 <a href="javascript:viewCourseList('특수교육개론');">특수교육개론</a>,
+				 <a href="javascript:viewCourseList('특수교육세미나');">특수교육세미나</a>,
+				 <a href="javascript:viewCourseList('특수교육론세미나');">특수교육론세미나</a>,
+				 <a href="javascript:viewCourseList('특수교육연구');">특수교육연구</a>,<br/>
+				 <a href="javascript:viewCourseList('특수교육론연구');">특수교육론연구</a> </td>
+            </tr>
+            <tr>
+              <td>성인학습 및 상담</td>
+              <td>
+              	 <a href="javascript:viewCourseList('성인학습 및 상담론');">성인학습 및 상담론</a>,
+				 <a href="javascript:viewCourseList('성인학습 및 상담 세미나');">성인학습 및 상담 세미나</a>,
+				 <a href="javascript:viewCourseList('성인학습 및 상담론 세미나');">성인학습 및 상담론 세미나</a>,<br/>
+				 <a href="javascript:viewCourseList('성인학습 및 상담 연구');">성인학습 및 상담 연구</a>,
+				 <a href="javascript:viewCourseList('성인학습 및 상담론 연구');">성인학습 및 상담론 연구</a> </td>
+            </tr>
+             <tr>
+              <td>아동교육론</td>
+              <td>
+              	 <a href="javascript:viewCourseList('아동교육');">아동교육</a>,
+				 <a href="javascript:viewCourseList('아동교육개론');">아동교육개론</a>,
+				 <a href="javascript:viewCourseList('아동교육세미나');">아동교육세미나</a>,
+				 <a href="javascript:viewCourseList('아동교육론세미나');">아동교육론세미나</a>,
+				 <a href="javascript:viewCourseList('아동교육연구');">아동교육연구</a>,<br/>
+				 <a href="javascript:viewCourseList('아동교육론연구');">아동교육론연구</a> </td>
+            </tr>
+            <tr>
+              <td>문자해득교육론</td>
+              <td>
+              	 <a href="javascript:viewCourseList('문자해득교육');">문자해득교육</a>,
+				 <a href="javascript:viewCourseList('문자해득교육개론');">문자해득교육개론</a>,
+				 <a href="javascript:viewCourseList('문자해득교육세미나');">문자해득교육세미나</a>,
+				 <a href="javascript:viewCourseList('문자해득교육론세미나');">문자해득교육론세미나</a>,<br/>
+				 <a href="javascript:viewCourseList('문자해득교육연구');">문자해득교육연구</a>,
+				 <a href="javascript:viewCourseList('문자해득교육론연구');">문자해득교육론연구</a>,
+				 <a href="javascript:viewCourseList('문해교육론');">문해교육론</a>,
+				 <a href="javascript:viewCourseList('문해기초교육론');">문해기초교육론</a> </td>
+            </tr>
+            <tr>
+              <th rowspan="13">평 생 교 육 방 법 영 역</th>
+              <td>교육사회학</td>
+              <td>
+ <a href="javascript:viewCourseList('교육사회');">교육사회</a> </td>
+            </tr>
+             <tr>
+              <td>교육공학</td>
+              <td>유사인정과목 없음.</td>
+            </tr>
+             <tr>
+              <td>지역사회교육론</td>
+              <td>
+              	 <a href="javascript:viewCourseList('지역사회교육');">지역사회교육</a>,
+				 <a href="javascript:viewCourseList('지역사회교육개론');">지역사회교육개론</a>,
+				 <a href="javascript:viewCourseList('지역사회교육세미나');">지역사회교육세미나</a>,
+				 <a href="javascript:viewCourseList('지역사회교육론세미나');">지역사회교육론세미나</a>,<br/>
+				 <a href="javascript:viewCourseList('지역사회교육연구');">지역사회교육연구</a>,
+				 <a href="javascript:viewCourseList('지역사회교육론연구');">지역사회교육론연구</a> </td>
+            </tr>
+             <tr>
+              <td>인적자원개발론</td>
+              <td>
+              	 <a href="javascript:viewCourseList('인적자원개발');">인적자원개발</a>,
+				 <a href="javascript:viewCourseList('인적자원개발세미나');">인적자원개발세미나</a>,
+				 <a href="javascript:viewCourseList('인적자원개발론세미나');">인적자원개발론세미나</a>,<br/>
+				 <a href="javascript:viewCourseList('인적자원개발연구');">인적자원개발연구</a>,
+				 <a href="javascript:viewCourseList('인적자원개발론연구');">인적자원개발론연구</a>,
+				 <a href="javascript:viewCourseList('인간자원개발');">인간자원개발</a>,
+				 <a href="javascript:viewCourseList('인간자원개발론');">인간자원개발론</a>,<br/>
+				 <a href="javascript:viewCourseList('인간자원개발세미나');">인간자원개발세미나</a>,
+				 <a href="javascript:viewCourseList('인간자원개발론세미나');">인간자원개발론세미나</a>,
+				 <a href="javascript:viewCourseList('인간자원개발연구');">인간자원개발연구</a>,
+				 <a href="javascript:viewCourseList('인간자원개발론연구');">인간자원개발론연구</a> </td>
+            </tr>
+            <tr>
+              <td>직업·진로설계</td>
+              <td>
+              	 <a href="javascript:viewCourseList('직업진로설계론');">직업·진로설계론</a>,
+				 <a href="javascript:viewCourseList('직업·진로설계세미나');">직업·진로설계세미나</a>,
+				 <a href="javascript:viewCourseList('직업·진로설계연구');">직업·진로설계연구</a> </td>
+            </tr>
+              <tr>
+              <td>원격(이러닝,<br />사이버)교육론</td>
+              <td>
+              	 <a href="javascript:viewCourseList('원격교육');">원격교육</a>,
+				 <a href="javascript:viewCourseList('원격교육활용론');">원격교육활용론</a>,
+				 <a href="javascript:viewCourseList('원격교육개론');">원격교육개론</a>,
+				 <a href="javascript:viewCourseList('원격교육세미나');">원격교육세미나</a>,
+				 <a href="javascript:viewCourseList('원격교육론세미나');">원격교육론세미나</a>,<br/>
+				 <a href="javascript:viewCourseList('원격교육연구');">원격교육연구</a>,
+				 <a href="javascript:viewCourseList('원격교육론연구');">원격교육론연구</a> </td>
+            </tr>
+               <tr>
+              <td>기업교육론</td>
+              <td><a href="javascript:viewCourseList('기업교육');">기업교육</a>,
+				 <a href="javascript:viewCourseList('기업교육개론');">기업교육개론</a>,
+				 <a href="javascript:viewCourseList('기업교육세미나');">기업교육세미나</a>,
+				 <a href="javascript:viewCourseList('기업교육론세미나');">기업교육론세미나</a>,
+				 <a href="javascript:viewCourseList('기업교육연구');">기업교육연구</a>,<br/>
+				 <a href="javascript:viewCourseList('기업교육론연구');">기업교육론연구</a> </td>
+            </tr>
+              <tr>
+              <td>환경교육론</td>
+              <td>
+              	 <a href="javascript:viewCourseList('환경교육');">환경교육</a>,
+				 <a href="javascript:viewCourseList('환경교육론');">환경교육론</a>,
+				 <a href="javascript:viewCourseList('환경교육세미나');">환경교육세미나</a>,
+				 <a href="javascript:viewCourseList('환경교육론세미나');">환경교육론세미나</a>,
+				 <a href="javascript:viewCourseList('환경교육연구');">환경교육연구</a>,<br/>
+				 <a href="javascript:viewCourseList('환경교육론연구');">환경교육론연구</a> </td>
+            </tr>
+              <tr>
+              <td>교육조사방법론</td>
+              <td>
+              	 <a href="javascript:viewCourseList('교육조사방법');">교육조사방법</a>,
+				 <a href="javascript:viewCourseList('평생교육 연구방법론');">평생교육 연구방법론</a>,
+				 <a href="javascript:viewCourseList('사회조사방법론');">사회조사방법론</a>,
+				 <a href="javascript:viewCourseList('평생교육고급통계');">평생교육고급통계</a>,<br/>
+				 <a href="javascript:viewCourseList('평생교육 질적연구방법론');">평생교육 질적연구방법론</a> </td>
+            </tr>
+              <tr>
+              <td>상담심리학</td>
+              <td>
+              	 <a href="javascript:viewCourseList('상담심리');">상담심리</a>,
+				 <a href="javascript:viewCourseList('상담심리학개론');">상담심리학개론</a>,
+				 <a href="javascript:viewCourseList('상담심리세미나');">상담심리세미나</a>,
+				 <a href="javascript:viewCourseList('상담심리학세미나');">상담심리학세미나</a>,
+				 <a href="javascript:viewCourseList('상담심리연구');">상담심리연구</a>,<br/>
+				 <a href="javascript:viewCourseList('상담심리학연구');">상담심리학연구</a> </td>
+            </tr>
+              <tr>
+              <td>교육복지론</td>
+              <td>
+              	 <a href="javascript:viewCourseList('교육복지');">교육복지</a>,
+				 <a href="javascript:viewCourseList('교육복지론');">교육복지론</a>,
+				 <a href="javascript:viewCourseList('교육복지세미나');">교육복지세미나</a>,
+				 <a href="javascript:viewCourseList('교육복지론세미나');">교육복지론세미나</a>,
+				 <a href="javascript:viewCourseList('교육복지연구');">교육복지연구</a>,<br/>
+				 <a href="javascript:viewCourseList('교육복지론연구');">교육복지론연구</a> </td>
+            </tr>
+               <tr>
+              <td>교수설계</td>
+              <td>
+              	 <a href="javascript:viewCourseList('교수설계론');">교수설계론</a>,
+				 <a href="javascript:viewCourseList('교수설계세미나');">교수설계세미나</a>,
+				 <a href="javascript:viewCourseList('교수설계연구');">교수설계연구</a> </td>
+            </tr>
+              <tr>
+              <td>문화예술교육론</td>
+              <td>
+              	 <a href="javascript:viewCourseList('문화예술교육');">문화예술교육</a>,
+				 <a href="javascript:viewCourseList('문화예술교육개론');">문화예술교육개론</a>,
+				 <a href="javascript:viewCourseList('문화예술교육세미나');">문화예술교육세미나</a>,
+				 <a href="javascript:viewCourseList('문화예술교육론세미나');">문화예술교육론세미나</a>,<br/>
+				 <a href="javascript:viewCourseList('문화예술교육연구');">문화예술교육연구</a>,
+				 <a href="javascript:viewCourseList('문화예술교육론연구');">문화예술교육론연구</a> </td>
+            </tr>
+           </tbody>
+      </table>
+       </dd>
+       </dl>
+  </body>
+	</html>

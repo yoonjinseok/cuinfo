@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="EUC-KR"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="CombineSearchDao">
+	<typeAlias alias="combineSearch" type="com.cyberup.model.home.CombineSearch"/>
+
+	<select id="selectBoards" parameterClass="combineSearch" resultClass="combineSearch">
+	 SELECT  b.*
+            FROM 
+            (
+		SELECT 
+				row_number() over(order by regDate desc) recNum
+                ,count(*) over() totalCnt2
+				,a.* 
+		FROM (
+                SELECT 
+                            '1' gubn,
+                            BOARD_UNIV_ID id
+                            ,TITLE title
+                            ,DBMS_LOB.INSTR(CONTENT,100,0) content
+                            ,REG_DATE regDate
+                 FROM CU_BOARD_UNIV
+                 WHERE (
+                 	(
+                 	TITLE LIKE '%'||#headerText1#||'%'
+                 	<isNotEmpty property="headerText2" prepend="AND">
+                 	TITLE LIKE '%'||#headerText2#||'%' 
+                 	</isNotEmpty> 
+                 	<isNotEmpty property="headerText3" prepend="AND">
+                 	TITLE LIKE '%'||#headerText3#||'%'
+                 	</isNotEmpty>
+                 	) 
+                 	OR
+                 	( 
+                 	CONTENT LIKE '%'||#headerText1#||'%'
+                 	<isNotEmpty property="headerText2" prepend="AND">
+                 	CONTENT LIKE '%'||#headerText2#||'%'
+                 	</isNotEmpty>
+                 	<isNotEmpty property="headerText3" prepend="AND">
+                 	CONTENT LIKE '%'||#headerText3#||'%'
+                 	</isNotEmpty>
+                 	)
+                 )
+                 AND TO_CHAR(SYSDATE,'YYYYMMDD') BETWEEN EVENT_SDT AND EVENT_EDT
+                 UNION ALL
+                 SELECT 
+                            '2' gubn,
+                            BOARD_ID id
+                            ,TITLE title
+                            ,DBMS_LOB.INSTR(CONTENT,100,0) content
+                            ,REG_DATE regDate 
+                 FROM CU_BOARD
+                 WHERE (
+                 	(
+					TITLE LIKE '%'||#headerText1#||'%'
+                 	<isNotEmpty property="headerText2" prepend="AND">
+                 	TITLE LIKE '%'||#headerText2#||'%' 
+                 	</isNotEmpty> 
+                 	<isNotEmpty property="headerText3" prepend="AND">
+                 	TITLE LIKE '%'||#headerText3#||'%'
+                 	</isNotEmpty> 
+                 	)
+                 	OR
+                 	( 
+                 	CONTENT LIKE '%'||#headerText1#||'%'
+                 	<isNotEmpty property="headerText2" prepend="AND">
+                 	CONTENT LIKE '%'||#headerText2#||'%'
+                 	</isNotEmpty>
+                 	<isNotEmpty property="headerText3" prepend="AND">
+                 	CONTENT LIKE '%'||#headerText3#||'%'
+                 	</isNotEmpty>
+                 	)
+                 )
+                 UNION ALL
+                 SELECT 
+                            '3' gubn
+                            ,FAQ_ID id
+                            ,QUESTION title
+                             ,DBMS_LOB.INSTR(ANSWER,100,0) content
+                            ,REG_DATE regDate
+                 FROM CU_FAQ
+                 WHERE (
+                 (
+                 QUESTION LIKE '%'||#headerText1#||'%'
+                 <isNotEmpty property="headerText2" prepend="AND">
+                 QUESTION LIKE '%'||#headerText2#||'%'
+                 </isNotEmpty> 
+                 <isNotEmpty property="headerText3" prepend="AND">
+                 QUESTION LIKE '%'||#headerText3#||'%'
+                 </isNotEmpty> 
+                 )
+                 OR
+                 ( 
+                 ANSWER LIKE '%'||#headerText1#||'%'
+                 <isNotEmpty property="headerText2" prepend="AND">
+                 ANSWER LIKE '%'||#headerText2#||'%'
+                 </isNotEmpty>
+                 <isNotEmpty property="headerText3" prepend="AND">
+                 ANSWER LIKE '%'||#headerText3#||'%'
+                 </isNotEmpty>
+                 )
+                 )
+                 AND USE_YN = 'Y'                 
+        ) a
+        ) b
+        WHERE CEIL (recNum / #showCnt2,javaType=Integer#) = #currPage2,javaType=Integer#
+        ORDER BY recNum ASC
+	</select>
+	
+	<select id="selectCourses" parameterClass="combineSearch" resultClass="combineSearch">
+	SELECT  b.*
+            FROM 
+            (
+		    SELECT 
+	            row_number() over(order by reg_Date desc) recNum
+	            ,count(*) over() totalCnt2
+	            ,a.COURSE_ID courseId
+	            ,COURSE_IDENTIFIER courseIdentifier
+	            ,TITLE title
+	            ,KEYWORD keyword
+	            ,REG_DATE regDate 
+	            ,(select univ_name from cu_univ_info where university_id = a.university_id) univName
+	            ,DEPARTMENT department
+	            ,CASE WHEN C.KEM_VAL is null then ''
+				      WHEN to_number( LENGTHB(TO_CHAR(C.KEM_VAL))) <![CDATA[<]]> 175 THEN TO_CHAR(C.KEM_VAL)
+				      WHEN to_number( LENGTHB(TO_CHAR(substr(C.KEM_VAL,1, 130)))) <![CDATA[<]]> 175 THEN TO_CHAR(substr(C.KEM_VAL,1, 130)) || '...'
+				      WHEN to_number( LENGTHB(TO_CHAR(substr(C.KEM_VAL,1, 125)))) <![CDATA[<]]> 175 THEN TO_CHAR(substr(C.KEM_VAL,1, 125)) || '...'
+				      WHEN to_number( LENGTHB(TO_CHAR(substr(C.KEM_VAL,1, 120)))) <![CDATA[<]]> 175 THEN TO_CHAR(substr(C.KEM_VAL,1, 120)) || '...'
+				      WHEN to_number( LENGTHB(TO_CHAR(substr(C.KEM_VAL,1, 115)))) <![CDATA[<]]> 175 THEN TO_CHAR(substr(C.KEM_VAL,1, 115)) || '...'
+				      WHEN to_number( LENGTHB(TO_CHAR(substr(C.KEM_VAL,1, 110)))) <![CDATA[<]]> 175 THEN TO_CHAR(substr(C.KEM_VAL,1, 110)) || '...'
+				      WHEN to_number( LENGTHB(TO_CHAR(substr(C.KEM_VAL,1, 105)))) <![CDATA[<]]> 175 THEN TO_CHAR(substr(C.KEM_VAL,1, 105)) || '...'
+				      WHEN to_number( LENGTHB(TO_CHAR(substr(C.KEM_VAL,1, 100)))) <![CDATA[<]]> 175 THEN TO_CHAR(substr(C.KEM_VAL,1, 100)) || '...'
+				      WHEN to_number( LENGTHB(TO_CHAR(substr(C.KEM_VAL,1, 95)))) <![CDATA[<]]> 175 THEN TO_CHAR(substr(C.KEM_VAL,1, 95)) || '...'
+				      WHEN to_number( LENGTHB(TO_CHAR(substr(C.KEM_VAL,1, 90)))) <![CDATA[<]]> 175 THEN TO_CHAR(substr(C.KEM_VAL,1, 90)) || '...'
+				      WHEN to_number( LENGTHB(TO_CHAR(substr(C.KEM_VAL,1, 85)))) <![CDATA[<]]> 175 THEN TO_CHAR(substr(C.KEM_VAL,1, 85)) || '...'
+				 ELSE
+				   TO_CHAR(substr(C.KEM_VAL,1, 80)) || '...'
+				END
+				   as
+                          description
+	            ,'' contName
+	            ,D.KEM_VAL as
+                          credit
+                ,to_number(trim(translate(TERM_SEMESTER, '1234567890' || TERM_SEMESTER, '1234567890'))) || '학기' termSemester
+	            ,DEPARTMENT deptName
+	            ,NVL (
+                  	(SELECT CLICKS_CNT
+                     FROM 
+                     CU_LOG_COURSE_CLICKS C
+                     WHERE   COURSE_ID = a.COURSE_ID
+                     AND rownum = 1),
+                  	0) as clicksCnt
+	        FROM 
+	        CU_SVC_COURSE a 
+	        	LEFT JOIN CU_SVC_COURSE_KEM B
+	                        ON a.COURSE_ID = B.COURSE_ID AND a.COURSE_ID = B.COLLTYPE_ID AND B.METADIC_ID = 75
+	            LEFT JOIN CU_SVC_COURSE_KEM_L C
+                        	ON a.COURSE_ID = C.COURSE_ID AND a.COURSE_ID = C.COLLTYPE_ID AND C.METADIC_ID = 8                        
+	            LEFT JOIN CU_SVC_COURSE_KEM D
+                        	ON a.COURSE_ID = D.COURSE_ID AND a.COURSE_ID = D.COLLTYPE_ID AND D.METADIC_ID = 25
+	        WHERE 1=1
+	        AND a.SVC_STATUS = 'A'
+	        AND
+	        (
+        		(
+        		TITLE LIKE '%'||#headerText1#||'%'
+        		<isNotEmpty property="headerText2" prepend="AND">
+        		TITLE LIKE '%'||#headerText2#||'%'
+        		</isNotEmpty>
+        		<isNotEmpty property="headerText3" prepend="AND">
+        		TITLE LIKE '%'||#headerText3#||'%'
+        		</isNotEmpty>
+        		)
+	        OR
+	        	(
+	        	KEYWORD LIKE '%'||#headerText1#||'%'
+	        	<isNotEmpty property="headerText2" prepend="AND">
+	        	KEYWORD LIKE '%'||#headerText2#||'%'
+	        	</isNotEmpty> 
+	        	<isNotEmpty property="headerText3" prepend="AND">
+	        	KEYWORD LIKE '%'||#headerText3#||'%'
+	        	</isNotEmpty>
+	        	) 
+	        )
+        ) b
+        WHERE CEIL (recNum / #showCnt2,javaType=Integer#) = #currPage2,javaType=Integer#
+        ORDER BY recNum ASC
+	</select>
+	
+	<select id="selectKeywords" resultClass="combineSearch">
+		SELECT *  FROM (
+            SELECT 
+                    row_number() OVER(ORDER BY sum(SEARCH_CNT) desc) rn,
+                    KEYWORD keyword
+                    ,sum(SEARCH_CNT) searchCnt
+            FROM CU_LOG_SEARCHS
+            GROUP BY KEYWORD
+        ) 
+        WHERE rn &lt;= 10
+        ORDER BY searchcnt desc
+	</select>
+	
+	<select id="selectBestCourses" resultClass="combineSearch">
+		SELECT * FROM (        
+        SELECT a.*,ROW_NUMBER() OVER(ORDER by clicksCnt DESC) recNum 
+        FROM (
+        SELECT
+                    A.COURSE_ID courseId
+                    ,A.TITLE
+                    ,NVL((SELECT 
+                    			CLICKS_CNT 
+                    		FROM CU_LOG_COURSE_CLICKS 
+                    		WHERE COURSE_ID = A.COURSE_ID 
+                    		AND SEARCH_DT = TO_CHAR(SYSDATE,'YYYYMMDD')
+                    		),0) clicksCnt 
+        FROM CU_SVC_COURSE A
+        ) A
+        )
+        WHERE recNum BETWEEN 1 AND 5
+        ORDER BY recNum
+	</select>
+	
+</sqlMap>

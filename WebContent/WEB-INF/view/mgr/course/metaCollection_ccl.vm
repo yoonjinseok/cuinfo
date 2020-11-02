@@ -1,0 +1,252 @@
+<html>
+<head>
+<title>라이선스 정보</title>
+<script type="text/javascript" language="javascript" src="/mgr/license/resource/license.js"></script>
+<script language="javascript">
+
+function checkLic(){
+	if( document.getElementById && document.getElementById('div_license').innerHTML.length != 0 ){
+		if( document.getElementById && document.getElementById('div_inner_license').innerHTML.length != 0 ){
+			if( document.form.licenseYn[0].checked){
+				document.form.defaultValue[0].value = "Y";
+
+				if ( document.form.nc[1].checked )
+					document.form.defaultValue[1].value = "Y";
+				else if( document.form.nc[0].checked )
+					document.form.defaultValue[1].value = "N";
+				else{
+					alert('저작물의 영리 목적 이용 허락 여부를 선택하세요.');
+					return false;
+				}
+
+				if ( document.form.sand[0].checked )
+				{
+					document.form.defaultValue[2].value = "N";
+					document.form.defaultValue[3].value = "N";
+				}
+				else if ( document.form.sand[1].checked )
+				{
+					document.form.defaultValue[2].value = "N";
+					document.form.defaultValue[3].value = "Y";
+				}
+				else if ( document.form.sand[2].checked )
+				{
+					document.form.defaultValue[2].value = "Y";
+					document.form.defaultValue[3].value = "N";
+				}else{
+					alert('저작물의 변경 허락 여부를 선택하세요.');
+					return false;
+				}
+				return true;
+			}else{
+				return false;
+			}
+		}else{
+			return false;
+		}
+	}else{
+		return false;
+	}
+	return false;
+
+}
+
+function setNc(str){
+	if(str==0){
+		document.getElementById('div_rights1').innerHTML = "-비영리";
+	}else{
+		document.getElementById('div_rights1').innerHTML = "";
+	}
+}
+
+function setSand(str){
+	if(str==0){
+		document.getElementById('div_rights2').innerHTML = "-변경금지";
+	}else if(str==2){
+		document.getElementById('div_rights2').innerHTML = "-동일조건변경허락";
+	}else{
+		document.getElementById('div_rights2').innerHTML = "";
+	}
+
+}
+
+function showLicPolicy(str){
+	   var str = '';
+      str = '<table border=0 cellpadding=0 cellspacing=0 width=600>'
+			         +'	<tr>'
+			         +'		<td width=15></td><td>'
+			        +'			<table border=0 cellpadding=0 cellspacing=0 width=100%>'
+						+'				<tr><td width=550 colspan=2> &nbsp;</td></tr>'
+						+'				<tr><td colspan=2><b>▶ 귀하의 저작물 이용시 저작자를 표시해야 합니까?(<a href="javascript:openLicenseHelp(\'001\')"><font color="#a000000">상세</font><img border=0 src="/mgr/images/btn/popup.gif"></a>)</b></td></tr>'
+						+'				<tr><td width=10>&nbsp;</td><td><input type="radio" name="by" value="1" checked disabled>예(필수)</td></tr>'
+						+'				<tr><td width=10>&nbsp;</td><td><input type="radio" name="by" value="0" disabled>아니오</td></tr>'
+						+'				<tr><td width=10>&nbsp;</td><td>&nbsp;</td></tr>'
+
+						+'				<tr><td colspan=2><b>▶ 귀하는 저작물의 영리목적 이용을 허락합니까? (<a href="javascript:openLicenseHelp(\'002\')"><font color="#a000000">상세</font><img border=0 src="/mgr/images/btn/popup.gif"></a>)</b></td></tr>'
+						+'				<tr><td width=10>&nbsp;</td><td><input type="radio" name="nc" value="1" onClick="setNc(1);">예</td></tr>'
+						+'				<tr><td width=10>&nbsp;</td><td><input type="radio" name="nc" value="0" onClick="setNc(0);">아니오</td></tr>'
+						+'				<tr><td width=10>&nbsp;</td><td></td></tr>'
+
+				  	+'				<tr><td colspan=2><b>▶ 귀하는 저작물의 변경을 허락합니까? (<a href="javascript:openLicenseHelp(\'003\')"><font color="#a000000">상세</font><img border=0 src="/mgr/images/btn/popup.gif"></a>)</b></td></tr>'
+						+'				<tr><td width=10>&nbsp;</td><td><input type="radio" name="sand" value="1" onClick="setSand(1);">예</td></tr>'
+						+'				<tr><td width=10>&nbsp;</td><td><input type="radio" name="sand" value="2" onClick="setSand(2);">네, 단 동일한 이용허락조건을 적용하는 경우에만 (<a href="javascript:openLicenseHelp(\'004\')"><font color="#a000000"><b>상세</b></font><img border=0 src="/mgr/images/btn/popup.gif"></a>)</td></tr>'
+						+'				<tr><td width=10>&nbsp;</td><td><input type="radio" name="sand" value="0" onClick="setSand(0);">아니오</td></tr>'
+						+'				<tr><td width=10>&nbsp;</td><td></td></tr>'
+
+				  	+'        <tr><td colspan=2></td></tr>'
+				  	+'		  <tr><td colspan=2><table class=tatble2_box_w_1 width=580><tr><td>'
+				  	+'					<table border=0 cellpadding=0 cellspacing=0 width=100% bgcolor=#f0f0f0 >'
+					  +'         	<tr>'
+				  	+'					<tr><td>&nbsp;&nbsp;▶ dCollection은 <a href="javascript:openCCLicense();"><u>Creative Commons License(CCL)</u></a>를 준수합니다.</td></tr>'
+				  	+'					<tr><td>&nbsp;&nbsp;▶ CCL은 저작자 본인이 자신의 저작물을 다른 이용자가 자유롭게 이용할 수 있도록 허락하는</td></tr>'
+				  	+'					<tr><td>&nbsp;&nbsp;&nbsp;표준 약관입니다. CCL 마크가 부착된 저작물은 이용자가 이용 조건하에서 자유롭게 사용하고</td></tr>'
+				  	+'					<tr><td>&nbsp;&nbsp;&nbsp;배포할 수 있도록 도와줍니다.</td></tr>'
+					+'						</tr>'
+				  	+'		  </table></td></tr></table>'
+				  		+'				<tr><td width=10>&nbsp;</td><td>&nbsp;</td></tr>'
+				  	
+				  	+'        <tr><td colspan=2></td></tr>'	
+				  	+'        <tr><td colspan=2><table class=tatble2_box_w_1 width=580><tr><td>'
+				  	+'					<table bgcolor=#f0f0f0 >'
+						+'          	<tr>'
+		        +'            	<td><img src="/mgr/images/btn/somerights.gif"  border="0" onClick="javascript:openCCPreview();" style="cursor:hand"></td>'
+		        +'          	  <td>귀하는 Creative Commons&nbsp;저작자표시<span id="div_rights1"></span><span id="div_rights2"></span>&nbsp;2.0 South Korea'
+						+'							라이선스를 선택하였습니다. 이용자에게&nbsp;<a href="javascript:openCCPreview();" >라이선스가 어떻게 보이는지 살펴보세요.</a>'
+						+'							</td>'
+						+'						</tr>'
+						+'					</table></td></tr></table></td></tr>'
+						+'        <tr><td colspan=2>&nbsp;</td></tr>'
+						+'</table>'
+						+'	<input type=hidden name="elementId" value="001">'
+						+'	<input type=hidden name="defaultValue" value="">'
+						+'	<input type=hidden name="elementId" value="002">'
+						+'	<input type=hidden name="defaultValue" value="">'
+						+'	<input type=hidden name="elementId" value="003">'
+						+'	<input type=hidden name="defaultValue" value="">'
+						+'	<input type=hidden name="elementId" value="004">'
+						+'	<input type=hidden name="defaultValue" value="">';
+	return str;
+}
+
+function innerLic(str){
+	var innerStr = '';
+	if( str == 0 ){
+		innerStr = showLicPolicy();
+		document.form.licenseYn.value="Y";
+		document.getElementById('div_inner_license').innerHTML = innerStr;
+	}else{
+		innerStr = showLicMent();
+		document.form.licenseYn.value="N";
+		document.getElementById('div_inner_license').innerHTML = innerStr;
+	}
+}
+
+function showLicMent(){
+	var str = '';
+			str = '<table border=0 cellpadding=0 cellspacing=0 width=600>'
+						+'	<tr>'
+						+'<td width=\'10\'></td>'
+						+'		<td colspan=2>'
+						+'			<table border=0 cellpadding=0 cellspacing=0 width=100%>'
+						+'				<tr><td width=5 colspan=2> &nbsp;</td></tr>'
+						+'				<tr><td width=5> </td><td>▶ dCollection은 <a href="javascript:openCCLicense();"><u>Creative Commons License(CCL)</u></a>를 준수합니다.</td></tr>'
+						+'				<tr><td width=5> </td><td>▶ CCL은 저작자 본인이 자신의 저작물을 다른 이용자가 자유롭게 이용할 수 있도록 허락하는</td></tr>'
+				  	+'				<tr><td width=5> </td><td>&nbsp;&nbsp;&nbsp;표준 약관입니다. CCL 마크가 부착된 저작물은 이용자가 이용 조건하에서 자유롭게 사용하고</td></tr>'
+				  	+'				<tr><td width=5> </td><td>&nbsp;&nbsp;&nbsp;배포할 수 있도록 도와줍니다.</td></tr>'
+				  	+'				<tr height="10px"><td> </td><td></td></tr>'
+				  	+'        		<tr><td width=5> </td><td>'
+						+'			</table>'
+						+'		</td>'
+						+'	</tr>'
+						+'</table>';
+	return str;
+
+}
+
+function show(){
+	innerLic(0);
+}
+
+function setCCLChild(){
+	var form = document.form;
+	var lic = '';
+		if(form.licenseYn[0].checked){
+			  if(form.by[0].checked){
+				  lic = "BY";
+				} else if(form.by[1].checked){
+					lic = "";
+				} 
+
+				if(form.nc[0].checked){
+					lic += "";
+				} else if(form.nc[1].checked){
+					lic += "-NC";
+				} else {
+					  alert('저작물의 영리 목적 이용 허락 여부를 선택하세요.');
+					  return;
+				}
+
+				if(form.sand[0].checked){
+					lic += "";
+				} else if(form.sand[1].checked){
+					lic += "-SA";
+				} else if(form.sand[2].checked){
+					lic += "-ND";
+				} else {
+					  alert('저작물의 변경 허락 여부를 선택하세요.');
+					  return;
+				}
+		}
+		
+	opener.licSet(lic);
+ 	self.close();
+}
+
+	jQuery(document).ready(function () {
+		show();
+    });
+</script>
+</head>
+<body>
+<form id="form" name="form" method="post" action="">
+<input type="hidden" name="openLegalCodeYN">
+
+<div id="div_license"  align="center" style="display:none;">
+	<table border="0" cellpadding="0" cellspacing="0" width="720">
+		   <tr>
+		   <td width="15"></td>
+		    <td >
+				      <table border="0" cellpadding="0" cellspacing="0" >
+				        <tr>
+				          <td width="10" height="40"><img src="/mgr/license/resource/point_17_4.gif" border="0" ></td>
+				          <td width="300">라이선스(이용허락) 범위를 설정하시겠습니까?</td>
+				          <td width="70"><input type="radio" name="licenseYn" value="Y" onClick="innerLic(0);" checked>예</td>
+				          <td width="70"><input type="radio" name="licenseYn" value="N" onClick="innerLic(1);" >아니오</td>
+									<td><div id="div_commonsDeed"></div></td>
+				        </tr>
+				        <tr>
+			             <td colspan="5">
+			              <img src="/mgr/license/resource/line_l.gif" border="0" >
+			             </td >
+				        </tr>
+				      </table>
+				</td>
+			</tr>
+	</table>
+</div>	
+<div id="div_inner_license">
+</div>
+<div id="div_lic_bottom">
+<br/><br/>
+  <table border="0" cellpadding="0" cellspacing="0" width="720">
+
+    <tr align="center">
+					<td><img onclick="setCCLChild()" border="0" style="cursor:hand" src="/mgr/license/resource/pop_05.gif">&nbsp;&nbsp;&nbsp;
+      				<img onclick="self.close()" border="0" style="cursor:hand" src="/mgr/license/resource/pop_06.gif">
+      		</td>
+			</tr>
+  </table>
+</div>
+</form>
+</body>
+</html>

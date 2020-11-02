@@ -1,0 +1,14 @@
+<dl class="class_box">
+	<dt>
+		<img src="/home/images/intro/searchByMajorArea_title1.gif" alt="KOCW 공개강의" />
+		<a class="on" target="_blank" href="http://www.kocw.net/home/index.do" onclick="dcsMultiTrack('DCS.dcssip','http://www.kocw.net','DCS.dcsuri','/home/index.do','DCS.qry','','WT.ti','Offsite Link - kocw','WT.sp','kocw')"><img src="/home/images/btn/more2.gif" alt="more" /></a>
+	</dt>
+	#foreach($list in $kocwApiSearch_K)
+	<dd><a target="_blank" href="$list.url" title="$list.title" onclick="dcsMultiTrack('DCS.dcssip','$!list.sip','DCS.dcsuri','$!list.uri','DCS.qry','$!list.qri','WT.ti','Offsite Link - $!list.sp','WT.sp','$!list.sp')">$list.text</a></dd>
+	#end
+	
+	#set($cnt = $kocwApiSearch_K.size() + 1)
+    #if($cnt == 1)
+		<br/><center>검색된 공개강의가 없습니다.</center>
+    #end
+</dl>

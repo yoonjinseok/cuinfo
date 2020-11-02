@@ -1,0 +1,15 @@
+
+<ul id="showUnivList"></ul>
+
+<ul id="hideUnivList" style="display:none;">
+#set($cnt = $univCourseList.size())
+#foreach($list in $univCourseList)
+	<li id="indexUnivList_$velocityCount">
+		<a href="/home/intro/overall.sub.action?gnb=12&university_id=$!list.universityId"><img src="/home/refer/board_File_download.json?fileGid=$!list.logoUpfileGid&fileID=1" alt="LOGO" /></a>
+		<a href="/home/intro/overall.sub.action?gnb=12&university_id=$!list.universityId"><!--$!list.univName <br/> -->$!list.coreSlogan</a>
+	</li>
+	#if($velocityCount != $univCourseList.size())
+	+
+	#end
+#end
+</ul>

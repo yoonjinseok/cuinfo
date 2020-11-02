@@ -1,0 +1,105 @@
+<head>
+	<title>역량진단 결과보고서 작성을 위한 질의</title>
+
+	<script type="text/javascript" language="javascript">
+
+		$(document).ready(function(){
+			document.oncontextmenu = new Function('return false');
+
+			$(document).bind('keydown',function(e){
+				if ( e.keyCode == 123 /* F12 */) {
+					e.preventDefault();
+					e.returnValue = false;
+				}
+			});
+
+		});
+
+		function sendMail2020(){
+
+			if(($("#title").val().trim())==''||($("#title").val().trim())==null){
+				alert("제목을 입력해 주세요.");
+				$("#title").focus();
+				return;
+			}
+			if(($("#writer").val().trim())==''||($("#writer").val().trim())==null){
+				alert("작성자를 입력해 주세요.");
+				$("#writer").focus();
+				return;
+			}
+			if(($("#fromAddr").val().trim())==''||($("#fromAddr").val().trim())==null){
+				alert("회신 이메일을 입력해 주세요.");
+				$("#fromAddr").focus();
+				return;
+			}
+			if(($("#content").val().trim())==''||($("#content").val().trim())==null){
+				alert("내용을 입력해 주세요.");
+				$("#content").focus();
+				return;
+			}
+
+
+			if( confirm("정말 메일을 보내시겠습니까?" )){
+				//alert("111"+$("#form").formSerialize());
+				jQuery.post('/home/intro/serviceQuestion_sendMail2.json.action',
+						$("#form").formSerialize(),
+						function(data) {
+							if(data.errors == true) {
+								eval(data.message);
+							} else {
+								alert("메일을 발송하였습니다.");
+								//searchUnivList('');
+							}
+
+						});
+			}
+		}
+
+	</script>
+	<style>
+		.ask_table{width:100%;margin-bottom:10px;border-top:3px solid #637ca8;border-bottom:1px solid #637ca8}
+		.ask_table td, .ask_table td{padding:8px 10px;}
+		.ask_table th{padding-left:20px;text-align:left;color:#526994;border-top:1px solid #fff;background:#e2e3e7}
+		.ask_table td{border-top:1px solid #c7c7c7;}
+		.ask_table .inp_email{width:100%;height:20px;line-height:20px;border:1px solid #e7e6e6;background:#fbfbfb}
+		.ask_table .ask_textarea{width:100%;height:135px;overflow:auto;border:1px solid #e7e6e6;background:#fbfbfb}
+	</style>
+</head>
+
+<body oncontextmenu="return false" id="body123">
+
+
+<form id="form" name="form" action="#" onsubmit="/*return false;*/"><!-- box_type01 Start -->
+	<div class="m_l20" id="list" style="height: 500px;width: 900px;position: absolute;top: 50%;left: 50%;margin: -250px 0 0 -450px;">
+		<table cellspacing="0" cellpadding="0" class="ask_table st01 m_b10" summary="게시판 보기">
+			<colgroup>
+				<col style="width:25%;" />
+				<col style="width:75%;" />
+			</colgroup>
+			<tbody>
+			<tr>
+				<th>제목</th>
+				<td><input type="text" id="title" name="title" size="30" class="inp_email" style="width:100%;height:25px;line-height:25px;border:1px solid #e7e6e6;background:#fbfbfb;"></td>
+			</tr>
+			<tr>
+				<th>작성자<br> (대학/소속/성명/직위)</th>
+				<td><input type="text" id="writer" name="writer" class="inp_email" style="width:100%;height:25px;line-height:25px;border:1px solid #e7e6e6;background:#fbfbfb;"></td>
+			</tr>
+			<tr>
+				<th>회신 이메일</th>
+				<td><input type="text" id="fromAddr" name="fromAddr" class="inp_email" style="width:100%;height:25px;line-height:25px;border:1px solid #e7e6e6;background:#fbfbfb;"></td>
+			</tr>
+			<tr>
+				<th>질의 내용</th>
+				<td><textarea cols="999" rows="999" id="content" name="content" class="ask_textarea" style="width:100%;height:250px;overflow:auto;border:1px solid #e7e6e6;background:#fbfbfb; resize: vertical;"></textarea></td>
+			</tr>
+			</tbody>
+		</table>
+		<div class="btn_box_type03" style="margin:40px 0 20px 0;text-align:center;"><!-- page_num Start -->
+			<a href='javascript:sendMail2020();'><img src="/home/images/btn/making.gif" alt="보내기" /></a>
+			<a href='javascript:window.close();'><img src="/home/images/btn/cancel.gif" alt="취소" /></a>
+		</div><!-- page_num End -->
+	</div>
+</form><!-- box_type01 End -->
+
+</body>

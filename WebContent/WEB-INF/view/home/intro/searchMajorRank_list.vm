@@ -1,0 +1,13 @@
+<dl class="rank_box">
+	<dt>
+    	<img src="/home/images/intro/searchMajor_title.gif" alt="학과 FOCUS" />
+	</dt>
+	#set($index = 1)
+	#foreach($rd in $reptDeptList)
+		<dd class="num$index #if($!selectDeptId == $rd.deptId) on #end"><a href="javascript:reSearchEvent2('$rd.deptId', '$rd.deptName');">$rd.deptName</a></dd>
+		#set($index = $index + 1)
+	#end
+	
+	
+	
+</dl>

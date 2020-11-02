@@ -1,0 +1,283 @@
+<head>
+	<title>학과 내비게이션</title>
+	<link rel="stylesheet" type="text/css" href="/home/css/course.css" />
+	<script type="text/javascript" language="javascript">
+	
+	$(document).ready(function() {
+		//search();
+    });
+    function viewDetail(title)
+	{
+		
+		
+		//필요 변수 셋팅
+		$("#text").val(title);
+		$("#deptId").val("A01");
+		$("#univId").val("39");
+		
+		//onsubmit 속성을 비워주어야 submit이 된다.
+		$("#form").attr("method","post");
+		$("#form").attr("onsubmit","");
+		$("#form").attr("action","/home/course/courseSearch3View.sub2.action?gnb=41");
+		$("#form").submit();
+		
+	}
+    	//유사강의검색
+	function viewDetail2(courseId, title)
+	{
+	
+		//필요 변수 셋팅
+		$("#text").val(title);
+		$("#hidetext").val(title);
+		$("#courseId").val(courseId);
+		$("#deptId").val("");
+		
+		//onsubmit 속성을 비워주어야 submit이 된다.
+		$("#form").attr("method","post");
+		$("#form").attr("onsubmit","");
+		$("#form").attr("action","/home/course/courseSearch2.sub2.action?gnb=41&pageType=1&checkbox3=2");
+		$("#form").submit();
+		
+	}
+	</script>
+</head>
+	
+<body id="intro">
+
+	<p class="location">
+		<a href="">홈</a> <span>&gt;</span> <a href="">학과/교과과정</a> <span>&gt;</span> <a href="">교과과정 보기</a> 
+	</p>
+	<h3><img src="/home/images/title/h3_sub_view.gif" alt="교과과정 보기"></h3>
+		
+	
+	<div class="contentWrap">
+		<!--s:컨텐츠영역-->
+			
+			<div class="path_major">
+				<a>사이버한국외국어대학원</a><span>&gt;</span>
+				<a>TESOL대학원</a><span>&gt;</span>
+				<a>TESOL</a>
+				<a target="_blank" href="http://grad.cufs.ac.kr/TesolAction.do?cmd=introduce" class="btn_info_major"><img src="/home/images/btn/btn_info_major.gif" alt="학과안내 페이지 바로가기"></a>
+																																																																																																												</div>
+			
+			<div id="list" class="univ_table m_l0">
+				<table cellspacing="0" cellpadding="0" summary="교과과정 보기"><!-- table_type1 st01 Start -->
+				<caption>교과과정 보기</caption>
+				<colgroup>
+					<col width="20%">
+					<col width="40%">
+					<col width="20%">
+				</colgroup>
+				<thead>
+					<tr>
+						<th scope="col">유형</th>
+						<th scope="col">교과목명</th>
+						<th scope="col">학점</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr class="line02">
+						<th class="line02" rowspan="5">기초 이론</th>
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('TESOL과 영어학');"><p>TESOL과 영어학</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','TESOL과 영어학');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>
+					<tr>
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('제2언어습득');"><p>제2언어습득</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','제2언어습득');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>																			
+					<tr>
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('문화와 의사소통');"><p>문화와 의사소통</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','문화와 의사소통');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>
+					<tr>
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('영어교수법');"><p>영어교수법</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','영어교수법');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>
+					<tr class="line01">
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('영어수업모형연구');"><p>영어수업모형연구</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','영어수업모형연구');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>
+					
+					<tr class="line02">
+						<th class="line02" rowspan="8">기초 실습</th>
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('영어듣기 및 말하기지도');"><p>영어듣기 및 말하기지도</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','영어듣기 및 말하기지도');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>
+					<tr>
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('영어쓰기지도');"><p>영어쓰기지도</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','영어쓰기지도');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>																			
+					<tr>
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('영어발음지도');"><p>영어발음지도</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','영어발음지도');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>
+					<tr>
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('Classroom English');"><p>Classroom English</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','Classroom English');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>																			
+					
+					<tr>
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('영어청취');"><p>영어청취</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','영어청취');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>
+					<tr>
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('영어말하기');"><p>영어말하기</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','영어말하기');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>
+					<tr>
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('영어 독해 및 토론');"><p>영어 독해 및 토론</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','영어 독해 및 토론');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>
+					<tr class="line01">
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('영어작문');"><p>영어작문</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','영어작문');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>
+					
+					<tr class="line02">
+						<th class="line02" rowspan="3">심화 이론</th>
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('교재개발 및 연구평가');"><p>교재개발 및 연구평가</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','교재개발 및 연구평가');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>
+					<tr>
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('연구방법론');"><p>연구방법론</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','연구방법론');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>
+					<tr class="line01">
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('영어구문 및 문법지도');"><p>영어구문 및 문법지도</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','영어구문 및 문법지도');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>
+					
+					
+					<tr class="line02">
+						<th class="line02" rowspan="5">심화 실습</th>
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('영어수업 설계 및 적용');"><p>영어수업 설계 및 적용</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','영어수업 설계 및 적용');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>
+					<tr>
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('코퍼스활용영어지도');"><p>코퍼스활용영어지도</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','코퍼스활용영어지도');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>																			
+					
+					<tr>
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('온라인 수업설계 및 평가');"><p>온라인 수업설계 및 평가</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','온라인 수업설계 및 평가');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>
+					<tr>
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('매체 제작 및 활용');"><p>매체 제작 및 활용</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','매체 제작 및 활용');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>
+					<tr class="line01">
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('마이크로티칭');"><p>마이크로티칭</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','마이크로티칭');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>
+
+					
+				</tbody>
+				</table>	
+			</div>
+			
+			<p class="m_b5"><img src="/home/images/course/txt_info_search.gif" alt="전체 사이버대학을 대상으로 유사강의 검색"></p>
+			<br>
+			
+		<!--e:컨텐츠영역-->
+	</div>
+
+	
+	<form class="search_box01" id="form" name="form" action="#" onsubmit="try{search();}catch(e){alert(e);}return false;"><!-- box_type01 Start -->
+        <input type="hidden" id="courseId" name="courseId" />
+        <input type="hidden" id="hidetext" name="hidetext" />
+        <input type="hidden" id="text" name="text" />
+        <input type="hidden" id="deptId" name="deptId" value="" />
+        <input type="hidden" id="univId" name="univId" value="" />
+	</form>
+
+	<div class="page_num">
+		<div id="pg" name="pg"></div>
+	</div>
+
+</body>
+</html>

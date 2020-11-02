@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="EUC-KR"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="HistoryDao">
+	<typeAlias alias="history" type="com.cyberup.model.course.History"/>
+	
+	<select id="selectList" resultClass="history"  parameterClass="map">
+		SELECT   a.*
+            FROM 
+            (
+				SELECT ROW_NUMBER () OVER (ORDER BY HISTORY_ID DESC) as recNum
+					, COUNT (*) OVER () totalCnt
+		            , HISTORY_ID as historyId, SCHEDULE_ID as scheduleId, START_DATE as startDate
+					, END_DATE as endDate, SCHEDULE_TYPE as scheduleType, SCHEDULE_SDATE as scheduleSdate
+					, SCHEDULE_EDATE as scheduleEdate, COLLECT_CNT as collectCnt, RESULT as result
+					, ERROR_REASON as errorReason, HISTORY_REGDATE as historyRegdate, HISTORY_MODDATE as historyModdate
+				FROM CU_CTR_HISTORY
+				WHERE SCHEDULE_ID = #scheduleId,javaType=Integer#
+			) a
+        WHERE CEIL (recNum / #showCnt,javaType=Integer#) = #currPage,javaType=Integer#
+        ORDER BY recNum ASC
+	</select>
+	
+	<select id="selectInfo" resultClass="history"  parameterClass="Integer">
+		SELECT HISTORY_ID as historyId, SCHEDULE_ID as scheduleId, START_DATE as startDate
+			, END_DATE as endDate, SCHEDULE_TYPE as scheduleType, SCHEDULE_SDATE as scheduleSdate
+			, SCHEDULE_EDATE as scheduleEdate, COLLECT_CNT as collectCnt, RESULT as result
+			, ERROR_REASON as errorReason, HISTORY_REGDATE as historyRegdate, HISTORY_MODDATE as historyModdate
+		FROM CU_CTR_HISTORY
+		WHERE HISTORY_ID = #historyId,javaType=Integer#
+	</select>
+	
+	<update id="updateInfo" parameterClass="history">
+		UPDATE CU_CTR_HISTORY SET 
+			END_DATE = #endDate#, COLLECT_CNT = #collectCnt#, RESULT = #result#
+			, ERROR_REASON = #errorReason#, HISTORY_MODDATE = SYSDATE
+		WHERE HISTORY_ID = #historyId,javaType=Integer#
+	</update>
+	
+	<insert id="insertInfo" parameterClass="history">
+		<selectKey resultClass="Integer" keyProperty="historyId">
+         SELECT SEQ_HISTORY_ID.nextVal as historyId FROM dual
+        </selectKey>
+        
+		INSERT INTO CU_CTR_HISTORY 
+			(HISTORY_ID, SCHEDULE_ID, START_DATE
+			, SCHEDULE_TYPE, SCHEDULE_SDATE
+			, SCHEDULE_EDATE, COLLECT_CNT, HISTORY_REGDATE, HISTORY_MODDATE
+			)
+		 values(#historyId#, #scheduleId#, #startDate#
+			, #scheduleType#, #scheduleSdate#
+			, #scheduleEdate#, 0, SYSDATE, SYSDATE
+			)
+	</insert>
+	
+	<delete id="deleteInfo"  parameterClass="Integer">
+		DELETE FROM CU_CTR_HISTORY 
+			WHERE 
+			HISTORY_ID = #historyId,javaType=Integer#
+	</delete>
+
+</sqlMap>

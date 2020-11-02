@@ -1,0 +1,23 @@
+
+<link rel="stylesheet" type="text/css" href="/mgr/css/map.css" />
+
+<h1><img src="/mgr/images/map/Atitle1.gif" /></h1>
+<ul>
+  <li><img src="/mgr/images/map/Aimages.gif" /></li>
+  <li class="text1"><img src="/mgr/images/map/Atext1.gif" /></li>
+  <li class="text2"><img src="/mgr/images/map/Atext2.gif" /></li>
+  <li class="text2"><img src="/mgr/images/map/Atext3.gif" /></li>
+  <li class="text2"><img src="/mgr/images/map/Atext4.gif" /></li>
+  <li class="text2"><img src="/mgr/images/map/Atext5.gif" /></li>
+</ul>
+<h1><img src="/mgr/images/map/Btitle1.gif" /></h1>
+
+<ul>
+  <li class="text3"><img src="/mgr/images/map/Btext1.gif" /></li>
+  <li class="text4"><img src="/mgr/images/map/Btext2.gif" /></li>
+  <li  class="text4"><img src="/mgr/images/map/Btext3.gif" /></li>
+  <li  class="text4"><img src="/mgr/images/map/Btext4.gif" /></li>
+  <li class="text5"><img src="/mgr/images/map/Btext5.gif" /></li>
+  <li class="text5"><img src="/mgr/images/map/Btext6.gif" /></li>
+   <li class="text5"><img src="/mgr/images/map/Btext7.gif" /></li>
+</ul>

@@ -1,0 +1,21 @@
+<html>
+<head>
+<script type="text/javascript" language="javascript" src="/mgr/js/jquery-1.4.4.min.js"></script>
+<script>
+jQuery(document).ready(function () {
+	if('$!errors' != 'true')
+    {
+    	opener.parent.setUploadImageResult('$!originalFilename', '$!srcName', '$!fileSize');
+    	window.close();
+    }
+    else
+	{
+    	eval("$!message");
+		history.back();
+	}
+});
+</script>
+</head>
+<body>
+</body>
+</html>

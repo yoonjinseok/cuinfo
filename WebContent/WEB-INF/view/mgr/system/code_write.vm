@@ -1,0 +1,94 @@
+<head>
+	<title>시스템코드관리</title>
+	<script type="text/javascript" language="javascript">
+
+	function write()
+	{
+		setdept();
+	}
+	function save()
+	{
+
+		
+		jQuery.post('code_save.json', 
+				$("#writeForm").formSerialize(), 
+				function(data) {
+        			if(data.errors == true)
+        			{
+        				eval(data.message);
+        			}
+        			else
+        			{
+						alert("저장되었습니다.");
+						opener.search();
+						window.close();
+        			}
+				
+		});
+	}
+	
+	</script>
+</head>
+<body>
+<div style="width:90%;padding-left:30px;padding-top:30px;">
+<form id="writeForm" action="#" onsubmit="try{write();}catch(e){alert(e);}return false;">
+<h2>정보 등록</h2>
+<div class="list_top01">
+	<span>그룹코드일 경우 그룹코드를 입력하지 않음</span>
+</div>
+<table cellspacing="0" cellpadding="0" class="form_type01" summary="시스템코드 관리"><!-- list_type01 Start -->
+	<caption>시스템코드 관리</caption>
+	<colgroup>
+		<col width="15%" />
+		<col width="35%" />
+		<col width="15%" />
+		<col width="35%" />
+	</colgroup>
+	<tbody>
+		<tr>
+			<th scope="row">코드</th>
+			<td>자동등록</td>
+			<th scope="row">그룹코드</th>
+			<td>
+				<select	id="codeGroup" name="codeGroup"">
+					<option value="">그룹등록</option>
+					#foreach($code in $codeGroupList)
+					<option value="$!code.codeId">$!code.codeName</option>
+					#end
+				</select>
+		</tr>
+		<tr>
+			<th scope="row">코드명</th>
+			<td colspan="3"><input type="text" maxlength="30" size="30" title="코드명" name="codeName" id="codeName"/></td>
+		</tr>
+		<tr>
+			<th scope="row">코드값</th>
+			<td colspan="3"><input type="text" maxlength="30" size="30" title="코드값" name="codeValue" id="codeValue"/></td>
+		</tr>
+		<tr>
+			<th scope="row">설명</th>
+			<td colspan="3"><input type="text" maxlength="100" size="70" title="설명" name="codeDesc" id="codeDesc"/></td>
+		</tr>
+		<tr>
+			<th scope="row">순서</th>
+			<td><input type="text" maxlength="10" size="10" title="순서" name="codeOrder" id="codeOrder" maxlength="30" onkeyup="return numbersonly(this)"/></td>
+			
+			<th scope="row">사용여부</th>
+			<td>
+				<label for="radio-1"><input type="radio" name="useYn" id="radio-1" value="Y" checked/> 사용함</label>
+				<label for="radio-2"><input type="radio" name="useYn" id="radio-2" value="N"/> 사용하지 않음</label>
+			</td>
+		</tr>
+	</tbody>
+</table><!-- list_type01 End -->
+
+
+<div class="btn_box_type03">
+	<a href="javascript:save();"><img src="/mgr/images/btn/save.gif" alt="저장" /></a>
+	<a href="javascript:window.close();"><img src="/mgr/images/btn/cancel.gif" alt="취소" /></a>
+</div>
+
+</form>
+</div>
+</body>
+</html>

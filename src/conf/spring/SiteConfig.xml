@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+    
+    <bean id="siteConfiguration" class="com.cyberup.framework.conf.SiteConfiguration">
+        <property name="serverUrl" value="http://127.0.0.1:7700"/>
+        <property name="serverContext" value=""/>
+        <property name="encryptKey" value="zeicfeacbekefpcmabcsaijv"/>
+        <property name="uploadRootPath" value="d:/workspace/cyberup/WebContent/"/>
+        <property name="filePath" value="upload/"/>
+        <property name="imgPath" value="img/"/>
+        <property name="metaUploadPath" value="cyberup/meta/"/>
+        <property name="kocwUploadPath" value="kocwupload/"/>
+        <property name="webContentPath" value="d:/workspace/cyberup/WebContent/"/>
+        <!-- <property name="managerEmail" value="cdori86@naver.com"/> -->
+        <property name="uploadUrl" value="http://localhost:7700/mgr/course/metaCollection_kocwfilewrite.pop.action?courseId="/>
+        <property name="streamExts" value="AVI,WMV,MPEG,MPG,ASF,MKV,MKA,TP,TS,FLV,MP4,MOV,K3G,VOB,SKM"/>
+        <property name="streamServer" value="210.102.99.63"/>
+        <property name="streamPort" value="21"/>
+        <property name="streamUserid" value="kocwst"/>
+        <property name="streamPassword" value="ehd#eoans1"/>
+        <property name="streamUploadDir" value="/f_kocw_media/cuinfo"/>
+        <property name="streamRemoteAddr" value="mms://210.102.99.63/kocw2/cuinfo/"/>
+        <property name="fileServer" value="210.102.100.235"/>
+        <property name="fileServerPort" value="21"/>
+        <property name="fileServerUserid" value="kocwd"/>
+        <property name="fileServerPassword" value="rhdro#rkddml!!"/>
+        <property name="fileServerUploadDir" value="/cuinfo"/>
+        <property name="fileServerRemoteAddr" value="http://www.kocw.net/home/common/contents/cuinfo/"/>
+    </bean>
+
+</beans>

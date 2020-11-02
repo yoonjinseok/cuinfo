@@ -1,0 +1,362 @@
+<head>
+	<title>메타데이터등록</title>
+	<script type="text/javascript" language="javascript">
+		
+	function save()
+	{
+	
+		if($("#modifyForm").formSerialize().indexOf("\'") != -1) {
+			alert("' 는 사용할 수 없습니다.\n    \" 를 사용해주세요.");
+			return;
+		}
+	
+		jQuery.post('metaCollection_save.json', 
+				$("#modifyForm").formSerialize(), 
+				function(data) {
+        			if(data.errors == true)
+        			{
+        				eval(data.message);
+        			}
+        			else
+        			{
+						alert('등록완료 하였습니다.');
+						opener.goPage();
+						document.location.href='metaCollection_read.pop.action?courseId=' + data.courseId;
+        			}
+		});
+	}
+	
+	function setThumbnailUploadResult(originalFilename, srcName, fileSize)
+    {
+		$('#prevthumbnail').val(srcName);
+    }
+	function setUploadResult(originalFilename, srcName, fileSize)
+    {
+		$('#syllabusDiv').append('<div class="icon" id=\''+srcName+'\'><a href="javascript:download(\''+srcName+'\');">'+originalFilename+'</a><span>('+getFileSize(fileSize)+')</span><a href="javascript:delRow(\''+srcName+'\');"><img src="/mgr/images/btn/btn_del.gif" /></a></div>');
+		$('#upload').hide();
+		$('#planLocation').val(srcName);
+    }
+    function delRow(trId)
+    {
+    	$("#syllabusDiv").find("div[id^="+trId+"]").remove();
+    	
+    	jQuery.post('/mgr/common/file_delete.json?srcName=' + trId, 
+    			function(data) {
+        			if(data.errors == true)
+        				eval(data.message);
+					else
+						showSyllabus('3');
+    	});
+    }
+    function download(srcName)
+	{
+		document.location.href = '/mgr/common/file_download.json?srcName=' + srcName;
+	}
+	
+	function showSyllabus(type, cont)
+	{
+		if(type == '1')
+		{
+			$('#syllabusDiv').html('<input type="text" style="width:100%" id="planLocation" name="planLocation" value="'+cont+'"/>');
+		}
+		else if(type == '2')
+		{
+			$('#syllabusDiv').html('<textarea id="planLocation" name="planLocation" rows="7" style="width:100%">'+cont+'</textarea>');
+		}
+		else if(type == '3')
+		{
+			$('#syllabusDiv').html('<input type="hidden" id="planLocation" name="planLocation"/><iframe id="upload" name="upload" src="/mgr/common/file_write.ifm.action?confKey=syllabus&eventHandler=setUploadResult" width="100%" height="25" frameborder="0" scrolling="no" style="padding: 0;margin: 0"></iframe>');
+		}
+		
+		$("input[name=syllabusType]").filter("input[value="+type+"]").attr("checked", "checked");
+	}
+	
+	function showCCLDiv(publicYn)
+	{
+		if(publicYn == 'Y')
+			$('#cclDiv').show();
+		else
+			$('#cclDiv').hide();
+	}
+	
+	function showCCL()
+	{
+		showWin('/mgr/course/metaCollection_ccl.pop.action', 'cclwin', 725, 600);
+	}
+	function licSet(lic)
+	{
+		$('#rights').val(lic);
+		
+		$('#comm_by').hide();
+		$('#comm_nc').hide();
+		$('#comm_nd').hide();
+		$('#comm_sa').hide();
+		
+		if(lic != '')
+		{
+			var arrLic = lic.split("-");
+    		
+    		for(var i=0;i<arrLic.length;i++){
+    			var strLic = arrLic[i].toLowerCase();
+    			var commId = document.getElementById("comm_"+strLic);
+    
+    			switch(strLic){
+        			case "by":commId.style.display='block';
+        			break;
+        			case "nc":commId.style.display='block';
+        			break;
+        			case "nd":commId.style.display='block';
+        			break;
+        			case "sa":commId.style.display='block';
+        			break;
+        			default:commId.style.display='none';
+        			break;
+    			}
+    		}
+		}
+	}
+	
+	function searchUniversity()
+	{
+		showWin('/mgr/system/univCodeSearch.pop.action', 'univwin', 800, 450);
+	}
+	function setUniversity(universityId, universityName)
+	{
+		$("#universityId").val(universityId);
+		$("#universityName").val(universityName);
+	}
+	
+	jQuery(document).ready(function () {
+		showCalendar($('#svcStart'), 'yymmdd');
+		showCalendar($('#svcEnd'), 'yymmdd');
+    });
+
+	</script>
+	
+	<style type="text/css">
+	.comment {background:#FAFAFA;} 
+	.mandatory{color:red;font-weight:bold;}
+	</style>
+</head>
+<body>
+<div style="width:90%;padding-left:30px;padding-top:30px;">
+<form id="modifyForm" action="#" onsubmit="try{save();}catch(e){alert(e);}return false;">
+<h2>메타데이터등록</h2>	
+<table style="width:100%" cellspacing="0" cellpadding="0" class="form_type01" summary="메타데이터관리"><!-- list_type01 Start -->
+	<caption>메타데이터관리</caption>
+	<colgroup>
+		<col width="13%" />
+		<col width="27%" />
+		<col width="13%" />
+		<col width="27%" />
+		<col width="20%" />
+	</colgroup>
+	<tbody>
+		<tr>
+			<th scope="row"><span class="mandatory">*</span>식별자</th>
+			<td>
+				<input type="text" style="width:70%" id="courseIdentifier" name="courseIdentifier"/>
+			</td>
+			<th scope="row"><span class="mandatory">*</span>교수언어</th>
+			<td>
+				<select	id="language" name="language">
+					#foreach($languageType in $languageTypeList)
+					<option value="$languageType.value">$languageType.name</option>
+					#end
+				</select>
+			</td>
+			<td class="comment">식별자 : 학내식별자</td>
+		</tr>
+		<tr>
+			<th scope="row"><span class="mandatory">*</span>제목</th>
+			<td>
+				<input type="text" size="30" id="title" name="title"/>
+			</td>
+			<th scope="row">부제목</th>
+			<td>
+				<input type="text" size="30" id="subtitle" name="subtitle"/>
+			</td>
+			<td class="comment">강좌명이나 컨퍼런스 제목</td>
+		</tr>
+		<tr>
+			<th scope="row"><span class="mandatory">*</span>학교명</th>
+			<input type="hidden" name="universityId" id="universityId"/>
+			<td><input type="text" size="17" title="학교명" name="universityName" id="universityName" onchange="if(this.value == '')$('#universityId').val('');"/> <a href="javascript:searchUniversity()" id="btnUniv"><img src="/mgr/images/btn/btn_seluniv.gif" alt="대학 선택"/></a></td>
+			</td>
+			<th scope="row"><span class="mandatory">*</span>학과정보</th>
+			<td>
+				<input type="text" size="13" id="department" name="department"/>(<input type="text" size="8" id="departmentId" name="departmentId"/>)
+			</td>
+			<script>
+			#if($!login.isUniversityOper() == true)
+			$('#universityId').val('$!login.universityId');
+			$('#universityName').val('$!login.universityName');
+			$('#universityName').attr('readonly','true');
+			$('#btnUniv').hide();
+			#end
+			</script>
+			<td class="comment">소속 학과명을 입력</td>
+		</tr>
+		<tr>
+			<th scope="row"><span class="mandatory">*</span>권장이수학년</th>
+			<td>
+				<input type="text" size="1" maxlength="1" onkeyup="numbersonly(this)" id="gradYear" name="gradYear"/> / 
+				<select	id="gradSemester" name="gradSemester">
+					#foreach($semesterType in $semesterTypeList)
+					<option value="$semesterType.value">$semesterType.name</option>
+					#end
+				</select>
+			</td>
+			<th scope="row"><span class="mandatory">*</span>학년도/학기</th>
+			<td>
+				<input type="text" size="4" maxlength="4" onkeyup="numbersonly(this)" id="termYear" name="termYear"/> / 
+				<select	id="termSemester" name="termSemester">
+					#foreach($semesterType in $semesterTypeList)
+					<option value="$semesterType.value">$semesterType.name</option>
+					#end
+				</select>
+			</td>
+			<td class="comment">학년 : 권장이수학년(권장학기)</td>
+		</tr>
+		<tr>
+			<th scope="row"><span class="mandatory">*</span>강의유형</th>
+			<td>
+				<select	id="type" name="type">
+					#foreach($courseType in $courseTypeList)
+					<option value="$courseType.value">$courseType.name</option>
+					#end
+				</select>
+			</td>
+			<th scope="row">인정학점</th>
+			<td>
+				<input type="text" size="15" id="credit" name="credit"/>
+			</td>
+			<td class="comment">인정학점을 입력(숫자로 입력) 예:1</td>
+		</tr>
+		<tr>
+			<th scope="row">평가기준</th>
+			<td colspan="3">
+				<textarea id="assessment" name="assessment" rows="4" style="width:100%"></textarea>
+			</td>
+			<td class="comment">평가기준 : 평가 방법을 입력</td>
+		</tr>
+		<tr>
+			<th scope="row"><span class="mandatory">*</span>서비스기간</th>
+			<td colspan="3">
+				<input type="text" size="12" maxlength="10" id="svcStart" name="svcStart"/>
+				~
+				<input type="text" size="12" maxlength="10" id="svcEnd" name="svcEnd"/>
+			</td>
+			<td class="comment">개설기간을 입력</td>
+		</tr>
+		<tr>
+			<th scope="row">키워드</th>
+			<td colspan="3">
+				<input type="text" style="width:100%" id="keyword" name="keyword"/>
+			</td>
+			<td class="comment">콘텐츠를 설명하는 키워드 또는 관용구</td>
+		</tr>
+		<tr>
+			<th scope="row"><span class="mandatory">*</span>저자</th>
+			<td colspan="3">
+				<input type="text" size="15" id="manager" name="manager"/>
+			</td>
+			<td class="comment">강좌 저자</td>
+		</tr>
+		<tr>
+			<th scope="row">맛보기강의</th>
+			<td>
+				<input type="text" size="30" maxlength="200" id="prevuri" name="prevuri"/>
+			</td>
+			<th scope="row">썸네일</th>
+			<td>
+				<div id="thumbnailDiv">
+					<input type="text" id="prevthumbnail" name="prevthumbnail" style="width:70%"/>
+					<iframe id="uploadThumbnail" name="uploadThumbnail" src="/mgr/common/file_write.ifm.action?confKey=prevImg&eventHandler=setThumbnailUploadResult" width="25%" height="25" frameborder="0" scrolling="no" style="padding: 0;margin: 0"></iframe>
+				</div>
+			</td>
+			<td class="comment">맛보기 강의컨텐츠</td>
+		</tr>
+		<tr>
+			<th scope="row">강의계획서</th>
+			<td colspan="3">
+                <input type="radio" id="syllabusType" name="syllabusType" value="1" onclick="showSyllabus('1','')">URI</input> 
+				<input type="radio" id="syllabusType" name="syllabusType" value="2" onclick="showSyllabus('2','')">직접등록</input> 
+				<input type="radio" id="syllabusType" name="syllabusType" value="3" onclick="showSyllabus('3','')">파일첨부</input>
+				<div id="syllabusDiv"></div>
+			</td>
+			<td class="comment">학내 서비스 경로나 내용을 직접 입력</td>
+		</tr>
+		<tr>
+			<th scope="row">설명</th>
+			<td colspan="3">
+				<textarea id="description" name="description" rows="7" style="width:100%"></textarea>
+			</td>
+			<td class="comment">개요 및 요약을 입력</td>
+		</tr>
+		<tr>
+			<th scope="row"><span class="mandatory">*</span>공개범위</th>
+			<td colspan="3">
+				<select	id="publicYn" name="publicYn" onchange="showCCLDiv(this.value)">
+					<option value="N">비공개</option>
+					<option value="Y">공개</option>
+				</select>
+			</td>
+			<td class="comment">공개범위 입력</td>
+		</tr>
+		<tr id="cclDiv" style="display:none;">
+			<th scope="row"><span class="mandatory">*</span>CCL</th>
+			<td colspan="3">
+				<input type="hidden" id="rights" name="rights"/>
+				CCL 라이센스 정보를 설정하시겠습니까? <a href="javascript:showCCL();"><b>예</b></a>
+				<table>
+					<tr>
+						<td id="comm_by" width='100' align="center" id="td_comm_by" bgcolor='#FFFFFF' height="50" style="display:  none;">
+						<img id="lc_by" align="middle" src="/mgr/license/resource/n_by.gif" border="0"><br/>
+						저작자표시<br/>(Attribution)
+						</td>
+						<td id="comm_nc" width='150' align="center"id="td_comm_nc" bgcolor='#FFFFFF' height="50" style="display:  none;">
+						<img id="lc_by" align="middle" src="/mgr/license/resource/n_nc.gif" border="0"><br/>
+						비영리<br/>(Noncommercial)
+						</td>
+						<td id="comm_nd" width='150' align="center" id="td_comm_nd" bgcolor='#FFFFFF' height="50" style="display:  none;">
+						<img id="lc_by" align="middle" src="/mgr/license/resource/n_nd.gif" border="0"><br/>
+						변경금지<br/>(No Derivative Works)
+						</td>
+						<td id="comm_sa" width='150' align="center" id="td_comm_sa" bgcolor='#FFFFFF' height="50" style="display:  none;">
+						<img id="lc_by" align="middle" src="/mgr/license/resource/n_sa.gif" border="0"><br/>
+						동일조건변경허락<br/>(Share Alike)
+						</td>
+    				</tr>
+    			</table>
+			</td>
+			<td class="comment">Creative Commons License를 선택하시며 6가지 저작권 유형에 대해 선택</td>
+		</tr>
+		<script>
+		showCCLDiv('P');
+		</script>
+		<tr>
+			<th scope="row"><span class="mandatory">*</span>상태</th>
+			<td colspan ="3">
+				<select id="svcStatus" name="svcStatus">
+					#foreach($!courseStatus in $!courseStatusList)
+					<option value="$!courseStatus.value">$!courseStatus.name</option>
+					#end
+				</select>
+				(승인완료되면 서비스 이관됩니다.)
+			</td>
+			<td class="comment">메타데이터 관리상태 입력</td>
+		</tr>
+	</tbody>
+</table><!-- list_type01 End -->
+
+
+<div class="btn_box_type03" style="text-align:left;">
+	<a href="javascript:save();" id="saveBtn"><img src="/mgr/images/btn/save.gif" alt="저장" /></a>
+	<a href="javascript:window.close();"><img src="/mgr/images/btn/cancel.gif" /></a>
+</div>
+
+</form>
+
+</body>
+</html>

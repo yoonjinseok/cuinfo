@@ -1,0 +1,139 @@
+<head>
+	<title>강좌 조회수 현황</title>
+	<link type="text/css" href="/css/jquery.datepicker.css" rel="stylesheet"/>
+	<script type="text/javascript" language="javascript">
+	function search()
+	{
+		goPage(1);
+	}
+	
+	function setRecordCnt(totalCnt, currPage, totalPage, showCnt)
+	{
+		$("#tCnt").text(totalCnt);
+		$("#cPage").text(currPage);
+		$("#tPage").text(totalPage);
+		
+		setPaging($("#pg"), totalCnt, showCnt, currPage);
+	}
+	
+	function goPage(page)
+	{
+		$("#currPage").val(page);
+		
+		jQuery.post('courseHits_list.ajax.action', 
+				$("#searchForm").formSerialize(), 
+				function(data) {
+        			$("#list").html(data);
+		});
+	}
+	
+	
+
+	$(document).ready(function() {		
+	
+    	//기본 날짜 세팅
+		var inputDate = new Date();
+		$('#searchEDT').val(inputDate.getFullYear() +"-"+ lpad(eval(inputDate.getMonth() + 1),2) +"-"+ lpad(inputDate.getDate(),2));
+		
+		//6개월 전 날짜 세팅
+		inputDate.setMonth(inputDate.getMonth()-6);
+		$('#searchSDT').val(inputDate.getFullYear() +"-"+ lpad(eval(inputDate.getMonth() + 1),2) +"-"+ lpad(inputDate.getDate(),2));
+    	
+		//달력 세팅
+		showCalendar($('#searchSDT'));
+  		showCalendar($('#searchEDT'));
+		
+		search();
+	});
+	
+	//정렬관련
+	function setSortValue(val){		
+		if(val == 1) {
+			if($('#sortValue2').val()=="0"){
+				$('#sortType').val("0");
+				$('#sortType2').val("0");
+			}else{//선택되면
+    			$('#sortValue').val($('#sortValue2').val());
+    			$('#sortType2').val("1");
+			}
+		}else{
+			$('#sortType').val($('#sortType2').val());
+		}
+		search();
+	}
+	</script>
+</head>
+<body>
+<div id="location_box"><!-- MainCopyBox  Start -->
+ <h3><img src="/mgr/images/stats/title2.gif" alt="서비스 조회수 통계" /></h3>
+ <ul class="location">
+	 <li><a href="/mgr/main.sub.action">Home</a></li>
+	 <li><a href="/mgr/stats/courseByPeriod.sub.action?gnb=31">통계현황</a></li>
+	 <li>서비스조회수통계</li>
+	 <li>강좌 조회수 현황</li>
+ </ul>
+</div><!-- MainCopyBox  End -->
+<h2>강좌 조회수 현황</h2>
+<ul class="tab_type1 num2">
+	<li class="tab1 on"><a href="courseHits.sub.action?gnb=32">강좌 조회수</a></li>
+	<li class="tab2"><a href="univHits.sub.action?gnb=32">학교 조회 수</a></li>
+	<li class="tab3"><a href="deptHits.sub.action?gnb=32">대표 학과 조회 수</a></li>
+</ul>
+<form class="search_box01" id="searchForm" name="searchForm" action="#" onsubmit="try{search();}catch(e){alert(e);}return false;"><!-- box_type01 Start -->
+<input type="hidden" id="showCnt" name="showCnt" value="15"/>
+<input type="hidden" id="currPage" name="currPage" value="1"/>
+<input type="hidden" id="sortValue" name="sortValue" value="hitsCnt"/>
+<input type="hidden" id="sortType" name="sortType" value="DESC"/>
+	<fieldset class="inner">
+		<table cellspacing="0" cellpadding="0" summary="강좌 조회수 검색 통계" class="border_none_table">
+			<caption>강좌 조회수 검색 통계</caption>
+			<colgroup>
+				<col width="45%"/>
+				<col width="*%"/>
+			</colgroup>
+			<tbody>				
+				<tr>
+					<td>
+						<label for="input-1">검색일</label>
+						<input type="text" id="searchSDT" name="searchSDT" size="10" maxlength="8" onChange="setDateFormat(this)" title="검색 시작일"/>  ~
+						<input type="text" id="searchEDT" name="searchEDT" size="10" maxlength="8" onChange="setDateFormat(this)" title="검색 종료일"/>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<label for="radio-1"> 학교명</label>
+						<input type="text" id="searchUnivName" name="searchUnivName" size="10" title="학교 입력"/> 
+					</td>
+					<td>
+						<label for="radio-3">대표학과명</label>
+						<input type="text" id="searchDeptName" name="searchDeptName" size="10" title="학과 입력"/> 
+						<input type="image" style="width:52px;height:21px;border:0px;" src="/mgr/images/btn/search.gif" alt="검색" />
+					</td>
+				</tr>
+			</tbody>			
+		</table>
+	</fieldset>
+</form><!-- box_type01 End -->
+<div class="list_top01">
+	<span>비율은 소수 2째자리에서 반올림하여  오차가 발생할 수 있습니다.</span>
+	<span class="f_right">total : <em id="tCnt">00</em>건(<em id="cPage">1</em>/<em id="tPage">15</em>page)	
+	<select	id="sortValue2" name="sortValue2" onchange="setSortValue(1)" style="width:90px" >
+		<option value="0">--정렬--</option>
+		<option value="courseName">강좌명</option>
+		<option value="univName">학교명</option>
+		<option value="deptName">대표학과</option>
+		<option value="hitsCnt" selected>조회수</option>
+	</select>
+	<select	id="sortType2" name="sortType2"  onchange="setSortValue(2)" style="width:70px" >
+		<option value="0">--선택--</option>
+		<option value="ASC">오름차순</option>
+		<option value="DESC" selected>내림차순</option>
+	</select>
+	</span>
+</div>
+<div id="list">#parse('mgr/stats/courseHits_list.vm')</div>
+<div class="page_num">
+	<div id="pg" name="pg"></div>
+</div>
+</body>
+</html>

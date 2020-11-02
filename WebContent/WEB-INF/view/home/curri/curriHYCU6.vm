@@ -1,0 +1,273 @@
+<head>
+	<title>학과 내비게이션</title>
+	<link rel="stylesheet" type="text/css" href="/home/css/course.css" />
+	<script type="text/javascript" language="javascript">
+	
+	$(document).ready(function() {
+		//search();
+    });
+    function viewDetail(title)
+	{
+		
+		
+		//필요 변수 셋팅
+		$("#text").val(title);
+		$("#deptId").val("40701");
+		$("#univId").val("31");
+		
+		//onsubmit 속성을 비워주어야 submit이 된다.
+		$("#form").attr("method","post");
+		$("#form").attr("onsubmit","");
+		$("#form").attr("action","/home/course/courseSearch3View.sub2.action?gnb=41");
+		$("#form").submit();
+		
+	}
+    	//유사강의검색
+	function viewDetail2(courseId, title)
+	{
+	
+		//필요 변수 셋팅
+		$("#text").val(title);
+		$("#hidetext").val(title);
+		$("#courseId").val(courseId);
+		$("#deptId").val("");
+		
+		//onsubmit 속성을 비워주어야 submit이 된다.
+		$("#form").attr("method","post");
+		$("#form").attr("onsubmit","");
+		$("#form").attr("action","/home/course/courseSearch2.sub2.action?gnb=41&pageType=1&checkbox3=2");
+		$("#form").submit();
+		
+	}
+	</script>
+</head>
+	
+<body id="intro">
+
+	<p class="location">
+		<a href="">홈</a> <span>&gt;</span> <a href="">학과/교과과정</a> <span>&gt;</span> <a href="">교과과정 보기</a> 
+	</p>
+	<h3><img src="/home/images/title/h3_sub_view.gif" alt="교과과정 보기"></h3>
+		
+	
+	<div class="contentWrap">
+		<!--s:컨텐츠영역-->
+			
+			<div class="path_major">
+				<a>한양사이버대학원</a><span>&gt;</span>
+				<a>교육정보대학원</a><span>&gt;</span>
+				<a>교육공학</a>
+				<a target="_blank" href="http://gs.hycu.ac.kr/lesinfo/?dept=40701" class="btn_info_major"><img src="/home/images/btn/btn_info_major.gif" alt="학과안내 페이지 바로가기"></a>
+																																																																																																												</div>
+			
+			<div id="list" class="univ_table m_l0">
+				<table cellspacing="0" cellpadding="0" summary="교과과정 보기"><!-- table_type1 st01 Start -->
+				<caption>교과과정 보기</caption>
+				<colgroup>
+					<col width="20%">
+					<col width="40%">
+					<col width="20%">
+				</colgroup>
+				<thead>
+					<tr>
+						<th scope="col">학기</th>
+						<th scope="col">교과목명</th>
+						<th scope="col">학점</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr class="line02">
+						<th class="line02" rowspan="4">1</th>
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('교육공학동향과이슈');"><p>교육공학동향과이슈</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','교육공학동향과이슈');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>
+					<tr>
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('교수학습이론');"><p>교수학습이론</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','교수학습이론');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>
+					<tr>
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('글로벌HRD세미나');"><p>글로벌HRD세미나</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','글로벌HRD세미나');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>
+					<tr class="line01">
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('미래전략IT기술');"><p>미래전략IT기술</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','미래전략IT기술');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>
+					
+					<tr class="line02">
+						<th class="line02" rowspan="4">2</th>
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('최신교수설계이론');"><p>최신교수설계이론</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','최신교수설계이론');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>
+					<tr>
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('이러닝의이론과실제');"><p>이러닝의이론과실제</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','이러닝의이론과실제');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>
+					<tr>
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('블렌디드교육프로그램개발');"><p>블렌디드교육프로그램개발</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','블렌디드교육프로그램개발');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>
+					<tr class="line01">
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('디지털미디어교육론');"><p>디지털미디어교육론</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','디지털미디어교육론');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>
+					
+					<tr class="line02">
+						<th class="line02" rowspan="5">3</th>
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('논문연구');"><p>논문연구</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','논문연구');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 0
+						</td>
+					</tr>
+					<tr>
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('교육공학과인지과학');"><p>교육공학과인지과학</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','교육공학과인지과학');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>
+					<tr>
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('뉴미디어기반학습');"><p>뉴미디어기반학습</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','뉴미디어기반학습');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>
+					<tr>
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('기업교육세미나');"><p>기업교육세미나</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','기업교육세미나');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>
+					<tr class="line01">
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('교육공학연구방법론');"><p>교육공학연구방법론</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','교육공학연구방법론');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>
+					
+					
+					<tr class="line02">
+						<th class="line02" rowspan="6">4</th>
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('논문연구');"><p>논문연구</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','논문연구');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 0
+						</td>
+					</tr>
+					<tr>
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('학습과지식경영');"><p>학습과지식경영</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','학습과지식경영');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>
+					<tr>
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('교육공학세미나');"><p>교육공학세미나</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','교육공학세미나');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>
+					<tr>
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('평생교육연구');"><p>평생교육연구</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','평생교육연구');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>																			
+					
+					
+					<tr>
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('프로그램평가실습');"><p>프로그램평가실습</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','프로그램평가실습');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>
+					<tr class="line01">
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('리더십개발세미나');"><p>리더십개발세미나</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','리더십개발세미나');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>
+					
+					<tr class="line02">
+						<th class="line02">5</th>
+						<td class="t_left line02" colspan="2">
+							<p>졸업논문/혹은 논문대체 과목</p>
+						</td>
+					</tr>
+					
+				</tbody>
+				</table>	
+			</div>
+			
+			<p class="m_b5"><img src="/home/images/course/txt_info_search.gif" alt="전체 사이버대학을 대상으로 유사강의 검색"></p>
+			<br>
+			
+		<!--e:컨텐츠영역-->
+	</div>
+
+	
+	<form class="search_box01" id="form" name="form" action="#" onsubmit="try{search();}catch(e){alert(e);}return false;"><!-- box_type01 Start -->
+        <input type="hidden" id="courseId" name="courseId" />
+        <input type="hidden" id="hidetext" name="hidetext" />
+        <input type="hidden" id="text" name="text" />
+        <input type="hidden" id="deptId" name="deptId" value="" />
+        <input type="hidden" id="univId" name="univId" value="" />
+	</form>
+
+	<div class="page_num">
+		<div id="pg" name="pg"></div>
+	</div>
+
+</body>
+</html>

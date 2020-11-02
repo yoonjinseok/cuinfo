@@ -1,0 +1,444 @@
+<head>
+	<title>강의명 검색</title>
+	<script type="text/javascript" language="javascript">
+	
+	$(document).ready(function(){
+		$("#headerText").val("$!searchText");
+		$("#totalSearch").val("1");
+		jQuery.post('kocwApiSearch_K.ajax.action', 
+					$("#form").formSerialize(), 
+					function(data) {
+        				$("#kocwApiSearch_K").html(data);
+		});
+		
+		jQuery.post('kocwApiSearch_A.ajax.action', 
+					$("#form").formSerialize(), 
+					function(data) {
+					
+        				$("#kocwApiSearch_A").html(data);
+		});
+		orderTabClick();
+	});
+	
+	function orderTabClick()
+	{
+		var odbyKey = "";
+		$("#orderTab").find("a").each(function(index){
+			$(this).click(function(){
+				switch(index)
+				{
+					case 0:
+						odbyKey = "regdate";
+						break;
+					case 1:
+						odbyKey = "univname";
+						break;
+					case 2:
+						odbyKey = "deptname";
+						break;
+					case 3:
+						odbyKey = "clicksCnt";
+						break;
+				}
+				$("#orderTab").find("a").removeClass();
+				$(this).addClass("on");
+				$("#odbykey").val(odbyKey);
+				goPage(1);
+			});
+		});
+	}
+		
+	function detailSearch(){
+		
+		$("#totalSearch").val("2");
+		search3();
+	}
+	
+	function search3(){
+	
+		document.form.action="/home/course/courseSearch.sub.action?gnb=31";
+		document.form.method = "post";
+		document.form.submit();
+	
+	}
+	function search2(univdeptId)
+	{
+		$("#univdeptId").val(univdeptId);
+		search3();
+	}
+	
+	function search()
+	{		
+		
+		//show
+		$("#publicList").show();
+		$("#allList").show();
+		$("#pg").show();
+		
+		//hide
+		$("#viewInfo").hide();
+		$("#viewList").hide();
+		
+		goPage(1);
+	}
+	
+	//검색
+	function goPage(page)
+	{
+		
+		$("#currPage").val(page);
+		$("#hideText").val($("#text").val());
+		//kocw 공개강의와 학위논문 검색 kocwApiSearch_K
+		kocwApiSearch();
+
+		jQuery.post('publicList.ajax.action', 
+					$("#form").formSerialize(), 
+					function(data) {
+        				$("#publicList").html(data);
+		});
+		
+		//alert($("#form").formSerialize());
+		jQuery.post('allList.ajax.action', 
+					$("#form").formSerialize(), 
+					function(data) {
+					
+        				$("#allList").html(data);
+        				
+		});
+		
+		jQuery.post('deptNameView.ajax.action', 
+					$("#form").formSerialize() + "&ViewType=3", 
+					function(data) {
+        				$("#deptNameView").html(data);
+        				
+		});
+	}
+	
+	function kocwApiSearch(){
+		jQuery.post('kocwApiSearch_K.ajax.action', 
+					$("#form").formSerialize(), 
+					function(data) {
+        				$("#kocwApiSearch_K").html(data);
+		});
+		
+		jQuery.post('kocwApiSearch_A.ajax.action', 
+					$("#form").formSerialize(), 
+					function(data) {
+					
+        				$("#kocwApiSearch_A").html(data);
+		});
+	}
+	
+	function viewDetail(courseId,courseIdentifier, title)
+	{
+		$("#hideText").val(title);
+	
+		// 상세보기로 갈경우 publicList , listControlBar , allList , pg 를 감춘다.
+		// viewDetail 는 보인다.
+		
+		$("#courseIdentifier").val(courseIdentifier);
+		$("#courseId").val(courseId);
+		
+		$("#publicList").hide();
+		$("#allList").hide();
+		$("#pg").hide();
+		
+		jQuery.post('viewInfo.ajax.action', 
+					$("#form").formSerialize(), 
+					function(data) {
+        				$("#viewInfo").html(data);
+        				$("#viewInfo").show();
+		});
+		
+		jQuery.post('viewList.ajax.action', 
+					$("#form").formSerialize(), 
+					function(data) {
+        				$("#viewList").html(data);
+        				$("#viewList").show();
+		});
+		
+		kocwApiSearch();
+		
+	}
+	
+	function setRecordCnt(totalCnt, currPage, totalPage, showCnt)
+	{
+		$("#tCnt").text(totalCnt);
+		$("#cPage").text(currPage);
+		$("#tPage").text(totalPage);
+		
+		setPaging($("#pg"), totalCnt, showCnt, currPage);
+	}
+		
+	function viewList()
+	{
+		//alert("$!text");
+		//document.location.href = "/home/course/courseSearch.sub.action?gnb=31";
+		//history.back();
+		
+		/*통합검색으로 자세히 봤을경우 목록으로 갈때는 headerSearch 를 다시 실행한다.*/
+		
+		var headerText = $("#headerText").val();
+		
+		//alert(headerText);
+		
+		if(headerText == "")
+			document.location.href = "/home/course/courseSearch.sub.action?gnb=31&publicYn=Y";
+		else		
+			headerSearch(1);
+	}
+	
+	function showRollUp(classifyId)
+	{
+		$("#univdeptName_list li").removeClass();
+		
+		$("#classifyId").val(classifyId);
+		
+		$("#text").val("");
+		
+		jQuery.post('rollUpList.ajax.action', 
+					$("#form").formSerialize(), 
+					function(data) {
+	
+						$("#"+classifyId+" div").html(data);
+						$("#"+classifyId).addClass("on");
+					
+		});
+		
+		
+	}
+	
+	function chgShowCnt(value)
+	{
+		$("#showCnt").val(value);
+		goPage(1);
+	}	
+
+	function searchKeyword(select, val){
+	
+		$("#select").val(select);
+		$("#text").val(val);
+		goPage(1);
+	}
+	
+	</script>
+</head>
+<body>
+
+<div id="location_box"><!-- MainCopyBox  Start -->
+	<h3><img src="/home/images/course/title1.gif" alt="강의명 검색" /></h3>
+		<span class="sns_box" id="sns_box">
+		<a href="javascript:sns(1)"><img src="/home/images/icon/sns_1.gif" alt="트위터" /></a>
+		<a href="javascript:sns(2)"><img src="/home/images/icon/sns_2.gif" alt="페이스북" /></a>
+		<a href="javascript:sns(3)"><img src="/home/images/icon/sns_3.gif" alt="미투데이" /></a>
+		<a href="javascript:contentPrint()"><img src="/home/images/icon/sns_4.gif" alt="프린트" /></a>
+		</span>
+	<ul class="location">
+		<li><a href="/home/index.main.action">Home</a></li>
+		<li><a href="/home/course/searchByMajorArea.sub.action?gnb=31">강의검색</a></li>
+		<li>강의명 검색</li>
+	</ul>
+</div><!-- MainCopyBox  End -->
+
+
+<div class="search_major type1">
+
+	<form class="" id="form" name="form" action="#" onsubmit="try{search3();}catch(e){alert(e);}return false;">
+	
+	<input type="hidden" id="totalSearch" name="totalSearch" value="1"/>
+	<input type="hidden" id="hideText" name="hideText" value="$!hideText"/>
+	
+	<input type="hidden" id="showCnt" name="showCnt" value="10"/>
+	<input type="hidden" id="currPage" name="currPage" value="1"/>
+	
+	<input type="hidden" id="classifyId" name="classifyId" value=""/>
+	<input type="hidden" id="deptId" name="deptId" value=""/>
+	
+	<input type="hidden" id="courseId" name="courseId" value=""/>
+	<input type="hidden" id="courseIdentifier" name="courseIdentifier" value=""/>
+	<input type="hidden" id="gubunId" name="gubunId" value=""/>
+	
+	<input type="hidden" id="universityId" name="universityId" value=""/>
+	
+	<!-- 정렬을 위한 값 -->
+	<input type="hidden" id="odbykey" name="odbykey" value="regdate,clicksCnt desc,maintitle"/>
+	<input type="hidden" id="odby" name="odby" value="asc"/>
+	
+	
+	<fieldset class="inner">
+			<table cellspacing="0" cellpadding="0" summary="강의명 검색">
+				<caption>강의명 검색</caption>
+				<colgroup>
+					<col width="15%"/>
+					<col width="*%"/>
+					<col width="18%"/>
+					<col width="15%"/>
+				</colgroup>
+				<tbody>
+
+					<tr id="trDetail1" style="display:none">
+						<td class="p_l20 p_t20"><label for="select-1">서비스일</label></td>
+						<td class="p_t20" colspan="3">
+							<select	id="sdate" name="sdate" style="width:80px;">
+								#foreach($list in $getYearList)
+								   <option value="$list">$list</option>
+								#end
+							</select>
+							~
+							<select id="edate" name="edate" style="width:80px;">
+								#foreach($list in $getYearList)
+								   <option value="$list">$list</option>
+								#end
+							</select>
+						</td>
+					</tr>
+					<tr id="trDetail2" style="display:none">
+						<td class="p_l20">
+							<select id="select1" name="select1">
+								<option value="maintitle">강의명</option>
+								<option value="contname">교수자</option>
+								<option value="univName">학교명</option>
+								<option value="description">강의설명</option>
+								<option value="keyword">키워드</option>
+							</select>
+						</td>
+						<td colspan="2"><input type="text" id="text1" name="text1" size="20" title="검색어입력"/></td>
+						<td class="p_r20">
+							<select id="terms1" name="terms1">
+								<option value="AND">AND</option>
+								<option value="OR">OR</option>
+							</select>
+						</td>
+					</tr>
+					<tr id="trDetail3" style="display:none">
+						<td class="p_l20">
+							<select id="select2" name="select2">
+								<option value="maintitle">강의명</option>
+								<option value="contname">교수자</option>
+								<option value="univName">학교명</option>
+								<option value="description">강의설명</option>
+								<option value="keyword">키워드</option>
+							</select>
+						</td>
+						<td colspan="2"><input type="text" id="text2" name="text2" size="20" title="검색어입력"/></td>
+						<td class="p_r20">
+							<select id="terms2" name="terms2">
+								<option value="AND">AND</option>
+								<option value="OR">OR</option>
+							</select>
+						</td>
+					</tr>
+					<tr id="trDetail4" style="display:none">
+						<td class="p_l20">
+							<select id="select3" name="select3">
+								<option value="maintitle">강의명</option>
+								<option value="contname">교수자</option>
+								<option value="univName">학교명</option>
+								<option value="description">강의설명</option>
+								<option value="keyword">키워드</option>
+							</select>
+						</td>
+						<td colspan="2"><input type="text" id="text3" name="text3" size="20" title="검색어입력"/></td>
+						<td class="p_r20">
+							<select id="terms3" name="terms3">
+								<option value="AND">AND</option>
+								<option value="OR">OR</option>
+							</select>
+						</td>
+					</tr>
+					<tr id="trDetail5" style="display:none">
+						<td class="p_l20"><label for="select-2">정렬방법</label></td>
+												<td>
+							<select	id="odbykey" name="odbykey" style="width:80px;">
+								<option value="regdate,clicksCnt desc,maintitle">정확도</option>
+								<option value="maintitle">강의명</option>
+								<option value="univname">대학명</option>
+								<option value="contname">교수자</option>
+								<option value="regdate">등록일</option>
+								<option value="deptname,clicksCnt desc,maintitle">학과명</option>
+								<option value="clicksCnt desc,maintitle">열람횟수</option>
+							</select>
+							~
+							<select id="odby" name="odby" style="width:80px;">
+								<option value="asc" >내림차순</option>
+								<option value="desc">오름차순</option>
+							</select>
+						</td>
+					</tr>
+
+    				<tr class="bottom">
+    					<td colspan="4" id="trLecture1">
+    						<select	id="select" name="select" style="width:80px;" >
+    							<option value="1">강의명</option>
+    							<option value="2">교수자명</option>
+    							<option value="3">학교명</option>
+    							<option value="4">강의설명</option>
+    							<option value="5">키워드</option>
+    						</select>
+    						<input type="text" name="text" id="text" value="$!hideText" style="width:320px;" />
+							<a id="trLecture4" href="javascript:search();"><input type="image" style="width:67px;height:22px;border:0px;" src="/home/images/btn/search2.gif" alt="검색" /></a>
+							<a id="trLecture2" href="javascript:detailSearch();"><img src="/home/images/btn/search3.gif" alt="상세검색" /></a>
+                        </td>
+    				</tr>
+    				<tr id="trLecture3" class="top p_t20">
+    					<td colspan="4">
+    						<span class="bold">검색범위</span>
+    						<select	id="checkbox3" name="checkbox3" style="width:160px;">
+    							<option value="2">현재 개설강의(최근 1년)</option>
+    							<option value="3">전체 강의정보</option>					
+                            </select>
+							<label for="checkbox1"><input type="checkbox" value="1" id="checkbox1" name="checkbox1"/> 공개강의</label>
+    					</td>				
+    				</tr>
+					
+				</tbody>
+			</table>
+		</fieldset>
+	</form>
+</div>
+
+<div class="" id="deptNameView">#parse('home/course/deptNameView.vm')</div>
+
+
+<div class="search_list_area">
+	
+	<!-- 공개강의 리스트 -->
+	<div id="publicList" style="display:none">#parse('home/course/publicList.vm')</div>
+	
+	
+	<div id="listControlBar" class="top_box" style="display:none;">
+		<span class="num">총 <b id="totalCnt"><!--롤업리스트에서 사이즈를 가져온다. --></b>개  결과</span>
+		<select	id="select-1" onchange="chgShowCnt(this.value);">
+			#foreach($list in $showCntList)			
+			<option value="$list.codeValue">$list.codeName</option>
+			#end
+		</select>
+		<span class="f_right" id="orderTab">
+			<a class="on" href="#orderTab">최신순</a>  |
+			<a href="#orderTab">학교명</a>  |
+			<a href="#orderTab">학과명</a>  |
+			<a href="#orderTab">열람횟수</a>
+		</span>
+	</div>
+	
+	<div id="allList" style="display:none">#parse('home/course/allList.vm')</div>
+
+	<div class="page_num">
+		<div id="pg" name="pg" style="display:none"></div>
+	</div>
+	
+	<div id="viewInfo">#parse('home/course/viewInfo.vm')</div>
+	<div id="viewList" class="univ_table2 type1">#parse('home/course/viewList.vm')</div>
+		
+		
+	<!-- kocw 공개강의 -->
+	<div id="kocwApiSearch_K">#parse('home/course/kocwApiSearch_K.vm')</div>
+	<!-- 학위논문 -->
+	<div id="kocwApiSearch_A">#parse('home/course/kocwApiSearch_A.vm')</div>
+	
+</div>
+
+
+
+</body>
+</html>

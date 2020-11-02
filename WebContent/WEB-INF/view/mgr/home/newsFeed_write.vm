@@ -1,0 +1,78 @@
+<head>
+	<title>뉴스등록</title>
+	<script type="text/javascript" language="javascript">
+	function save()
+	{
+		//alert($("#writeForm").formSerialize());
+		
+		if($("#writeForm").formSerialize().indexOf("\'") != -1) {
+			alert("' 는 사용할 수 없습니다.\n    \" 를 사용해주세요.");
+			return;
+		}
+	
+		if(validate()){
+			jQuery.post('newsFeed_insert.json', 
+					$("#writeForm").formSerialize(), 
+					function(data) {
+	        			if(data.errors == true)
+	        			{
+	        				eval(data.message);
+	        			}
+	        			else
+	        			{
+							opener.search();
+							window.close();
+	        			}
+			});
+		}
+	}
+	
+	function validate(){
+		return true;
+	}
+	
+	jQuery(document).ready(function () {
+		showCalendar($('#newsRegDate'));
+    });
+	
+	</script>
+</head>
+<body>
+<div style="width:90%;padding-left:30px;padding-top:30px;">
+<form id="writeForm" action="#" onsubmit="try{write();}catch(e){alert(e);}return false;">
+<input type="hidden" name="newYN" value="Y"/>
+<h2>뉴스등록</h2>	
+<table cellspacing="0" cellpadding="0" class="form_type01" summary="생산기관관리"><!-- list_type01 Start -->
+	<caption>생산기관관리</caption>
+	<colgroup>
+		<col width="15%" />
+		<col width="35%" />
+		<col width="15%" />
+		<col width="35%" />
+	</colgroup>
+	<tbody>
+		<tr>
+			<th scope="row">뉴스제목</th>
+			<td colspan ="3"><input type="text" size="60" maxlength="100" title="뉴스제목" name="newsTitle" id="newsTitle"/></td>
+		</tr>
+		<tr>
+			<th scope="row">뉴스LINK</th>
+			<td colspan ="3"><input type="text" size="60" maxlength="100" title="뉴스LINK" name="newsLink" id="newsLink"/></td>
+		</tr>
+		<tr>
+			<th scope="row">뉴스작성일</th>
+			<td colspan ="3"><input type="text" size="20" maxlength="15" title="뉴스작성일" id="newsRegDate" name="newsRegDate" readonly/></td>
+		</tr>
+	</tbody>
+</table><!-- list_type01 End -->
+
+
+<div class="btn_box_type03">
+	<a href="javascript:save();"><img src="/mgr/images/btn/save.gif" alt="저장" /></a>
+	<a href="javascript:window.close();"><img src="/mgr/images/btn/cancel.gif" alt="취소" /></a>
+</div>
+
+</form>
+</div>
+</body>
+</html>

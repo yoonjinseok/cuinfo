@@ -1,0 +1,1075 @@
+<?xml version="1.0" encoding="EUC-KR"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="StatisiticsDao">
+	<typeAlias alias="statisitics" type="com.cyberup.model.educ.Statisitics"/>
+	<typeAlias alias="hashMap" type="java.util.HashMap"/>
+	
+	<!--  통계문서 쿼리 / 배진국 / 2012-11-01 -->	
+	<select id="selectList" resultClass="statisitics"  parameterClass="map">
+		 SELECT DT.*
+		 FROM(
+	            SELECT
+	                   ROW_NUMBER () OVER (ORDER BY STT_YEAR DESC, STT_MONTH DESC) AS recNum, 
+	                   COUNT (*) OVER () totalCnt,
+	                   STT_ID as sttID, 
+	                   TERM_STATE as termState,
+	                   STT_YEAR as sttYear,
+	                   STT_MONTH as sttMonth,
+	                   TO_CHAR(DEADLINE, 'yyyy-mm-dd') as deadline,
+	                   STT_NAME as sttName,
+	                   GATHER_STATE as gatherState,
+	                   ATTACH_UPFILE_GID as upfileGid,
+	                   DECLARE as declare,
+	                   USE_YN as useYN, 
+	                   (SELECT ADMIN_NAME FROM CU_ADMIN A WHERE A.ADMIN_ID=B.REGISTER) AS registerNM,
+	                   REG_DATE as regDate,
+	                   CASE WHEN TRUNC(SYSDATE-REG_DATE)>1 THEN 'N' ELSE 'Y' END AS newYN
+	              FROM CU_STATISITICS B	              
+	            ) DT 
+		 WHERE CEIL (recNum / #showCnt,javaType=Integer#) = #currPage,javaType=Integer#
+			<isNotEmpty property="termState" prepend="AND">		    	
+		    	termState = #termState#
+		    </isNotEmpty>		    
+		    <isNotEmpty property="sttName" prepend="AND">
+		   	 	sttName LIKE concat(concat('%',#sttName#),'%')
+		    </isNotEmpty>
+		    <isNotEmpty property="regDate" prepend="AND">
+		    	TO_CHAR(regDate, 'yyyy-mm-dd') <![CDATA[=]]> #regDate,javaType=String#
+		    </isNotEmpty>
+		    <isNotEmpty property="gatherState" prepend="AND">
+		   	 	gatherState = #gatherState#
+		    </isNotEmpty>
+	</select>	
+	
+	<!-- 내용 보기 -->
+	<select id="selectInfo" resultClass="statisitics"  parameterClass="long">
+		SELECT
+              STT_ID as sttID, 
+              TERM_STATE as termState,
+              STT_YEAR as sttYear,
+              STT_MONTH as sttMonth,
+              TO_CHAR(DEADLINE, 'yyyy-mm-dd') as deadline,
+              STT_NAME as sttName,
+              GATHER_STATE as gatherState,
+              ATTACH_UPFILE_GID as upfileGid,
+              DECLARE as declare,
+              USE_YN as useYN, 
+              REGISTER AS register,
+              (SELECT ADMIN_NAME FROM CU_ADMIN A WHERE A.ADMIN_ID=B.REGISTER) AS registerNM,
+              REG_DATE AS regDate,
+              MODIFIER AS modifier,
+              (SELECT ADMIN_NAME FROM CU_ADMIN A WHERE A.ADMIN_ID=B.MODIFIER) AS modifierNM,
+              MOD_DATE AS modDate,
+              ATTACH_UPFILE_ID as upfileID
+         FROM CU_STATISITICS B
+		 WHERE STT_ID = #sttID,javaType=long#
+	</select>	
+	
+	<!-- 내용 보기 -->
+	<select id="isUpCheck" resultClass="Integer"  parameterClass="statisitics">
+		SELECT count(*)
+         FROM CU_STATISITICS 
+		 WHERE 1 = 1		 
+			<isNotEmpty property="sttID" prepend="AND">		    	
+		    	STT_ID != #sttID#
+		    </isNotEmpty>		    
+		    <isNotEmpty property="sttYear" prepend="AND">
+		   	 	STT_YEAR = #sttYear#
+		    </isNotEmpty>
+		    <isNotEmpty property="sttMonth" prepend="AND">
+		   	 	STT_MONTH = #sttMonth#
+		    </isNotEmpty>
+	</select>	
+	
+	<!-- 통계문서 내용 입력 -->
+	<insert id="insertInfo" parameterClass="statisitics">
+		<selectKey resultClass="Integer" keyProperty="sttID">
+         SELECT SEQ_STATISITICS_ID.nextVal as sttID FROM dual
+        </selectKey>        
+		INSERT INTO CU_STATISITICS( 
+			STT_ID, TERM_STATE, STT_YEAR,
+            STT_MONTH, DEADLINE, STT_NAME,
+            GATHER_STATE, ATTACH_UPFILE_GID, DECLARE, 
+            USE_YN, REGISTER, REG_DATE, ATTACH_UPFILE_ID)
+		VALUES(
+			#sttID#, #termState#, #sttYear#,
+			#sttMonth#, #deadline,javaType=String#, #sttName#,
+			#gatherState#, #upfileGid#, #declare#, 
+			#useYN#, #register#, SYSDATE, #upfileID#)
+	</insert>
+		
+	<!-- 내용 업데이트 -->	
+	<update id="updateInfo" parameterClass="statisitics">
+		UPDATE CU_STATISITICS
+	   	SET TERM_STATE		= #termState#,	   		
+	    	STT_YEAR		= #sttYear#,
+	        STT_MONTH		= #sttMonth#,
+	        DEADLINE		= #deadline,javaType=String#,
+	        STT_NAME		= #sttName#,	       
+	        <isNotEqual property="upfileGid" compareValue="0">
+	        ATTACH_UPFILE_GID = #upfileGid#,
+	        </isNotEqual>
+	        <isNotEqual property="upfileID" compareValue="0">
+	        ATTACH_UPFILE_ID = #upfileID#,
+	        </isNotEqual>
+	        DECLARE 		= #declare#,
+	        MODIFIER		= #modifier#,
+	        USE_YN 			= #useYN#,
+	        MOD_DATE 		= SYSDATE
+		WHERE STT_ID = #sttID#
+	</update>
+	
+	
+	<delete id="deleteInfo"  parameterClass="long">
+		DELETE 
+		FROM CU_STATISITICS 
+		WHERE STT_ID = #sttID,javaType=long#
+	</delete>
+	
+	
+	<!-- 파일이 모두 삭제되었으면 부모테이블의 그룹 파일 값 NULL으로 세팅 -->	
+	<update id="initFileBoard" parameterClass="int">
+		UPDATE  CU_STATISITICS 
+				SET ATTACH_UPFILE_GID = NULL
+				WHERE ATTACH_UPFILE_GID = #upfileGid#
+				 	  AND NOT EXISTS
+				 	  		(SELECT * 
+			    			FROM CU_SVC_ATTFILEUPLOAD 
+			    			WHERE UPFILE_GID = ATTACH_UPFILE_GID
+			    				  AND UPFILE_GID = #upfileGid#) 
+	</update>	
+	
+	<!-- 파일이 모두 삭제되었으면 부모테이블의 그룹 파일 값 NULL으로 세팅 -->	
+	<update id="upGatherStateN" parameterClass="long">
+		UPDATE CU_STATISITICS CS
+	   	SET CS.GATHER_STATE	= 'N'
+	   	WHERE CS.STT_ID = #sttID# 
+	</update>	
+	
+	
+	<!-- 검색 조건  년도 리스트 -->
+	<select id="seleStatisticsctYearList" resultClass="hashMap" >
+		SELECT 2017 as STT_YEAR
+          FROM dual
+          union all
+        SELECT 2016
+          FROM dual 
+          union all
+        SELECT 2015
+          FROM dual
+          union all
+        SELECT 2014
+          FROM dual
+          union all
+        SELECT 2013
+          FROM dual
+          union all
+        SELECT 2012
+          FROM dual
+	</select>	
+	
+	<!--  대학교 현황 -->	
+	<select id="seleStatisticsctList_univ" resultClass="hashMap"  parameterClass="map">
+     SELECT *
+       FROM (     
+       <!--  대학교 별 통계 -->	  
+        SELECT C.ID, 
+        	   C.STT_UNIV_ID, 
+        	   NVL(to_char(C.STUDENT_IN_CNT,'9,999,999'), '-') AS STUDENT_IN_CNT, 
+   			   NVL(to_char(C.FORMATION_CNT,'9,999,999'), '-') AS FORMATION_CNT, 
+   			   NVL(UI.PRINCIPAL, '-') AS PRINCIPAL, 
+   			   CASE WHEN INSTR (UI.SUP_OPEN, '.') > 0 THEN SUBSTR (UI.SUP_OPEN, 1, INSTR (UI.SUP_OPEN, '.') - 1) ELSE UI.SUP_OPEN END SUP_OPEN,
+   			   NVL(UI.UNIV_NAME, '-') AS UNIV_NAME,
+   			   NVL(UI.INST_MAINAGENT, '-') AS INST_MAINAGENT,
+   			   NVL(UI.CHARIMAN, '-') AS CHARIMAN,
+   			   NVL(UI.SAME_CORP, '-') AS SAME_CORP,   			   
+   			   CASE WHEN UI.UNIVERSITY_ID = '19' AND UI.GUBUN_ID != '0' 
+   			   		THEN 61 
+   			   		WHEN UI.UNIVERSITY_ID ='20' AND UI.GUBUN_ID != '0' 
+   			   		THEN 62 
+   			   		ELSE UI.GUBUN_ID 
+   			   	END GUBUN_ID,
+   			   (
+   			   	SELECT CASE WHEN UI.UNIVERSITY_ID = '19' AND UI.GUBUN_ID != '0' 
+		   			   		THEN 1
+		   			   		WHEN UI.UNIVERSITY_ID ='20' AND UI.GUBUN_ID != '0' 
+		   			   		THEN 2 
+		   			   		ELSE COUNT(STT_UNIV_ID)
+		   			   	END   			   	
+   			   	  FROM CU_STT_UNIVERSITY 
+                      left join CU_UNIV_INFO ON CU_STT_UNIVERSITY.UNIVERSITY_ID = CU_UNIV_INFO.UNIVERSITY_ID                       							
+   			   	 WHERE GUBUN_ID = UI.GUBUN_ID and SU.STT_ID = CU_STT_UNIVERSITY.STT_ID
+               ) UNIVERSITY_CNT,
+               SU.UNIVERSITY_ID
+   			     			    			   
+		  FROM CU_STATISITICS S
+		  	   left join CU_STT_UNIVERSITY SU on S.STT_ID = SU.STT_ID and S.GATHER_STATE = 'Y' and S.USE_YN = 'Y'
+		   	   left join CU_STT_UNIV_DATA C on SU.STT_UNIV_ID = C.STT_UNIV_ID	
+		   	   left join CU_UNIV_INFO UI ON UI.UNIVERSITY_ID = SU.UNIVERSITY_ID	
+		 WHERE S.GATHER_STATE = 'Y' and S.USE_YN = 'Y'
+			<isNotEmpty property="sttYear" prepend="AND">		    	
+		    	S.STT_YEAR = #sttYear#
+		    </isNotEmpty>		    
+				AND S.STT_MONTH = (SELECT MAX (stt_month) FROM CU_STATISITICS WHERE stt_year = #sttYear# AND GATHER_STATE = 'Y')	
+				AND UI.GUBUN_ID IN ($gubunID$)
+	UNION
+		<!--  대학교 구분별 합계 -->	
+	   SELECT  0 AS ID, 
+        	   0 AS STT_UNIV_ID, 
+        	   to_char(SUM(C.STUDENT_IN_CNT),'9,999,999') AS STUDENT_IN_CNT, 
+   			   to_char(SUM(C.FORMATION_CNT),'9,999,999') AS FORMATION_CNT, 
+   			   '' AS PRINCIPAL, 
+   			   '' AS SUP_OPEN,
+   			   '' AS UNIV_NAME,
+   			   '' AS INST_MAINAGENT,
+   			   '' AS CHARIMAN,
+   			   '' AS SAME_CORP,
+   			   MAX(UI.GUBUN_ID) + 1  AS GUBUN_ID,
+	   		   COUNT(SU.UNIVERSITY_ID) AS UNIVERSITY_CNT,
+	   		   MAX(SU.UNIVERSITY_ID) + 1 AS UNIVERSITY_ID
+	     FROM CU_STATISITICS S
+		  	   left join CU_STT_UNIVERSITY SU on S.STT_ID = SU.STT_ID and S.GATHER_STATE = 'Y' and S.USE_YN = 'Y'
+		   	   left join CU_STT_UNIV_DATA C on SU.STT_UNIV_ID = C.STT_UNIV_ID	
+		   	   left join CU_UNIV_INFO UI ON UI.UNIVERSITY_ID = SU.UNIVERSITY_ID	
+	    WHERE S.GATHER_STATE = 'Y' and S.USE_YN = 'Y'
+			<isNotEmpty property="sttYear" prepend="AND">		    	
+		    	S.STT_YEAR = #sttYear#
+		    </isNotEmpty>		    
+				AND S.STT_MONTH = (SELECT MAX (stt_month) FROM CU_STATISITICS WHERE stt_year = #sttYear# AND GATHER_STATE = 'Y')	
+				AND UI.GUBUN_ID IN ($gubunID$)
+	UNION
+		<!--  대학교 총 합계 -->	
+	   SELECT  0 AS ID, 
+        	   0 AS STT_UNIV_ID, 
+        	   to_char(SUM(C.STUDENT_IN_CNT),'9,999,999') AS STUDENT_IN_CNT, 
+   			   to_char(SUM(C.FORMATION_CNT),'9,999,999') AS FORMATION_CNT, 
+   			   '' AS PRINCIPAL, 
+   			   '' AS SUP_OPEN,
+   			   '' AS UNIV_NAME,
+   			   '' AS INST_MAINAGENT,
+   			   '' AS CHARIMAN,
+   			   '' AS SAME_CORP,
+   			   MAX(UI.GUBUN_ID) + 2  AS GUBUN_ID,
+	   		   COUNT(SU.UNIVERSITY_ID) AS UNIVERSITY_CNT,
+	   		   MAX(SU.UNIVERSITY_ID) + 2 AS UNIVERSITY_ID
+	     FROM CU_STATISITICS S
+		  	   left join CU_STT_UNIVERSITY SU on S.STT_ID = SU.STT_ID and S.GATHER_STATE = 'Y' and S.USE_YN = 'Y'
+		   	   left join CU_STT_UNIV_DATA C on SU.STT_UNIV_ID = C.STT_UNIV_ID	
+		   	   left join CU_UNIV_INFO UI ON UI.UNIVERSITY_ID = SU.UNIVERSITY_ID	
+	    WHERE S.GATHER_STATE = 'Y' and S.USE_YN = 'Y'
+			<isNotEmpty property="sttYear" prepend="AND">		    	
+		    	S.STT_YEAR = #sttYear#
+		    </isNotEmpty>		    
+		    	AND S.STT_MONTH = (SELECT MAX (stt_month) FROM CU_STATISITICS WHERE stt_year = #sttYear# AND GATHER_STATE = 'Y')		   
+		)    	
+	ORDER BY GUBUN_ID ASC, 	UNIV_NAME,UNIVERSITY_ID ASC
+	</select>
+	
+	<!--  입학정원 현황 -->	
+	<select id="seleStatisticsctList_entrancePro" resultClass="hashMap"  parameterClass="map">
+     SELECT *
+      FROM (
+        SELECT C.ID, 
+        	   C.STT_UNIV_ID, 
+        	   to_char(C.STUDENT_IN_CNT,'9,999,999,999') as STUDENT_IN_CNT, 
+   			   C.CLASS, 
+   			   to_char(C.STUDENT_REGISTER_CNT,'9,999,999,999') as  STUDENT_REGISTER_CNT,
+   			   0 AS YEAR_MAX,
+   			   0 AS YEAR_MIN,
+   			   SU.UNIVERSITY_ID,
+   			   UI.UNIV_NAME,
+   			   'N' AS IS_TOTAL
+		  FROM CU_STATISITICS S
+		  	   left join CU_STT_UNIVERSITY SU on S.STT_ID = SU.STT_ID and S.GATHER_STATE = 'Y' and S.USE_YN = 'Y'
+		   	   left join CU_STT_REGISTER_STDT C on SU.STT_UNIV_ID = C.STT_UNIV_ID	
+		   	   left join CU_UNIV_INFO UI ON UI.UNIVERSITY_ID = SU.UNIVERSITY_ID	
+		 WHERE S.GATHER_STATE = 'Y' and S.USE_YN = 'Y'
+			<isNotEmpty property="sttYear" prepend="AND">		    	
+		    	S.STT_YEAR = #sttYear#
+		    </isNotEmpty>		    
+		    	AND S.STT_MONTH = (SELECT MAX (stt_month) FROM CU_STATISITICS WHERE stt_year = #sttYear# AND GATHER_STATE = 'Y')	   
+		    <isNotEmpty property="sttYear" prepend="AND">		    	
+		    	C.CLASS <![CDATA[>]]>  #sttYear# - 5
+		    	AND C.CLASS <![CDATA[<=]]>  #sttYear#
+		    </isNotEmpty>	
+	UNION
+		<!-- 학년도 -->
+		SELECT 0 AS ID, 
+        	   0 AS STT_UNIV_ID, 
+        	   '0' AS STUDENT_IN_CNT, 
+   			   0 AS CLASS, 
+   			   '0' AS STUDENT_REGISTER_CNT,
+   			   MAX(C.CLASS) AS YEAR_MAX,
+   			   MIN(C.CLASS) AS YEAR_MIN,
+   			   0 AS UNIVERSITY_ID,
+   			   'a' AS UNIV_NAME,
+   			   'N' AS IS_TOTAL
+          FROM CU_STATISITICS S
+		  	   left join CU_STT_UNIVERSITY SU on S.STT_ID = SU.STT_ID and S.GATHER_STATE = 'Y' and S.USE_YN = 'Y'
+		   	   left join CU_STT_REGISTER_STDT C on SU.STT_UNIV_ID = C.STT_UNIV_ID	
+		   	   left join CU_UNIV_INFO UI ON UI.UNIVERSITY_ID = SU.UNIVERSITY_ID	
+          WHERE S.GATHER_STATE = 'Y' and S.USE_YN = 'Y'
+          	<isNotEmpty property="sttYear" prepend="AND">		    	
+		    	S.STT_YEAR = #sttYear#
+		    </isNotEmpty>		    
+		    	AND S.STT_MONTH = (SELECT MAX (stt_month) FROM CU_STATISITICS WHERE stt_year = #sttYear# AND GATHER_STATE = 'Y')	
+		     <isNotEmpty property="sttYear" prepend="AND">		    	
+		    	C.CLASS <![CDATA[>]]>  #sttYear# - 5
+		    	AND C.CLASS <![CDATA[<=]]>  #sttYear#
+		    </isNotEmpty>	
+          GROUP BY S.STT_ID	
+     UNION
+     <!-- 합계 -->
+		SELECT 0 AS ID, 
+        	   0 AS STT_UNIV_ID, 
+        	   to_char(SUM(C.STUDENT_IN_CNT),'9,999,999,999')  AS STUDENT_IN_CNT, 
+   			   C.CLASS AS CLASS, 
+   			   to_char(SUM(C.STUDENT_REGISTER_CNT),'9,999,999,999')  AS STUDENT_REGISTER_CNT,
+   			   MAX(C.CLASS) AS YEAR_MAX,
+   			   MIN(C.CLASS) AS YEAR_MIN,
+   			   999999999999999 AS UNIVERSITY_ID,
+   			   '' AS UNIV_NAME,
+   			   'Y' AS IS_TOTAL
+          FROM CU_STATISITICS S
+		  	   left join CU_STT_UNIVERSITY SU on S.STT_ID = SU.STT_ID and S.GATHER_STATE = 'Y' and S.USE_YN = 'Y'
+		   	   left join CU_STT_REGISTER_STDT C on SU.STT_UNIV_ID = C.STT_UNIV_ID	
+		   	   left join CU_UNIV_INFO UI ON UI.UNIVERSITY_ID = SU.UNIVERSITY_ID	
+          WHERE  ID is not null AND S.GATHER_STATE = 'Y' and S.USE_YN = 'Y'
+          	<isNotEmpty property="sttYear" prepend="AND">		    	
+		    	S.STT_YEAR = #sttYear#
+		    </isNotEmpty>		    
+		    	AND S.STT_MONTH = (SELECT MAX (stt_month) FROM CU_STATISITICS WHERE stt_year = #sttYear# AND GATHER_STATE = 'Y')	
+		     <isNotEmpty property="sttYear" prepend="AND">		    	
+		    	C.CLASS <![CDATA[>]]>  #sttYear# - 5
+		    	AND C.CLASS <![CDATA[<=]]>  #sttYear#
+		    </isNotEmpty>	
+          GROUP BY S.STT_ID, C.CLASS	
+          )
+          where ID is not null
+       ORDER BY UNIV_NAME,UNIVERSITY_ID ASC, CLASS ASC
+	</select>
+	
+	<!--  입학정원 등록률 비율-->	
+	<select id="seleStatisticsctList_entrance" resultClass="hashMap"  parameterClass="map">
+     SELECT *
+      FROM (
+        
+     <!-- 합계 -->
+		SELECT 0 AS ID, 
+        	   0 AS STT_UNIV_ID, 
+        	   to_char(SUM(C.STUDENT_IN_CNT),'9,999,999,999')  AS STUDENT_IN_CNT, 
+        	   SUM(C.STUDENT_IN_CNT)  AS STUDENT_IN_CNT_N, 
+   			   C.CLASS AS CLASS, 
+   			   to_char(SUM(C.STUDENT_REGISTER_CNT),'9,999,999,999')  AS STUDENT_REGISTER_CNT,
+   			   SUM(C.STUDENT_REGISTER_CNT)  AS STUDENT_REGISTER_CNT_N,
+   			   MAX(C.CLASS) AS YEAR_MAX,
+   			   MIN(C.CLASS) AS YEAR_MIN,
+   			   999999999999999 AS UNIVERSITY_ID,
+   			   '' AS UNIV_NAME,
+   			   'Y' AS IS_TOTAL,
+   			   case when SUM(C.STUDENT_IN_CNT) = 0 OR SUM(C.STUDENT_IN_CNT) is null then '0' else to_char(SUM(C.STUDENT_REGISTER_CNT)/SUM(C.STUDENT_IN_CNT)*100,'990.99') end  AS ENTRANCE
+          FROM CU_STATISITICS S
+		  	   left join CU_STT_UNIVERSITY SU on S.STT_ID = SU.STT_ID and S.GATHER_STATE = 'Y' and S.USE_YN = 'Y'
+		   	   left join CU_STT_REGISTER_STDT C on SU.STT_UNIV_ID = C.STT_UNIV_ID	
+		   	   left join CU_UNIV_INFO UI ON UI.UNIVERSITY_ID = SU.UNIVERSITY_ID	
+          WHERE  ID is not null AND S.GATHER_STATE = 'Y' and S.USE_YN = 'Y'
+          	<isNotEmpty property="sttYear" prepend="AND">		    	
+		    	S.STT_YEAR = #sttYear#
+		    </isNotEmpty>		    
+		    	AND S.STT_MONTH = (SELECT MAX (stt_month) FROM CU_STATISITICS WHERE stt_year = #sttYear# AND GATHER_STATE = 'Y')
+	    	<isNotEmpty property="sttYear" prepend="AND">		    	
+	    		C.CLASS <![CDATA[>]]>  #sttYear# - 5
+	    		AND C.CLASS <![CDATA[<=]]>  #sttYear#
+	    	</isNotEmpty>	
+          GROUP BY S.STT_ID, C.CLASS	
+          )
+          where ID is not null
+       ORDER BY UNIV_NAME,UNIVERSITY_ID ASC, CLASS DESC
+	</select>
+	
+	
+	<!--  성별, 연령별 / 배진국 / 2012-11-01 -->	
+	<select id="seleStatisticsctList_age" resultClass="hashMap"  parameterClass="map">
+        SELECT 
+        	   case when SUM(C.AGE_TOTAL) = 0 OR SUM(C.AGE_TOTAL) is null then '0' else to_char(SUM(C.AGE_10)/SUM(C.AGE_TOTAL)*100,'990.99') end   AS age10, 
+        	   case when SUM(C.AGE_TOTAL) = 0 OR SUM(C.AGE_TOTAL) is null then '0' else to_char(SUM(C.AGE_20_INITIAL)/SUM(C.AGE_TOTAL)*100,'990.99') end   AS age20Initial, 
+        	   case when SUM(C.AGE_TOTAL) = 0 OR SUM(C.AGE_TOTAL) is null then '0' else to_char(SUM(C.AGE_20_AFTER)/SUM(C.AGE_TOTAL)*100,'990.99') end   AS age20After, 
+        	   case when SUM(C.AGE_TOTAL) = 0 OR SUM(C.AGE_TOTAL) is null then '0' else to_char(SUM(C.AGE_30)/SUM(C.AGE_TOTAL)*100,'990.99') end   AS age30, 
+        	   case when SUM(C.AGE_TOTAL) = 0 OR SUM(C.AGE_TOTAL) is null then '0' else to_char(SUM(C.AGE_40)/SUM(C.AGE_TOTAL)*100,'990.99') end   AS age40, 
+        	   case when SUM(C.AGE_TOTAL) = 0 OR SUM(C.AGE_TOTAL) is null then '0' else to_char(SUM(C.AGE_50)/SUM(C.AGE_TOTAL)*100,'990.99') end   AS age50, 
+        	   case when SUM(C.AGE_TOTAL) = 0 OR SUM(C.AGE_TOTAL) is null then '0' else to_char(SUM(C.AGE_60)/SUM(C.AGE_TOTAL)*100,'990.99')end   AS age60,
+			   case when SUM(C.AGE_TOTAL) is null then '0' else SUM(C.AGE_TOTAL) || '' end AS ageTotal, 
+			   case when SUM(C.AGE_TOTAL) = 0 OR SUM(C.AGE_TOTAL) is null then '0' else to_char(SUM(C.SEX_G)/SUM(C.AGE_TOTAL),'990.99') end   AS sexGp,  
+			   case when SUM(C.AGE_TOTAL) = 0 OR SUM(C.AGE_TOTAL) is null then '0' else to_char(SUM(C.SEX_M)/SUM(C.AGE_TOTAL),'990.99') end   AS sexMp,  
+			   case when SUM(C.SEX_G) is null then '0' else to_char(SUM(C.SEX_G)*100,'990.99') end AS sexG, 
+			   case when SUM(C.SEX_M) is null then '0' else to_char(SUM(C.SEX_M)*100,'990.99') end  AS sexM,
+			   S.STT_YEAR AS sttYear
+		  FROM CU_STATISITICS S
+		  	   left join CU_STT_UNIVERSITY SU on S.STT_ID = SU.STT_ID and S.GATHER_STATE = 'Y' and S.USE_YN = 'Y'
+		   	   left join CU_STT_AGE C on SU.STT_UNIV_ID = C.STT_UNIV_ID	
+		   	   left join CU_UNIV_INFO UI ON UI.UNIVERSITY_ID = SU.UNIVERSITY_ID		   	   	  	                 
+		 WHERE S.GATHER_STATE = 'Y' and S.USE_YN = 'Y'
+			<isNotEmpty property="sttYear" prepend="AND">		    	
+		    	S.STT_YEAR <![CDATA[>]]> #sttYear# - 3 
+		    </isNotEmpty>		    
+			<isNotEmpty property="sttYear" prepend="AND">		    	
+				S.STT_YEAR <![CDATA[<=]]> #sttYear#
+		    </isNotEmpty>		    
+		    	AND S.STT_MONTH = (SELECT MAX (stt_month) FROM CU_STATISITICS WHERE stt_year = #sttYear# AND GATHER_STATE = 'Y')
+		GROUP BY S.STT_YEAR
+		ORDER BY S.STT_YEAR DESC		
+	</select>	
+	
+	<!--  성별/ 배진국 / 2012-11-01 -->	
+	<select id="seleStatisticsctList_sex" resultClass="hashMap"  parameterClass="map">
+        SELECT 
+			   case when SUM(C.AGE_TOTAL) is null then '0' else to_char(SUM(C.AGE_TOTAL),'9,999,999,999') end AS ageTotal, 
+			   case when SUM(C.AGE_TOTAL) = 0 OR SUM(C.AGE_TOTAL) is null then '0' else to_char(SUM(C.SEX_G)/SUM(C.AGE_TOTAL)*100,'990.99') end   AS sexGp,  
+			   case when SUM(C.AGE_TOTAL) = 0 OR SUM(C.AGE_TOTAL) is null then '0' else to_char(SUM(C.SEX_M)/SUM(C.AGE_TOTAL)*100,'990.99') end   AS sexMp,  
+			   case when SUM(C.SEX_G) is null then '0' else to_char(SUM(C.SEX_G),'9,999,999,999') end AS sexG, 
+			   case when SUM(C.SEX_M) is null then '0' else to_char(SUM(C.SEX_M),'9,999,999,999') end  AS sexM,
+			   S.STT_YEAR AS sttYear
+		  FROM CU_STATISITICS S
+		  	   left join CU_STT_UNIVERSITY SU on S.STT_ID = SU.STT_ID and S.GATHER_STATE = 'Y' and S.USE_YN = 'Y'
+		   	   left join CU_STT_AGE C on SU.STT_UNIV_ID = C.STT_UNIV_ID	
+		   	   left join CU_UNIV_INFO UI ON UI.UNIVERSITY_ID = SU.UNIVERSITY_ID		   	   	  	                 
+		 WHERE S.GATHER_STATE = 'Y' and S.USE_YN = 'Y'
+			<isNotEmpty property="sttYear" prepend="AND">		    	
+		    	S.STT_YEAR <![CDATA[>]]> #sttYear# - 3 
+		    </isNotEmpty>		    
+			<isNotEmpty property="sttYear" prepend="AND">		    	
+				S.STT_YEAR <![CDATA[<=]]> #sttYear#
+		    </isNotEmpty>		    
+				AND S.STT_MONTH = (SELECT MAX (stt_month) FROM CU_STATISITICS WHERE stt_year = #sttYear# AND GATHER_STATE = 'Y')
+		GROUP BY S.STT_YEAR
+		ORDER BY S.STT_YEAR DESC		
+	</select>	
+	
+	<!--  직업별  등록률 비율-->	
+	<select id="seleStatisticsctList_job" resultClass="hashMap"  parameterClass="map">
+	   SELECT case when SUM(C.TOTAL) is null then '0' else to_char(SUM(C.TOTAL),'9,999,999,999') end  AS TOTAL, 
+			  case when SUM(C.TOTAL) = 0 OR SUM(C.TOTAL) is null then '0' else to_char(SUM(C.ADMIN_CNT)/SUM(C.TOTAL)*100,'990.99') end  AS ADMIN_CNT, 
+			  case when SUM(C.TOTAL) = 0 OR SUM(C.TOTAL) is null then '0' else to_char(SUM(C.EXPERT_CNT)/SUM(C.TOTAL)*100,'990.99') end  AS EXPERT_CNT, 
+			  case when SUM(C.TOTAL) = 0 OR SUM(C.TOTAL) is null then '0' else to_char(SUM(C.AFFAIRS_CNT)/SUM(C.TOTAL)*100,'990.99') end  AS AFFAIRS_CNT, 
+			  case when SUM(C.TOTAL) = 0 OR SUM(C.TOTAL) is null then '0' else to_char(SUM(C.SERVE_CNT)/SUM(C.TOTAL)*100,'990.99') end  AS SERVE_CNT, 
+			  case when SUM(C.TOTAL) = 0 OR SUM(C.TOTAL) is null then '0' else to_char(SUM(C.MARKET_CNT)/SUM(C.TOTAL)*100,'990.99') end  AS MARKET_CNT, 
+			  case when SUM(C.TOTAL) = 0 OR SUM(C.TOTAL) is null then '0' else to_char(SUM(C.AGRICULTURE_CNT)/SUM(C.TOTAL)*100,'990.99') end  AS AGRICULTURE_CNT, 
+			  case when SUM(C.TOTAL) = 0 OR SUM(C.TOTAL) is null then '0' else to_char(SUM(C.TECHNICIAN_CNT)/SUM(C.TOTAL)*100,'990.99') end  AS TECHNICIAN_CNT, 
+			  case when SUM(C.TOTAL) = 0 OR SUM(C.TOTAL) is null then '0' else to_char(SUM(C.MACHINERY_CNT)/SUM(C.TOTAL)*100,'990.99') end  AS MACHINERY_CNT, 
+			  case when SUM(C.TOTAL) = 0 OR SUM(C.TOTAL) is null then '0' else to_char(SUM(C.LABOR_CNT)/SUM(C.TOTAL)*100,'990.99') end  AS LABOR_CNT, 
+			  case when SUM(C.TOTAL) = 0 OR SUM(C.TOTAL) is null then '0' else to_char(SUM(C.SOLDIER_CNT)/SUM(C.TOTAL)*100,'990.99') end  AS SOLDIER_CNT, 
+			  case when SUM(C.TOTAL) = 0 OR SUM(C.TOTAL) is null then '0' else to_char(SUM(C.UNEMPLOYED_CNT)/SUM(C.TOTAL)*100,'990.99') end  AS UNEMPLOYED_CNT, 
+		   	  S.STT_YEAR
+		FROM CU_STATISITICS S 		
+		  	   left join CU_STT_UNIVERSITY SU on S.STT_ID = SU.STT_ID and S.GATHER_STATE = 'Y' and S.USE_YN = 'Y'
+		   	   left join CU_STT_JOB C on SU.STT_UNIV_ID = C.STT_UNIV_ID	
+		   	   left join CU_UNIV_INFO UI ON UI.UNIVERSITY_ID = SU.UNIVERSITY_ID	
+		 WHERE S.GATHER_STATE = 'Y' and S.USE_YN = 'Y'
+			<isNotEmpty property="sttYear" prepend="AND">		    	
+		    	S.STT_YEAR <![CDATA[>]]> #sttYear# - 3 
+		    </isNotEmpty>		    
+			<isNotEmpty property="sttYear" prepend="AND">		    	
+				S.STT_YEAR <![CDATA[<=]]> #sttYear#
+		    </isNotEmpty>		    
+				AND S.STT_MONTH = (SELECT MAX (stt_month) FROM CU_STATISITICS WHERE stt_year = #sttYear# AND GATHER_STATE = 'Y')		   
+		GROUP BY S.STT_YEAR
+		ORDER BY S.STT_YEAR DESC	
+	</select>
+	
+	
+	<!-- 총 졸업생 -->	
+	<select id="seleStatisticsctList_graduate" resultClass="hashMap"  parameterClass="map">
+	WITH data1
+				AS (SELECT UNIV_NAME,
+						UI.UNIVERSITY_ID,
+		                <!-- REPLACE (GUBUN_ID, '52', '51') --> GUBUN_ID,
+		                GRADUATE_CNT,
+		                YEAR,
+		                ROW_NUMBER () OVER (PARTITION BY UNIV_NAME ORDER BY YEAR DESC) RN
+					FROM CU_UNIV_INFO UI,
+		                CU_STATISITICS S,
+		                CU_STT_UNIVERSITY SU,
+		                CU_STT_GRADUATE SG
+					WHERE     1 = 1
+		                AND UI.UNIVERSITY_ID = SU.UNIVERSITY_ID
+		                AND S.STT_ID = SU.STT_ID
+		                AND SG.STT_UNIV_ID = SU.STT_UNIV_ID
+		                AND SU.STT_ID = S.STT_ID
+		                AND S.STT_ID =
+                       (SELECT stt_id 
+                          FROM CU_STATISITICS
+                         WHERE     stt_year = #sttYear#
+                               AND stt_month = (SELECT MAX (stt_month)
+                                                  FROM CU_STATISITICS
+                                                 WHERE stt_year = #sttYear# AND GATHER_STATE = 'Y'))
+		                AND YEAR &lt; #sttYear#),
+			data2
+				AS (SELECT UNIV_NAME,
+						GUBUN_ID,
+						CASE WHEN GUBUN_ID = 52 THEN 51 ELSE GUBUN_ID END AS GUBUN_ID_TMP,
+						UNIVERSITY_ID,
+						(SELECT SUM (GRADUATE_CNT)
+							FROM data1
+		                    WHERE RN > 5 AND UNIV_NAME = A.UNIV_NAME) BEFORECNT,
+							MAX (CASE WHEN RN = 5 THEN GRADUATE_CNT END) GRADUATE_CNT1,
+							MAX (CASE WHEN RN = 4 THEN GRADUATE_CNT END) GRADUATE_CNT2,
+							MAX (CASE WHEN RN = 3 THEN GRADUATE_CNT END) GRADUATE_CNT3,
+							MAX (CASE WHEN RN = 2 THEN GRADUATE_CNT END) GRADUATE_CNT4,
+							MAX (CASE WHEN RN = 1 THEN GRADUATE_CNT END) GRADUATE_CNT5,
+							SUM (GRADUATE_CNT) SUMCNT
+						FROM data1 A
+						GROUP BY GUBUN_ID, UNIV_NAME, UNIVERSITY_ID),
+			data3
+				AS (SELECT CASE WHEN MAX(GUBUN_ID) = 51 OR MAX(GUBUN_ID) = 52 THEN 1 ELSE 2 END RN,
+						GROUPING_ID (UNIV_NAME, GUBUN_ID_TMP, UNIVERSITY_ID) GID,
+						NVL (UNIV_NAME, '합계') UNIV_NAME,
+						MAX(GUBUN_ID) AS GUBUN_ID,
+						UNIVERSITY_ID,
+						to_char(SUM (BEFORECNT), '9,999,999') AS BEFORECNT,
+						to_char(SUM (GRADUATE_CNT1),'9,999,999') AS GRADUATE_CNT1,
+						to_char(SUM (GRADUATE_CNT2),'9,999,999') AS GRADUATE_CNT2,
+						to_char(SUM (GRADUATE_CNT3),'9,999,999') AS GRADUATE_CNT3,
+						to_char(SUM (GRADUATE_CNT4),'9,999,999') AS GRADUATE_CNT4,
+						to_char(SUM (GRADUATE_CNT5),'9,999,999') AS GRADUATE_CNT5,
+						to_char(SUM (SUMCNT), '9,999,999') AS SUMCNT
+					FROM data2
+					GROUP BY CUBE (UNIV_NAME, GUBUN_ID_TMP, UNIVERSITY_ID))
+	SELECT SUM (CASE WHEN RN = 1 AND GID = 0 AND GUBUN_ID = 51 THEN 1 END) OVER () ROWSPAN1,
+           		SUM (CASE WHEN RN = 1 AND GID = 0 AND GUBUN_ID = 52 THEN 1 END) OVER () ROWSPAN2,
+            	SUM (CASE WHEN RN = 2 AND GID = 0 AND GUBUN_ID = 163 THEN 1 END) OVER () ROWSPAN3,
+				ROW_NUMBER () OVER (PARTITION BY GUBUN_ID, GID ORDER BY UNIV_NAME,UNIVERSITY_ID, GID) RN2,
+				A.*
+		FROM data3 A
+		WHERE GID IN ('0', '5', '7')
+		ORDER BY RN, GID,GUBUN_ID,UNIV_NAME,  UNIVERSITY_ID
+	</select>
+	
+	<!-- 진국이 쿼리 원본 -->
+<!--
+	SELECT num, year, count,
+		   STT_UNIV_ID,  
+		   GUBUN_ID,
+		   UNIVERSITY_ID,
+		   UNIV_NAME,
+		   case when GRADUATE_CNT is null then '0' else GRADUATE_CNT end  AS GRADUATE_CNT,
+	       GRADUATE_CNT_N,
+		   YEAR AS YEAR1,
+		   STT_ID,
+		   case when FORMATION_CNT is null then '0' else GRADUATE_CNT end  AS FORMATION_CNT,
+		   STT_UNIV_ID1,
+		   TOTAL
+	  FROM 
+  			( SELECT *
+	  		  FROM 	
+##학년도 개수를 5개로 제한
+	  		  	( SELECT *
+ 					FROM (SELECT ROWNUM num, year, count
+ 							FROM
+##학년도 테이불(학년도, 보여줄 년도 개수, 번호)
+				  				( SELECT   DISTINCT C.YEAR,
+							  			   (select case when count(*) > 6 then 5 else count(*) end 
+								  		      from (
+										  		SELECT DISTINCT C.YEAR
+												  FROM CU_STATISITICS S
+													   LEFT JOIN CU_STT_UNIVERSITY SU 
+													   			 ON S.STT_ID = SU.STT_ID and S.GATHER_STATE = 'Y' and S.USE_YN = 'Y'
+													   LEFT JOIN CU_STT_GRADUATE C on SU.STT_UNIV_ID = C.STT_UNIV_ID
+													   LEFT JOIN CU_UNIV_INFO UI ON UI.UNIVERSITY_ID = SU.UNIVERSITY_ID
+												 WHERE C.ID IS NOT NULL AND S.GATHER_STATE = 'Y' and S.USE_YN = 'Y'
+												<isNotEmpty property="sttYear" prepend="AND">		    	
+											    	S.STT_YEAR = #sttYear#
+											    </isNotEmpty>		    
+											    <isNotEmpty property="sttMonth" prepend="AND">
+											   	 	S.STT_MONTH = #sttMonth#
+											    </isNotEmpty>
+									    		)
+									      	) count  		 	
+								  FROM 	CU_STATISITICS S
+									   	LEFT JOIN CU_STT_UNIVERSITY SU 
+									   			 ON S.STT_ID = SU.STT_ID and S.GATHER_STATE = 'Y' and S.USE_YN = 'Y'
+									  	LEFT JOIN CU_STT_GRADUATE C on SU.STT_UNIV_ID = C.STT_UNIV_ID
+									   	LEFT JOIN CU_UNIV_INFO UI ON UI.UNIVERSITY_ID = SU.UNIVERSITY_ID
+								 WHERE 	C.ID IS NOT NULL AND S.GATHER_STATE = 'Y' and S.USE_YN = 'Y'
+										<isNotEmpty property="sttYear" prepend="AND">		    	
+									    	S.STT_YEAR = #sttYear#
+									    </isNotEmpty>		    
+									    <isNotEmpty property="sttMonth" prepend="AND">
+									   	 	S.STT_MONTH = #sttMonth#
+									    </isNotEmpty>	
+							 ORDER BY   C.YEAR desc
+								)
+				    	) ccc
+				   where ccc.num <![CDATA[<]]> 6				   
+				 ),
+		
+##대학교 정보
+			  ( SELECT DISTINCT SU.STT_UNIV_ID ,  
+			    	   UI.GUBUN_ID,
+			    	   SU.UNIVERSITY_ID,
+			    	   UI.UNIV_NAME
+				  FROM CU_STATISITICS S
+					   LEFT JOIN CU_STT_UNIVERSITY SU on S.STT_ID = SU.STT_ID and S.GATHER_STATE =  'Y'
+					   LEFT JOIN CU_STT_GRADUATE C on SU.STT_UNIV_ID = C.STT_UNIV_ID
+					   LEFT JOIN CU_UNIV_INFO UI ON UI.UNIVERSITY_ID = SU.UNIVERSITY_ID
+				 WHERE C.ID IS NOT NULL AND S.GATHER_STATE = 'Y' and S.USE_YN = 'Y'
+				 		 AND ui.gubun_id IN (51, 52, 163)
+				<isNotEmpty property="sttYear" prepend="AND">		    	
+			    		S.STT_YEAR = #sttYear#
+			    </isNotEmpty>		    
+			    <isNotEmpty property="sttMonth" prepend="AND">
+			   	 		S.STT_MONTH = #sttMonth#
+			    </isNotEmpty>
+			   UNION
+##학년도 TITLE
+			    SELECT -1 , 0, 0, ''
+			      FROM DUAL
+			   UNION
+##학사 합계 행
+			    SELECT 0 ,9999999999, 0, ''
+			      FROM DUAL
+			   UNION
+##전문학사 합계 행
+			    SELECT -2 ,52, 9999999999, ''
+			      FROM DUAL
+			   UNION
+##총 합계 행
+			    SELECT -3 ,163, 9999999999, ''
+			      FROM DUAL
+			  ) 
+			)LT 
+##학년도 별 대학교 매칭 테이불
+			
+	LEFT JOIN 
+	
+			(
+##대학교 별 학년도 학생수
+			SELECT *
+			FROM 
+				(
+				SELECT  case when C.GRADUATE_CNT is null then '0' else to_char(C.GRADUATE_CNT,'9,999,999,999') end  AS GRADUATE_CNT,
+				        C.GRADUATE_CNT AS GRADUATE_CNT_N,
+						C.YEAR AS YEAR1,
+		   			    S.STT_ID,
+		   			    case when UD.FORMATION_CNT is null then '0' else to_char(UD.FORMATION_CNT,'9,999,999,999') end  AS FORMATION_CNT,
+		   			    SU.STT_UNIV_ID AS STT_UNIV_ID1,
+		   			    CCC.TOTAL
+				  FROM  CU_STATISITICS S
+						LEFT JOIN CU_STT_UNIVERSITY SU on S.STT_ID = SU.STT_ID and S.GATHER_STATE = 'Y' and S.USE_YN = 'Y'
+						LEFT JOIN CU_STT_GRADUATE C on SU.STT_UNIV_ID = C.STT_UNIV_ID
+						LEFT JOIN CU_UNIV_INFO UI ON UI.UNIVERSITY_ID = SU.UNIVERSITY_ID
+						LEFT JOIN CU_STT_UNIV_DATA UD ON SU.STT_UNIV_ID = UD.STT_UNIV_ID
+						LEFT JOIN (
+									SELECT case when SUM(CC.GRADUATE_CNT) is null then '0' else to_char(SUM(CC.GRADUATE_CNT),'9,999,999,999') end TOTAL,
+										   CC.STT_UNIV_ID
+									  FROM CU_STT_GRADUATE CC
+								  GROUP BY CC.STT_UNIV_ID
+									) CCC ON CCC.STT_UNIV_ID = C.STT_UNIV_ID
+				WHERE  C.ID IS NOT NULL AND S.GATHER_STATE = 'Y' and S.USE_YN = 'Y'
+						AND UI.GUBUN_ID IN (51, 52, 163)
+						<isNotEmpty property="sttYear" prepend="AND">		    	
+					    	S.STT_YEAR = #sttYear#
+					    </isNotEmpty>		    
+					    <isNotEmpty property="sttMonth" prepend="AND">
+					   	 	S.STT_MONTH = #sttMonth#
+					    </isNotEmpty>		   
+			 UNION
+##총 합계 정보
+			 	SELECT  case when SUM(C.GRADUATE_CNT) is null then '0' else to_char(SUM(C.GRADUATE_CNT),'9,999,999,999') end  AS GRADUATE_CNT,
+			 			SUM(C.GRADUATE_CNT) AS GRADUATE_CNT_N,
+						C.YEAR AS YEAR1,
+		   			    0 AS STT_ID,
+		   			    case when SUM(UD.FORMATION_CNT) is null then '0' else to_char(SUM(C.GRADUATE_CNT),'9,999,999,999') end  AS FORMATION_CNT,
+		   			    0 AS STT_UNIV_ID1,
+		   			    (
+						SELECT DISTINCT case when SUM(CC.GRADUATE_CNT) is null then '0' else to_char(SUM(CC.GRADUATE_CNT),'9,999,999,999') end TOTAL
+                          FROM   CU_STATISITICS SC
+                                 LEFT JOIN CU_STT_UNIVERSITY SUC on SC.STT_ID = SUC.STT_ID and SC.GATHER_STATE = 'Y' and SC.USE_YN = 'Y'
+                                 LEFT JOIN CU_STT_GRADUATE CC on SUC.STT_UNIV_ID = CC.STT_UNIV_ID
+                                 LEFT JOIN CU_UNIV_INFO UIC ON UIC.UNIVERSITY_ID = SUC.UNIVERSITY_ID
+                                 LEFT JOIN CU_STT_UNIV_DATA UDC ON SUC.STT_UNIV_ID = UDC.STT_UNIV_ID
+					  	 WHERE  CC.ID IS NOT NULL AND SC.GATHER_STATE = 'Y' and SC.USE_YN = 'Y'
+							    AND UIC.GUBUN_ID IN (51, 52, 163)
+							    <isNotEmpty property="sttYear" prepend="AND">		    	
+							    	SC.STT_YEAR = #sttYear#
+							    </isNotEmpty>		    
+							    <isNotEmpty property="sttMonth" prepend="AND">
+							   	 	SC.STT_MONTH = #sttMonth#
+							    </isNotEmpty>		
+                                 ) TOTAL
+				  FROM  CU_STATISITICS S
+						LEFT JOIN CU_STT_UNIVERSITY SU on S.STT_ID = SU.STT_ID and S.GATHER_STATE = 'Y' and S.USE_YN = 'Y'
+						LEFT JOIN CU_STT_GRADUATE C on SU.STT_UNIV_ID = C.STT_UNIV_ID
+						LEFT JOIN CU_UNIV_INFO UI ON UI.UNIVERSITY_ID = SU.UNIVERSITY_ID
+						LEFT JOIN CU_STT_UNIV_DATA UD ON SU.STT_UNIV_ID = UD.STT_UNIV_ID
+				WHERE  C.ID IS NOT NULL AND S.GATHER_STATE = 'Y' and S.USE_YN = 'Y'
+					   AND UI.GUBUN_ID IN (51, 52, 163)
+						<isNotEmpty property="sttYear" prepend="AND">		    	
+					    	S.STT_YEAR = #sttYear#
+					    </isNotEmpty>		    
+					    <isNotEmpty property="sttMonth" prepend="AND">
+					   	 	S.STT_MONTH = #sttMonth#
+					    </isNotEmpty>		   
+			 	GROUP BY C.YEAR
+			 	
+			 UNION
+##학사 합계 정보
+			 	SELECT  case when SUM(C.GRADUATE_CNT) is null then '0' else to_char(SUM(C.GRADUATE_CNT),'9,999,999,999') end  AS GRADUATE_CNT,
+			 			SUM(C.GRADUATE_CNT) AS GRADUATE_CNT_N,
+						C.YEAR AS YEAR1,
+		   			    0 AS STT_ID,
+		   			    case when SUM(UD.FORMATION_CNT) is null then '0' else to_char(SUM(C.GRADUATE_CNT),'9,999,999,999') end  AS FORMATION_CNT,
+		   			    -2 AS STT_UNIV_ID1,
+		   			    (
+						SELECT DISTINCT case when SUM(CC.GRADUATE_CNT) is null then '0' else to_char(SUM(CC.GRADUATE_CNT),'9,999,999,999') end TOTAL
+                          FROM   CU_STATISITICS SC
+                                 LEFT JOIN CU_STT_UNIVERSITY SUC on SC.STT_ID = SUC.STT_ID and SC.GATHER_STATE = 'Y' and SC.USE_YN = 'Y'
+                                 LEFT JOIN CU_STT_GRADUATE CC on SUC.STT_UNIV_ID = CC.STT_UNIV_ID
+                                 LEFT JOIN CU_UNIV_INFO UIC ON UIC.UNIVERSITY_ID = SUC.UNIVERSITY_ID
+                                 LEFT JOIN CU_STT_UNIV_DATA UDC ON SUC.STT_UNIV_ID = UDC.STT_UNIV_ID
+					  	 WHERE  CC.ID IS NOT NULL AND SC.GATHER_STATE = 'Y' and SC.USE_YN = 'Y'
+							    AND UIC.GUBUN_ID IN (51, 52)
+							    <isNotEmpty property="sttYear" prepend="AND">		    	
+							    	SC.STT_YEAR = #sttYear#
+							    </isNotEmpty>		    
+							    <isNotEmpty property="sttMonth" prepend="AND">
+							   	 	SC.STT_MONTH = #sttMonth#
+							    </isNotEmpty>		
+                                 ) TOTAL
+				  FROM  CU_STATISITICS S
+						LEFT JOIN CU_STT_UNIVERSITY SU on S.STT_ID = SU.STT_ID and S.GATHER_STATE = 'Y' and S.USE_YN = 'Y'
+						LEFT JOIN CU_STT_GRADUATE C on SU.STT_UNIV_ID = C.STT_UNIV_ID
+						LEFT JOIN CU_UNIV_INFO UI ON UI.UNIVERSITY_ID = SU.UNIVERSITY_ID
+						LEFT JOIN CU_STT_UNIV_DATA UD ON SU.STT_UNIV_ID = UD.STT_UNIV_ID
+				WHERE  C.ID IS NOT NULL AND S.GATHER_STATE = 'Y' and S.USE_YN = 'Y'
+					   AND UI.GUBUN_ID IN (51, 52)
+						<isNotEmpty property="sttYear" prepend="AND">		    	
+					    	S.STT_YEAR = #sttYear#
+					    </isNotEmpty>		    
+					    <isNotEmpty property="sttMonth" prepend="AND">
+					   	 	S.STT_MONTH = #sttMonth#
+					    </isNotEmpty>		   
+			 	GROUP BY C.YEAR
+			 	
+			 UNION
+##전문학사 합계 정보
+			 	SELECT  case when SUM(C.GRADUATE_CNT) is null then '0' else to_char(SUM(C.GRADUATE_CNT),'9,999,999,999') end  AS GRADUATE_CNT,
+			 			SUM(C.GRADUATE_CNT) AS GRADUATE_CNT_N,
+						C.YEAR AS YEAR1,
+		   			    0 AS STT_ID,
+		   			    case when SUM(UD.FORMATION_CNT) is null then '0' else to_char(SUM(C.GRADUATE_CNT),'9,999,999,999') end  AS FORMATION_CNT,
+		   			    -3 AS STT_UNIV_ID1,
+		   			    (
+						SELECT DISTINCT case when SUM(CC.GRADUATE_CNT) is null then '0' else to_char(SUM(CC.GRADUATE_CNT),'9,999,999,999') end TOTAL
+                          FROM   CU_STATISITICS SC
+                                 LEFT JOIN CU_STT_UNIVERSITY SUC on SC.STT_ID = SUC.STT_ID and SC.GATHER_STATE = 'Y' and SC.USE_YN = 'Y'
+                                 LEFT JOIN CU_STT_GRADUATE CC on SUC.STT_UNIV_ID = CC.STT_UNIV_ID
+                                 LEFT JOIN CU_UNIV_INFO UIC ON UIC.UNIVERSITY_ID = SUC.UNIVERSITY_ID
+                                 LEFT JOIN CU_STT_UNIV_DATA UDC ON SUC.STT_UNIV_ID = UDC.STT_UNIV_ID
+					  	 WHERE  CC.ID IS NOT NULL AND SC.GATHER_STATE = 'Y' and SC.USE_YN = 'Y'
+							    AND UIC.GUBUN_ID IN (163)
+							    <isNotEmpty property="sttYear" prepend="AND">		    	
+							    	SC.STT_YEAR = #sttYear#
+							    </isNotEmpty>		    
+							    <isNotEmpty property="sttMonth" prepend="AND">
+							   	 	SC.STT_MONTH = #sttMonth#
+							    </isNotEmpty>		
+                           ) TOTAL
+				  FROM  CU_STATISITICS S
+						LEFT JOIN CU_STT_UNIVERSITY SU on S.STT_ID = SU.STT_ID and S.GATHER_STATE = 'Y' and S.USE_YN = 'Y'
+						LEFT JOIN CU_STT_GRADUATE C on SU.STT_UNIV_ID = C.STT_UNIV_ID
+						LEFT JOIN CU_UNIV_INFO UI ON UI.UNIVERSITY_ID = SU.UNIVERSITY_ID
+						LEFT JOIN CU_STT_UNIV_DATA UD ON SU.STT_UNIV_ID = UD.STT_UNIV_ID
+				WHERE  C.ID IS NOT NULL AND S.GATHER_STATE = 'Y' and S.USE_YN = 'Y'
+					   AND UI.GUBUN_ID IN (163)
+						<isNotEmpty property="sttYear" prepend="AND">		    	
+					    	S.STT_YEAR = #sttYear#
+					    </isNotEmpty>		    
+					    <isNotEmpty property="sttMonth" prepend="AND">
+					   	 	S.STT_MONTH = #sttMonth#
+					    </isNotEmpty>		   
+			 	GROUP BY C.YEAR
+			 	
+			 UNION
+##학년도 TITLE 행
+			 	SELECT  ''  AS GRADUATE_CNT,
+			 			0 AS GRADUATE_CNT_N,
+						0 AS YEAR1,
+		   			    0 AS STT_ID,
+		   			    '' AS FORMATION_CNT,
+		   			    -1 AS STT_UNIV_ID1,
+		   			    '0'
+				  FROM  DUAL
+			 	
+	 			) 
+	 		) DT	
+ 	ON LT.STT_UNIV_ID = DT.STT_UNIV_ID1 AND LT.YEAR = DT.YEAR1
+ 		
+ ORDER BY GUBUN_ID ASC, UNIVERSITY_ID ASC, YEAR ASC -->
+ 	<!-- 진국이 쿼리 원본 -->
+	
+	<!--  재학생현황(전임교원확표 통계표)-->	
+	<select id="seleStatisticsctList_student" resultClass="hashMap"  parameterClass="map">
+	 SELECT *
+	  FROM (	    
+	    SELECT C.ID, 
+	   		   case when C.STUDENT_IN_CNT is null then '0' else to_char(C.STUDENT_IN_CNT,'9,999,999,999') end  AS STUDENT_IN_CNT, 
+	   		   case when C.STUDENT_OUT_CNT is null then '0' else to_char(C.STUDENT_OUT_CNT,'9,999,999,999') end  AS STUDENT_OUT_CNT, 
+	   		   case when C.STUDENT_HOUR_CNT is null then '0' else to_char(C.STUDENT_HOUR_CNT,'9,999,999,999') end  AS STUDENT_HOUR_CNT, 
+	   		   case when UD.FORMATION_CNT is null then '0' else to_char(UD.FORMATION_CNT,'9,999,999,999') end  AS FORMATION_CNT, 
+	   		   case when  C.STUDENT_IN_CNT + C.STUDENT_OUT_CNT is null then '0' 
+	   		   			else to_char( C.STUDENT_IN_CNT + C.STUDENT_OUT_CNT,'9,999,999,999') end  AS IN_OUT_SUM, 
+	   		   case when  C.STUDENT_IN_CNT + C.STUDENT_OUT_CNT +  C.STUDENT_HOUR_CNT is null then '0' 
+	   		   			else to_char( C.STUDENT_IN_CNT + C.STUDENT_OUT_CNT +  C.STUDENT_HOUR_CNT,'9,999,999,999') end  AS IN_OUT_HOUR_SUM, 
+   			   C.STT_UNIV_ID,
+   			   UI.UNIV_NAME,
+   			   SU.UNIVERSITY_ID,
+   			   S.STT_ID
+		  FROM CU_STATISITICS S
+		  	   left join CU_STT_UNIVERSITY SU on S.STT_ID = SU.STT_ID and S.GATHER_STATE = 'Y' and S.USE_YN = 'Y'
+		   	   left join CU_STT_TEACHER_DATA C on SU.STT_UNIV_ID = C.STT_UNIV_ID	
+		   	   left join CU_UNIV_INFO UI ON UI.UNIVERSITY_ID = SU.UNIVERSITY_ID	
+		   	   left join CU_STT_UNIV_DATA UD on SU.STT_UNIV_ID = UD.STT_UNIV_ID	
+		 WHERE S.GATHER_STATE = 'Y' and S.USE_YN = 'Y'
+			<isNotEmpty property="sttYear" prepend="AND">		    	
+		    	S.STT_YEAR = #sttYear#
+		    </isNotEmpty>
+		    	AND S.STT_MONTH = (SELECT MAX (stt_month) FROM CU_STATISITICS WHERE stt_year = #sttYear# AND GATHER_STATE = 'Y')		    
+		UNION
+		
+		SELECT 0 AS ID, 
+			   case when SUM(C.STUDENT_IN_CNT) is null then '0' else to_char(SUM(C.STUDENT_IN_CNT),'9,999,999,999') end  AS STUDENT_IN_CNT,
+			   case when SUM(C.STUDENT_OUT_CNT) is null then '0' else to_char(SUM(C.STUDENT_OUT_CNT),'9,999,999,999') end  AS STUDENT_OUT_CNT,
+			   case when SUM(C.STUDENT_HOUR_CNT) is null then '0' else to_char(SUM(C.STUDENT_HOUR_CNT),'9,999,999,999') end  AS STUDENT_HOUR_CNT,
+			   case when SUM(UD.FORMATION_CNT) is null then '0' else to_char(SUM(UD.FORMATION_CNT),'9,999,999,999') end  AS FORMATION_CNT,
+			   case when SUM(C.STUDENT_IN_CNT) + SUM(C.STUDENT_OUT_CNT) is null 
+			   				then '0' else to_char(SUM(C.STUDENT_IN_CNT) + SUM(C.STUDENT_OUT_CNT),'9,999,999,999') 
+			   				end  AS IN_OUT_SUM,
+			   case when SUM(C.STUDENT_IN_CNT) + SUM(C.STUDENT_OUT_CNT) + SUM(C.STUDENT_HOUR_CNT) is null 
+			   				then '0' else to_char(SUM(C.STUDENT_IN_CNT) + SUM(C.STUDENT_OUT_CNT) + SUM(C.STUDENT_HOUR_CNT),'9,999,999,999') 
+			   				end  AS IN_OUT_HOUR_SUM,
+   			   0 AS STT_UNIV_ID,
+   			   '' AS UNIV_NAME,
+   			   9999999999 AS UNIVERSITY_ID,
+   			   S.STT_ID
+		  FROM CU_STATISITICS S
+		  	   left join CU_STT_UNIVERSITY SU on S.STT_ID = SU.STT_ID and S.GATHER_STATE = 'Y' and S.USE_YN = 'Y'
+		   	   left join CU_STT_TEACHER_DATA C on SU.STT_UNIV_ID = C.STT_UNIV_ID	
+		   	   left join CU_UNIV_INFO UI ON UI.UNIVERSITY_ID = SU.UNIVERSITY_ID	
+		   	   left join CU_STT_UNIV_DATA UD on SU.STT_UNIV_ID = UD.STT_UNIV_ID	
+		 WHERE S.GATHER_STATE = 'Y' and S.USE_YN = 'Y'
+			<isNotEmpty property="sttYear" prepend="AND">		    	
+		    	S.STT_YEAR = #sttYear#
+		    </isNotEmpty>		    
+		    	AND S.STT_MONTH = (SELECT MAX (stt_month) FROM CU_STATISITICS WHERE stt_year = #sttYear# AND GATHER_STATE = 'Y')	
+		GROUP BY S.STT_ID
+			)   
+		ORDER BY UNIV_NAME,UNIVERSITY_ID ASC		
+	</select>	
+	
+	<!--  직업별 재학생현황(정원외 통계표)-->	
+	<select id="seleStatisticsctList_student_job" resultClass="hashMap"  parameterClass="map">
+	SELECT *
+	 FROM ( 	
+	 	SELECT C.ID, 
+	    	   C.STT_UNIV_ID, 
+	    	   C.YEAR, 
+	    	   case when C.INDUSTRY is null then '0' else to_char(C.INDUSTRY,'9,999,999,999') end  AS INDUSTRY,
+	    	   case when C.SOLDIER is null then '0' else to_char(C.SOLDIER,'9,999,999,999') end  AS SOLDIER,
+	    	   case when C.ALIEN is null then '0' else to_char(C.ALIEN,'9,999,999,999') end  AS ALIEN,
+	    	   case when C.GRADE_THREE is null then '0' else to_char(C.GRADE_THREE,'9,999,999,999') end  AS GRADE_THREE,
+	    	   case when C.SPECIAL is null then '0' else to_char(C.SPECIAL,'9,999,999,999') end  AS SPECIAL,
+	    	   case when C.CHANGE is null then '0' else to_char(C.CHANGE,'9,999,999,999') end  AS CHANGE,
+	    	   case when C.NATIONAL_BASIC is null then '0' else to_char(C.NATIONAL_BASIC,'9,999,999,999') end  AS NATIONAL_BASIC,
+	    	   case when C.OTHER is null then '0' else to_char(C.OTHER,'9,999,999,999') end  AS OTHER,			  
+			   case when C.TOTAL is null then '0' else to_char(C.TOTAL,'9,999,999,999') end  AS TOTAL,
+			   UI.UNIV_NAME,
+   			   SU.UNIVERSITY_ID,
+   			   S.STT_ID
+		  FROM CU_STATISITICS S
+		  	   left join CU_STT_UNIVERSITY SU on S.STT_ID = SU.STT_ID and S.GATHER_STATE = 'Y' and S.USE_YN = 'Y'
+		   	   left join CU_STT_READ_STDT C on SU.STT_UNIV_ID = C.STT_UNIV_ID	
+		   	   left join CU_UNIV_INFO UI ON UI.UNIVERSITY_ID = SU.UNIVERSITY_ID	
+		 WHERE S.GATHER_STATE = 'Y' and S.USE_YN = 'Y'
+			<isNotEmpty property="sttYear" prepend="AND">		    	
+		    	S.STT_YEAR = #sttYear#
+		    </isNotEmpty>		    
+		    	AND S.STT_MONTH = (SELECT MAX (stt_month) FROM CU_STATISITICS WHERE stt_year = #sttYear# AND GATHER_STATE = 'Y')		
+	UNION
+	    SELECT 0 as ID, 
+	    	   0 as STT_UNIV_ID, 
+	    	   0 as YEAR, 
+	    	   case when SUM(C.INDUSTRY) is null then '0' else to_char(SUM(C.INDUSTRY),'9,999,999,999') end  AS INDUSTRY,
+	    	   case when SUM(C.SOLDIER) is null then '0' else to_char(SUM(C.SOLDIER),'9,999,999,999') end  AS SOLDIER,
+	    	   case when SUM(C.ALIEN) is null then '0' else to_char(SUM(C.ALIEN),'9,999,999,999') end  AS ALIEN,
+	    	   case when SUM(C.GRADE_THREE) is null then '0' else to_char(SUM(C.GRADE_THREE),'9,999,999,999') end  AS GRADE_THREE,
+	    	   case when SUM(C.SPECIAL) is null then '0' else to_char(SUM(C.SPECIAL),'9,999,999,999') end  AS SPECIAL,
+	    	   case when SUM(C.CHANGE) is null then '0' else to_char(SUM(C.CHANGE),'9,999,999,999') end  AS CHANGE,
+	    	   case when SUM(C.NATIONAL_BASIC) is null then '0' else to_char(SUM(C.NATIONAL_BASIC),'9,999,999,999') end  AS NATIONAL_BASIC,
+	    	   case when SUM(C.OTHER) is null then '0' else to_char(SUM(C.OTHER),'9,999,999,999') end  AS OTHER,			  
+			   case when SUM(C.TOTAL) is null then '0' else to_char(SUM(C.TOTAL),'9,999,999,999') end  AS TOTAL,
+			   '' AS UNIV_NAME,
+   			   9999999999 AS UNIVERSITY_ID,
+   			   S.STT_ID
+		  FROM CU_STATISITICS S
+		  	   left join CU_STT_UNIVERSITY SU on S.STT_ID = SU.STT_ID and S.GATHER_STATE = 'Y' and S.USE_YN = 'Y'
+		   	   left join CU_STT_READ_STDT C on SU.STT_UNIV_ID = C.STT_UNIV_ID	
+		   	   left join CU_UNIV_INFO UI ON UI.UNIVERSITY_ID = SU.UNIVERSITY_ID	
+		   	   left join CU_STT_UNIV_DATA UD on SU.STT_UNIV_ID = UD.STT_UNIV_ID
+		 WHERE S.GATHER_STATE = 'Y' and S.USE_YN = 'Y'
+			<isNotEmpty property="sttYear" prepend="AND">		    	
+		    	S.STT_YEAR = #sttYear#
+		    </isNotEmpty>		    
+				AND S.STT_MONTH = (SELECT MAX (stt_month) FROM CU_STATISITICS WHERE stt_year = #sttYear# AND GATHER_STATE = 'Y')		   
+		GROUP BY S.STT_ID
+		)
+		
+		ORDER BY UNIV_NAME,UNIVERSITY_ID ASC		
+	</select>	
+	
+	
+	<!--  시간제 등록생 모집 결과-->	
+	<select id="seleStatisticsctList_time" resultClass="hashMap"  parameterClass="map">
+	 SELECT *
+	 FROM (   
+	    SELECT C.ID, 
+	    	   C.STT_UNIV_ID, 
+	    	   case when UD.FORMATION_CNT is null then '0' else to_char(UD.FORMATION_CNT,'9,999,999,999') end  AS FORMATION_CNT,
+	    	   case when RECRUITMENT_CNT is null then '0' else to_char(C.RECRUITMENT_CNT,'9,999,999,999') end RECRUITMENT_CNT, 
+	    	   case when C.REGISTER_CNT is null then '0' else to_char(C.REGISTER_CNT,'9,999,999,999') end REGISTER_CNT, 
+	    	   case when C.REGISTER_RATE <![CDATA[<=]]> 1 
+	    	   	 	then to_char(C.REGISTER_RATE * 100,'9,999,999,990.99') 
+	    	   	 	else to_char(C.REGISTER_RATE ,'9,999,999,990.99') end as REGISTER_RATE,
+	    	   case when C.CREDIT_COST is null then '0' else to_char(C.CREDIT_COST,'9,999,999,999') end CREDIT_COST, 
+	    	   case when C.LECTURE_CNT is null then '0' else to_char(C.LECTURE_CNT,'9,999,999,999') end LECTURE_CNT, 
+	    	   case when C.APPLICATION_CNT is null then '0' else to_char(C.APPLICATION_CNT,'9,999,999,999') end APPLICATION_CNT, 
+			   UI.UNIV_NAME,
+			   UI.UNIVERSITY_ID,
+			   S.STT_ID
+		  FROM CU_STATISITICS S
+		  	   left join CU_STT_UNIVERSITY SU on S.STT_ID = SU.STT_ID and S.GATHER_STATE = 'Y' and S.USE_YN = 'Y'
+		   	   left join CU_STT_PART_TIME C on SU.STT_UNIV_ID = C.STT_UNIV_ID	
+		   	   left join CU_UNIV_INFO UI ON UI.UNIVERSITY_ID = SU.UNIVERSITY_ID	
+		   	   left join CU_STT_UNIV_DATA UD on SU.STT_UNIV_ID = UD.STT_UNIV_ID
+		 WHERE S.GATHER_STATE = 'Y' and S.USE_YN = 'Y'
+			<isNotEmpty property="sttYear" prepend="AND">		    	
+		    	S.STT_YEAR = #sttYear#
+		    </isNotEmpty>
+		    	AND S.STT_MONTH = (SELECT MAX (stt_month) FROM CU_STATISITICS WHERE stt_year = #sttYear# AND GATHER_STATE = 'Y')		    
+UNION
+	    SELECT 0 as ID, 
+	    	   0 as STT_UNIV_ID, 
+	    	   case when SUM(UD.FORMATION_CNT) is null then '0' else to_char(SUM(UD.FORMATION_CNT),'9,999,999,999') end  AS FORMATION_CNT,
+	    	   case when SUM(C.RECRUITMENT_CNT) is null then '0' else to_char(SUM(C.RECRUITMENT_CNT),'9,999,999,999') end  AS RECRUITMENT_CNT,
+	    	   case when SUM(C.REGISTER_CNT) is null then '0' else to_char(SUM(C.REGISTER_CNT),'9,999,999,999') end  AS REGISTER_CNT,
+	    	   case when SUM(C.REGISTER_RATE) is null
+	    	   		then '0' 
+	    	   		else to_char(SUM( case when C.REGISTER_RATE <![CDATA[<=]]> 1 
+	    	   							   then C.REGISTER_RATE * 100 
+	    	   							   else C.REGISTER_RATE end
+	    	   					    )/count(*), '9,999,999,990.99'
+	    	   			         ) end  AS REGISTER_RATE,
+	    	  
+	    	   case when AVG(C.CREDIT_COST) is null then '0' else to_char(AVG(C.CREDIT_COST),'9,999,999,999') end  AS CREDIT_COST,
+	    	   case when SUM(C.LECTURE_CNT) is null then '0' else to_char(SUM(C.LECTURE_CNT),'9,999,999,999') end  AS LECTURE_CNT,
+	    	   case when SUM(C.APPLICATION_CNT) is null then '0' else to_char(SUM(C.APPLICATION_CNT),'9,999,999,999') end  AS APPLICATION_CNT,
+			   '' AS UNIV_NAME,
+   			   9999999999 AS UNIVERSITY_ID,
+   			   S.STT_ID
+		  FROM CU_STATISITICS S
+		  	   left join CU_STT_UNIVERSITY SU on S.STT_ID = SU.STT_ID and S.GATHER_STATE = 'Y' and S.USE_YN = 'Y'
+		   	   left join CU_STT_PART_TIME C on SU.STT_UNIV_ID = C.STT_UNIV_ID	
+		   	   left join CU_UNIV_INFO UI ON UI.UNIVERSITY_ID = SU.UNIVERSITY_ID	
+		   	   left join CU_STT_UNIV_DATA UD on SU.STT_UNIV_ID = UD.STT_UNIV_ID
+		 WHERE S.GATHER_STATE = 'Y' and S.USE_YN = 'Y'
+			<isNotEmpty property="sttYear" prepend="AND">		    	
+		    	S.STT_YEAR = #sttYear#
+		    </isNotEmpty>
+		    	AND S.STT_MONTH = (SELECT MAX (stt_month) FROM CU_STATISITICS WHERE stt_year = #sttYear# AND GATHER_STATE = 'Y')		    
+		GROUP BY S.STT_ID
+		)
+		
+		ORDER BY UNIV_NAME,UNIVERSITY_ID ASC	
+			
+	</select>	
+	
+	<!--  입학금 수수료-->	
+	<select id="seleStatisticsctList_fee" resultClass="hashMap"  parameterClass="map">
+	 SELECT *
+	 FROM (  	
+	  	SELECT C.ID, 
+			   C.STT_UNIV_ID, 
+	  		   case when C.APPLICATION_FEE is null then '0' else to_char(C.APPLICATION_FEE,'9,999,999,999') end APPLICATION_FEE,
+	  		   case when C.ENTRANCE_FRE is null then '0' else to_char(C.ENTRANCE_FRE,'9,999,999,999') end ENTRANCE_FRE,
+	  		   case when C.CREDIT is null then '0' else to_char(C.CREDIT,'9,999,999,999') end CREDIT,
+	  		   case when C.TRAINING_FEE is null then '0' else to_char(C.TRAINING_FEE,'9,999,999,999') end TRAINING_FEE,
+	  		   case when C.OTHER is null then '0' else to_char(C.OTHER,'9,999,999,999') end OTHER,
+	  		   case when C.TUITION is null then '0' else to_char(C.TUITION,'9,999,999,999') end TUITION,
+	  		   case when C.PRE_TUTION is null then '0' else to_char(C.PRE_TUTION,'9,999,999,999') end PRE_TUTION,
+			   
+			   case when C.HIKE is null then '0.00' else 
+			   		case when C.HIKE <![CDATA[<=]]> 1 
+	    	   	 	then to_char(C.HIKE * 100,'9,999,999,990.99') 
+	    	   	 	else to_char(C.HIKE ,'9,999,999,990.99') end
+	    	   end as HIKE,
+	    	   	 	
+			   UI.UNIV_NAME,
+			   UI.UNIVERSITY_ID,
+			   S.STT_ID
+		  FROM CU_STATISITICS S
+		  	   left join CU_STT_UNIVERSITY SU on S.STT_ID = SU.STT_ID and S.GATHER_STATE = 'Y' and S.USE_YN = 'Y'
+		   	   left join CU_STT_FEE C on SU.STT_UNIV_ID = C.STT_UNIV_ID	
+		   	   left join CU_UNIV_INFO UI ON UI.UNIVERSITY_ID = SU.UNIVERSITY_ID	
+		 WHERE S.GATHER_STATE = 'Y' and S.USE_YN = 'Y'
+			<isNotEmpty property="sttYear" prepend="AND">		    	
+		    	S.STT_YEAR = #sttYear#
+		    </isNotEmpty>		    
+		   	 	AND S.STT_MONTH = (SELECT MAX (stt_month) FROM CU_STATISITICS WHERE stt_year = #sttYear# AND GATHER_STATE = 'Y')
+	UNION
+	    SELECT 0 as ID, 
+	    	   0 as STT_UNIV_ID, 
+	    	   case when AVG(C.APPLICATION_FEE) is null then '0' else to_char(AVG(C.APPLICATION_FEE),'9,999,999,999') end  AS APPLICATION_FEE,
+	    	   case when AVG(C.ENTRANCE_FRE) is null then '0' else to_char(AVG(C.ENTRANCE_FRE),'9,999,999,999') end  AS ENTRANCE_FRE,
+	    	   case when AVG(C.CREDIT) is null then '0' else to_char(AVG(C.CREDIT),'9,999,999,999') end  AS CREDIT,
+	    	   case when AVG(C.TRAINING_FEE) is null then '0' else to_char(AVG(C.TRAINING_FEE),'9,999,999,999') end  AS TRAINING_FEE,
+	    	   case when AVG(C.OTHER) is null then '0' else to_char(AVG(C.OTHER),'9,999,999,999') end  AS OTHER,
+	    	   case when AVG(C.TUITION) is null then '0' else to_char(AVG(C.TUITION),'9,999,999,999') end  AS TUITION,
+	    	   case when AVG(case when C.PRE_TUTION is not null and C.PRE_TUTION != '0' then C.PRE_TUTION end)
+	    	    is null then '0' else to_char(AVG(case when C.PRE_TUTION is not null and C.PRE_TUTION != '0' then C.PRE_TUTION end),'9,999,999,999') end  AS PRE_TUTION,
+	    	   case when AVG(C.HIKE) is null
+	    	   		then '0' 
+	    	   		else to_char(SUM( case when C.HIKE <![CDATA[<=]]> 1 
+	    	   							   then C.HIKE * 100 
+	    	   							   else C.HIKE end
+	    	   					    )/count(*), '9,999,999,990.99'
+	    	   			         ) end  AS HIKE,
+			   '' AS UNIV_NAME,
+   			   9999999999 AS UNIVERSITY_ID,
+   			   S.STT_ID
+		  FROM CU_STATISITICS S
+		  	   left join CU_STT_UNIVERSITY SU on S.STT_ID = SU.STT_ID and S.GATHER_STATE = 'Y' and S.USE_YN = 'Y'
+		   	   left join CU_STT_FEE C on SU.STT_UNIV_ID = C.STT_UNIV_ID	
+		   	   left join CU_UNIV_INFO UI ON UI.UNIVERSITY_ID = SU.UNIVERSITY_ID	
+		 WHERE S.GATHER_STATE = 'Y' and S.USE_YN = 'Y'
+			<isNotEmpty property="sttYear" prepend="AND">		    	
+		    	S.STT_YEAR = #sttYear#
+		    </isNotEmpty>		    
+		    	AND S.STT_MONTH = (SELECT MAX (stt_month) FROM CU_STATISITICS WHERE stt_year = #sttYear# AND GATHER_STATE = 'Y')		   
+		GROUP BY S.STT_ID
+		)
+		ORDER BY UNIV_NAME,UNIVERSITY_ID ASC		
+	</select>	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+</sqlMap>

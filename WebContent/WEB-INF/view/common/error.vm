@@ -1,0 +1,41 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<title>ERROR</title>
+</head>
+<script language="javascript">
+</script>
+<body bgcolor="#ffffff" text="#000000">
+	
+	<div id="container" class="error_box">
+    	<script>
+    		if("$exceptionCode" == "paramError")
+    			alert("비정상적인 접근 방법입니다.\n초기화면으로 이동합니다.");
+    		else if("$exceptionCode" != "")
+    			alert("시스템 오류가 발생하여 초기화면으로 이동합니다.");
+    		else
+    			alert("시스템 오류가 발생하여 초기화면으로 이동합니다.");
+    			
+    		top.location.href="/home/";
+    		
+	    </script>
+    	<dl>
+    		<dt><img src="/mgr/images/layout/error1.gif" alt="에러발생" /></dt>
+    		<dd class="bottom"><b>[$exceptionCode]</b></dd>
+    		<dd style="width:400;height:200px;overflow:auto;">
+			##$exceptionMsg
+			</dd>
+    		<dd class="t_right"><a href='javascript:history.back();'><img src="/mgr/images/btn/pre.gif" alt="이전" /></a></dd>
+    	</dl>
+#*
+    	<dl>
+    		<dt><img src="/mgr/images/layout/error1.gif" alt="에러발생" /></dt>
+    		<dd class="bottom"><b></b></dd>
+    		<dd style="width:400;height:200px;overflow:auto;"></dd>
+    		<dd class="t_right"><a href='javascript:history.back();'><img src="/mgr/images/btn/pre.gif" alt="이전" /></a></dd>
+    	</dl>
+*#
+
+	</div>
+</body>
+</html>
+

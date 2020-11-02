@@ -1,0 +1,92 @@
+<!-- 입학정원 대비 등록률 -->
+<table cellspacing="0" cellpadding="0" class="table_type1 st01 st01" summary="입학정원대비 등록률 현황"><!-- table_type1 st01 Start -->
+	<caption>입학정원대비 등록률 현황</caption>
+	<colgroup>
+		<col width="25%"><col width="25%"><col width="25%"><col width="25%">
+	</colgroup>
+	<thead>
+		<tr>
+			<th scope="col" class="first">연도</th>
+			<th scope="col">입학정원(명)</th>
+			<th scope="col">등록생(명)</th>
+			<th scope="col">등록률(%)</th>
+		</tr>
+	</thead>
+	<tbody>
+		#foreach($stt in $statisiticsList)
+			#if($velocityCount != $statisiticsList.size())
+		<tr>
+			<td>$!stt.CLASS</td>
+			<td>$!stt.STUDENT_IN_CNT</td>
+			<td>$!stt.STUDENT_REGISTER_CNT</td>
+			<td>$!stt.ENTRANCE</td>
+		</tr>
+			#else	
+		</tbody>
+		<tfoot>
+			<tr>
+				<td>$!stt.CLASS</td>
+				<td>$!stt.STUDENT_IN_CNT</td>
+				<td>$!stt.STUDENT_REGISTER_CNT</td>
+				<td class="end">$!stt.ENTRANCE</td>
+			</tr>
+		</tfoot>
+			#end
+		#end
+		
+	
+</table><!-- list_type01 End -->
+<div class="graphWrap" id="chart_div1" style="text-indent: 92px; padding-top:30px;padding-bottom:10px; display: none;">	
+정원연도
+</div>
+<div class="graphWrap" id="chart_div" style="display: none;">	
+</div>
+<div class="graphWrap" id="chart_div2" style="padding-top:10px; text-align:center; display: none;">	
+명(인원)
+</div>
+<script type="text/javascript">   
+
+	google.load('visualization', '1', {packages: ['corechart']});
+	function drawVisualization() {
+	  // Create and populate the data table.
+	  var data = google.visualization.arrayToDataTable([
+	    ['Year', '등록생', '입학정원']
+	    #foreach($stt in $statisiticsList)
+	    ,['$!stt.CLASS', $!stt.STUDENT_REGISTER_CNT_N, $!stt.STUDENT_IN_CNT_N]
+	    #end	   
+	  ]);
+
+	 // var formatter = new google.visualization.NumberFormat({pattern:'#,###.##%'});
+	  // vAxis: {fontName: "normal", fontSize: "11px"},
+	// Create and draw the visualization. fontweight: "normal",
+	  new google.visualization.BarChart(document.getElementById('chart_div')).
+	      draw(data,
+	    		{width:775, height:300, 
+	    		 fontName: "Verdana", 
+	    		 fontSize: "12", 	    		 
+	    		 //title: "정원연도",	            
+	             //hAxis: {title: "명(인원)", fontSize : "12", fontName : "Verdana", 
+		         //    	 titleTextStyle: {fontSize : "12", fontName : "Verdana"}},
+	             colors: ['#4169e1', '#f08080'],
+	             legend: {textStyle: {fontSize : "11", fontName : "Verdana"}},
+	             ##hAxis: {minValue:10000, maxValue:30000},
+	             hAxis: {minValue:0},
+	             //backgroundColor : "red",
+	             chartArea:{left:"15%",top:5,width:"70%",height:"90%"}
+	           }
+	      );
+	 }
+	
+	google.setOnLoadCallback(drawVisualization);
+
+	#if('$!statisiticsList' != '' && $!statisiticsList.size() != 0)
+		$("#chart_div").toggle();
+		$("#chart_div1").toggle();
+		$("#chart_div2").toggle();
+	#end
+
+</script>
+			
+			
+			
+		

@@ -1,0 +1,319 @@
+<head>
+	<title>학과 내비게이션</title>
+	<link rel="stylesheet" type="text/css" href="/home/css/course.css" />
+	<script type="text/javascript" language="javascript">
+	
+	$(document).ready(function() {
+		//search();
+    });
+    
+    function viewDetail(title)
+	{
+		
+		
+		//필요 변수 셋팅
+		$("#text").val(title);
+		$("#deptId").val("500511");
+		$("#univId").val("38");
+		
+		//onsubmit 속성을 비워주어야 submit이 된다.
+		$("#form").attr("method","post");
+		$("#form").attr("onsubmit","");
+		$("#form").attr("action","/home/course/courseSearch3View.sub2.action?gnb=41");
+		$("#form").submit();
+		
+	}
+    
+    
+    	//유사강의검색
+	function viewDetail2(courseId, title)
+	{
+	
+		//필요 변수 셋팅
+		$("#text").val(title);
+		$("#hidetext").val(title);
+		$("#courseId").val(courseId);
+		$("#deptId").val("");
+		
+		//onsubmit 속성을 비워주어야 submit이 된다.
+		$("#form").attr("method","post");
+		$("#form").attr("onsubmit","");
+		$("#form").attr("action","/home/course/courseSearch2.sub2.action?gnb=41&pageType=1&checkbox3=2");
+		$("#form").submit();
+		
+	}
+	</script>
+</head>
+	
+<body id="intro">
+
+	<p class="location">
+		<a href="">홈</a> <span>&gt;</span> <a href="">학과/교과과정</a> <span>&gt;</span> <a href="">교과과정 보기</a> 
+	</p>
+	<h3><img src="/home/images/title/h3_sub_view.gif" alt="교과과정 보기"></h3>
+		
+	
+	<div class="contentWrap">
+		<!--s:컨텐츠영역-->
+			
+			<div class="path_major">
+				<a>대구사이버대학원</a><span>&gt;</span>
+				<a>휴먼케어대학원</a><span>&gt;</span>
+				<a>미술상담(미술치료)학과</a>
+				<a target="_blank" href="https://grad.dcu.ac.kr/department/hcare.htm" class="btn_info_major"><img src="/home/images/btn/btn_info_major.gif" alt="학과안내 페이지 바로가기"></a>
+																																																																																																												</div>
+			
+			<div id="list" class="univ_table m_l0">
+				<table cellspacing="0" cellpadding="0" summary="교과과정 보기"><!-- table_type1 st01 Start -->
+				<caption>교과과정 보기</caption>
+				<colgroup>
+					<col width="20%">
+					<col width="40%">
+					<col width="20%">
+				</colgroup>
+				<thead>
+					<tr>
+						<th scope="col">구분</th>
+						<th scope="col">교과목명</th>
+						<th scope="col">학점</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr class="line02">
+						<th class="line02" rowspan="4">전공필수</th>
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('상담 및 심리치료');"><p>상담 및 심리치료</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','상담 및 심리치료');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>
+					<tr>
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('미술치료 임상윤리');"><p>미술치료 임상윤리</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','미술치료 임상윤리');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>																			
+					<tr>
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('심리 연구방법 및 통계');"><p>심리 연구방법 및 통계</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','심리 연구방법 및 통계');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>
+					<tr class="line01">
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('미술치료 현장실습 및 수퍼비전');"><p>미술치료 현장실습 및 수퍼비전</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','미술치료 현장실습 및 수퍼비전');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>
+					
+					
+					
+					<tr class="line02">
+						<th class="line02" rowspan="16">전공선택</th>
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('미술치료 특론');"><p>미술치료 특론</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','미술치료 특론');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>
+					<tr class="line02">
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('미술치료 매체 연구');"><p>미술치료 매체 연구</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','미술치료 매체 연구');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>
+					<tr class="line02">
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('특수아동 심리 세미나');"><p>특수아동 심리 세미나</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','특수아동 심리 세미나');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>																
+					<tr>
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('임상심리 세미나');"><p>임상심리 세미나</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','임상심리 세미나');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>
+					<tr class="line02">
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('미술치료와 성격심리 세미나');"><p>미술치료와 성격심리 세미나</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','미술치료와 성격심리 세미나');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>																
+					<tr>
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('미술치료 색채 연구');"><p>미술치료 색채 연구</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','미술치료 색채 연구');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>
+					<tr class="line02">
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('이상심리 세미나');"><p>이상심리 세미나</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','이상심리 세미나');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>																
+					<tr>
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('행동분석 세미나');"><p>행동분석 세미나</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','행동분석 세미나');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>
+					<tr class="line02">
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('가족 미술치료');"><p>가족 미술치료</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','가족 미술치료');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>																
+					<tr>
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('발달평가와 진단실습');"><p>발달평가와 진단실습</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','발달평가와 진단실습');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>
+					<tr class="line02">
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('아동청소년 미술치료');"><p>아동청소년 미술치료</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','아동청소년 미술치료');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>																
+					<tr>
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('사이버 미술치료 자기분석');"><p>사이버 미술치료 자기분석</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','사이버 미술치료 자기분석');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>
+					<tr class="line02">
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('심리평가와 진단실습');"><p>심리평가와 진단실습</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','심리평가와 진단실습');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>																
+					<tr>
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('미술치료와 중독상담 세미나');"><p>미술치료와 중독상담 세미나</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','미술치료와 중독상담 세미나');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>
+					<tr>
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('집단미술치료');"><p>집단미술치료</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','집단미술치료');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>
+					<tr class="line01">
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('미술치료와 뇌과학 세미나');"><p>미술치료와 뇌과학 세미나</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','미술치료와 뇌과학 세미나');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>
+					
+					
+					
+					<tr class="line02">
+						<th class="line02" rowspan="5">비동일 계열 보충과목</th>
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('미술치료 개론');"><p>미술치료 개론</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','미술치료 개론');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>
+					<tr>
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('임상심리');"><p>임상심리</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','임상심리');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>
+																								
+					<tr>
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('그림에 의한 심리진단');"><p>그림에 의한 심리진단</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','그림에 의한 심리진단');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>
+					<tr>
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('아동 및 청소년 미술치료');"><p>아동 및 청소년 미술치료</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','아동 및 청소년 미술치료');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>
+
+					<tr class="line01">
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('집단미술치료');"><p>집단미술치료</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','집단미술치료');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>
+					
+					
+				</tbody>
+				</table>	
+			</div>
+			
+			<p class="m_b5"><img src="/home/images/course/txt_info_search.gif" alt="전체 사이버대학을 대상으로 유사강의 검색"></p>
+			<br>
+			
+		<!--e:컨텐츠영역-->
+	</div>
+
+	
+	<form class="search_box01" id="form" name="form" action="#" onsubmit="try{search();}catch(e){alert(e);}return false;"><!-- box_type01 Start -->
+        <input type="hidden" id="courseId" name="courseId" />
+        <input type="hidden" id="hidetext" name="hidetext" />
+        <input type="hidden" id="text" name="text" />
+        <input type="hidden" id="deptId" name="deptId" value="" />
+        <input type="hidden" id="univId" name="univId" value="" />
+	</form>
+
+	<div class="page_num">
+		<div id="pg" name="pg"></div>
+	</div>
+
+</body>
+</html>

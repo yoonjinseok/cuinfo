@@ -1,0 +1,368 @@
+<head>
+	<title>메타데이터 관리</title>
+	<script type="text/javascript" language="javascript">
+	function search()
+	{
+		$('#sorting').val('0');
+		$('#ascending').val('0');
+		
+		goPage(1);
+	}
+	
+	function setRecordCnt(totalCnt, currPage, totalPage, showCnt)
+	{
+		$("#tCnt").text(totalCnt);
+		$("#cPage").text(currPage);
+		$("#tPage").text(totalPage);
+		
+		setPaging($("#pg"), totalCnt, showCnt, currPage);
+	}
+	
+	function goPage(page)
+	{
+		if(typeof(page) != "undefined")
+			$("#currPage").val(page);
+		
+		jQuery.post('metaCollection_list.ajax.action', 
+				$("#searchForm").formSerialize(), 
+				function(data) {
+        			$("#list").html(data);
+		});
+	}
+	
+	
+	var pop1;
+	var pop2;
+	
+	function modify(courseId, svcStatus, isLock)
+	{
+		if(svcStatus == 'M')
+		{
+			alert('해당 메타데이터는 재수집중입니다. \n잠시만 기다려 주시기 바랍니다...');
+			goPage($("#currPage").val());
+			return;
+		}
+		
+		jQuery.post('metaCollection_checkLock.json', 
+		'courseId=' + courseId, 
+		function(data) {
+			if(data.errors == true)
+			{
+				eval(data.message);
+				return;
+			}
+			else
+			{
+				if(data.isLock == 'Y')
+				{
+					if(data.tempCourseId != '')
+					{
+						pop1 = window.open('/mgr/course/metaCollection_read.pop.action?courseId=' + courseId, 'pop1', 'width=880,height=450,top=0,left=0,scrollbars=yes,menubar=no,toolbar=no,status=yes');
+            			pop2 = window.open('/mgr/course/metaCollection_read.pop.action?courseId=' + data.tempCourseId, 'pop2', 'width=880,height=450,top=500,left=0,scrollbars=yes,menubar=no,toolbar=no,status=yes');
+            			
+            			if(pop1)
+            				pop1.focus();
+            			if(pop2)
+            				pop2.focus();
+					}
+					else
+					{
+						showWin('/mgr/course/metaCollection_read.pop.action?courseId=' + courseId,'newwin', 880, 700);
+					}
+				}
+				else
+				{
+					showWin('/mgr/course/metaCollection_read.pop.action?courseId=' + courseId, 'newwin', 880, 700);
+				}
+			}
+	});
+	}
+	
+	function closePop(){
+	
+		search();
+		
+    	pop1.close();
+    	pop2.close();
+		
+    }
+	
+	function updatestatus()
+	{
+		if($("#status").val() == ""){
+			alert("선택반영 상태값을 선택하세요.");
+			return;
+		}
+	
+		jQuery.post('metaCollection_updatestatus.json', 
+				$("#listForm").formSerialize(), 
+				function(data) {
+        			if(data.errors == true)
+        			{
+        				eval(data.message);
+        			}
+        			else
+        			{
+						alert('저장 하였습니다.');
+						goPage($("#currPage").val());
+        			}
+		});
+	}
+	
+	function updatestatusAll()
+	{
+		if($("#svcStatusAll").val() == ""){
+			alert("일괄반영 상태값을 선택하세요.");
+			return;
+		}
+		if(confirm($('#flushCnt').text() + '건의 모든 강좌상태를 ' + $('#svcStatusAll option:selected').text() + '로 변경하시겠습니까?'))
+		{
+			jQuery.post('metaCollection_updatestatusAll.json', 
+				$("#searchForm").formSerialize(), 
+				function(data) {
+        			if(data.errors == true)
+        			{
+        				eval(data.message);
+        			}
+        			else
+        			{
+						alert('강좌상태를 일괄변경하였습니다.');
+						goPage($("#currPage").val());
+        			}
+    		});
+		}
+	}
+	
+	function checkCourse(count)
+	{
+		$("#listForm input[name='courseIds']").each(
+			function(inx, obj){
+				if(inx == count-1)
+					obj.checked = true;
+			}
+		);
+	}
+	
+	function checkAll(checkObj)
+	{
+		$("#listForm input[name='courseIds']").each(
+			function(inx, obj){
+				obj.checked = checkObj.checked;
+			}
+		);
+	}
+	
+	function changeStatus(statusObj)
+	{
+		if(statusObj.value != '')
+		{
+			$("#listForm input[name='courseIds']").each(
+    			function(inx, obj){
+    				if(obj.checked)
+    				{
+    					document.getElementsByName('svcStatuses')[inx].selectedIndex = statusObj.selectedIndex - 1;
+    				}
+    			}
+    		);
+		}
+	}
+	
+	$(document).ready(function() {
+		showCalendar($('#modStartDate'));
+		showCalendar($('#modEndDate'));
+	
+		search();
+    });
+    
+    function wrt(){
+		showWin('/mgr/course/metaCollection_write.pop.action','newwin', 880, 700);
+    }
+	
+	function searchUniversity()
+	{
+		showWin('/mgr/system/univCodeSearch.pop.action', 'univsearch', 800, 450);
+	}
+	function setUniversity(universityId, universityName)
+	{
+		$("#universityName").val(universityName);
+	}
+    
+	</script>
+</head>
+<body>
+	
+<div id="location_box">
+		<h3><img src="/mgr/images/course/title1.gif" alt="메타수집/승인관리" /></h3>
+		<ul class="location">
+			<li><a href="/mgr/main.sub.action">Home</a></li>
+			<li><a href="#">강좌메타관리</a></li>
+			<li>메타데이터관리</li>
+		</ul>
+</div>
+
+<form class="search_box01" id="searchForm" name="searchForm" action="#" onsubmit="try{search();}catch(e){alert(e);}return false;"><!-- box_type01 Start -->
+<input type="hidden" id="currPage" name="currPage" value="1"/>
+<input type="hidden" id="showCnt" name="showCnt" value="20"/>
+<input type="hidden" id="sorting" name="sorting" value="0"/>
+<input type="hidden" id="ascending" name="ascending" value="0"/>
+	<fieldset class="inner">
+		<table cellspacing="0" cellpadding="0" summary="메타데이터 검색" class="border_none_table">
+			<caption>메타데이터 검색</caption>
+			<colgroup>
+				<col width="45%"/>
+				<col width="*%"/>
+			</colgroup>
+			<tbody>
+				<tr>
+					<td>
+						<label for="input-1">수집일</label>
+						<input type="text" id="modStartDate" name="modStartDate" value="$!startDate" style="width:80px;" title="수집시작일"/> 
+						~
+						<input type="text" id="modEndDate" name="modEndDate" value="$!endDate" style="width:80px;" title="수집종료일"/> 
+					</td>
+					<td colspan="2" for="select-1">
+						<label for="select-1">상태</label>
+						<select	id="svcStatus" name="svcStatus" style="width:140px;">
+							<option value="">전체</option>
+							#foreach($status in $courseStatusList)
+							<option value="$status.value">$status.name</option>
+							#end
+						</select>
+						<script>
+						$('#svcStatus').val('$!svcStatus');
+						</script>
+					</td>				
+				</tr>
+				<tr>
+					<td>
+						<label for="input-2">학교명</label>
+						<input type="text" id="universityName" name="universityName" value="$!universityName" style="width:140px;" title="학교명입력"/> 
+						<a href="javascript:searchUniversity()"><img src="/mgr/images/btn/btn_seluniv.gif" alt="대학 선택"/></a>
+					</td>
+					<td colspan="2">
+						<label for="input-3">학과명</label>
+						<input type="text" id="department" name="department" value="$!departmentName" style="width:136px;" title="학과명입력"/> 
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<label for="publicYn">공개여부</label>
+						<select	id="publicYn" name="publicYn" style="width:145px;">
+							<option value="">전체</option>
+							<option value="Y">공개</option>
+							<option value="N">비공개</option>
+						</select>
+						<script>
+						$('#publicYn').val('$!grants');
+						</script>
+					</td>		
+					<td colspan="2">
+						<label for="type">강의유형</label>
+						<select	id="type" name="type" style="width:140px;">
+							<option value="">전체</option>
+							#foreach($courseType in $courseTypeList)
+							<option value="$courseType.value">$courseType.name</option>
+							#end
+						</select>
+						<script>
+						$('#type').val('$!type');
+						</script>
+					</td>	
+				</tr>
+				<tr>
+					<td>
+						<label for="grants">개설년도</label>
+						<input type="text" onkeyup="numbersonly(this)" id="termYearStart" name="termYearStart" value="$!termYearStart" style="width:59px;" title="개설시작년도"/> 
+						~
+						<input type="text" onkeyup="numbersonly(this)" id="termYearEnd" name="termYearEnd" value="$!termYearEnd" style="width:59px;" title="개설끝낸도"/> 
+					</td>			
+					<td colspan="2">
+						<label for="isPrev" style="margin:0 7px 0 0;">맛보기강의</label>
+						<select	id="isPrev" name="isPrev" style="width:140px;">
+							<option value="">전체</option>
+							<option value="Y">있음</option>
+							<option value="N">없음</option>
+						</select>
+					</td>	
+				</tr>
+				<tr>
+					<td colspan="2">
+						<label for="input-2">통합검색</label>
+						<select	id="searchField" name="searchField">
+							<option value="title" selected >강의명</option>
+							<option value="manager">저자</option>
+							<option value="department">학과명</option>
+						</select>
+						<input type="text" id="searchValue" name="searchValue" title="검색어" style="width:63%"/> 
+						<input type="image" style="width:52px;height:21px;border:0px;" src="/mgr/images/btn/search.gif" alt="검색" />
+					</td>
+				</tr>
+				<tr>
+					<td colspan="2">
+						<div style="width:95%;margin:13px 0 5px 0;border-top:solid 2px gray;padding-top:13px;">
+						강좌상태 일괄변경 - <b><font color="red">반영대상 <span id="flushCnt">0</span>건</font></b> 
+						<select	id="svcStatusAll" name="svcStatusAll">
+							<option value="">선택하세요.</option>
+							#foreach($status in $courseStatusManageList)
+							#if($status.value != 'M')
+							<option value="$status.value">$status.name</option>
+							#end
+							#end
+						</select>
+						<a href="javascript:updatestatusAll();"><img src="/mgr/images/btn/save.gif" alt="저장" /></a>
+						<br/>※ 위 검색결과 모든 강좌의 상태를 한꺼번에 변경할 수 있습니다.
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</fieldset>
+</form><!-- box_type01 End -->
+
+
+<div class="list_top01">
+	<span>제목 클릭 시 메타 편집기  수정할 수 있습니다.</span><br/>
+	<span>승인상태를 “승인”으로 변경하면 서비스가 게시됩니다.</span><br/>
+	<span>
+		▼ 선택반영
+    	<select id="status" onchange="changeStatus(this);">
+			<option value="">선택하세요.</option>
+    		#foreach($status in $courseStatusManageList)
+    		<option value="$status.value">$status.name</option>
+    		#end
+    	</select>
+    	<a href="javascript:updatestatus();"><img src="/mgr/images/btn/save.gif" alt="저장" /></a>
+	</span>
+	<span class="f_right">total : <em id="tCnt">00</em>건(<em id="cPage">1</em>/<em id="tPage">10</em>page)
+		<select id="showCnt" name="showCnt" onchange="$('#searchForm #showCnt').val(this.value);search();">
+		<option value="20" selected>20개씩</option>
+		<option value="50">50개씩</option>
+		<option value="100">100개씩</option>
+		</select>
+	</span>
+</div>
+
+<form id="listForm" name="listForm" action="#" onsubmit="try{}catch(e){alert(e);}return false;">
+<div id="list">#parse('mgr/course/metaCollection_list.vm')</div>
+</form>
+
+
+<div class="page_num">
+	<div class="f_left" style="font-weight:bold;">
+		▲ 선택반영
+    	<select id="status" onchange="changeStatus(this);">
+			<option value=""></option>
+    		#foreach($status in $courseStatusManageList)
+    		<option value="$status.value">$status.name</option>
+    		#end
+    	</select>
+    	<a href="javascript:updatestatus();"><img src="/mgr/images/btn/save.gif" alt="저장" /></a>
+	</div>
+	<div id="pg" name="pg" style="margin-right:50px;"></div>
+	<div class="f_right" style="font-weight:bold;">
+    	<a href="javascript:wrt();"><img src="/mgr/images/btn/btn_directenroll.gif" alt="저장" /></a>
+	</div>
+</div>
+
+
+</body>
+</html>

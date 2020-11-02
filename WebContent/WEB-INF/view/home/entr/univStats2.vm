@@ -1,0 +1,75 @@
+<head>
+	<title>대학원 정보 현황</title>
+	<script type="text/javascript" language="javascript">
+	function search()
+	{
+		goPage(1);
+	}
+	 
+	function goPage(page)
+	{
+		jQuery.post('univStats2_list.ajax.action', 
+				$("#searchForm").formSerialize(), 
+				function(data) {
+        			$("#list").html(data);
+		});
+	}
+	
+	function popupUrl(urlIndex, academy_id)
+	{
+		if(urlIndex<=6) {
+			var num="01";
+		}	else {
+			var num="02";
+		}
+		
+		##현재년도의 공시정보를 보여주기 위하여 1 없앰(2016.03.02-김재현)
+
+		##var link = $("#urlpattern" + urlIndex).val().replace("[SCHCODE]", academy_id).replace("[YYYY]", $("#selectYear").val()-1).replace("[CD]", "02");
+		var link = $("#urlpattern" + urlIndex).val().replace("[SCHCODE]", academy_id).replace("[YYYY]", $("#selectYear").val()).replace("[CD]", "02");
+		
+		var index = link.indexOf("?") + 1;
+		var qri=link.substring(index);
+		
+		dcsMultiTrack('DCS.dcssip','www.academyinfo.go.kr','DCS.dcsuri','/UIPISA/uipnh/unt/ipsrch/UntUnvAcdtSrchPupTab'+num+'.do','DCS.qry',qri,'WT.ti','Offsite Link - academyinfo','WT.sp','academyinfo');
+		
+		##showWin($("#urlpattern" + urlIndex).val().replace("[SCHCODE]", academy_id).replace("[YYYY]", $("#selectYear").val()-1).replace("[YYYY]", $("#selectYear").val()-1), 'overallwin', 1024, 768);
+		
+		##현재년도의 공시정보를 보여주기 위하여 1 없앰(2016.03.02-김재현)
+		
+		##showWin($("#urlpattern" + urlIndex).val().replace("[SCHCODE]", academy_id).replace("[YYYY]", $("#selectYear").val()-1).replace("[CD]", "02"), 'overallwin', 1024, 768);
+		showWin($("#urlpattern" + urlIndex).val().replace("[SCHCODE]", academy_id).replace("[YYYY]", $("#selectYear").val()).replace("[CD]", "02"), 'overallwin', 1024, 768);
+	}
+	
+	$(document).ready(function() {
+		search();
+    });
+	</script>
+</head>
+
+<body id="entr">
+	
+
+<p class="location">
+	<a href="/home/index2.main2.action">대학원 홈</a> <span>></span> <a href="/home/entr/enterGuide2.sub2.action?gnb=22">입학안내</a> <span>></span> <a href="/home/entr/univStats2.sub2.action?gnb=23">대학원 정보 현황</a>
+</p>
+<h3><img src="/home/images3/h3_grad_overview6.gif" alt="대학 정보 현황" /></h3>	
+
+<div class="m_l30 m_b10"> 
+	<span class="bul"><b>기준년도 :</b></span>
+	<select	id="selectYear" name="selectYear" onchange="javascript:search();">
+        <option value="2018" selected>2018년</option>
+		<option value="2017">2017년</option>
+		<option value="2016">2016년</option>	
+##		<option value="2015">2015년</option>
+##		<option value="2014">2014년</option>
+##		<option value="2013">2013년</option>
+	</select>
+	<div class="text1">대학원별 정보 공시는 대학알리미에서 제공됩니다.</div>
+</div>
+
+<div class="m_l20">
+	<div id="list">#parse('home/entr/univStats2_list.vm')</div>
+</div>
+</body>
+</html>

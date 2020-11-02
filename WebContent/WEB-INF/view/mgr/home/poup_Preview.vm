@@ -1,0 +1,24 @@
+
+<script type="text/javascript" language="javascript">
+
+	//디비에 저장된 내용 다운로드
+    function downloadDB(fileGid,fileID)
+    {
+    	document.location.href = 'savedFile_download.json?fileGid=' + fileGid + '&fileID=' + fileID;
+    }
+	
+	//디비에 저장되기전 내용 다운로드
+    function download(srcName)
+	{
+		document.location.href = '/mgr/common/file_download.json?srcName=' + srcName;
+	}
+
+</script>				
+
+	#set($posttion="height:"+$poupInfo.poupHeight+"px;width:"+$poupInfo.poupWidth+"px;top:1px;left:1px")
+	
+    <div class1="div" id="poupNo$poupInfo.poupNum" style="position:fixed;$posttion;"> 
+
+		$poupInfo.skinText
+
+    </div>

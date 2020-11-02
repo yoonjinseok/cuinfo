@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge" >
+<title>사이버대학 FACEBOOK 전체보기</title>
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.2/themes/smoothness/jquery-ui.css">
+<link rel="stylesheet" type="text/css" href="/home/css2/main.css" />
+<style>
+	.fbArea {overflow: auto; padding: 0;margin:20px 20px 5px 20px; width: 100%}
+	.fbContent{width:710px;height:40px;padding-top:2px;float:left;border:1px solid #cccccc;margin:1px;background-color:#ffffff;}
+	.fbLogo	{border: 0px solid red; min-width: 170px; 	height: 40px; text-align: center; float: left;padding: 3px 0 0 0;}
+	.fbTitle{border: 0px solid red; width: 425px; 	height: 40px; line-height:17px; font-family: nanum gothic; font-size: 11px; float: left;padding: 3px 0 0 0;}
+	.fbRegDt{border: 0px solid red; width: 115px; 	height: 40px; line-height:34px; font-family: nanum gothic; font-size: 11px; text-align: center;float:left;padding: 3px 0 0 0;}	
+</style>
+<script type="text/javascript" src="/micro/js/jquery-2.1.3.min.js"></script>
+<script type="text/javascript" src="/micro/js/jquery-ui.js"></script>
+<script>
+	
+	var sampleHtml;
+	
+	$(document).ready(function(){
+		
+		//마우스 우클릭, 드래그, 더블클릭 방지
+		$(document).on("contextmenu", function(){
+			return false;
+		}).on("selectstart", function(){
+			return false;
+		}).on("dragstart", function(){
+			return false;
+		});
+		
+		
+		window.resizeTo(790, screen.height - 100);
+		
+		$("body").css("backgroundColor","#3b5998");
+
+		sampleHtml = $("#sample").html();
+// 		alert("sampleHtml = " + sampleHtml);
+		facebookRssInit();
+	});
+	
+	function facebookRssInit(){
+		
+		jQuery.post("/home/facebookRssAll.json.action",
+			"",
+			function(data){
+				//GUBUN_ID,UNIVERSITYID,UNIVNAME,LOGOUPFILEGID,FACEBOOKURL,FACEBOOKRSSURL
+				list = data;
+				facebookRssInfo();
+		});
+	}
+	
+	function facebookRssInfo(){
+		
+		//list.length 만큼 div 생성하여 영역확보..
+		for(var i=0; i<list.length;i++){
+			//대학별 영역 설정
+			$("#fbArea").append(sampleHtml);
+			$("#fbArea>div[id!=facebookLogo]:eq("+i+")").hide();
+			$("#fbArea>div[id!=facebookLogo]:eq("+i+")").attr("id", "content_" + i);
+			facebookRssGet(i);
+		}
+	}
+	
+	function facebookRssGet(no){
+		
+		//이미지 캐시
+		var img  = new Image();
+		img.src = "/images/univLogo/" + list[no].UNIVERSITYID + ".gif";
+		
+		jQuery.post("/home/facebookRssInfo.json.action",
+				{facebookRssUrl:list[no].FACEBOOKRSSURL},
+				function(data){
+					//title이 없을경우 재호출				
+					if(data.title == null || data.title == "" || data.title == "undefined"){
+						console.log("check = " + list[no].UNIVERSITYID + ":" + list[no].FACEBOOKURL + ":" + list[no].FACEBOOKRSSURL);
+					}else{
+// 						$("#content_"+no+" .fbLogo img").prop("src", "/mgr/common/file_download_id.json?upfileId=" + list[no].LOGOUPFILEGID);
+
+						$("#content_"+no+" .fbLogo img").prop("src", "/images/univLogo/" + list[no].UNIVERSITYID + ".gif");
+						$("#content_"+no+" .fbLogo a").prop("href", list[no].FACEBOOKURL);
+						$("#content_"+no+" .fbTitle a").prop("href", list[no].FACEBOOKURL);
+						$("#content_"+no+" .fbTitle a").text(data.title);
+						$("#content_"+no+" .fbRegDt").text(data.regDt);
+
+						$("#content_"+no).slideDown(1000);
+					}
+			});
+		
+	}
+	
+</script>
+</head>
+<body>
+	<div id="fbArea" class="fbArea">
+		<div id="facebookLogo" style="width: 1; text-align: left; color: white;width: 710px;">
+			<img src="/home/images/bul/facebook1.gif" alt="facebookLogo" style="margin-bottom:10px; background-color: #3b5998;"/>
+		</div>
+	</div>
+	
+	<div style="width: 1; text-align: right; color: white;width: 730px;">
+		<h4>※대학의 페이스북 현황에 따라 최신정보가 표시되지 않을수 있습니다.</h4>
+	</div>
+
+	<div id="sample" style="display: none;">
+		<div class="fbContent" style="opacity: 1;">
+			<div class="fbLogo">
+				<a target="_blank" href="javascript:return false;"><img id="fbLogo" src="" alt="" style="width:136px;height:33px;" /></a>	
+			</div>
+			
+			<div id="fbTitle" class="fbTitle">
+				<a target="_blank" href="javascript:return false;"></a>	
+			</div>
+		
+			<div class="fbRegDt" id="fbRegDt"></div>
+		</div>
+	</div>
+</body>
+</html>

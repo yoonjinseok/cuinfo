@@ -1,0 +1,43 @@
+#if($view_list.size() > 0)
+	<div class="bul2">차시별 강의</div>
+	
+	<table cellspacing="0" cellpadding="0" summary="과정관리"><!-- table_type1 st01 Start -->
+		<caption>과정관리</caption>
+		<colgroup>
+			<col width="7%" />
+			<col width="*%" />
+		</colgroup>
+		<thead>
+			<tr>
+				<th scope="col">차시</th>
+				<th scope="col">강의명</th>
+			</tr>
+		</thead>
+		<tbody>
+
+					
+			#set($groupPre = 0)
+			#foreach($list in $view_list)
+			
+			<tr>
+				<td>#if($groupPre != $!list.groups) $!list.groups #end</td>
+				<td>
+						#if($!list.data && $!list.publicYn == "Y") 
+							<a target="_blank" href="$!list.data"> 
+						#end
+					$!list.title
+						#if($!list.data && $!list.publicYn == "Y") 
+							</a> 
+						#end
+					</td>
+			</tr>
+			#set($groupPre = $!list.groups)
+			#end
+		
+		
+			
+		</tbody>
+	</table>
+	
+#end
+	

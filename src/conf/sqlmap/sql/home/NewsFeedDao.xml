@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="EUC-KR"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="NewsFeedDao">
+
+	<typeAlias alias="newsFeedModel" type="com.cyberup.model.home.NewsFeedModel"/>
+	
+	<select id="isDuplicated" parameterClass="newsFeedModel" resultClass="Integer">
+		    select count(*) from cu_newsfeed
+		    where news_title like #newsTitle#
+		    and news_reg_date = #newsRegDate#
+	</select>
+
+	<select id="selectNewsFeedList" parameterClass="newsFeedModel" resultClass="newsFeedModel">
+		SELECT   a.*
+            FROM 
+            (
+				SELECT  
+						ROW_NUMBER() OVER(ORDER BY NEWS_REG_DATE DESC) as recNum
+                        ,COUNT (*) OVER () as totalCnt
+				        ,NEWS_ID newsId
+				        ,NEWS_TITLE newsTitle
+				        ,NEWS_DESC newsDesc
+				        ,NEWS_LINK newsLink
+				        ,getSip(NEWS_LINK) as sip
+				        ,getUri(NEWS_LINK) as uri
+				        ,getQri(NEWS_LINK) as qri
+				        ,getSp(NEWS_LINK) as sp
+				        ,SHOW_YN showYn
+				        ,REG_DATE regDate
+				        ,MODIFIER modifier
+				        ,MOD_DATE modDate
+				        ,NEWS_REG_DATE newsRegDate
+				        ,CASE WHEN TRUNC(SYSDATE-NEWS_REG_DATE)>1 THEN 'N' ELSE 'Y' END AS newYN
+				FROM CU_NEWSFEED
+				where show_yn = 'Y'
+<!-- 				AND NEWS_REG_DATE IS NOT NULL -->
+				<isNotEmpty property="text">
+					<isEqual property="radio" compareValue="title">
+						and upper(news_title) like upper('%'||#text#||'%')
+					</isEqual>
+					<isEqual property="radio" compareValue="content">
+						and upper(news_desc) like upper('%'||#text#||'%')
+					</isEqual>
+				</isNotEmpty>
+			) a
+        WHERE CEIL (recNum / #showCnt,javaType=Integer#) = #currPage,javaType=Integer#
+        ORDER BY recNum ASC
+	</select>
+	
+	<select id="selectNewsFeedList2" parameterClass="newsFeedModel" resultClass="newsFeedModel">
+		SELECT   a.*
+            FROM 
+            (
+				SELECT  
+						ROW_NUMBER() OVER(ORDER BY NEWS_REG_DATE DESC) as recNum
+                        ,COUNT (*) OVER () as totalCnt
+				        ,NEWS_ID newsId
+				        ,NEWS_TITLE newsTitle
+				        ,NEWS_DESC newsDesc
+				        ,NEWS_LINK newsLink
+				        ,SHOW_YN showYn
+				        ,REG_DATE regDate
+				        ,MODIFIER modifier
+				        ,MOD_DATE modDate
+				        ,NEWS_REG_DATE newsRegDate
+				        ,CASE WHEN TRUNC(SYSDATE-NEWS_REG_DATE)>1 THEN 'N' ELSE 'Y' END AS newYN
+				FROM CU_NEWSFEED
+				where show_yn = 'Y'
+				AND NEWS_REG_DATE IS NOT NULL
+				<isNotEmpty property="text">
+					<isEqual property="radio" compareValue="title">
+						and upper(news_title) like upper('%'||#text#||'%')
+					</isEqual>
+					<isEqual property="radio" compareValue="content">
+						and upper(news_desc) like upper('%'||#text#||'%')
+					</isEqual>
+				</isNotEmpty>
+			) a
+        WHERE CEIL (recNum / #showCnt,javaType=Integer#) = #currPage,javaType=Integer#
+        ORDER BY recNum ASC
+	</select>
+	
+	<update id="newsFeed_delete" parameterClass="newsFeedModel">
+	UPDATE CU_NEWSFEED
+	SET SHOW_YN = 'N'
+		<isNotEmpty property="checkbox">
+			WHERE NEWS_ID IN
+			<iterate property="checkbox" open="(" close=")" conjunction=",">
+				#checkbox[]#
+			</iterate>
+		</isNotEmpty>
+		
+		<isEmpty property="checkbox">
+			WHERE 1=0
+		</isEmpty>
+	
+	</update>
+	
+	
+	<insert id="newsFeed_insert" parameterClass="newsFeedModel">
+		insert into CU_NEWSFEED
+		(
+			NEWS_ID
+			,NEWS_TITLE
+			,NEWS_DESC
+			,NEWS_LINK
+			,SHOW_YN
+			,NEWS_REG_DATE
+			,REG_DATE
+		)
+		values
+		(
+			nvl((select max(news_id) + 1 from cu_newsfeed),1)
+			,#newsTitle#
+			,#newsDesc#
+			,#newsLink#
+			,'Y'
+			,#newsRegDate#
+			,sysdate
+		)
+		
+	</insert>
+	
+</sqlMap>

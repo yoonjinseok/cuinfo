@@ -1,0 +1,270 @@
+<!-- 대학교 현황 -->
+<div class="m_b10">
+	<span class="bul"><b>사이버대학 현황</b></span>
+</div>
+
+<table cellspacing="0" cellpadding="0" class="table_type1 st01 st02" summary="사이버대학 현황" id="table_value"><!-- table_type1 st01 Start -->
+	<caption>사이버대학 현황</caption>
+	<colgroup>
+		<col width="7%"/>
+		<col width="5%"/>
+		<col width="13%"/>
+		<col width="14%"/>
+		<col width="10%"/>
+		<col width="10%"/>
+		<col width="12%"/>
+		<col width="7%"/>
+		<col width="10%"/>
+		<col width="12%"/>
+	</colgroup>
+	<thead>
+		<tr>
+			<th scope="col" rowspan="2" class="first">구분</th>
+			<th scope="col" rowspan="2" colspan="2">설치주체</th>
+			<th scope="col" rowspan="2">대학명</th>
+			<th scope="col" rowspan="2">이사장</th>
+			<th scope="col" rowspan="2">총(학)장</th>
+			<th scope="col" rowspan="2">사이버대학교*<br />(최초개교)</th>
+			<th scope="col" colspan="2">학생정원(명)</th>
+			<th scope="col" rowspan="2">비고<br />(동법인학교)</th>
+		</tr>
+		<tr>
+			<th scope="col">입학정원</th>
+			<th scope="col">편제정원</th>
+		</tr>
+	</thead>
+	<tbody>		
+		#set($spanRow = 0)
+		#set($schoolCnt = 0)
+		#set($inCnt = 0)
+		#set($forCnt = 0)
+		#set($schoolCntT = 0)
+		#set($inCntT = 0)
+		#set($forCntT = 0)
+	#if($statisiticsList.size() != 1)
+		#foreach($stt in $statisiticsList)
+		<tr>
+			
+			#if($velocityCount == 1)
+			<th rowspan="$!stt.UNIVERSITY_CNT">학사<br />과정</th>
+			<th rowspan="$!stt.UNIVERSITY_CNT">학<br />교<br />법<br />인</th>
+			#set($spanRow = $!stt.UNIVERSITY_CNT)
+			#end
+			
+			#if($stt.GUBUN_ID == 52 && $spanRow != $stt.UNIVERSITY_CNT)
+				#set($spanRow = $!stt.UNIVERSITY_CNT)
+			<th  rowspan="$!stt.UNIVERSITY_CNT">전문<br />학사<br />과정</th>
+			<th  rowspan="$!stt.UNIVERSITY_CNT">학<br />교<br />법<br />인</th>
+			#end
+			
+			#if($velocityCount < $statisiticsList.size() - 1)
+			<td>$!stringUtils.replace($!stt.INST_MAINAGENT,"대학","<br/>대학")</td>
+			<td>#if($!stt.UNIV_NAME.length()<11)$!stringUtils.replace($!stt.UNIV_NAME,"대학","<br/>대학")#elseif($!stt.UNIV_NAME.length()==11)$!stringUtils.replace($!stt.UNIV_NAME,"외국어","<br/>외국어")#elseif($!stt.UNIV_NAME.length()==12)$!stringUtils.replace($!stt.UNIV_NAME,"문화","<br/>문화")#else$!stt.UNIV_NAME#end</td>
+			##<td>$!stt.CHARIMAN</td>
+			<td>
+				#foreach($key in $stt.chairman.keySet())
+					#if($math.toNumber($key) > $math.toNumber($sttYear))
+						#break
+					#elseif($math.toNumber($key) == $math.toNumber($sttYear))
+						#set($chairmanName = $stt.chairman.get($key))
+						#break
+					#else
+						#set($chairmanName = $stt.chairman.get($key))
+					#end
+				#end
+				$!chairmanName
+				#set($chairmanName = "")
+			</td>
+			##<td>$!stt.PRINCIPAL</td>
+			<td>
+				#foreach($key in $stt.principal.keySet())
+					#if($math.toNumber($key) > $math.toNumber($sttYear))
+						#break
+					#elseif($math.toNumber($key) == $math.toNumber($sttYear))
+						#set($principalName = $stt.principal.get($key))
+						#break
+					#else
+						#set($principalName = $stt.principal.get($key))
+					#end
+				#end
+				$!principalName
+				#set($principalName = "")
+			</td>
+			<td>$!stt.SUP_OPEN</td>
+			<td>$!stt.STUDENT_IN_CNT</td>
+			<td>$!stt.FORMATION_CNT</td>
+			<td>$!stt.SAME_CORP</td>
+			#elseif($velocityCount == ($statisiticsList.size() - 1))
+				#set($schoolCnt = $!stt.UNIVERSITY_CNT)
+				#set($inCnt = $!stt.STUDENT_IN_CNT)
+				#set($forCnt = $!stt.FORMATION_CNT)
+			#else 
+				#set($schoolCntT = $!stt.UNIVERSITY_CNT)
+				#set($inCntT = $!stt.STUDENT_IN_CNT)
+				#set($forCntT = $!stt.FORMATION_CNT)
+			#end
+		</tr>
+		#end
+	#end
+	</tbody>
+	<tfoot>
+		<tr>
+			<th colspan="7">총 $!{schoolCnt}개교</th>
+			<th>$!inCnt</th>
+			<th>$!forCnt</th>
+			<th class="end">&nbsp;</th>
+		</tr>
+	</tfoot>
+</table><!-- list_type01 End -->
+※ *평생교육 시설에서 고등교육기관으로 전환인가된 연도를 나타냄
+
+<br/>
+<br/>
+<br/>
+
+<div class="m_b10">
+	<span class="bul"><b>원격대학형태의 평생 교육시설 현황</b></span>
+</div>
+
+<div class="m_b30">
+<table cellspacing="0" cellpadding="0" class="table_type1 st01 st02" summary="사이버대학 현황"><!-- table_type1 st01 Start -->
+	<caption>사이버대학 현황</caption>
+	<colgroup>
+		<col width="8%"><col width="6%"><col width="11%"><col width="14%"><col width="10%"><col width="10%"><col width="12%"><col width="7%"><col width="10%"><col width="12%">
+	</colgroup>
+	<thead>
+		<tr>
+			<th scope="col" rowspan="2" class="first">구분</th>
+			<th scope="col" rowspan="2" colspan="2">설치주체</th>
+			<th scope="col" rowspan="2">대학명</th>
+			<th scope="col" rowspan="2">이사장</th>
+			<th scope="col" rowspan="2">총(학)장</th>
+			<th scope="col" rowspan="2">사이버대학교<br />(최초개교)</th>
+			<th scope="col" colspan="2">학생정원(명)</th>
+			<th scope="col" rowspan="2">비고<br />(동법인학교)</th>
+		</tr>
+		<tr>
+			<th scope="col">입학정원</th>
+			<th scope="col">편제정원</th>
+		</tr>
+	</thead>
+	<tbody>		
+		#set($spanRow2 = 0)
+		#set($schoolCnt2 = 0)
+		#set($inCnt2 = 0)
+		#set($forCnt2 = 0)
+	#if($statisiticsList2.size() != 1)
+		#foreach($stt in $statisiticsList2)
+		<tr>
+			#if($velocityCount == 1)
+			<th>학사<br />과정</th>
+			<th>학<br />교<br />법<br />인</th>
+			#set($spanRow2 = $!stt.UNIVERSITY_CNT)
+			#end
+			
+			
+			#if($velocityCount < $statisiticsList2.size() - 1)
+				#if($velocityCount == $spanRow2 + 1)
+				<th>전문<br />학사<br />과정</th>
+				<th>학<br />교<br />법<br />인</th>
+				#end
+			<td>$!stringUtils.replace($!stt.INST_MAINAGENT,"대학","<br/>대학")</td>
+			<td>#if($!stt.UNIV_NAME.length()<11)$!stringUtils.replace($!stt.UNIV_NAME,"대학","<br/>대학")#elseif($!stt.UNIV_NAME.length()==11)$!stringUtils.replace($!stt.UNIV_NAME,"외국어","<br/>외국어")#elseif($!stt.UNIV_NAME.length()==12)$!stringUtils.replace($!stt.UNIV_NAME,"문화","<br/>문화")#else$!stt.UNIV_NAME#end</td>
+			##<td>$!stt.CHARIMAN</td>
+			<td>
+				#foreach($key in $stt.chairman.keySet())
+					#if($math.toNumber($key) > $math.toNumber($sttYear))
+						#break
+					#elseif($math.toNumber($key) == $math.toNumber($sttYear))
+						#set($chairmanName = $stt.chairman.get($key))
+						#break
+					#else
+						#set($chairmanName = $stt.chairman.get($key))
+					#end
+				#end
+				$!chairmanName
+				#set($chairmanName = "")
+			</td>
+			##<td>$!stt.PRINCIPAL</td>
+			<td>
+				#foreach($key in $stt.principal.keySet())
+					#if($math.toNumber($key) > $math.toNumber($sttYear))
+						#break
+					#elseif($math.toNumber($key) == $math.toNumber($sttYear))
+						#set($principalName = $stt.principal.get($key))
+						#break
+					#else
+						#set($principalName = $stt.principal.get($key))
+					#end
+				#end
+				$!principalName
+				#set($principalName = "")
+			</td>
+			<td>$!stt.SUP_OPEN</td>
+			<td>$!stt.STUDENT_IN_CNT</td>
+			<td>$!stt.FORMATION_CNT</td>
+			<td>$!stt.SAME_CORP</td>
+			#elseif($velocityCount == ($statisiticsList2.size() - 1))
+				#set($schoolCnt2 = $!stt.UNIVERSITY_CNT)
+				#set($inCnt2 = $!stt.STUDENT_IN_CNT)
+				#set($forCnt2 = $!stt.FORMATION_CNT)
+			#end
+		</tr>
+		#end
+	#end
+	</tbody>
+	<tfoot>
+		<tr>
+			<th colspan="7">총 $!{schoolCnt2}개교</th>
+			<th>$!inCnt2</th>
+			<th>$!forCnt2</th>
+			<th class="end">&nbsp;</th>
+		</tr>
+	</tfoot>
+	
+</table><!-- list_type01 End -->
+</div>
+	
+
+<table class="table_type02">
+	<colgroup>
+		<col width="65%" /><col width="10%" /><col width="10%" /><col width="15%" />
+	</colgroup>
+	<tr>
+		<td>사이버대학 및 원격대학형태의 평생교육시설 총 $!{schoolCntT}개교</td>
+		<td>$!inCntT</td>
+		<td>$!forCntT</td>
+		<td>&nbsp;</td>
+	</tr>
+</table>
+
+<div class="graphWrap" id="chart_div" style="display: none;">	
+</div>
+	
+<script type="text/javascript">      
+	google.load('visualization', '1', {packages: ['corechart']});
+	function drawVisualization() {
+	  // Create and populate the data table.
+	  var data = google.visualization.arrayToDataTable([
+	    ['Year', '10대초', '20대초', '20대후', '30대', '40대', '50대', '60대']
+    	 ,['2012', 0, 0, 0, 0, 0, 0, 0]
+	  ]);
+
+	// Create and draw the visualization.
+	  new google.visualization.BarChart(document.getElementById('chart_div')).
+	      draw(data,
+	           {'isStacked': true,	           
+	            width:600, height:400,
+	            vAxis: {title: "년도별"},
+	            hAxis: {title: "백분율(%)"}
+	           }
+	      );
+	 }
+	
+	google.setOnLoadCallback(drawVisualization);
+
+</script>
+
+
+					
+		

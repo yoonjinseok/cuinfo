@@ -1,0 +1,39 @@
+<html>
+	<head>
+		<title>
+				웹트렌즈 통계화면으로 이동	
+		</title>
+		<script type="text/javascript" language="javascript">
+			
+			$(document).ready(function(){
+
+			var pop = window.open("about:blank");
+
+			pop.location.href = "http://mywebtrends.co.kr/wrc/bin/OnDemandWRCReport/iZuykEjuTX6.wlp?f1_username=cuinfo&f1_password=cuinfo&template=9zdowdch4vk.wct";
+			
+			/*
+				$("#form").attr("method","post");
+				$("#form").attr("onsubmit","");
+				$("#form").attr("target","_blank");
+				$("#form").attr("action","http://www.mywebtrends.co.kr");
+				$("#form").submit();
+			*/
+			});
+			
+		</script>
+	</head>
+	<body>
+		<div id="location_box"><!-- MainCopyBox  Start -->
+         <h3><img src="/mgr/images/stats/title4.gif" alt="사이트통계" /></h3>
+         <ul class="location">
+        	 <li><a href="/mgr/main.sub.action">Home</a></li>
+        	 <li><a href="/mgr/stats/courseByPeriod.sub.action?gnb=31">통계현황</a></li>
+        	 <li>사이트통계</li>
+         </ul>
+        </div><!-- MainCopyBox  End -->
+
+		<form class="" id="form" name="form" action="#" onsubmit="try{search();}catch(e){alert(e);}return false;">	
+		</form>
+		webtrends ( $!userId )		
+	</body>
+</html>

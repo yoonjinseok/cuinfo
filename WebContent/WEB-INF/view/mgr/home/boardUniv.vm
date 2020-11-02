@@ -1,0 +1,94 @@
+<head>
+	<title>대학행사안내</title>
+	<script type="text/javascript" language="javascript">
+	function search()
+	{
+		goPage(1);
+	}
+	
+	function setRecordCnt(totalCnt, currPage, totalPage, showCnt)
+	{
+		$("#tCnt").text(totalCnt);
+		$("#cPage").text(currPage);
+		$("#tPage").text(totalPage);
+		
+		setPaging($("#pg"), totalCnt, showCnt, currPage);
+	}
+	
+	function goPage(page)
+	{
+		$("#currPage").val(page);
+		
+		jQuery.post('boardUniv_list.ajax.action', 
+				$("#searchForm").formSerialize(), 
+				function(data) {
+        			$("#list").html(data);
+			});
+			
+		document.location.href = "#";
+	}
+	
+	function modify(boardID)
+	{
+		showWin('/mgr/home/boardUniv_modify.pop.action?boardID=' + boardID, 'modwin', 820, 630);
+	}
+	
+	function reg()
+	{
+		showWin('/mgr/home/boardUniv_write.pop.action?gID='+ $("#gubunID").val(), 'regwin', 820, 630);
+	}
+	
+	$(document).ready(function() {
+		search();
+    });
+	
+	</script>
+</head>
+<body>
+<div id="location_box"><!-- MainCopyBox  Start -->
+ <h3><img src="/mgr/images/home/title2.gif" alt="대학행사안내" /></h3>
+ <ul class="location">
+	 <li><a href="/mgr/main.sub.action">Home</a></li>
+	 <li><a href="/mgr/home/newsFeed.sub.action?gnb=41">홈페이지관리</a></li>
+	 <li>대학행사안내</li>
+ </ul>
+</div><!-- MainCopyBox  End -->
+<form class="search_box01" id="searchForm" name="searchForm" action="#" onsubmit="try{search();}catch(e){alert(e);}return false;"><!-- box_type01 Start -->
+<input type="hidden" id="showCnt" name="showCnt" value="15"/>
+<input type="hidden" id="currPage" name="currPage" value="1"/>
+<input type="hidden" id="gubunID" name="gubunID" value="$!gID"/><!-- 게시판 구분 -->
+	<fieldset class="inner">
+		<table cellspacing="0" cellpadding="0" summary="게시판 검색" class="border_none_table">
+			<caption>게시판 검색</caption>
+			<colgroup>
+				<col width="45%"/>
+				<col width="*%"/>
+			</colgroup>
+			<tbody>
+				<tr>
+					<td>
+						<label for="radio-1"><input type="radio" id="rdSearch1" name="rdSearch1" value ="T" title="제목으로 검색" checked/> 제목</label>
+                        <label for="radio-2"><input type="radio" id="rdSearch1" name="rdSearch1" value ="C" title="내용으로 검색"/> 내용</label>
+						<input type="text" id="searchName1" name="searchValue1" size="10" title="검색내용1"/>
+					</td>
+					<td>
+						<label for="radio-3"><input type="radio" id="rdSearch2" name="rdSearch2" value ="N" title="작성자 성명으로 검색" checked /> 작성자명</label>
+						<label for="radio-4"><input type="radio" id="rdSearch2" name="rdSearch2" value ="I" title="작성자 아이디 검색"/> 아이디 </label>
+						<input type="text" id="searchValue2" name="searchValue2" size="10" title="검색내용2"/> 
+						<input type="image" style="width:52px;height:21px;border:0px;" src="/mgr/images/btn/search.gif" alt="검색" />
+					</td>				
+				</tr>
+			</tbody>
+		</table>
+	</fieldset>
+</form><!-- box_type01 End -->
+<div class="list_top01">
+	<span>제목 클릭 시 관리 페이지로 이동됩니다.</span>
+		<span class="f_right">total : <em id="tCnt">0</em>건(<em id="cPage">1</em>/<em id="tPage">15</em>page)</span></div>
+<div id="list">#parse('mgr/home/boardUniv_list.vm')</div>
+<div class="page_num">
+	<div id="pg" name="pg"></div>
+	<a class="f_right" href="javascript:reg();"><img src="/mgr/images/btn/enter.gif" alt="등록" /></a>
+</div>
+</body>
+</html>

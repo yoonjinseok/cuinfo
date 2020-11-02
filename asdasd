@@ -1,0 +1,892 @@
+DEBUG [2014-09-11 14:49:41,046] (GenericConversionService.java[convert]:159) - Converting value '1' of java.lang.String to java.lang.Integer
+DEBUG [2014-09-11 14:49:41,046] (GenericConversionService.java[convert]:186) - Converted to 1
+DEBUG [2014-09-11 14:49:41,046] (GenericConversionService.java[convert]:159) - Converting value '51018000' of java.lang.String to java.lang.String
+DEBUG [2014-09-11 14:49:41,046] (GenericConversionService.java[convert]:186) - Converted to '51018000'
+DEBUG [2014-09-11 14:49:41,046] (GenericConversionService.java[convert]:159) - Converting value '1' of java.lang.String to java.lang.Integer
+DEBUG [2014-09-11 14:49:41,046] (GenericConversionService.java[convert]:186) - Converted to 1
+DEBUG [2014-09-11 14:49:41,062] (AbstractBeanFactory.java[doGetBean]:242) - Returning cached instance of singleton bean 'controllerAspector'
+DEBUG [2014-09-11 14:49:41,077] (AbstractBeanFactory.java[doGetBean]:242) - Returning cached instance of singleton bean 'transactionManager'
+DEBUG [2014-09-11 14:49:41,077] (AbstractPlatformTransactionManager.java[getTransaction]:365) - Creating new transaction with name [com.kocwsystem.service.course.MetaDicService.selectUserUnivInfo]: PROPAGATION_REQUIRED,ISOLATION_DEFAULT; ''
+DEBUG [2014-09-11 14:49:41,077] (DataSourceTransactionManager.java[doBegin]:204) - Acquired Connection [jdbc:oracle:thin:@121.78.115.125:2521:orcl, UserName=KOCWTEST, Oracle JDBC driver] for JDBC transaction
+DEBUG [2014-09-11 14:49:41,077] (DataSourceTransactionManager.java[doBegin]:221) - Switching JDBC Connection [jdbc:oracle:thin:@121.78.115.125:2521:orcl, UserName=KOCWTEST, Oracle JDBC driver] to manual commit
+DEBUG [2014-09-11 14:49:41,077] (JakartaCommonsLoggingImpl.java[debug]:27) - {conn-145021} Connection
+DEBUG [2014-09-11 14:49:41,077] (JakartaCommonsLoggingImpl.java[debug]:27) - {conn-145021} Preparing Statement:    SELECT UNIVERSITY_ID AS universityId,      DP_SEQ as dpSeq,            DP_URL AS univDpUrl      FROM ST_CTR_DATAPROVIDER     WHERE UNIVERSITY_ID = ? AND DP_SEQ = ?   
+DEBUG [2014-09-11 14:49:41,077] (JakartaCommonsLoggingImpl.java[debug]:27) - {pstm-145022} Executing Statement:    SELECT UNIVERSITY_ID AS universityId,      DP_SEQ as dpSeq,            DP_URL AS univDpUrl      FROM ST_CTR_DATAPROVIDER     WHERE UNIVERSITY_ID = ? AND DP_SEQ = ?   
+DEBUG [2014-09-11 14:49:41,077] (JakartaCommonsLoggingImpl.java[debug]:27) - {pstm-145022} Parameters: [51018000, 1]
+DEBUG [2014-09-11 14:49:41,077] (JakartaCommonsLoggingImpl.java[debug]:27) - {pstm-145022} Types: [java.lang.String, java.lang.Integer]
+DEBUG [2014-09-11 14:49:41,077] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145023} ResultSet
+DEBUG [2014-09-11 14:49:41,077] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145023} Header: [UNIVERSITYID, DPSEQ, UNIVDPURL]
+DEBUG [2014-09-11 14:49:41,077] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145023} Result: [51018000, 1, http://203.253.211.77:9090]
+DEBUG [2014-09-11 14:49:41,077] (AbstractPlatformTransactionManager.java[processCommit]:752) - Initiating transaction commit
+DEBUG [2014-09-11 14:49:41,077] (DataSourceTransactionManager.java[doCommit]:264) - Committing JDBC transaction on Connection [jdbc:oracle:thin:@121.78.115.125:2521:orcl, UserName=KOCWTEST, Oracle JDBC driver]
+DEBUG [2014-09-11 14:49:41,077] (DataSourceTransactionManager.java[doCleanupAfterCompletion]:322) - Releasing JDBC Connection [jdbc:oracle:thin:@121.78.115.125:2521:orcl, UserName=KOCWTEST, Oracle JDBC driver] after transaction
+DEBUG [2014-09-11 14:49:41,077] (DataSourceUtils.java[doReleaseConnection]:332) - Returning JDBC Connection to DataSource
+DEBUG [2014-09-11 14:49:41,077] (AbstractBeanFactory.java[doGetBean]:242) - Returning cached instance of singleton bean 'transactionManager'
+DEBUG [2014-09-11 14:49:41,077] (AbstractPlatformTransactionManager.java[getTransaction]:365) - Creating new transaction with name [com.kocwsystem.service.course.MetaDicService.selectViewList]: PROPAGATION_REQUIRED,ISOLATION_DEFAULT; ''
+DEBUG [2014-09-11 14:49:41,077] (DataSourceTransactionManager.java[doBegin]:204) - Acquired Connection [jdbc:oracle:thin:@121.78.115.125:2521:orcl, UserName=KOCWTEST, Oracle JDBC driver] for JDBC transaction
+DEBUG [2014-09-11 14:49:41,077] (DataSourceTransactionManager.java[doBegin]:221) - Switching JDBC Connection [jdbc:oracle:thin:@121.78.115.125:2521:orcl, UserName=KOCWTEST, Oracle JDBC driver] to manual commit
+DEBUG [2014-09-11 14:49:41,077] (JakartaCommonsLoggingImpl.java[debug]:27) - {conn-145024} Connection
+DEBUG [2014-09-11 14:49:41,077] (JakartaCommonsLoggingImpl.java[debug]:27) - {conn-145024} Preparing Statement:    SELECT CODE_ORDER as codeOrder, CODE_NAME as codeName, CODE_VALUE as collType       FROM ST_COM_CODE    WHERE USE_YN = 'Y' AND CODE_GROUP = '548'    ORDER BY codeOrder ASC  
+DEBUG [2014-09-11 14:49:41,077] (JakartaCommonsLoggingImpl.java[debug]:27) - {pstm-145025} Executing Statement:    SELECT CODE_ORDER as codeOrder, CODE_NAME as codeName, CODE_VALUE as collType       FROM ST_COM_CODE    WHERE USE_YN = 'Y' AND CODE_GROUP = '548'    ORDER BY codeOrder ASC  
+DEBUG [2014-09-11 14:49:41,077] (JakartaCommonsLoggingImpl.java[debug]:27) - {pstm-145025} Parameters: []
+DEBUG [2014-09-11 14:49:41,077] (JakartaCommonsLoggingImpl.java[debug]:27) - {pstm-145025} Types: []
+DEBUG [2014-09-11 14:49:41,077] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145026} ResultSet
+DEBUG [2014-09-11 14:49:41,077] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145026} Header: [CODEORDER, CODENAME, COLLTYPE]
+DEBUG [2014-09-11 14:49:41,077] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145026} Result: [1, IR_COURSE_VIEW, C]
+DEBUG [2014-09-11 14:49:41,077] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145026} Result: [2, IR_LECTURE_VIEW, L]
+DEBUG [2014-09-11 14:49:41,077] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145026} Result: [3, IR_TECHNICAL_VIEW, I]
+DEBUG [2014-09-11 14:49:41,077] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145026} Result: [4, IR_CONTRIBUTE_VIEW, B]
+DEBUG [2014-09-11 14:49:41,077] (AbstractPlatformTransactionManager.java[processCommit]:752) - Initiating transaction commit
+DEBUG [2014-09-11 14:49:41,077] (DataSourceTransactionManager.java[doCommit]:264) - Committing JDBC transaction on Connection [jdbc:oracle:thin:@121.78.115.125:2521:orcl, UserName=KOCWTEST, Oracle JDBC driver]
+DEBUG [2014-09-11 14:49:41,093] (DataSourceTransactionManager.java[doCleanupAfterCompletion]:322) - Releasing JDBC Connection [jdbc:oracle:thin:@121.78.115.125:2521:orcl, UserName=KOCWTEST, Oracle JDBC driver] after transaction
+DEBUG [2014-09-11 14:49:41,093] (DataSourceUtils.java[doReleaseConnection]:332) - Returning JDBC Connection to DataSource
+DEBUG [2014-09-11 14:49:41,093] (AbstractBeanFactory.java[doGetBean]:242) - Returning cached instance of singleton bean 'velocityConfigurer'
+DEBUG [2014-09-11 14:49:41,093] (AbstractAutowireCapableBeanFactory.java[invokeInitMethods]:1461) - Invoking afterPropertiesSet() on bean with name 'mgr/course/verification2.sub'
+DEBUG [2014-09-11 14:49:41,093] (AbstractBeanFactory.java[doGetBean]:242) - Returning cached instance of singleton bean 'velocityConfigurer'
+DEBUG [2014-09-11 14:49:41,093] (AbstractAutowireCapableBeanFactory.java[invokeInitMethods]:1461) - Invoking afterPropertiesSet() on bean with name 'mgr/course/verification2.sub.action'
+DEBUG [2014-09-11 14:49:41,093] (AbstractBeanFactory.java[doGetBean]:242) - Returning cached instance of singleton bean 'velocityConfigurer'
+DEBUG [2014-09-11 14:49:41,093] (AbstractAutowireCapableBeanFactory.java[invokeInitMethods]:1461) - Invoking afterPropertiesSet() on bean with name 'mgr/course/verification2.sub'
+WARN IMPORTANT [com/opensymphony/module/sitemesh/filter/PageResponseWrapper.java : getWriter()] setContentType("text/html; charset=UTF-8");
+DEBUG [2014-09-11 14:49:41,234] (AbstractBeanFactory.java[doGetBean]:242) - Returning cached instance of singleton bean 'controllerAspector'
+DEBUG [2014-09-11 14:49:41,234] (AbstractBeanFactory.java[doGetBean]:242) - Returning cached instance of singleton bean 'transactionManager'
+DEBUG [2014-09-11 14:49:41,234] (AbstractPlatformTransactionManager.java[getTransaction]:365) - Creating new transaction with name [com.kocwsystem.service.course.MetaDicService.selectViewList]: PROPAGATION_REQUIRED,ISOLATION_DEFAULT; ''
+DEBUG [2014-09-11 14:49:41,249] (DataSourceTransactionManager.java[doBegin]:204) - Acquired Connection [jdbc:oracle:thin:@121.78.115.125:2521:orcl, UserName=KOCWTEST, Oracle JDBC driver] for JDBC transaction
+DEBUG [2014-09-11 14:49:41,249] (DataSourceTransactionManager.java[doBegin]:221) - Switching JDBC Connection [jdbc:oracle:thin:@121.78.115.125:2521:orcl, UserName=KOCWTEST, Oracle JDBC driver] to manual commit
+DEBUG [2014-09-11 14:49:41,249] (JakartaCommonsLoggingImpl.java[debug]:27) - {conn-145027} Connection
+DEBUG [2014-09-11 14:49:41,249] (JakartaCommonsLoggingImpl.java[debug]:27) - {conn-145027} Preparing Statement:    SELECT CODE_ORDER as codeOrder, CODE_NAME as codeName, CODE_VALUE as collType       FROM ST_COM_CODE    WHERE USE_YN = 'Y' AND CODE_GROUP = '548'    ORDER BY codeOrder ASC  
+DEBUG [2014-09-11 14:49:41,249] (JakartaCommonsLoggingImpl.java[debug]:27) - {pstm-145028} Executing Statement:    SELECT CODE_ORDER as codeOrder, CODE_NAME as codeName, CODE_VALUE as collType       FROM ST_COM_CODE    WHERE USE_YN = 'Y' AND CODE_GROUP = '548'    ORDER BY codeOrder ASC  
+DEBUG [2014-09-11 14:49:41,249] (JakartaCommonsLoggingImpl.java[debug]:27) - {pstm-145028} Parameters: []
+DEBUG [2014-09-11 14:49:41,249] (JakartaCommonsLoggingImpl.java[debug]:27) - {pstm-145028} Types: []
+DEBUG [2014-09-11 14:49:41,249] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145029} ResultSet
+DEBUG [2014-09-11 14:49:41,249] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145029} Header: [CODEORDER, CODENAME, COLLTYPE]
+DEBUG [2014-09-11 14:49:41,249] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145029} Result: [1, IR_COURSE_VIEW, C]
+DEBUG [2014-09-11 14:49:41,249] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145029} Result: [2, IR_LECTURE_VIEW, L]
+DEBUG [2014-09-11 14:49:41,249] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145029} Result: [3, IR_TECHNICAL_VIEW, I]
+DEBUG [2014-09-11 14:49:41,249] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145029} Result: [4, IR_CONTRIBUTE_VIEW, B]
+DEBUG [2014-09-11 14:49:41,249] (AbstractPlatformTransactionManager.java[processCommit]:752) - Initiating transaction commit
+DEBUG [2014-09-11 14:49:41,249] (DataSourceTransactionManager.java[doCommit]:264) - Committing JDBC transaction on Connection [jdbc:oracle:thin:@121.78.115.125:2521:orcl, UserName=KOCWTEST, Oracle JDBC driver]
+DEBUG [2014-09-11 14:49:41,265] (DataSourceTransactionManager.java[doCleanupAfterCompletion]:322) - Releasing JDBC Connection [jdbc:oracle:thin:@121.78.115.125:2521:orcl, UserName=KOCWTEST, Oracle JDBC driver] after transaction
+DEBUG [2014-09-11 14:49:41,265] (DataSourceUtils.java[doReleaseConnection]:332) - Returning JDBC Connection to DataSource
+DEBUG [2014-09-11 14:49:41,265] (AbstractBeanFactory.java[doGetBean]:242) - Returning cached instance of singleton bean 'velocityConfigurer'
+DEBUG [2014-09-11 14:49:41,265] (AbstractAutowireCapableBeanFactory.java[invokeInitMethods]:1461) - Invoking afterPropertiesSet() on bean with name 'mgr/course/verification_meta.ajax'
+DEBUG [2014-09-11 14:49:41,265] (AbstractBeanFactory.java[doGetBean]:242) - Returning cached instance of singleton bean 'velocityConfigurer'
+DEBUG [2014-09-11 14:49:41,265] (AbstractAutowireCapableBeanFactory.java[invokeInitMethods]:1461) - Invoking afterPropertiesSet() on bean with name 'mgr/course/verification_meta.ajax.action'
+DEBUG [2014-09-11 14:49:41,265] (AbstractBeanFactory.java[doGetBean]:242) - Returning cached instance of singleton bean 'velocityConfigurer'
+DEBUG [2014-09-11 14:49:41,265] (AbstractAutowireCapableBeanFactory.java[invokeInitMethods]:1461) - Invoking afterPropertiesSet() on bean with name 'mgr/course/verification_meta.ajax'
+WARN IMPORTANT [com/opensymphony/module/sitemesh/filter/PageResponseWrapper.java : getWriter()] setContentType("text/html; charset=UTF-8");
+DEBUG [2014-09-11 14:49:41,421] (GenericConversionService.java[convert]:159) - Converting value 'IR_COURSE_VIEW' of java.lang.String to java.lang.String
+DEBUG [2014-09-11 14:49:41,421] (GenericConversionService.java[convert]:186) - Converted to 'IR_COURSE_VIEW'
+DEBUG [2014-09-11 14:49:41,421] (GenericConversionService.java[convert]:159) - Converting value 'C' of java.lang.String to java.lang.String
+DEBUG [2014-09-11 14:49:41,421] (GenericConversionService.java[convert]:186) - Converted to 'C'
+DEBUG [2014-09-11 14:49:41,421] (GenericConversionService.java[convert]:159) - Converting value '1' of java.lang.String to java.lang.Integer
+DEBUG [2014-09-11 14:49:41,421] (GenericConversionService.java[convert]:186) - Converted to 1
+DEBUG [2014-09-11 14:49:41,421] (GenericConversionService.java[convert]:159) - Converting value '' of java.lang.String to java.lang.String
+DEBUG [2014-09-11 14:49:41,421] (GenericConversionService.java[convert]:186) - Converted to ''
+DEBUG [2014-09-11 14:49:41,421] (GenericConversionService.java[convert]:159) - Converting value '' of java.lang.String to java.lang.String
+DEBUG [2014-09-11 14:49:41,421] (GenericConversionService.java[convert]:186) - Converted to ''
+DEBUG [2014-09-11 14:49:41,421] (GenericConversionService.java[convert]:159) - Converting value 'http://203.253.211.77:9090' of java.lang.String to java.lang.String
+DEBUG [2014-09-11 14:49:41,421] (GenericConversionService.java[convert]:186) - Converted to 'http://203.253.211.77:9090'
+DEBUG [2014-09-11 14:49:41,421] (GenericConversionService.java[convert]:159) - Converting value '51018000' of java.lang.String to java.lang.String
+DEBUG [2014-09-11 14:49:41,421] (GenericConversionService.java[convert]:186) - Converted to '51018000'
+DEBUG [2014-09-11 14:49:41,421] (GenericConversionService.java[convert]:159) - Converting value 'admin' of java.lang.String to java.lang.String
+DEBUG [2014-09-11 14:49:41,421] (GenericConversionService.java[convert]:186) - Converted to 'admin'
+DEBUG [2014-09-11 14:49:41,421] (GenericConversionService.java[convert]:159) - Converting value '' of java.lang.String to java.lang.String
+DEBUG [2014-09-11 14:49:41,421] (GenericConversionService.java[convert]:186) - Converted to ''
+DEBUG [2014-09-11 14:49:41,421] (GenericConversionService.java[convert]:159) - Converting value '1' of java.lang.String to java.lang.Integer
+DEBUG [2014-09-11 14:49:41,421] (GenericConversionService.java[convert]:186) - Converted to 1
+DEBUG [2014-09-11 14:49:41,421] (AbstractBeanFactory.java[doGetBean]:242) - Returning cached instance of singleton bean 'controllerAspector'
+DEBUG [2014-09-11 14:49:41,437] (AbstractBeanFactory.java[doGetBean]:242) - Returning cached instance of singleton bean 'transactionManager'
+DEBUG [2014-09-11 14:49:41,452] (AbstractPlatformTransactionManager.java[getTransaction]:365) - Creating new transaction with name [com.kocwsystem.service.course.MetaDicService.metaCondition]: PROPAGATION_REQUIRED,ISOLATION_DEFAULT; ''
+DEBUG [2014-09-11 14:49:41,452] (DataSourceTransactionManager.java[doBegin]:204) - Acquired Connection [jdbc:oracle:thin:@121.78.115.125:2521:orcl, UserName=KOCWTEST, Oracle JDBC driver] for JDBC transaction
+DEBUG [2014-09-11 14:49:41,452] (DataSourceTransactionManager.java[doBegin]:221) - Switching JDBC Connection [jdbc:oracle:thin:@121.78.115.125:2521:orcl, UserName=KOCWTEST, Oracle JDBC driver] to manual commit
+DEBUG [2014-09-11 14:49:41,452] (JakartaCommonsLoggingImpl.java[debug]:27) - {conn-145030} Connection
+DEBUG [2014-09-11 14:49:41,452] (JakartaCommonsLoggingImpl.java[debug]:27) - {conn-145030} Preparing Statement:    SELECT ELEMENT as element,     CASE      WHEN INPUT_VALIDCHECK = 'ST' OR INPUT_VALIDCHECK = 'SN'               THEN INPUT_VALIDCHECK || ELEMENT_LENGTH               ELSE INPUT_VALIDCHECK            END as inputCheck,      ALLOW_CODEGROUP as allowCodeGroup,             PK_YN as pkYn,             MANDATORY_YN AS essential,            CASE               WHEN PUBLIC_YN = 'Y' AND PUBMANDATORY_YN = 'Y' THEN 'Y'               ELSE 'N'            END AS publicYn       FROM ST_COM_METADIC       WHERE     USE_YN = 'Y'            AND COLL_TYPE = ?    ORDER BY DECODE(inputCheck,'ZZ',1), SUBSTR(inputCheck,0,2), pkYn DESC, essential DESC, publicYn DESC, DISP_ORDER  
+DEBUG [2014-09-11 14:49:41,452] (JakartaCommonsLoggingImpl.java[debug]:27) - {pstm-145031} Executing Statement:    SELECT ELEMENT as element,     CASE      WHEN INPUT_VALIDCHECK = 'ST' OR INPUT_VALIDCHECK = 'SN'               THEN INPUT_VALIDCHECK || ELEMENT_LENGTH               ELSE INPUT_VALIDCHECK            END as inputCheck,      ALLOW_CODEGROUP as allowCodeGroup,             PK_YN as pkYn,             MANDATORY_YN AS essential,            CASE               WHEN PUBLIC_YN = 'Y' AND PUBMANDATORY_YN = 'Y' THEN 'Y'               ELSE 'N'            END AS publicYn       FROM ST_COM_METADIC       WHERE     USE_YN = 'Y'            AND COLL_TYPE = ?    ORDER BY DECODE(inputCheck,'ZZ',1), SUBSTR(inputCheck,0,2), pkYn DESC, essential DESC, publicYn DESC, DISP_ORDER  
+DEBUG [2014-09-11 14:49:41,452] (JakartaCommonsLoggingImpl.java[debug]:27) - {pstm-145031} Parameters: [C]
+DEBUG [2014-09-11 14:49:41,452] (JakartaCommonsLoggingImpl.java[debug]:27) - {pstm-145031} Types: [java.lang.String]
+DEBUG [2014-09-11 14:49:41,452] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145032} ResultSet
+DEBUG [2014-09-11 14:49:41,452] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145032} Header: [ELEMENT, INPUTCHECK, ALLOWCODEGROUP, PKYN, ESSENTIAL, PUBLICYN]
+DEBUG [2014-09-11 14:49:41,452] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145032} Result: [COURSE_ID, ZZ, null, Y, Y, Y]
+DEBUG [2014-09-11 14:49:41,452] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145032} Result: [UNIVERSITY_ID, ZZ, null, N, Y, Y]
+DEBUG [2014-09-11 14:49:41,452] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145032} Result: [TITLE, ZZ, null, N, Y, Y]
+DEBUG [2014-09-11 14:49:41,452] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145032} Result: [CREDIT, ZZ, null, N, Y, Y]
+DEBUG [2014-09-11 14:49:41,452] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145032} Result: [COURSE_PATH, ZZ, null, N, N, Y]
+DEBUG [2014-09-11 14:49:41,452] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145032} Result: [CLASS1, ZZ, null, N, N, Y]
+DEBUG [2014-09-11 14:49:41,452] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145032} Result: [RIGHTER, ZZ, null, N, N, Y]
+DEBUG [2014-09-11 14:49:41,452] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145032} Result: [TITLE_SEC, ZZ, null, N, N, N]
+DEBUG [2014-09-11 14:49:41,452] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145032} Result: [DESCRIPTION, ZZ, null, N, N, N]
+DEBUG [2014-09-11 14:49:41,468] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145032} Result: [SYLLABUS_PATH, ZZ, null, N, N, N]
+DEBUG [2014-09-11 14:49:41,468] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145032} Result: [MOBILE_PATH, ZZ, null, N, N, N]
+DEBUG [2014-09-11 14:49:41,468] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145032} Result: [CLASS2, ZZ, null, N, N, N]
+DEBUG [2014-09-11 14:49:41,468] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145032} Result: [CLASS3, ZZ, null, N, N, N]
+DEBUG [2014-09-11 14:49:41,468] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145032} Result: [KEYWORD, ZZ, null, N, N, N]
+DEBUG [2014-09-11 14:49:41,468] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145032} Result: [DEPARTMENT_CODE, ZZ, null, N, N, N]
+DEBUG [2014-09-11 14:49:41,468] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145032} Result: [DEPARTMENT, ZZ, null, N, N, N]
+DEBUG [2014-09-11 14:49:41,468] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145032} Result: [ASSESSMENT, ZZ, null, N, N, N]
+DEBUG [2014-09-11 14:49:41,468] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145032} Result: [GRAD, ZZ, null, N, N, N]
+DEBUG [2014-09-11 14:49:41,468] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145032} Result: [TYPE, CD, 101, N, Y, Y]
+DEBUG [2014-09-11 14:49:41,468] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145032} Result: [GRANTS, CD, 559, N, Y, Y]
+DEBUG [2014-09-11 14:49:41,468] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145032} Result: [PUBLIC_YN, CD, 587, N, Y, Y]
+DEBUG [2014-09-11 14:49:41,468] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145032} Result: [LANGUAGE, CD, 563, N, Y, Y]
+DEBUG [2014-09-11 14:49:41,468] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145032} Result: [TERMTH, CD, 573, N, Y, Y]
+DEBUG [2014-09-11 14:49:41,468] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145032} Result: [COURSE_GUBUN, CD, 553, N, Y, N]
+DEBUG [2014-09-11 14:49:41,468] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145032} Result: [RIGHTS, CD, 580, N, N, Y]
+DEBUG [2014-09-11 14:49:41,484] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145032} Result: [REQUIRE_GUBN, CD, 590, N, N, N]
+DEBUG [2014-09-11 14:49:41,484] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145032} Result: [GRADTH, CD, 573, N, N, N]
+DEBUG [2014-09-11 14:49:41,484] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145032} Result: [TERMYEAR, SN4, null, N, Y, Y]
+DEBUG [2014-09-11 14:49:41,484] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145032} Result: [REGIST_DATE, SN14, null, N, Y, Y]
+DEBUG [2014-09-11 14:49:41,499] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145032} Result: [STARTDATE, SN8, null, N, Y, N]
+DEBUG [2014-09-11 14:49:41,499] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145032} Result: [ENDDATE, SN8, null, N, Y, N]
+DEBUG [2014-09-11 14:49:41,499] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145032} Result: [CREATEDATE, SN8, null, N, N, Y]
+DEBUG [2014-09-11 14:49:41,499] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145032} Result: [MODIFY_DATE, SN14, null, N, N, N]
+DEBUG [2014-09-11 14:49:41,499] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145032} Result: [DELETE_DATE, SN14, null, N, N, N]
+DEBUG [2014-09-11 14:49:41,499] (JakartaCommonsLoggingImpl.java[debug]:27) - {conn-145033} Connection
+DEBUG [2014-09-11 14:49:41,499] (JakartaCommonsLoggingImpl.java[debug]:27) - {conn-145033} Preparing Statement:    SELECT CODE_NAME      FROM ST_COM_CODE     WHERE USE_YN = 'Y' AND CODE_GROUP = '596' AND CODE_VALUE = ?  
+DEBUG [2014-09-11 14:49:41,499] (JakartaCommonsLoggingImpl.java[debug]:27) - {pstm-145034} Executing Statement:    SELECT CODE_NAME      FROM ST_COM_CODE     WHERE USE_YN = 'Y' AND CODE_GROUP = '596' AND CODE_VALUE = ?  
+DEBUG [2014-09-11 14:49:41,499] (JakartaCommonsLoggingImpl.java[debug]:27) - {pstm-145034} Parameters: [PK]
+DEBUG [2014-09-11 14:49:41,499] (JakartaCommonsLoggingImpl.java[debug]:27) - {pstm-145034} Types: [java.lang.String]
+DEBUG [2014-09-11 14:49:41,499] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145035} ResultSet
+DEBUG [2014-09-11 14:49:41,499] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145035} Header: [CODE_NAME]
+DEBUG [2014-09-11 14:49:41,499] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145035} Result: [PK 중복 여부]
+metaVerification url : http://203.253.211.77:9090/validationMetaXml.jsp?viewNm=IR_COURSE_VIEW&columnNm=COURSE_ID&typeGb=PK&xmlTagNm=PK&univId=51018000&chkSum=198904852&version=1
+DEBUG [2014-09-11 14:49:41,781] (JakartaCommonsLoggingImpl.java[debug]:27) - {conn-145036} Connection
+DEBUG [2014-09-11 14:49:41,781] (JakartaCommonsLoggingImpl.java[debug]:27) - {conn-145036} Preparing Statement:    SELECT CODE_NAME      FROM ST_COM_CODE     WHERE USE_YN = 'Y' AND CODE_GROUP = '596' AND CODE_VALUE = ?  
+DEBUG [2014-09-11 14:49:41,781] (JakartaCommonsLoggingImpl.java[debug]:27) - {pstm-145037} Executing Statement:    SELECT CODE_NAME      FROM ST_COM_CODE     WHERE USE_YN = 'Y' AND CODE_GROUP = '596' AND CODE_VALUE = ?  
+DEBUG [2014-09-11 14:49:41,781] (JakartaCommonsLoggingImpl.java[debug]:27) - {pstm-145037} Parameters: [PK]
+DEBUG [2014-09-11 14:49:41,781] (JakartaCommonsLoggingImpl.java[debug]:27) - {pstm-145037} Types: [java.lang.String]
+DEBUG [2014-09-11 14:49:41,796] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145038} ResultSet
+DEBUG [2014-09-11 14:49:41,796] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145038} Header: [CODE_NAME]
+DEBUG [2014-09-11 14:49:41,796] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145038} Result: [PK 중복 여부]
+metaVerification url : http://203.253.211.77:9090/validationMetaXml.jsp?viewNm=IR_COURSE_VIEW&columnNm=COURSE_ID&xmlTagNm=essential&univId=51018000&chkSum=198904852&version=1
+metaVerification url : http://203.253.211.77:9090/validationMetaXml.jsp?viewNm=IR_COURSE_VIEW&columnNm=UNIVERSITY_ID&xmlTagNm=essential&univId=51018000&chkSum=198904852&version=1
+metaVerification url : http://203.253.211.77:9090/validationMetaXml.jsp?viewNm=IR_COURSE_VIEW&columnNm=TITLE&xmlTagNm=essential&univId=51018000&chkSum=198904852&version=1
+metaVerification url : http://203.253.211.77:9090/validationMetaXml.jsp?viewNm=IR_COURSE_VIEW&columnNm=CREDIT&xmlTagNm=essential&univId=51018000&chkSum=198904852&version=1
+DEBUG [2014-09-11 14:49:42,546] (JakartaCommonsLoggingImpl.java[debug]:27) - {conn-145039} Connection
+DEBUG [2014-09-11 14:49:42,546] (JakartaCommonsLoggingImpl.java[debug]:27) - {conn-145039} Preparing Statement:    SELECT CODE_NAME      FROM ST_COM_CODE     WHERE USE_YN = 'Y' AND CODE_GROUP = '596' AND CODE_VALUE = ?  
+DEBUG [2014-09-11 14:49:42,546] (JakartaCommonsLoggingImpl.java[debug]:27) - {pstm-145040} Executing Statement:    SELECT CODE_NAME      FROM ST_COM_CODE     WHERE USE_YN = 'Y' AND CODE_GROUP = '596' AND CODE_VALUE = ?  
+DEBUG [2014-09-11 14:49:42,546] (JakartaCommonsLoggingImpl.java[debug]:27) - {pstm-145040} Parameters: [CD]
+DEBUG [2014-09-11 14:49:42,546] (JakartaCommonsLoggingImpl.java[debug]:27) - {pstm-145040} Types: [java.lang.String]
+DEBUG [2014-09-11 14:49:42,562] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145041} ResultSet
+DEBUG [2014-09-11 14:49:42,562] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145041} Header: [CODE_NAME]
+DEBUG [2014-09-11 14:49:42,562] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145041} Result: [허용 코드 체크]
+DEBUG [2014-09-11 14:49:42,562] (JakartaCommonsLoggingImpl.java[debug]:27) - {conn-145042} Connection
+DEBUG [2014-09-11 14:49:42,562] (JakartaCommonsLoggingImpl.java[debug]:27) - {conn-145042} Preparing Statement:    SELECT CODE_VALUE      FROM ST_COM_CODE     WHERE USE_YN = 'Y' AND CODE_GROUP = ?  
+DEBUG [2014-09-11 14:49:42,562] (JakartaCommonsLoggingImpl.java[debug]:27) - {pstm-145043} Executing Statement:    SELECT CODE_VALUE      FROM ST_COM_CODE     WHERE USE_YN = 'Y' AND CODE_GROUP = ?  
+DEBUG [2014-09-11 14:49:42,562] (JakartaCommonsLoggingImpl.java[debug]:27) - {pstm-145043} Parameters: [101]
+DEBUG [2014-09-11 14:49:42,562] (JakartaCommonsLoggingImpl.java[debug]:27) - {pstm-145043} Types: [java.lang.String]
+DEBUG [2014-09-11 14:49:42,562] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145044} ResultSet
+DEBUG [2014-09-11 14:49:42,562] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145044} Header: [CODE_VALUE]
+DEBUG [2014-09-11 14:49:42,562] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145044} Result: [R]
+DEBUG [2014-09-11 14:49:42,562] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145044} Result: [F]
+metaVerification url : http://203.253.211.77:9090/validationMetaXml.jsp?viewNm=IR_COURSE_VIEW&columnNm=TYPE&xmlTagNm=CD&univId=51018000&chkSum=198904852&version=1
+DEBUG [2014-09-11 14:49:42,750] (JakartaCommonsLoggingImpl.java[debug]:27) - {conn-145045} Connection
+DEBUG [2014-09-11 14:49:42,750] (JakartaCommonsLoggingImpl.java[debug]:27) - {conn-145045} Preparing Statement:    SELECT CODE_NAME      FROM ST_COM_CODE     WHERE USE_YN = 'Y' AND CODE_GROUP = '596' AND CODE_VALUE = ?  
+DEBUG [2014-09-11 14:49:42,750] (JakartaCommonsLoggingImpl.java[debug]:27) - {pstm-145046} Executing Statement:    SELECT CODE_NAME      FROM ST_COM_CODE     WHERE USE_YN = 'Y' AND CODE_GROUP = '596' AND CODE_VALUE = ?  
+DEBUG [2014-09-11 14:49:42,750] (JakartaCommonsLoggingImpl.java[debug]:27) - {pstm-145046} Parameters: [CD]
+DEBUG [2014-09-11 14:49:42,750] (JakartaCommonsLoggingImpl.java[debug]:27) - {pstm-145046} Types: [java.lang.String]
+DEBUG [2014-09-11 14:49:42,765] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145047} ResultSet
+DEBUG [2014-09-11 14:49:42,765] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145047} Header: [CODE_NAME]
+DEBUG [2014-09-11 14:49:42,765] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145047} Result: [허용 코드 체크]
+DEBUG [2014-09-11 14:49:42,765] (JakartaCommonsLoggingImpl.java[debug]:27) - {conn-145048} Connection
+DEBUG [2014-09-11 14:49:42,765] (JakartaCommonsLoggingImpl.java[debug]:27) - {conn-145048} Preparing Statement:    SELECT CODE_VALUE      FROM ST_COM_CODE     WHERE USE_YN = 'Y' AND CODE_GROUP = ?  
+DEBUG [2014-09-11 14:49:42,765] (JakartaCommonsLoggingImpl.java[debug]:27) - {pstm-145049} Executing Statement:    SELECT CODE_VALUE      FROM ST_COM_CODE     WHERE USE_YN = 'Y' AND CODE_GROUP = ?  
+DEBUG [2014-09-11 14:49:42,765] (JakartaCommonsLoggingImpl.java[debug]:27) - {pstm-145049} Parameters: [559]
+DEBUG [2014-09-11 14:49:42,765] (JakartaCommonsLoggingImpl.java[debug]:27) - {pstm-145049} Types: [java.lang.String]
+DEBUG [2014-09-11 14:49:42,765] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145050} ResultSet
+DEBUG [2014-09-11 14:49:42,765] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145050} Header: [CODE_VALUE]
+DEBUG [2014-09-11 14:49:42,765] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145050} Result: [P]
+DEBUG [2014-09-11 14:49:42,765] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145050} Result: [N]
+metaVerification url : http://203.253.211.77:9090/validationMetaXml.jsp?viewNm=IR_COURSE_VIEW&columnNm=GRANTS&xmlTagNm=CD&univId=51018000&chkSum=198904852&version=1
+DEBUG [2014-09-11 14:49:42,937] (JakartaCommonsLoggingImpl.java[debug]:27) - {conn-145051} Connection
+DEBUG [2014-09-11 14:49:42,937] (JakartaCommonsLoggingImpl.java[debug]:27) - {conn-145051} Preparing Statement:    SELECT CODE_NAME      FROM ST_COM_CODE     WHERE USE_YN = 'Y' AND CODE_GROUP = '596' AND CODE_VALUE = ?  
+DEBUG [2014-09-11 14:49:42,937] (JakartaCommonsLoggingImpl.java[debug]:27) - {pstm-145052} Executing Statement:    SELECT CODE_NAME      FROM ST_COM_CODE     WHERE USE_YN = 'Y' AND CODE_GROUP = '596' AND CODE_VALUE = ?  
+DEBUG [2014-09-11 14:49:42,937] (JakartaCommonsLoggingImpl.java[debug]:27) - {pstm-145052} Parameters: [CD]
+DEBUG [2014-09-11 14:49:42,937] (JakartaCommonsLoggingImpl.java[debug]:27) - {pstm-145052} Types: [java.lang.String]
+DEBUG [2014-09-11 14:49:42,953] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145053} ResultSet
+DEBUG [2014-09-11 14:49:42,953] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145053} Header: [CODE_NAME]
+DEBUG [2014-09-11 14:49:42,953] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145053} Result: [허용 코드 체크]
+DEBUG [2014-09-11 14:49:42,953] (JakartaCommonsLoggingImpl.java[debug]:27) - {conn-145054} Connection
+DEBUG [2014-09-11 14:49:42,953] (JakartaCommonsLoggingImpl.java[debug]:27) - {conn-145054} Preparing Statement:    SELECT CODE_VALUE      FROM ST_COM_CODE     WHERE USE_YN = 'Y' AND CODE_GROUP = ?  
+DEBUG [2014-09-11 14:49:42,953] (JakartaCommonsLoggingImpl.java[debug]:27) - {pstm-145055} Executing Statement:    SELECT CODE_VALUE      FROM ST_COM_CODE     WHERE USE_YN = 'Y' AND CODE_GROUP = ?  
+DEBUG [2014-09-11 14:49:42,953] (JakartaCommonsLoggingImpl.java[debug]:27) - {pstm-145055} Parameters: [587]
+DEBUG [2014-09-11 14:49:42,953] (JakartaCommonsLoggingImpl.java[debug]:27) - {pstm-145055} Types: [java.lang.String]
+DEBUG [2014-09-11 14:49:42,953] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145056} ResultSet
+DEBUG [2014-09-11 14:49:42,953] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145056} Header: [CODE_VALUE]
+DEBUG [2014-09-11 14:49:42,953] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145056} Result: [Y]
+DEBUG [2014-09-11 14:49:42,953] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145056} Result: [N]
+metaVerification url : http://203.253.211.77:9090/validationMetaXml.jsp?viewNm=IR_COURSE_VIEW&columnNm=PUBLIC_YN&xmlTagNm=CD&univId=51018000&chkSum=198904852&version=1
+DEBUG [2014-09-11 14:49:43,140] (JakartaCommonsLoggingImpl.java[debug]:27) - {conn-145057} Connection
+DEBUG [2014-09-11 14:49:43,140] (JakartaCommonsLoggingImpl.java[debug]:27) - {conn-145057} Preparing Statement:    SELECT CODE_NAME      FROM ST_COM_CODE     WHERE USE_YN = 'Y' AND CODE_GROUP = '596' AND CODE_VALUE = ?  
+DEBUG [2014-09-11 14:49:43,140] (JakartaCommonsLoggingImpl.java[debug]:27) - {pstm-145058} Executing Statement:    SELECT CODE_NAME      FROM ST_COM_CODE     WHERE USE_YN = 'Y' AND CODE_GROUP = '596' AND CODE_VALUE = ?  
+DEBUG [2014-09-11 14:49:43,140] (JakartaCommonsLoggingImpl.java[debug]:27) - {pstm-145058} Parameters: [CD]
+DEBUG [2014-09-11 14:49:43,140] (JakartaCommonsLoggingImpl.java[debug]:27) - {pstm-145058} Types: [java.lang.String]
+DEBUG [2014-09-11 14:49:43,156] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145059} ResultSet
+DEBUG [2014-09-11 14:49:43,156] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145059} Header: [CODE_NAME]
+DEBUG [2014-09-11 14:49:43,156] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145059} Result: [허용 코드 체크]
+DEBUG [2014-09-11 14:49:43,156] (JakartaCommonsLoggingImpl.java[debug]:27) - {conn-145060} Connection
+DEBUG [2014-09-11 14:49:43,156] (JakartaCommonsLoggingImpl.java[debug]:27) - {conn-145060} Preparing Statement:    SELECT CODE_VALUE      FROM ST_COM_CODE     WHERE USE_YN = 'Y' AND CODE_GROUP = ?  
+DEBUG [2014-09-11 14:49:43,156] (JakartaCommonsLoggingImpl.java[debug]:27) - {pstm-145061} Executing Statement:    SELECT CODE_VALUE      FROM ST_COM_CODE     WHERE USE_YN = 'Y' AND CODE_GROUP = ?  
+DEBUG [2014-09-11 14:49:43,156] (JakartaCommonsLoggingImpl.java[debug]:27) - {pstm-145061} Parameters: [563]
+DEBUG [2014-09-11 14:49:43,156] (JakartaCommonsLoggingImpl.java[debug]:27) - {pstm-145061} Types: [java.lang.String]
+DEBUG [2014-09-11 14:49:43,156] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145062} ResultSet
+DEBUG [2014-09-11 14:49:43,156] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145062} Header: [CODE_VALUE]
+DEBUG [2014-09-11 14:49:43,156] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145062} Result: [kor]
+DEBUG [2014-09-11 14:49:43,156] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145062} Result: [eng]
+DEBUG [2014-09-11 14:49:43,156] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145062} Result: [jpn]
+DEBUG [2014-09-11 14:49:43,156] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145062} Result: [ger]
+DEBUG [2014-09-11 14:49:43,156] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145062} Result: [fre]
+DEBUG [2014-09-11 14:49:43,172] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145062} Result: [spa]
+DEBUG [2014-09-11 14:49:43,172] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145062} Result: [chi]
+DEBUG [2014-09-11 14:49:43,172] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145062} Result: [rus]
+DEBUG [2014-09-11 14:49:43,172] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145062} Result: [und]
+DEBUG [2014-09-11 14:49:43,172] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145062} Result: [mnc]
+DEBUG [2014-09-11 14:49:43,187] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145062} Result: [mon]
+DEBUG [2014-09-11 14:49:43,203] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145062} Result: [mul]
+DEBUG [2014-09-11 14:49:43,203] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145062} Result: [enm]
+DEBUG [2014-09-11 14:49:43,203] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145062} Result: [itar]
+DEBUG [2014-09-11 14:49:43,203] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145062} Result: [por]
+metaVerification url : http://203.253.211.77:9090/validationMetaXml.jsp?viewNm=IR_COURSE_VIEW&columnNm=LANGUAGE&xmlTagNm=CD&univId=51018000&chkSum=198904852&version=1
+DEBUG [2014-09-11 14:49:43,344] (JakartaCommonsLoggingImpl.java[debug]:27) - {conn-145063} Connection
+DEBUG [2014-09-11 14:49:43,344] (JakartaCommonsLoggingImpl.java[debug]:27) - {conn-145063} Preparing Statement:    SELECT CODE_NAME      FROM ST_COM_CODE     WHERE USE_YN = 'Y' AND CODE_GROUP = '596' AND CODE_VALUE = ?  
+DEBUG [2014-09-11 14:49:43,344] (JakartaCommonsLoggingImpl.java[debug]:27) - {pstm-145064} Executing Statement:    SELECT CODE_NAME      FROM ST_COM_CODE     WHERE USE_YN = 'Y' AND CODE_GROUP = '596' AND CODE_VALUE = ?  
+DEBUG [2014-09-11 14:49:43,344] (JakartaCommonsLoggingImpl.java[debug]:27) - {pstm-145064} Parameters: [CD]
+DEBUG [2014-09-11 14:49:43,344] (JakartaCommonsLoggingImpl.java[debug]:27) - {pstm-145064} Types: [java.lang.String]
+DEBUG [2014-09-11 14:49:43,359] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145065} ResultSet
+DEBUG [2014-09-11 14:49:43,359] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145065} Header: [CODE_NAME]
+DEBUG [2014-09-11 14:49:43,359] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145065} Result: [허용 코드 체크]
+DEBUG [2014-09-11 14:49:43,359] (JakartaCommonsLoggingImpl.java[debug]:27) - {conn-145066} Connection
+DEBUG [2014-09-11 14:49:43,359] (JakartaCommonsLoggingImpl.java[debug]:27) - {conn-145066} Preparing Statement:    SELECT CODE_VALUE      FROM ST_COM_CODE     WHERE USE_YN = 'Y' AND CODE_GROUP = ?  
+DEBUG [2014-09-11 14:49:43,359] (JakartaCommonsLoggingImpl.java[debug]:27) - {pstm-145067} Executing Statement:    SELECT CODE_VALUE      FROM ST_COM_CODE     WHERE USE_YN = 'Y' AND CODE_GROUP = ?  
+DEBUG [2014-09-11 14:49:43,359] (JakartaCommonsLoggingImpl.java[debug]:27) - {pstm-145067} Parameters: [573]
+DEBUG [2014-09-11 14:49:43,359] (JakartaCommonsLoggingImpl.java[debug]:27) - {pstm-145067} Types: [java.lang.String]
+DEBUG [2014-09-11 14:49:43,359] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145068} ResultSet
+DEBUG [2014-09-11 14:49:43,359] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145068} Header: [CODE_VALUE]
+DEBUG [2014-09-11 14:49:43,359] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145068} Result: [0]
+DEBUG [2014-09-11 14:49:43,359] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145068} Result: [1]
+DEBUG [2014-09-11 14:49:43,359] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145068} Result: [2]
+DEBUG [2014-09-11 14:49:43,375] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145068} Result: [3]
+DEBUG [2014-09-11 14:49:43,375] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145068} Result: [4]
+metaVerification url : http://203.253.211.77:9090/validationMetaXml.jsp?viewNm=IR_COURSE_VIEW&columnNm=TERMTH&xmlTagNm=CD&univId=51018000&chkSum=198904852&version=1
+DEBUG [2014-09-11 14:49:43,562] (JakartaCommonsLoggingImpl.java[debug]:27) - {conn-145069} Connection
+DEBUG [2014-09-11 14:49:43,562] (JakartaCommonsLoggingImpl.java[debug]:27) - {conn-145069} Preparing Statement:    SELECT CODE_NAME      FROM ST_COM_CODE     WHERE USE_YN = 'Y' AND CODE_GROUP = '596' AND CODE_VALUE = ?  
+DEBUG [2014-09-11 14:49:43,562] (JakartaCommonsLoggingImpl.java[debug]:27) - {pstm-145070} Executing Statement:    SELECT CODE_NAME      FROM ST_COM_CODE     WHERE USE_YN = 'Y' AND CODE_GROUP = '596' AND CODE_VALUE = ?  
+DEBUG [2014-09-11 14:49:43,562] (JakartaCommonsLoggingImpl.java[debug]:27) - {pstm-145070} Parameters: [CD]
+DEBUG [2014-09-11 14:49:43,562] (JakartaCommonsLoggingImpl.java[debug]:27) - {pstm-145070} Types: [java.lang.String]
+DEBUG [2014-09-11 14:49:43,578] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145071} ResultSet
+DEBUG [2014-09-11 14:49:43,578] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145071} Header: [CODE_NAME]
+DEBUG [2014-09-11 14:49:43,578] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145071} Result: [허용 코드 체크]
+DEBUG [2014-09-11 14:49:43,578] (JakartaCommonsLoggingImpl.java[debug]:27) - {conn-145072} Connection
+DEBUG [2014-09-11 14:49:43,578] (JakartaCommonsLoggingImpl.java[debug]:27) - {conn-145072} Preparing Statement:    SELECT CODE_VALUE      FROM ST_COM_CODE     WHERE USE_YN = 'Y' AND CODE_GROUP = ?  
+DEBUG [2014-09-11 14:49:43,578] (JakartaCommonsLoggingImpl.java[debug]:27) - {pstm-145073} Executing Statement:    SELECT CODE_VALUE      FROM ST_COM_CODE     WHERE USE_YN = 'Y' AND CODE_GROUP = ?  
+DEBUG [2014-09-11 14:49:43,578] (JakartaCommonsLoggingImpl.java[debug]:27) - {pstm-145073} Parameters: [553]
+DEBUG [2014-09-11 14:49:43,578] (JakartaCommonsLoggingImpl.java[debug]:27) - {pstm-145073} Types: [java.lang.String]
+DEBUG [2014-09-11 14:49:43,578] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145074} ResultSet
+DEBUG [2014-09-11 14:49:43,578] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145074} Header: [CODE_VALUE]
+DEBUG [2014-09-11 14:49:43,578] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145074} Result: [E]
+DEBUG [2014-09-11 14:49:43,578] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145074} Result: [K]
+metaVerification url : http://203.253.211.77:9090/validationMetaXml.jsp?viewNm=IR_COURSE_VIEW&columnNm=COURSE_GUBUN&xmlTagNm=CD&univId=51018000&chkSum=198904852&version=1
+DEBUG [2014-09-11 14:49:43,750] (JakartaCommonsLoggingImpl.java[debug]:27) - {conn-145075} Connection
+DEBUG [2014-09-11 14:49:43,750] (JakartaCommonsLoggingImpl.java[debug]:27) - {conn-145075} Preparing Statement:    SELECT CODE_NAME      FROM ST_COM_CODE     WHERE USE_YN = 'Y' AND CODE_GROUP = '596' AND CODE_VALUE = ?  
+DEBUG [2014-09-11 14:49:43,750] (JakartaCommonsLoggingImpl.java[debug]:27) - {pstm-145076} Executing Statement:    SELECT CODE_NAME      FROM ST_COM_CODE     WHERE USE_YN = 'Y' AND CODE_GROUP = '596' AND CODE_VALUE = ?  
+DEBUG [2014-09-11 14:49:43,750] (JakartaCommonsLoggingImpl.java[debug]:27) - {pstm-145076} Parameters: [CD]
+DEBUG [2014-09-11 14:49:43,750] (JakartaCommonsLoggingImpl.java[debug]:27) - {pstm-145076} Types: [java.lang.String]
+DEBUG [2014-09-11 14:49:43,750] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145077} ResultSet
+DEBUG [2014-09-11 14:49:43,750] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145077} Header: [CODE_NAME]
+DEBUG [2014-09-11 14:49:43,750] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145077} Result: [허용 코드 체크]
+DEBUG [2014-09-11 14:49:43,750] (JakartaCommonsLoggingImpl.java[debug]:27) - {conn-145078} Connection
+DEBUG [2014-09-11 14:49:43,750] (JakartaCommonsLoggingImpl.java[debug]:27) - {conn-145078} Preparing Statement:    SELECT CODE_VALUE      FROM ST_COM_CODE     WHERE USE_YN = 'Y' AND CODE_GROUP = ?  
+DEBUG [2014-09-11 14:49:43,750] (JakartaCommonsLoggingImpl.java[debug]:27) - {pstm-145079} Executing Statement:    SELECT CODE_VALUE      FROM ST_COM_CODE     WHERE USE_YN = 'Y' AND CODE_GROUP = ?  
+DEBUG [2014-09-11 14:49:43,750] (JakartaCommonsLoggingImpl.java[debug]:27) - {pstm-145079} Parameters: [580]
+DEBUG [2014-09-11 14:49:43,750] (JakartaCommonsLoggingImpl.java[debug]:27) - {pstm-145079} Types: [java.lang.String]
+DEBUG [2014-09-11 14:49:43,766] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145080} ResultSet
+DEBUG [2014-09-11 14:49:43,766] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145080} Header: [CODE_VALUE]
+DEBUG [2014-09-11 14:49:43,766] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145080} Result: [BY]
+DEBUG [2014-09-11 14:49:43,766] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145080} Result: [BY-ND]
+DEBUG [2014-09-11 14:49:43,766] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145080} Result: [BY-SA]
+DEBUG [2014-09-11 14:49:43,766] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145080} Result: [BY-NC]
+DEBUG [2014-09-11 14:49:43,766] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145080} Result: [BY-NC-ND]
+DEBUG [2014-09-11 14:49:43,766] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145080} Result: [BY-NC-SA]
+metaVerification url : http://203.253.211.77:9090/validationMetaXml.jsp?viewNm=IR_COURSE_VIEW&columnNm=RIGHTS&xmlTagNm=CD&univId=51018000&chkSum=198904852&version=1
+DEBUG [2014-09-11 14:49:43,969] (JakartaCommonsLoggingImpl.java[debug]:27) - {conn-145081} Connection
+DEBUG [2014-09-11 14:49:43,969] (JakartaCommonsLoggingImpl.java[debug]:27) - {conn-145081} Preparing Statement:    SELECT CODE_NAME      FROM ST_COM_CODE     WHERE USE_YN = 'Y' AND CODE_GROUP = '596' AND CODE_VALUE = ?  
+DEBUG [2014-09-11 14:49:43,969] (JakartaCommonsLoggingImpl.java[debug]:27) - {pstm-145082} Executing Statement:    SELECT CODE_NAME      FROM ST_COM_CODE     WHERE USE_YN = 'Y' AND CODE_GROUP = '596' AND CODE_VALUE = ?  
+DEBUG [2014-09-11 14:49:43,969] (JakartaCommonsLoggingImpl.java[debug]:27) - {pstm-145082} Parameters: [CD]
+DEBUG [2014-09-11 14:49:43,969] (JakartaCommonsLoggingImpl.java[debug]:27) - {pstm-145082} Types: [java.lang.String]
+DEBUG [2014-09-11 14:49:43,969] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145083} ResultSet
+DEBUG [2014-09-11 14:49:43,969] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145083} Header: [CODE_NAME]
+DEBUG [2014-09-11 14:49:43,969] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145083} Result: [허용 코드 체크]
+DEBUG [2014-09-11 14:49:43,969] (JakartaCommonsLoggingImpl.java[debug]:27) - {conn-145084} Connection
+DEBUG [2014-09-11 14:49:43,969] (JakartaCommonsLoggingImpl.java[debug]:27) - {conn-145084} Preparing Statement:    SELECT CODE_VALUE      FROM ST_COM_CODE     WHERE USE_YN = 'Y' AND CODE_GROUP = ?  
+DEBUG [2014-09-11 14:49:43,969] (JakartaCommonsLoggingImpl.java[debug]:27) - {pstm-145085} Executing Statement:    SELECT CODE_VALUE      FROM ST_COM_CODE     WHERE USE_YN = 'Y' AND CODE_GROUP = ?  
+DEBUG [2014-09-11 14:49:43,969] (JakartaCommonsLoggingImpl.java[debug]:27) - {pstm-145085} Parameters: [590]
+DEBUG [2014-09-11 14:49:43,969] (JakartaCommonsLoggingImpl.java[debug]:27) - {pstm-145085} Types: [java.lang.String]
+DEBUG [2014-09-11 14:49:43,985] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145086} ResultSet
+DEBUG [2014-09-11 14:49:43,985] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145086} Header: [CODE_VALUE]
+DEBUG [2014-09-11 14:49:43,985] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145086} Result: [M]
+DEBUG [2014-09-11 14:49:43,985] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145086} Result: [R]
+DEBUG [2014-09-11 14:49:43,985] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145086} Result: [E]
+DEBUG [2014-09-11 14:49:43,985] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145086} Result: [C]
+DEBUG [2014-09-11 14:49:43,985] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145086} Result: [Z]
+metaVerification url : http://203.253.211.77:9090/validationMetaXml.jsp?viewNm=IR_COURSE_VIEW&columnNm=REQUIRE_GUBN&xmlTagNm=CD&univId=51018000&chkSum=198904852&version=1
+DEBUG [2014-09-11 14:49:44,156] (JakartaCommonsLoggingImpl.java[debug]:27) - {conn-145087} Connection
+DEBUG [2014-09-11 14:49:44,156] (JakartaCommonsLoggingImpl.java[debug]:27) - {conn-145087} Preparing Statement:    SELECT CODE_NAME      FROM ST_COM_CODE     WHERE USE_YN = 'Y' AND CODE_GROUP = '596' AND CODE_VALUE = ?  
+DEBUG [2014-09-11 14:49:44,156] (JakartaCommonsLoggingImpl.java[debug]:27) - {pstm-145088} Executing Statement:    SELECT CODE_NAME      FROM ST_COM_CODE     WHERE USE_YN = 'Y' AND CODE_GROUP = '596' AND CODE_VALUE = ?  
+DEBUG [2014-09-11 14:49:44,156] (JakartaCommonsLoggingImpl.java[debug]:27) - {pstm-145088} Parameters: [CD]
+DEBUG [2014-09-11 14:49:44,156] (JakartaCommonsLoggingImpl.java[debug]:27) - {pstm-145088} Types: [java.lang.String]
+DEBUG [2014-09-11 14:49:44,172] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145089} ResultSet
+DEBUG [2014-09-11 14:49:44,172] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145089} Header: [CODE_NAME]
+DEBUG [2014-09-11 14:49:44,172] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145089} Result: [허용 코드 체크]
+DEBUG [2014-09-11 14:49:44,172] (JakartaCommonsLoggingImpl.java[debug]:27) - {conn-145090} Connection
+DEBUG [2014-09-11 14:49:44,172] (JakartaCommonsLoggingImpl.java[debug]:27) - {conn-145090} Preparing Statement:    SELECT CODE_VALUE      FROM ST_COM_CODE     WHERE USE_YN = 'Y' AND CODE_GROUP = ?  
+DEBUG [2014-09-11 14:49:44,172] (JakartaCommonsLoggingImpl.java[debug]:27) - {pstm-145091} Executing Statement:    SELECT CODE_VALUE      FROM ST_COM_CODE     WHERE USE_YN = 'Y' AND CODE_GROUP = ?  
+DEBUG [2014-09-11 14:49:44,172] (JakartaCommonsLoggingImpl.java[debug]:27) - {pstm-145091} Parameters: [573]
+DEBUG [2014-09-11 14:49:44,172] (JakartaCommonsLoggingImpl.java[debug]:27) - {pstm-145091} Types: [java.lang.String]
+DEBUG [2014-09-11 14:49:44,172] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145092} ResultSet
+DEBUG [2014-09-11 14:49:44,172] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145092} Header: [CODE_VALUE]
+DEBUG [2014-09-11 14:49:44,172] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145092} Result: [0]
+DEBUG [2014-09-11 14:49:44,172] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145092} Result: [1]
+DEBUG [2014-09-11 14:49:44,172] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145092} Result: [2]
+DEBUG [2014-09-11 14:49:44,172] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145092} Result: [3]
+DEBUG [2014-09-11 14:49:44,172] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145092} Result: [4]
+metaVerification url : http://203.253.211.77:9090/validationMetaXml.jsp?viewNm=IR_COURSE_VIEW&columnNm=GRADTH&xmlTagNm=CD&univId=51018000&chkSum=198904852&version=1
+DEBUG [2014-09-11 14:49:44,360] (JakartaCommonsLoggingImpl.java[debug]:27) - {conn-145093} Connection
+DEBUG [2014-09-11 14:49:44,360] (JakartaCommonsLoggingImpl.java[debug]:27) - {conn-145093} Preparing Statement:    SELECT CODE_NAME      FROM ST_COM_CODE     WHERE USE_YN = 'Y' AND CODE_GROUP = '596' AND CODE_VALUE = ?  
+DEBUG [2014-09-11 14:49:44,360] (JakartaCommonsLoggingImpl.java[debug]:27) - {pstm-145094} Executing Statement:    SELECT CODE_NAME      FROM ST_COM_CODE     WHERE USE_YN = 'Y' AND CODE_GROUP = '596' AND CODE_VALUE = ?  
+DEBUG [2014-09-11 14:49:44,360] (JakartaCommonsLoggingImpl.java[debug]:27) - {pstm-145094} Parameters: [SN]
+DEBUG [2014-09-11 14:49:44,360] (JakartaCommonsLoggingImpl.java[debug]:27) - {pstm-145094} Types: [java.lang.String]
+DEBUG [2014-09-11 14:49:44,360] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145095} ResultSet
+DEBUG [2014-09-11 14:49:44,360] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145095} Header: [CODE_NAME]
+DEBUG [2014-09-11 14:49:44,360] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145095} Result: [고정 자릿수(숫자형)]
+metaVerification url : http://203.253.211.77:9090/validationMetaXml.jsp?viewNm=IR_COURSE_VIEW&columnNm=TERMYEAR&dataLength=4&xmlTagNm=SNEssential&univId=51018000&chkSum=198904852&version=1
+DEBUG [2014-09-11 14:49:44,563] (JakartaCommonsLoggingImpl.java[debug]:27) - {conn-145096} Connection
+DEBUG [2014-09-11 14:49:44,563] (JakartaCommonsLoggingImpl.java[debug]:27) - {conn-145096} Preparing Statement:    SELECT CODE_NAME      FROM ST_COM_CODE     WHERE USE_YN = 'Y' AND CODE_GROUP = '596' AND CODE_VALUE = ?  
+DEBUG [2014-09-11 14:49:44,563] (JakartaCommonsLoggingImpl.java[debug]:27) - {pstm-145097} Executing Statement:    SELECT CODE_NAME      FROM ST_COM_CODE     WHERE USE_YN = 'Y' AND CODE_GROUP = '596' AND CODE_VALUE = ?  
+DEBUG [2014-09-11 14:49:44,563] (JakartaCommonsLoggingImpl.java[debug]:27) - {pstm-145097} Parameters: [SN]
+DEBUG [2014-09-11 14:49:44,563] (JakartaCommonsLoggingImpl.java[debug]:27) - {pstm-145097} Types: [java.lang.String]
+DEBUG [2014-09-11 14:49:44,563] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145098} ResultSet
+DEBUG [2014-09-11 14:49:44,563] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145098} Header: [CODE_NAME]
+DEBUG [2014-09-11 14:49:44,563] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145098} Result: [고정 자릿수(숫자형)]
+metaVerification url : http://203.253.211.77:9090/validationMetaXml.jsp?viewNm=IR_COURSE_VIEW&columnNm=REGIST_DATE&dataLength=14&xmlTagNm=SNEssential&univId=51018000&chkSum=198904852&version=1
+DEBUG [2014-09-11 14:49:44,766] (JakartaCommonsLoggingImpl.java[debug]:27) - {conn-145099} Connection
+DEBUG [2014-09-11 14:49:44,766] (JakartaCommonsLoggingImpl.java[debug]:27) - {conn-145099} Preparing Statement:    SELECT CODE_NAME      FROM ST_COM_CODE     WHERE USE_YN = 'Y' AND CODE_GROUP = '596' AND CODE_VALUE = ?  
+DEBUG [2014-09-11 14:49:44,766] (JakartaCommonsLoggingImpl.java[debug]:27) - {pstm-145100} Executing Statement:    SELECT CODE_NAME      FROM ST_COM_CODE     WHERE USE_YN = 'Y' AND CODE_GROUP = '596' AND CODE_VALUE = ?  
+DEBUG [2014-09-11 14:49:44,766] (JakartaCommonsLoggingImpl.java[debug]:27) - {pstm-145100} Parameters: [SN]
+DEBUG [2014-09-11 14:49:44,766] (JakartaCommonsLoggingImpl.java[debug]:27) - {pstm-145100} Types: [java.lang.String]
+DEBUG [2014-09-11 14:49:44,766] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145101} ResultSet
+DEBUG [2014-09-11 14:49:44,766] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145101} Header: [CODE_NAME]
+DEBUG [2014-09-11 14:49:44,766] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145101} Result: [고정 자릿수(숫자형)]
+metaVerification url : http://203.253.211.77:9090/validationMetaXml.jsp?viewNm=IR_COURSE_VIEW&columnNm=STARTDATE&dataLength=8&xmlTagNm=SNEssential&univId=51018000&chkSum=198904852&version=1
+DEBUG [2014-09-11 14:49:44,938] (JakartaCommonsLoggingImpl.java[debug]:27) - {conn-145102} Connection
+DEBUG [2014-09-11 14:49:44,938] (JakartaCommonsLoggingImpl.java[debug]:27) - {conn-145102} Preparing Statement:    SELECT CODE_NAME      FROM ST_COM_CODE     WHERE USE_YN = 'Y' AND CODE_GROUP = '596' AND CODE_VALUE = ?  
+DEBUG [2014-09-11 14:49:44,938] (JakartaCommonsLoggingImpl.java[debug]:27) - {pstm-145103} Executing Statement:    SELECT CODE_NAME      FROM ST_COM_CODE     WHERE USE_YN = 'Y' AND CODE_GROUP = '596' AND CODE_VALUE = ?  
+DEBUG [2014-09-11 14:49:44,938] (JakartaCommonsLoggingImpl.java[debug]:27) - {pstm-145103} Parameters: [SN]
+DEBUG [2014-09-11 14:49:44,938] (JakartaCommonsLoggingImpl.java[debug]:27) - {pstm-145103} Types: [java.lang.String]
+DEBUG [2014-09-11 14:49:44,938] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145104} ResultSet
+DEBUG [2014-09-11 14:49:44,954] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145104} Header: [CODE_NAME]
+DEBUG [2014-09-11 14:49:44,954] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145104} Result: [고정 자릿수(숫자형)]
+metaVerification url : http://203.253.211.77:9090/validationMetaXml.jsp?viewNm=IR_COURSE_VIEW&columnNm=ENDDATE&dataLength=8&xmlTagNm=SNEssential&univId=51018000&chkSum=198904852&version=1
+DEBUG [2014-09-11 14:49:45,157] (JakartaCommonsLoggingImpl.java[debug]:27) - {conn-145105} Connection
+DEBUG [2014-09-11 14:49:45,157] (JakartaCommonsLoggingImpl.java[debug]:27) - {conn-145105} Preparing Statement:    SELECT CODE_NAME      FROM ST_COM_CODE     WHERE USE_YN = 'Y' AND CODE_GROUP = '596' AND CODE_VALUE = ?  
+DEBUG [2014-09-11 14:49:45,157] (JakartaCommonsLoggingImpl.java[debug]:27) - {pstm-145106} Executing Statement:    SELECT CODE_NAME      FROM ST_COM_CODE     WHERE USE_YN = 'Y' AND CODE_GROUP = '596' AND CODE_VALUE = ?  
+DEBUG [2014-09-11 14:49:45,157] (JakartaCommonsLoggingImpl.java[debug]:27) - {pstm-145106} Parameters: [SN]
+DEBUG [2014-09-11 14:49:45,157] (JakartaCommonsLoggingImpl.java[debug]:27) - {pstm-145106} Types: [java.lang.String]
+DEBUG [2014-09-11 14:49:45,157] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145107} ResultSet
+DEBUG [2014-09-11 14:49:45,172] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145107} Header: [CODE_NAME]
+DEBUG [2014-09-11 14:49:45,172] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145107} Result: [고정 자릿수(숫자형)]
+metaVerification url : http://203.253.211.77:9090/validationMetaXml.jsp?viewNm=IR_COURSE_VIEW&columnNm=CREATEDATE&dataLength=8&xmlTagNm=SN&univId=51018000&chkSum=198904852&version=1
+DEBUG [2014-09-11 14:49:45,344] (JakartaCommonsLoggingImpl.java[debug]:27) - {conn-145108} Connection
+DEBUG [2014-09-11 14:49:45,344] (JakartaCommonsLoggingImpl.java[debug]:27) - {conn-145108} Preparing Statement:    SELECT CODE_NAME      FROM ST_COM_CODE     WHERE USE_YN = 'Y' AND CODE_GROUP = '596' AND CODE_VALUE = ?  
+DEBUG [2014-09-11 14:49:45,344] (JakartaCommonsLoggingImpl.java[debug]:27) - {pstm-145109} Executing Statement:    SELECT CODE_NAME      FROM ST_COM_CODE     WHERE USE_YN = 'Y' AND CODE_GROUP = '596' AND CODE_VALUE = ?  
+DEBUG [2014-09-11 14:49:45,344] (JakartaCommonsLoggingImpl.java[debug]:27) - {pstm-145109} Parameters: [SN]
+DEBUG [2014-09-11 14:49:45,360] (JakartaCommonsLoggingImpl.java[debug]:27) - {pstm-145109} Types: [java.lang.String]
+DEBUG [2014-09-11 14:49:45,376] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145110} ResultSet
+DEBUG [2014-09-11 14:49:45,376] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145110} Header: [CODE_NAME]
+DEBUG [2014-09-11 14:49:45,376] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145110} Result: [고정 자릿수(숫자형)]
+metaVerification url : http://203.253.211.77:9090/validationMetaXml.jsp?viewNm=IR_COURSE_VIEW&columnNm=MODIFY_DATE&dataLength=14&xmlTagNm=SN&univId=51018000&chkSum=198904852&version=1
+DEBUG [2014-09-11 14:49:45,532] (JakartaCommonsLoggingImpl.java[debug]:27) - {conn-145111} Connection
+DEBUG [2014-09-11 14:49:45,532] (JakartaCommonsLoggingImpl.java[debug]:27) - {conn-145111} Preparing Statement:    SELECT CODE_NAME      FROM ST_COM_CODE     WHERE USE_YN = 'Y' AND CODE_GROUP = '596' AND CODE_VALUE = ?  
+DEBUG [2014-09-11 14:49:45,532] (JakartaCommonsLoggingImpl.java[debug]:27) - {pstm-145112} Executing Statement:    SELECT CODE_NAME      FROM ST_COM_CODE     WHERE USE_YN = 'Y' AND CODE_GROUP = '596' AND CODE_VALUE = ?  
+DEBUG [2014-09-11 14:49:45,532] (JakartaCommonsLoggingImpl.java[debug]:27) - {pstm-145112} Parameters: [SN]
+DEBUG [2014-09-11 14:49:45,532] (JakartaCommonsLoggingImpl.java[debug]:27) - {pstm-145112} Types: [java.lang.String]
+DEBUG [2014-09-11 14:49:45,532] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145113} ResultSet
+DEBUG [2014-09-11 14:49:45,532] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145113} Header: [CODE_NAME]
+DEBUG [2014-09-11 14:49:45,532] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145113} Result: [고정 자릿수(숫자형)]
+metaVerification url : http://203.253.211.77:9090/validationMetaXml.jsp?viewNm=IR_COURSE_VIEW&columnNm=DELETE_DATE&dataLength=14&xmlTagNm=SN&univId=51018000&chkSum=198904852&version=1
+DEBUG [2014-09-11 14:49:45,735] (AbstractPlatformTransactionManager.java[processCommit]:752) - Initiating transaction commit
+DEBUG [2014-09-11 14:49:45,735] (DataSourceTransactionManager.java[doCommit]:264) - Committing JDBC transaction on Connection [jdbc:oracle:thin:@121.78.115.125:2521:orcl, UserName=KOCWTEST, Oracle JDBC driver]
+DEBUG [2014-09-11 14:49:45,735] (DataSourceTransactionManager.java[doCleanupAfterCompletion]:322) - Releasing JDBC Connection [jdbc:oracle:thin:@121.78.115.125:2521:orcl, UserName=KOCWTEST, Oracle JDBC driver] after transaction
+DEBUG [2014-09-11 14:49:45,735] (DataSourceUtils.java[doReleaseConnection]:332) - Returning JDBC Connection to DataSource
+DEBUG [2014-09-11 14:49:45,735] (AbstractBeanFactory.java[doGetBean]:242) - Returning cached instance of singleton bean 'velocityConfigurer'
+DEBUG [2014-09-11 14:49:45,735] (AbstractAutowireCapableBeanFactory.java[invokeInitMethods]:1461) - Invoking afterPropertiesSet() on bean with name 'mgr/course/verification_meta_status.json'
+DEBUG [2014-09-11 14:49:45,735] (AbstractBeanFactory.java[doGetBean]:242) - Returning cached instance of singleton bean 'velocityConfigurer'
+DEBUG [2014-09-11 14:49:45,735] (AbstractAutowireCapableBeanFactory.java[invokeInitMethods]:1461) - Invoking afterPropertiesSet() on bean with name 'mgr/course/verification_meta_status.json.action'
+DEBUG [2014-09-11 14:49:45,735] (AbstractBeanFactory.java[doGetBean]:242) - Returning cached instance of singleton bean 'velocityConfigurer'
+DEBUG [2014-09-11 14:49:45,735] (AbstractAutowireCapableBeanFactory.java[invokeInitMethods]:1461) - Invoking afterPropertiesSet() on bean with name 'mgr/course/verification_meta_status.json'
+DEBUG [2014-09-11 14:49:45,813] (GenericConversionService.java[convert]:159) - Converting value 'IR_LECTURE_VIEW' of java.lang.String to java.lang.String
+DEBUG [2014-09-11 14:49:45,813] (GenericConversionService.java[convert]:186) - Converted to 'IR_LECTURE_VIEW'
+DEBUG [2014-09-11 14:49:45,813] (GenericConversionService.java[convert]:159) - Converting value 'L' of java.lang.String to java.lang.String
+DEBUG [2014-09-11 14:49:45,813] (GenericConversionService.java[convert]:186) - Converted to 'L'
+DEBUG [2014-09-11 14:49:45,813] (GenericConversionService.java[convert]:159) - Converting value '1' of java.lang.String to java.lang.Integer
+DEBUG [2014-09-11 14:49:45,813] (GenericConversionService.java[convert]:186) - Converted to 1
+DEBUG [2014-09-11 14:49:45,813] (GenericConversionService.java[convert]:159) - Converting value '' of java.lang.String to java.lang.String
+DEBUG [2014-09-11 14:49:45,813] (GenericConversionService.java[convert]:186) - Converted to ''
+DEBUG [2014-09-11 14:49:45,813] (GenericConversionService.java[convert]:159) - Converting value '' of java.lang.String to java.lang.String
+DEBUG [2014-09-11 14:49:45,813] (GenericConversionService.java[convert]:186) - Converted to ''
+DEBUG [2014-09-11 14:49:45,813] (GenericConversionService.java[convert]:159) - Converting value 'http://203.253.211.77:9090' of java.lang.String to java.lang.String
+DEBUG [2014-09-11 14:49:45,813] (GenericConversionService.java[convert]:186) - Converted to 'http://203.253.211.77:9090'
+DEBUG [2014-09-11 14:49:45,813] (GenericConversionService.java[convert]:159) - Converting value '51018000' of java.lang.String to java.lang.String
+DEBUG [2014-09-11 14:49:45,813] (GenericConversionService.java[convert]:186) - Converted to '51018000'
+DEBUG [2014-09-11 14:49:45,813] (GenericConversionService.java[convert]:159) - Converting value 'admin' of java.lang.String to java.lang.String
+DEBUG [2014-09-11 14:49:45,813] (GenericConversionService.java[convert]:186) - Converted to 'admin'
+DEBUG [2014-09-11 14:49:45,813] (GenericConversionService.java[convert]:159) - Converting value '' of java.lang.String to java.lang.String
+DEBUG [2014-09-11 14:49:45,813] (GenericConversionService.java[convert]:186) - Converted to ''
+DEBUG [2014-09-11 14:49:45,813] (GenericConversionService.java[convert]:159) - Converting value '1' of java.lang.String to java.lang.Integer
+DEBUG [2014-09-11 14:49:45,813] (GenericConversionService.java[convert]:186) - Converted to 1
+DEBUG [2014-09-11 14:49:45,813] (AbstractBeanFactory.java[doGetBean]:242) - Returning cached instance of singleton bean 'controllerAspector'
+DEBUG [2014-09-11 14:49:45,845] (AbstractBeanFactory.java[doGetBean]:242) - Returning cached instance of singleton bean 'transactionManager'
+DEBUG [2014-09-11 14:49:45,845] (AbstractPlatformTransactionManager.java[getTransaction]:365) - Creating new transaction with name [com.kocwsystem.service.course.MetaDicService.metaCondition]: PROPAGATION_REQUIRED,ISOLATION_DEFAULT; ''
+DEBUG [2014-09-11 14:49:45,845] (DataSourceTransactionManager.java[doBegin]:204) - Acquired Connection [jdbc:oracle:thin:@121.78.115.125:2521:orcl, UserName=KOCWTEST, Oracle JDBC driver] for JDBC transaction
+DEBUG [2014-09-11 14:49:45,845] (DataSourceTransactionManager.java[doBegin]:221) - Switching JDBC Connection [jdbc:oracle:thin:@121.78.115.125:2521:orcl, UserName=KOCWTEST, Oracle JDBC driver] to manual commit
+DEBUG [2014-09-11 14:49:45,845] (JakartaCommonsLoggingImpl.java[debug]:27) - {conn-145114} Connection
+DEBUG [2014-09-11 14:49:45,845] (JakartaCommonsLoggingImpl.java[debug]:27) - {conn-145114} Preparing Statement:    SELECT ELEMENT as element,     CASE      WHEN INPUT_VALIDCHECK = 'ST' OR INPUT_VALIDCHECK = 'SN'               THEN INPUT_VALIDCHECK || ELEMENT_LENGTH               ELSE INPUT_VALIDCHECK            END as inputCheck,      ALLOW_CODEGROUP as allowCodeGroup,             PK_YN as pkYn,             MANDATORY_YN AS essential,            CASE               WHEN PUBLIC_YN = 'Y' AND PUBMANDATORY_YN = 'Y' THEN 'Y'               ELSE 'N'            END AS publicYn       FROM ST_COM_METADIC       WHERE     USE_YN = 'Y'            AND COLL_TYPE = ?    ORDER BY DECODE(inputCheck,'ZZ',1), SUBSTR(inputCheck,0,2), pkYn DESC, essential DESC, publicYn DESC, DISP_ORDER  
+DEBUG [2014-09-11 14:49:45,845] (JakartaCommonsLoggingImpl.java[debug]:27) - {pstm-145115} Executing Statement:    SELECT ELEMENT as element,     CASE      WHEN INPUT_VALIDCHECK = 'ST' OR INPUT_VALIDCHECK = 'SN'               THEN INPUT_VALIDCHECK || ELEMENT_LENGTH               ELSE INPUT_VALIDCHECK            END as inputCheck,      ALLOW_CODEGROUP as allowCodeGroup,             PK_YN as pkYn,             MANDATORY_YN AS essential,            CASE               WHEN PUBLIC_YN = 'Y' AND PUBMANDATORY_YN = 'Y' THEN 'Y'               ELSE 'N'            END AS publicYn       FROM ST_COM_METADIC       WHERE     USE_YN = 'Y'            AND COLL_TYPE = ?    ORDER BY DECODE(inputCheck,'ZZ',1), SUBSTR(inputCheck,0,2), pkYn DESC, essential DESC, publicYn DESC, DISP_ORDER  
+DEBUG [2014-09-11 14:49:45,845] (JakartaCommonsLoggingImpl.java[debug]:27) - {pstm-145115} Parameters: [L]
+DEBUG [2014-09-11 14:49:45,845] (JakartaCommonsLoggingImpl.java[debug]:27) - {pstm-145115} Types: [java.lang.String]
+DEBUG [2014-09-11 14:49:45,860] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145116} ResultSet
+DEBUG [2014-09-11 14:49:45,860] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145116} Header: [ELEMENT, INPUTCHECK, ALLOWCODEGROUP, PKYN, ESSENTIAL, PUBLICYN]
+DEBUG [2014-09-11 14:49:45,860] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145116} Result: [LECTURE_ID, ZZ, null, Y, Y, Y]
+DEBUG [2014-09-11 14:49:45,860] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145116} Result: [COURSE_ID, ZZ, null, N, Y, Y]
+DEBUG [2014-09-11 14:49:45,860] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145116} Result: [TITLE, ZZ, null, N, Y, Y]
+DEBUG [2014-09-11 14:49:45,860] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145116} Result: [ATTFILE_TYPE, ZZ, null, N, N, Y]
+DEBUG [2014-09-11 14:49:45,860] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145116} Result: [ATTFILE_PATH, ZZ, null, N, N, Y]
+DEBUG [2014-09-11 14:49:45,860] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145116} Result: [DESCRIPTION, ZZ, null, N, N, N]
+DEBUG [2014-09-11 14:49:45,860] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145116} Result: [KEYWORD, ZZ, null, N, N, N]
+DEBUG [2014-09-11 14:49:45,860] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145116} Result: [GRANTS, CD, 559, N, Y, Y]
+DEBUG [2014-09-11 14:49:45,860] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145116} Result: [LANGUAGE, CD, 563, N, Y, Y]
+DEBUG [2014-09-11 14:49:45,860] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145116} Result: [GROUPS, NO, null, N, Y, Y]
+DEBUG [2014-09-11 14:49:45,860] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145116} Result: [ORDERS, NO, null, N, Y, Y]
+DEBUG [2014-09-11 14:49:45,860] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145116} Result: [REGIST_DATE, SN14, null, N, Y, Y]
+DEBUG [2014-09-11 14:49:45,860] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145116} Result: [STARTDATE, SN8, null, N, N, N]
+DEBUG [2014-09-11 14:49:45,860] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145116} Result: [MODIFY_DATE, SN14, null, N, N, N]
+DEBUG [2014-09-11 14:49:45,860] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145116} Result: [DELETE_DATE, SN14, null, N, N, N]
+DEBUG [2014-09-11 14:49:45,860] (JakartaCommonsLoggingImpl.java[debug]:27) - {conn-145117} Connection
+DEBUG [2014-09-11 14:49:45,860] (JakartaCommonsLoggingImpl.java[debug]:27) - {conn-145117} Preparing Statement:    SELECT CODE_NAME      FROM ST_COM_CODE     WHERE USE_YN = 'Y' AND CODE_GROUP = '596' AND CODE_VALUE = ?  
+DEBUG [2014-09-11 14:49:45,860] (JakartaCommonsLoggingImpl.java[debug]:27) - {pstm-145118} Executing Statement:    SELECT CODE_NAME      FROM ST_COM_CODE     WHERE USE_YN = 'Y' AND CODE_GROUP = '596' AND CODE_VALUE = ?  
+DEBUG [2014-09-11 14:49:45,860] (JakartaCommonsLoggingImpl.java[debug]:27) - {pstm-145118} Parameters: [PK]
+DEBUG [2014-09-11 14:49:45,860] (JakartaCommonsLoggingImpl.java[debug]:27) - {pstm-145118} Types: [java.lang.String]
+DEBUG [2014-09-11 14:49:45,891] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145119} ResultSet
+DEBUG [2014-09-11 14:49:45,891] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145119} Header: [CODE_NAME]
+DEBUG [2014-09-11 14:49:45,891] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145119} Result: [PK 중복 여부]
+metaVerification url : http://203.253.211.77:9090/validationMetaXml.jsp?viewNm=IR_LECTURE_VIEW&columnNm=LECTURE_ID&typeGb=PK&xmlTagNm=PK&univId=51018000&chkSum=198904852&version=1
+DEBUG [2014-09-11 14:49:46,454] (JakartaCommonsLoggingImpl.java[debug]:27) - {conn-145120} Connection
+DEBUG [2014-09-11 14:49:46,454] (JakartaCommonsLoggingImpl.java[debug]:27) - {conn-145120} Preparing Statement:    SELECT CODE_NAME      FROM ST_COM_CODE     WHERE USE_YN = 'Y' AND CODE_GROUP = '596' AND CODE_VALUE = ?  
+DEBUG [2014-09-11 14:49:46,454] (JakartaCommonsLoggingImpl.java[debug]:27) - {pstm-145121} Executing Statement:    SELECT CODE_NAME      FROM ST_COM_CODE     WHERE USE_YN = 'Y' AND CODE_GROUP = '596' AND CODE_VALUE = ?  
+DEBUG [2014-09-11 14:49:46,454] (JakartaCommonsLoggingImpl.java[debug]:27) - {pstm-145121} Parameters: [PK]
+DEBUG [2014-09-11 14:49:46,485] (JakartaCommonsLoggingImpl.java[debug]:27) - {pstm-145121} Types: [java.lang.String]
+DEBUG [2014-09-11 14:49:46,485] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145122} ResultSet
+DEBUG [2014-09-11 14:49:46,485] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145122} Header: [CODE_NAME]
+DEBUG [2014-09-11 14:49:46,485] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145122} Result: [PK 중복 여부]
+metaVerification url : http://203.253.211.77:9090/validationMetaXml.jsp?viewNm=IR_LECTURE_VIEW&columnNm=LECTURE_ID&xmlTagNm=essential&univId=51018000&chkSum=198904852&version=1
+metaVerification url : http://203.253.211.77:9090/validationMetaXml.jsp?viewNm=IR_LECTURE_VIEW&columnNm=COURSE_ID&xmlTagNm=essential&univId=51018000&chkSum=198904852&version=1
+metaVerification url : http://203.253.211.77:9090/validationMetaXml.jsp?viewNm=IR_LECTURE_VIEW&columnNm=TITLE&xmlTagNm=essential&univId=51018000&chkSum=198904852&version=1
+DEBUG [2014-09-11 14:49:47,048] (JakartaCommonsLoggingImpl.java[debug]:27) - {conn-145123} Connection
+DEBUG [2014-09-11 14:49:47,048] (JakartaCommonsLoggingImpl.java[debug]:27) - {conn-145123} Preparing Statement:    SELECT CODE_NAME      FROM ST_COM_CODE     WHERE USE_YN = 'Y' AND CODE_GROUP = '596' AND CODE_VALUE = ?  
+DEBUG [2014-09-11 14:49:47,064] (JakartaCommonsLoggingImpl.java[debug]:27) - {pstm-145124} Executing Statement:    SELECT CODE_NAME      FROM ST_COM_CODE     WHERE USE_YN = 'Y' AND CODE_GROUP = '596' AND CODE_VALUE = ?  
+DEBUG [2014-09-11 14:49:47,064] (JakartaCommonsLoggingImpl.java[debug]:27) - {pstm-145124} Parameters: [CD]
+DEBUG [2014-09-11 14:49:47,064] (JakartaCommonsLoggingImpl.java[debug]:27) - {pstm-145124} Types: [java.lang.String]
+DEBUG [2014-09-11 14:49:47,064] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145125} ResultSet
+DEBUG [2014-09-11 14:49:47,064] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145125} Header: [CODE_NAME]
+DEBUG [2014-09-11 14:49:47,064] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145125} Result: [허용 코드 체크]
+DEBUG [2014-09-11 14:49:47,064] (JakartaCommonsLoggingImpl.java[debug]:27) - {conn-145126} Connection
+DEBUG [2014-09-11 14:49:47,064] (JakartaCommonsLoggingImpl.java[debug]:27) - {conn-145126} Preparing Statement:    SELECT CODE_VALUE      FROM ST_COM_CODE     WHERE USE_YN = 'Y' AND CODE_GROUP = ?  
+DEBUG [2014-09-11 14:49:47,064] (JakartaCommonsLoggingImpl.java[debug]:27) - {pstm-145127} Executing Statement:    SELECT CODE_VALUE      FROM ST_COM_CODE     WHERE USE_YN = 'Y' AND CODE_GROUP = ?  
+DEBUG [2014-09-11 14:49:47,064] (JakartaCommonsLoggingImpl.java[debug]:27) - {pstm-145127} Parameters: [559]
+DEBUG [2014-09-11 14:49:47,064] (JakartaCommonsLoggingImpl.java[debug]:27) - {pstm-145127} Types: [java.lang.String]
+DEBUG [2014-09-11 14:49:47,064] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145128} ResultSet
+DEBUG [2014-09-11 14:49:47,064] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145128} Header: [CODE_VALUE]
+DEBUG [2014-09-11 14:49:47,064] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145128} Result: [P]
+DEBUG [2014-09-11 14:49:47,079] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145128} Result: [N]
+metaVerification url : http://203.253.211.77:9090/validationMetaXml.jsp?viewNm=IR_LECTURE_VIEW&columnNm=GRANTS&xmlTagNm=CD&univId=51018000&chkSum=198904852&version=1
+DEBUG [2014-09-11 14:49:47,298] (JakartaCommonsLoggingImpl.java[debug]:27) - {conn-145129} Connection
+DEBUG [2014-09-11 14:49:47,298] (JakartaCommonsLoggingImpl.java[debug]:27) - {conn-145129} Preparing Statement:    SELECT CODE_NAME      FROM ST_COM_CODE     WHERE USE_YN = 'Y' AND CODE_GROUP = '596' AND CODE_VALUE = ?  
+DEBUG [2014-09-11 14:49:47,298] (JakartaCommonsLoggingImpl.java[debug]:27) - {pstm-145130} Executing Statement:    SELECT CODE_NAME      FROM ST_COM_CODE     WHERE USE_YN = 'Y' AND CODE_GROUP = '596' AND CODE_VALUE = ?  
+DEBUG [2014-09-11 14:49:47,298] (JakartaCommonsLoggingImpl.java[debug]:27) - {pstm-145130} Parameters: [CD]
+DEBUG [2014-09-11 14:49:47,298] (JakartaCommonsLoggingImpl.java[debug]:27) - {pstm-145130} Types: [java.lang.String]
+DEBUG [2014-09-11 14:49:47,298] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145131} ResultSet
+DEBUG [2014-09-11 14:49:47,298] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145131} Header: [CODE_NAME]
+DEBUG [2014-09-11 14:49:47,298] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145131} Result: [허용 코드 체크]
+DEBUG [2014-09-11 14:49:47,298] (JakartaCommonsLoggingImpl.java[debug]:27) - {conn-145132} Connection
+DEBUG [2014-09-11 14:49:47,298] (JakartaCommonsLoggingImpl.java[debug]:27) - {conn-145132} Preparing Statement:    SELECT CODE_VALUE      FROM ST_COM_CODE     WHERE USE_YN = 'Y' AND CODE_GROUP = ?  
+DEBUG [2014-09-11 14:49:47,298] (JakartaCommonsLoggingImpl.java[debug]:27) - {pstm-145133} Executing Statement:    SELECT CODE_VALUE      FROM ST_COM_CODE     WHERE USE_YN = 'Y' AND CODE_GROUP = ?  
+DEBUG [2014-09-11 14:49:47,298] (JakartaCommonsLoggingImpl.java[debug]:27) - {pstm-145133} Parameters: [563]
+DEBUG [2014-09-11 14:49:47,298] (JakartaCommonsLoggingImpl.java[debug]:27) - {pstm-145133} Types: [java.lang.String]
+DEBUG [2014-09-11 14:49:47,329] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145134} ResultSet
+DEBUG [2014-09-11 14:49:47,329] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145134} Header: [CODE_VALUE]
+DEBUG [2014-09-11 14:49:47,329] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145134} Result: [kor]
+DEBUG [2014-09-11 14:49:47,329] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145134} Result: [eng]
+DEBUG [2014-09-11 14:49:47,329] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145134} Result: [jpn]
+DEBUG [2014-09-11 14:49:47,329] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145134} Result: [ger]
+DEBUG [2014-09-11 14:49:47,329] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145134} Result: [fre]
+DEBUG [2014-09-11 14:49:47,329] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145134} Result: [spa]
+DEBUG [2014-09-11 14:49:47,329] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145134} Result: [chi]
+DEBUG [2014-09-11 14:49:47,329] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145134} Result: [rus]
+DEBUG [2014-09-11 14:49:47,329] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145134} Result: [und]
+DEBUG [2014-09-11 14:49:47,329] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145134} Result: [mnc]
+DEBUG [2014-09-11 14:49:47,329] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145134} Result: [mon]
+DEBUG [2014-09-11 14:49:47,329] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145134} Result: [mul]
+DEBUG [2014-09-11 14:49:47,329] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145134} Result: [enm]
+DEBUG [2014-09-11 14:49:47,329] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145134} Result: [itar]
+DEBUG [2014-09-11 14:49:47,345] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145134} Result: [por]
+metaVerification url : http://203.253.211.77:9090/validationMetaXml.jsp?viewNm=IR_LECTURE_VIEW&columnNm=LANGUAGE&xmlTagNm=CD&univId=51018000&chkSum=198904852&version=1
+DEBUG [2014-09-11 14:49:47,533] (JakartaCommonsLoggingImpl.java[debug]:27) - {conn-145135} Connection
+DEBUG [2014-09-11 14:49:47,548] (JakartaCommonsLoggingImpl.java[debug]:27) - {conn-145135} Preparing Statement:    SELECT CODE_NAME      FROM ST_COM_CODE     WHERE USE_YN = 'Y' AND CODE_GROUP = '596' AND CODE_VALUE = ?  
+DEBUG [2014-09-11 14:49:47,548] (JakartaCommonsLoggingImpl.java[debug]:27) - {pstm-145136} Executing Statement:    SELECT CODE_NAME      FROM ST_COM_CODE     WHERE USE_YN = 'Y' AND CODE_GROUP = '596' AND CODE_VALUE = ?  
+DEBUG [2014-09-11 14:49:47,548] (JakartaCommonsLoggingImpl.java[debug]:27) - {pstm-145136} Parameters: [NO]
+DEBUG [2014-09-11 14:49:47,548] (JakartaCommonsLoggingImpl.java[debug]:27) - {pstm-145136} Types: [java.lang.String]
+DEBUG [2014-09-11 14:49:47,548] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145137} ResultSet
+DEBUG [2014-09-11 14:49:47,548] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145137} Header: [CODE_NAME]
+DEBUG [2014-09-11 14:49:47,548] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145137} Result: [데이터 타입(숫자형)]
+metaVerification url : http://203.253.211.77:9090/validationMetaXml.jsp?viewNm=IR_LECTURE_VIEW&columnNm=GROUPS&dataLength=&xmlTagNm=NOEssential&univId=51018000&chkSum=198904852&version=1
+DEBUG [2014-09-11 14:49:47,783] (JakartaCommonsLoggingImpl.java[debug]:27) - {conn-145138} Connection
+DEBUG [2014-09-11 14:49:47,783] (JakartaCommonsLoggingImpl.java[debug]:27) - {conn-145138} Preparing Statement:    SELECT CODE_NAME      FROM ST_COM_CODE     WHERE USE_YN = 'Y' AND CODE_GROUP = '596' AND CODE_VALUE = ?  
+DEBUG [2014-09-11 14:49:47,783] (JakartaCommonsLoggingImpl.java[debug]:27) - {pstm-145139} Executing Statement:    SELECT CODE_NAME      FROM ST_COM_CODE     WHERE USE_YN = 'Y' AND CODE_GROUP = '596' AND CODE_VALUE = ?  
+DEBUG [2014-09-11 14:49:47,783] (JakartaCommonsLoggingImpl.java[debug]:27) - {pstm-145139} Parameters: [NO]
+DEBUG [2014-09-11 14:49:47,783] (JakartaCommonsLoggingImpl.java[debug]:27) - {pstm-145139} Types: [java.lang.String]
+DEBUG [2014-09-11 14:49:47,783] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145140} ResultSet
+DEBUG [2014-09-11 14:49:47,783] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145140} Header: [CODE_NAME]
+DEBUG [2014-09-11 14:49:47,783] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145140} Result: [데이터 타입(숫자형)]
+metaVerification url : http://203.253.211.77:9090/validationMetaXml.jsp?viewNm=IR_LECTURE_VIEW&columnNm=ORDERS&dataLength=&xmlTagNm=NOEssential&univId=51018000&chkSum=198904852&version=1
+DEBUG [2014-09-11 14:49:48,064] (JakartaCommonsLoggingImpl.java[debug]:27) - {conn-145141} Connection
+DEBUG [2014-09-11 14:49:48,064] (JakartaCommonsLoggingImpl.java[debug]:27) - {conn-145141} Preparing Statement:    SELECT CODE_NAME      FROM ST_COM_CODE     WHERE USE_YN = 'Y' AND CODE_GROUP = '596' AND CODE_VALUE = ?  
+DEBUG [2014-09-11 14:49:48,064] (JakartaCommonsLoggingImpl.java[debug]:27) - {pstm-145142} Executing Statement:    SELECT CODE_NAME      FROM ST_COM_CODE     WHERE USE_YN = 'Y' AND CODE_GROUP = '596' AND CODE_VALUE = ?  
+DEBUG [2014-09-11 14:49:48,064] (JakartaCommonsLoggingImpl.java[debug]:27) - {pstm-145142} Parameters: [SN]
+DEBUG [2014-09-11 14:49:48,064] (JakartaCommonsLoggingImpl.java[debug]:27) - {pstm-145142} Types: [java.lang.String]
+DEBUG [2014-09-11 14:49:48,064] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145143} ResultSet
+DEBUG [2014-09-11 14:49:48,080] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145143} Header: [CODE_NAME]
+DEBUG [2014-09-11 14:49:48,080] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145143} Result: [고정 자릿수(숫자형)]
+metaVerification url : http://203.253.211.77:9090/validationMetaXml.jsp?viewNm=IR_LECTURE_VIEW&columnNm=REGIST_DATE&dataLength=14&xmlTagNm=SNEssential&univId=51018000&chkSum=198904852&version=1
+DEBUG [2014-09-11 14:49:48,392] (JakartaCommonsLoggingImpl.java[debug]:27) - {conn-145144} Connection
+DEBUG [2014-09-11 14:49:48,392] (JakartaCommonsLoggingImpl.java[debug]:27) - {conn-145144} Preparing Statement:    SELECT CODE_NAME      FROM ST_COM_CODE     WHERE USE_YN = 'Y' AND CODE_GROUP = '596' AND CODE_VALUE = ?  
+DEBUG [2014-09-11 14:49:48,392] (JakartaCommonsLoggingImpl.java[debug]:27) - {pstm-145145} Executing Statement:    SELECT CODE_NAME      FROM ST_COM_CODE     WHERE USE_YN = 'Y' AND CODE_GROUP = '596' AND CODE_VALUE = ?  
+DEBUG [2014-09-11 14:49:48,392] (JakartaCommonsLoggingImpl.java[debug]:27) - {pstm-145145} Parameters: [SN]
+DEBUG [2014-09-11 14:49:48,392] (JakartaCommonsLoggingImpl.java[debug]:27) - {pstm-145145} Types: [java.lang.String]
+DEBUG [2014-09-11 14:49:48,392] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145146} ResultSet
+DEBUG [2014-09-11 14:49:48,392] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145146} Header: [CODE_NAME]
+DEBUG [2014-09-11 14:49:48,392] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145146} Result: [고정 자릿수(숫자형)]
+metaVerification url : http://203.253.211.77:9090/validationMetaXml.jsp?viewNm=IR_LECTURE_VIEW&columnNm=STARTDATE&dataLength=8&xmlTagNm=SN&univId=51018000&chkSum=198904852&version=1
+DEBUG [2014-09-11 14:49:48,658] (JakartaCommonsLoggingImpl.java[debug]:27) - {conn-145147} Connection
+DEBUG [2014-09-11 14:49:48,658] (JakartaCommonsLoggingImpl.java[debug]:27) - {conn-145147} Preparing Statement:    SELECT CODE_NAME      FROM ST_COM_CODE     WHERE USE_YN = 'Y' AND CODE_GROUP = '596' AND CODE_VALUE = ?  
+DEBUG [2014-09-11 14:49:48,658] (JakartaCommonsLoggingImpl.java[debug]:27) - {pstm-145148} Executing Statement:    SELECT CODE_NAME      FROM ST_COM_CODE     WHERE USE_YN = 'Y' AND CODE_GROUP = '596' AND CODE_VALUE = ?  
+DEBUG [2014-09-11 14:49:48,658] (JakartaCommonsLoggingImpl.java[debug]:27) - {pstm-145148} Parameters: [SN]
+DEBUG [2014-09-11 14:49:48,674] (JakartaCommonsLoggingImpl.java[debug]:27) - {pstm-145148} Types: [java.lang.String]
+DEBUG [2014-09-11 14:49:48,689] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145149} ResultSet
+DEBUG [2014-09-11 14:49:48,689] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145149} Header: [CODE_NAME]
+DEBUG [2014-09-11 14:49:48,689] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145149} Result: [고정 자릿수(숫자형)]
+metaVerification url : http://203.253.211.77:9090/validationMetaXml.jsp?viewNm=IR_LECTURE_VIEW&columnNm=MODIFY_DATE&dataLength=14&xmlTagNm=SN&univId=51018000&chkSum=198904852&version=1
+DEBUG [2014-09-11 14:49:48,846] (JakartaCommonsLoggingImpl.java[debug]:27) - {conn-145150} Connection
+DEBUG [2014-09-11 14:49:48,846] (JakartaCommonsLoggingImpl.java[debug]:27) - {conn-145150} Preparing Statement:    SELECT CODE_NAME      FROM ST_COM_CODE     WHERE USE_YN = 'Y' AND CODE_GROUP = '596' AND CODE_VALUE = ?  
+DEBUG [2014-09-11 14:49:48,846] (JakartaCommonsLoggingImpl.java[debug]:27) - {pstm-145151} Executing Statement:    SELECT CODE_NAME      FROM ST_COM_CODE     WHERE USE_YN = 'Y' AND CODE_GROUP = '596' AND CODE_VALUE = ?  
+DEBUG [2014-09-11 14:49:48,846] (JakartaCommonsLoggingImpl.java[debug]:27) - {pstm-145151} Parameters: [SN]
+DEBUG [2014-09-11 14:49:48,846] (JakartaCommonsLoggingImpl.java[debug]:27) - {pstm-145151} Types: [java.lang.String]
+DEBUG [2014-09-11 14:49:48,846] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145152} ResultSet
+DEBUG [2014-09-11 14:49:48,861] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145152} Header: [CODE_NAME]
+DEBUG [2014-09-11 14:49:48,861] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145152} Result: [고정 자릿수(숫자형)]
+metaVerification url : http://203.253.211.77:9090/validationMetaXml.jsp?viewNm=IR_LECTURE_VIEW&columnNm=DELETE_DATE&dataLength=14&xmlTagNm=SN&univId=51018000&chkSum=198904852&version=1
+DEBUG [2014-09-11 14:49:49,049] (AbstractPlatformTransactionManager.java[processCommit]:752) - Initiating transaction commit
+DEBUG [2014-09-11 14:49:49,049] (DataSourceTransactionManager.java[doCommit]:264) - Committing JDBC transaction on Connection [jdbc:oracle:thin:@121.78.115.125:2521:orcl, UserName=KOCWTEST, Oracle JDBC driver]
+DEBUG [2014-09-11 14:49:49,049] (DataSourceTransactionManager.java[doCleanupAfterCompletion]:322) - Releasing JDBC Connection [jdbc:oracle:thin:@121.78.115.125:2521:orcl, UserName=KOCWTEST, Oracle JDBC driver] after transaction
+DEBUG [2014-09-11 14:49:49,049] (DataSourceUtils.java[doReleaseConnection]:332) - Returning JDBC Connection to DataSource
+DEBUG [2014-09-11 14:49:49,049] (AbstractBeanFactory.java[doGetBean]:242) - Returning cached instance of singleton bean 'velocityConfigurer'
+DEBUG [2014-09-11 14:49:49,049] (AbstractAutowireCapableBeanFactory.java[invokeInitMethods]:1461) - Invoking afterPropertiesSet() on bean with name 'mgr/course/verification_meta_status.json'
+DEBUG [2014-09-11 14:49:49,064] (AbstractBeanFactory.java[doGetBean]:242) - Returning cached instance of singleton bean 'velocityConfigurer'
+DEBUG [2014-09-11 14:49:49,064] (AbstractAutowireCapableBeanFactory.java[invokeInitMethods]:1461) - Invoking afterPropertiesSet() on bean with name 'mgr/course/verification_meta_status.json.action'
+DEBUG [2014-09-11 14:49:49,064] (AbstractBeanFactory.java[doGetBean]:242) - Returning cached instance of singleton bean 'velocityConfigurer'
+DEBUG [2014-09-11 14:49:49,064] (AbstractAutowireCapableBeanFactory.java[invokeInitMethods]:1461) - Invoking afterPropertiesSet() on bean with name 'mgr/course/verification_meta_status.json'
+DEBUG [2014-09-11 14:49:49,158] (GenericConversionService.java[convert]:159) - Converting value 'IR_TECHNICAL_VIEW' of java.lang.String to java.lang.String
+DEBUG [2014-09-11 14:49:49,158] (GenericConversionService.java[convert]:186) - Converted to 'IR_TECHNICAL_VIEW'
+DEBUG [2014-09-11 14:49:49,158] (GenericConversionService.java[convert]:159) - Converting value 'I' of java.lang.String to java.lang.String
+DEBUG [2014-09-11 14:49:49,158] (GenericConversionService.java[convert]:186) - Converted to 'I'
+DEBUG [2014-09-11 14:49:49,158] (GenericConversionService.java[convert]:159) - Converting value '1' of java.lang.String to java.lang.Integer
+DEBUG [2014-09-11 14:49:49,158] (GenericConversionService.java[convert]:186) - Converted to 1
+DEBUG [2014-09-11 14:49:49,158] (GenericConversionService.java[convert]:159) - Converting value '' of java.lang.String to java.lang.String
+DEBUG [2014-09-11 14:49:49,158] (GenericConversionService.java[convert]:186) - Converted to ''
+DEBUG [2014-09-11 14:49:49,158] (GenericConversionService.java[convert]:159) - Converting value '' of java.lang.String to java.lang.String
+DEBUG [2014-09-11 14:49:49,158] (GenericConversionService.java[convert]:186) - Converted to ''
+DEBUG [2014-09-11 14:49:49,158] (GenericConversionService.java[convert]:159) - Converting value 'http://203.253.211.77:9090' of java.lang.String to java.lang.String
+DEBUG [2014-09-11 14:49:49,158] (GenericConversionService.java[convert]:186) - Converted to 'http://203.253.211.77:9090'
+DEBUG [2014-09-11 14:49:49,158] (GenericConversionService.java[convert]:159) - Converting value '51018000' of java.lang.String to java.lang.String
+DEBUG [2014-09-11 14:49:49,158] (GenericConversionService.java[convert]:186) - Converted to '51018000'
+DEBUG [2014-09-11 14:49:49,158] (GenericConversionService.java[convert]:159) - Converting value 'admin' of java.lang.String to java.lang.String
+DEBUG [2014-09-11 14:49:49,158] (GenericConversionService.java[convert]:186) - Converted to 'admin'
+DEBUG [2014-09-11 14:49:49,158] (GenericConversionService.java[convert]:159) - Converting value '' of java.lang.String to java.lang.String
+DEBUG [2014-09-11 14:49:49,158] (GenericConversionService.java[convert]:186) - Converted to ''
+DEBUG [2014-09-11 14:49:49,158] (GenericConversionService.java[convert]:159) - Converting value '1' of java.lang.String to java.lang.Integer
+DEBUG [2014-09-11 14:49:49,158] (GenericConversionService.java[convert]:186) - Converted to 1
+DEBUG [2014-09-11 14:49:49,158] (AbstractBeanFactory.java[doGetBean]:242) - Returning cached instance of singleton bean 'controllerAspector'
+DEBUG [2014-09-11 14:49:49,205] (AbstractBeanFactory.java[doGetBean]:242) - Returning cached instance of singleton bean 'transactionManager'
+DEBUG [2014-09-11 14:49:49,205] (AbstractPlatformTransactionManager.java[getTransaction]:365) - Creating new transaction with name [com.kocwsystem.service.course.MetaDicService.metaCondition]: PROPAGATION_REQUIRED,ISOLATION_DEFAULT; ''
+DEBUG [2014-09-11 14:49:49,205] (DataSourceTransactionManager.java[doBegin]:204) - Acquired Connection [jdbc:oracle:thin:@121.78.115.125:2521:orcl, UserName=KOCWTEST, Oracle JDBC driver] for JDBC transaction
+DEBUG [2014-09-11 14:49:49,205] (DataSourceTransactionManager.java[doBegin]:221) - Switching JDBC Connection [jdbc:oracle:thin:@121.78.115.125:2521:orcl, UserName=KOCWTEST, Oracle JDBC driver] to manual commit
+DEBUG [2014-09-11 14:49:49,205] (JakartaCommonsLoggingImpl.java[debug]:27) - {conn-145153} Connection
+DEBUG [2014-09-11 14:49:49,205] (JakartaCommonsLoggingImpl.java[debug]:27) - {conn-145153} Preparing Statement:    SELECT ELEMENT as element,     CASE      WHEN INPUT_VALIDCHECK = 'ST' OR INPUT_VALIDCHECK = 'SN'               THEN INPUT_VALIDCHECK || ELEMENT_LENGTH               ELSE INPUT_VALIDCHECK            END as inputCheck,      ALLOW_CODEGROUP as allowCodeGroup,             PK_YN as pkYn,             MANDATORY_YN AS essential,            CASE               WHEN PUBLIC_YN = 'Y' AND PUBMANDATORY_YN = 'Y' THEN 'Y'               ELSE 'N'            END AS publicYn       FROM ST_COM_METADIC       WHERE     USE_YN = 'Y'            AND COLL_TYPE = ?    ORDER BY DECODE(inputCheck,'ZZ',1), SUBSTR(inputCheck,0,2), pkYn DESC, essential DESC, publicYn DESC, DISP_ORDER  
+DEBUG [2014-09-11 14:49:49,205] (JakartaCommonsLoggingImpl.java[debug]:27) - {pstm-145154} Executing Statement:    SELECT ELEMENT as element,     CASE      WHEN INPUT_VALIDCHECK = 'ST' OR INPUT_VALIDCHECK = 'SN'               THEN INPUT_VALIDCHECK || ELEMENT_LENGTH               ELSE INPUT_VALIDCHECK            END as inputCheck,      ALLOW_CODEGROUP as allowCodeGroup,             PK_YN as pkYn,             MANDATORY_YN AS essential,            CASE               WHEN PUBLIC_YN = 'Y' AND PUBMANDATORY_YN = 'Y' THEN 'Y'               ELSE 'N'            END AS publicYn       FROM ST_COM_METADIC       WHERE     USE_YN = 'Y'            AND COLL_TYPE = ?    ORDER BY DECODE(inputCheck,'ZZ',1), SUBSTR(inputCheck,0,2), pkYn DESC, essential DESC, publicYn DESC, DISP_ORDER  
+DEBUG [2014-09-11 14:49:49,205] (JakartaCommonsLoggingImpl.java[debug]:27) - {pstm-145154} Parameters: [I]
+DEBUG [2014-09-11 14:49:49,205] (JakartaCommonsLoggingImpl.java[debug]:27) - {pstm-145154} Types: [java.lang.String]
+DEBUG [2014-09-11 14:49:49,205] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145155} ResultSet
+DEBUG [2014-09-11 14:49:49,205] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145155} Header: [ELEMENT, INPUTCHECK, ALLOWCODEGROUP, PKYN, ESSENTIAL, PUBLICYN]
+DEBUG [2014-09-11 14:49:49,205] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145155} Result: [TECH_ID, ZZ, null, Y, Y, Y]
+DEBUG [2014-09-11 14:49:49,205] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145155} Result: [RELATION_ID, ZZ, null, Y, Y, Y]
+DEBUG [2014-09-11 14:49:49,205] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145155} Result: [TECH_URL, ZZ, null, N, N, N]
+DEBUG [2014-09-11 14:49:49,205] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145155} Result: [TECH_DESCRIPTION, ZZ, null, N, N, N]
+DEBUG [2014-09-11 14:49:49,205] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145155} Result: [RELATION_TYPE, CD, 125, Y, Y, Y]
+DEBUG [2014-09-11 14:49:49,221] (JakartaCommonsLoggingImpl.java[debug]:27) - {conn-145156} Connection
+DEBUG [2014-09-11 14:49:49,221] (JakartaCommonsLoggingImpl.java[debug]:27) - {conn-145156} Preparing Statement:    SELECT CODE_NAME      FROM ST_COM_CODE     WHERE USE_YN = 'Y' AND CODE_GROUP = '596' AND CODE_VALUE = ?  
+DEBUG [2014-09-11 14:49:49,221] (JakartaCommonsLoggingImpl.java[debug]:27) - {pstm-145157} Executing Statement:    SELECT CODE_NAME      FROM ST_COM_CODE     WHERE USE_YN = 'Y' AND CODE_GROUP = '596' AND CODE_VALUE = ?  
+DEBUG [2014-09-11 14:49:49,221] (JakartaCommonsLoggingImpl.java[debug]:27) - {pstm-145157} Parameters: [PK]
+DEBUG [2014-09-11 14:49:49,221] (JakartaCommonsLoggingImpl.java[debug]:27) - {pstm-145157} Types: [java.lang.String]
+DEBUG [2014-09-11 14:49:49,236] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145158} ResultSet
+DEBUG [2014-09-11 14:49:49,236] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145158} Header: [CODE_NAME]
+DEBUG [2014-09-11 14:49:49,236] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145158} Result: [PK 중복 여부]
+metaVerification url : http://203.253.211.77:9090/validationMetaXml.jsp?viewNm=IR_TECHNICAL_VIEW&columnNm=TECH_ID, RELATION_ID, RELATION_TYPE&typeGb=PK&xmlTagNm=PK&univId=51018000&chkSum=198904852&version=1
+DEBUG [2014-09-11 14:49:49,393] (JakartaCommonsLoggingImpl.java[debug]:27) - {conn-145159} Connection
+DEBUG [2014-09-11 14:49:49,393] (JakartaCommonsLoggingImpl.java[debug]:27) - {conn-145159} Preparing Statement:    SELECT CODE_NAME      FROM ST_COM_CODE     WHERE USE_YN = 'Y' AND CODE_GROUP = '596' AND CODE_VALUE = ?  
+DEBUG [2014-09-11 14:49:49,393] (JakartaCommonsLoggingImpl.java[debug]:27) - {pstm-145160} Executing Statement:    SELECT CODE_NAME      FROM ST_COM_CODE     WHERE USE_YN = 'Y' AND CODE_GROUP = '596' AND CODE_VALUE = ?  
+DEBUG [2014-09-11 14:49:49,393] (JakartaCommonsLoggingImpl.java[debug]:27) - {pstm-145160} Parameters: [PK]
+DEBUG [2014-09-11 14:49:49,393] (JakartaCommonsLoggingImpl.java[debug]:27) - {pstm-145160} Types: [java.lang.String]
+DEBUG [2014-09-11 14:49:49,393] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145161} ResultSet
+DEBUG [2014-09-11 14:49:49,393] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145161} Header: [CODE_NAME]
+DEBUG [2014-09-11 14:49:49,393] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145161} Result: [PK 중복 여부]
+metaVerification url : http://203.253.211.77:9090/validationMetaXml.jsp?viewNm=IR_TECHNICAL_VIEW&columnNm=TECH_ID&xmlTagNm=essential&univId=51018000&chkSum=198904852&version=1
+DEBUG [2014-09-11 14:49:49,580] (JakartaCommonsLoggingImpl.java[debug]:27) - {conn-145162} Connection
+DEBUG [2014-09-11 14:49:49,580] (JakartaCommonsLoggingImpl.java[debug]:27) - {conn-145162} Preparing Statement:    SELECT CODE_NAME      FROM ST_COM_CODE     WHERE USE_YN = 'Y' AND CODE_GROUP = '596' AND CODE_VALUE = ?  
+DEBUG [2014-09-11 14:49:49,580] (JakartaCommonsLoggingImpl.java[debug]:27) - {pstm-145163} Executing Statement:    SELECT CODE_NAME      FROM ST_COM_CODE     WHERE USE_YN = 'Y' AND CODE_GROUP = '596' AND CODE_VALUE = ?  
+DEBUG [2014-09-11 14:49:49,580] (JakartaCommonsLoggingImpl.java[debug]:27) - {pstm-145163} Parameters: [PK]
+DEBUG [2014-09-11 14:49:49,580] (JakartaCommonsLoggingImpl.java[debug]:27) - {pstm-145163} Types: [java.lang.String]
+DEBUG [2014-09-11 14:49:49,596] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145164} ResultSet
+DEBUG [2014-09-11 14:49:49,596] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145164} Header: [CODE_NAME]
+DEBUG [2014-09-11 14:49:49,596] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145164} Result: [PK 중복 여부]
+metaVerification url : http://203.253.211.77:9090/validationMetaXml.jsp?viewNm=IR_TECHNICAL_VIEW&columnNm=RELATION_ID&xmlTagNm=essential&univId=51018000&chkSum=198904852&version=1
+DEBUG [2014-09-11 14:49:49,768] (JakartaCommonsLoggingImpl.java[debug]:27) - {conn-145165} Connection
+DEBUG [2014-09-11 14:49:49,768] (JakartaCommonsLoggingImpl.java[debug]:27) - {conn-145165} Preparing Statement:    SELECT CODE_NAME      FROM ST_COM_CODE     WHERE USE_YN = 'Y' AND CODE_GROUP = '596' AND CODE_VALUE = ?  
+DEBUG [2014-09-11 14:49:49,768] (JakartaCommonsLoggingImpl.java[debug]:27) - {pstm-145166} Executing Statement:    SELECT CODE_NAME      FROM ST_COM_CODE     WHERE USE_YN = 'Y' AND CODE_GROUP = '596' AND CODE_VALUE = ?  
+DEBUG [2014-09-11 14:49:49,768] (JakartaCommonsLoggingImpl.java[debug]:27) - {pstm-145166} Parameters: [PK]
+DEBUG [2014-09-11 14:49:49,799] (JakartaCommonsLoggingImpl.java[debug]:27) - {pstm-145166} Types: [java.lang.String]
+DEBUG [2014-09-11 14:49:49,799] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145167} ResultSet
+DEBUG [2014-09-11 14:49:49,799] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145167} Header: [CODE_NAME]
+DEBUG [2014-09-11 14:49:49,799] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145167} Result: [PK 중복 여부]
+DEBUG [2014-09-11 14:49:49,799] (JakartaCommonsLoggingImpl.java[debug]:27) - {conn-145168} Connection
+DEBUG [2014-09-11 14:49:49,799] (JakartaCommonsLoggingImpl.java[debug]:27) - {conn-145168} Preparing Statement:    SELECT CODE_VALUE      FROM ST_COM_CODE     WHERE USE_YN = 'Y' AND CODE_GROUP = ?  
+DEBUG [2014-09-11 14:49:49,799] (JakartaCommonsLoggingImpl.java[debug]:27) - {pstm-145169} Executing Statement:    SELECT CODE_VALUE      FROM ST_COM_CODE     WHERE USE_YN = 'Y' AND CODE_GROUP = ?  
+DEBUG [2014-09-11 14:49:49,799] (JakartaCommonsLoggingImpl.java[debug]:27) - {pstm-145169} Parameters: [125]
+DEBUG [2014-09-11 14:49:49,799] (JakartaCommonsLoggingImpl.java[debug]:27) - {pstm-145169} Types: [java.lang.String]
+DEBUG [2014-09-11 14:49:49,799] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145170} ResultSet
+DEBUG [2014-09-11 14:49:49,799] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145170} Header: [CODE_VALUE]
+DEBUG [2014-09-11 14:49:49,799] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145170} Result: [C]
+DEBUG [2014-09-11 14:49:49,799] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145170} Result: [L]
+metaVerification url : http://203.253.211.77:9090/validationMetaXml.jsp?viewNm=IR_TECHNICAL_VIEW&columnNm=RELATION_TYPE&typeGb=CD&xmlTagNm=CD&univId=51018000&chkSum=198904852&version=1
+DEBUG [2014-09-11 14:49:49,955] (AbstractPlatformTransactionManager.java[processCommit]:752) - Initiating transaction commit
+DEBUG [2014-09-11 14:49:49,955] (DataSourceTransactionManager.java[doCommit]:264) - Committing JDBC transaction on Connection [jdbc:oracle:thin:@121.78.115.125:2521:orcl, UserName=KOCWTEST, Oracle JDBC driver]
+DEBUG [2014-09-11 14:49:49,955] (DataSourceTransactionManager.java[doCleanupAfterCompletion]:322) - Releasing JDBC Connection [jdbc:oracle:thin:@121.78.115.125:2521:orcl, UserName=KOCWTEST, Oracle JDBC driver] after transaction
+DEBUG [2014-09-11 14:49:49,955] (DataSourceUtils.java[doReleaseConnection]:332) - Returning JDBC Connection to DataSource
+DEBUG [2014-09-11 14:49:49,955] (AbstractBeanFactory.java[doGetBean]:242) - Returning cached instance of singleton bean 'velocityConfigurer'
+DEBUG [2014-09-11 14:49:49,955] (AbstractAutowireCapableBeanFactory.java[invokeInitMethods]:1461) - Invoking afterPropertiesSet() on bean with name 'mgr/course/verification_meta_status.json'
+DEBUG [2014-09-11 14:49:49,955] (AbstractBeanFactory.java[doGetBean]:242) - Returning cached instance of singleton bean 'velocityConfigurer'
+DEBUG [2014-09-11 14:49:49,955] (AbstractAutowireCapableBeanFactory.java[invokeInitMethods]:1461) - Invoking afterPropertiesSet() on bean with name 'mgr/course/verification_meta_status.json.action'
+DEBUG [2014-09-11 14:49:49,955] (AbstractBeanFactory.java[doGetBean]:242) - Returning cached instance of singleton bean 'velocityConfigurer'
+DEBUG [2014-09-11 14:49:49,955] (AbstractAutowireCapableBeanFactory.java[invokeInitMethods]:1461) - Invoking afterPropertiesSet() on bean with name 'mgr/course/verification_meta_status.json'
+DEBUG [2014-09-11 14:49:50,190] (GenericConversionService.java[convert]:159) - Converting value 'IR_CONTRIBUTE_VIEW' of java.lang.String to java.lang.String
+DEBUG [2014-09-11 14:49:50,190] (GenericConversionService.java[convert]:186) - Converted to 'IR_CONTRIBUTE_VIEW'
+DEBUG [2014-09-11 14:49:50,190] (GenericConversionService.java[convert]:159) - Converting value 'B' of java.lang.String to java.lang.String
+DEBUG [2014-09-11 14:49:50,190] (GenericConversionService.java[convert]:186) - Converted to 'B'
+DEBUG [2014-09-11 14:49:50,190] (GenericConversionService.java[convert]:159) - Converting value '1' of java.lang.String to java.lang.Integer
+DEBUG [2014-09-11 14:49:50,190] (GenericConversionService.java[convert]:186) - Converted to 1
+DEBUG [2014-09-11 14:49:50,190] (GenericConversionService.java[convert]:159) - Converting value '' of java.lang.String to java.lang.String
+DEBUG [2014-09-11 14:49:50,190] (GenericConversionService.java[convert]:186) - Converted to ''
+DEBUG [2014-09-11 14:49:50,190] (GenericConversionService.java[convert]:159) - Converting value '' of java.lang.String to java.lang.String
+DEBUG [2014-09-11 14:49:50,190] (GenericConversionService.java[convert]:186) - Converted to ''
+DEBUG [2014-09-11 14:49:50,190] (GenericConversionService.java[convert]:159) - Converting value 'http://203.253.211.77:9090' of java.lang.String to java.lang.String
+DEBUG [2014-09-11 14:49:50,190] (GenericConversionService.java[convert]:186) - Converted to 'http://203.253.211.77:9090'
+DEBUG [2014-09-11 14:49:50,190] (GenericConversionService.java[convert]:159) - Converting value '51018000' of java.lang.String to java.lang.String
+DEBUG [2014-09-11 14:49:50,190] (GenericConversionService.java[convert]:186) - Converted to '51018000'
+DEBUG [2014-09-11 14:49:50,190] (GenericConversionService.java[convert]:159) - Converting value 'admin' of java.lang.String to java.lang.String
+DEBUG [2014-09-11 14:49:50,190] (GenericConversionService.java[convert]:186) - Converted to 'admin'
+DEBUG [2014-09-11 14:49:50,190] (GenericConversionService.java[convert]:159) - Converting value '' of java.lang.String to java.lang.String
+DEBUG [2014-09-11 14:49:50,190] (GenericConversionService.java[convert]:186) - Converted to ''
+DEBUG [2014-09-11 14:49:50,190] (GenericConversionService.java[convert]:159) - Converting value '1' of java.lang.String to java.lang.Integer
+DEBUG [2014-09-11 14:49:50,190] (GenericConversionService.java[convert]:186) - Converted to 1
+DEBUG [2014-09-11 14:49:50,190] (AbstractBeanFactory.java[doGetBean]:242) - Returning cached instance of singleton bean 'controllerAspector'
+DEBUG [2014-09-11 14:49:50,206] (AbstractBeanFactory.java[doGetBean]:242) - Returning cached instance of singleton bean 'transactionManager'
+DEBUG [2014-09-11 14:49:50,221] (AbstractPlatformTransactionManager.java[getTransaction]:365) - Creating new transaction with name [com.kocwsystem.service.course.MetaDicService.metaCondition]: PROPAGATION_REQUIRED,ISOLATION_DEFAULT; ''
+DEBUG [2014-09-11 14:49:50,221] (DataSourceTransactionManager.java[doBegin]:204) - Acquired Connection [jdbc:oracle:thin:@121.78.115.125:2521:orcl, UserName=KOCWTEST, Oracle JDBC driver] for JDBC transaction
+DEBUG [2014-09-11 14:49:50,221] (DataSourceTransactionManager.java[doBegin]:221) - Switching JDBC Connection [jdbc:oracle:thin:@121.78.115.125:2521:orcl, UserName=KOCWTEST, Oracle JDBC driver] to manual commit
+DEBUG [2014-09-11 14:49:50,221] (JakartaCommonsLoggingImpl.java[debug]:27) - {conn-145171} Connection
+DEBUG [2014-09-11 14:49:50,221] (JakartaCommonsLoggingImpl.java[debug]:27) - {conn-145171} Preparing Statement:    SELECT ELEMENT as element,     CASE      WHEN INPUT_VALIDCHECK = 'ST' OR INPUT_VALIDCHECK = 'SN'               THEN INPUT_VALIDCHECK || ELEMENT_LENGTH               ELSE INPUT_VALIDCHECK            END as inputCheck,      ALLOW_CODEGROUP as allowCodeGroup,             PK_YN as pkYn,             MANDATORY_YN AS essential,            CASE               WHEN PUBLIC_YN = 'Y' AND PUBMANDATORY_YN = 'Y' THEN 'Y'               ELSE 'N'            END AS publicYn       FROM ST_COM_METADIC       WHERE     USE_YN = 'Y'            AND COLL_TYPE = ?    ORDER BY DECODE(inputCheck,'ZZ',1), SUBSTR(inputCheck,0,2), pkYn DESC, essential DESC, publicYn DESC, DISP_ORDER  
+DEBUG [2014-09-11 14:49:50,221] (JakartaCommonsLoggingImpl.java[debug]:27) - {pstm-145172} Executing Statement:    SELECT ELEMENT as element,     CASE      WHEN INPUT_VALIDCHECK = 'ST' OR INPUT_VALIDCHECK = 'SN'               THEN INPUT_VALIDCHECK || ELEMENT_LENGTH               ELSE INPUT_VALIDCHECK            END as inputCheck,      ALLOW_CODEGROUP as allowCodeGroup,             PK_YN as pkYn,             MANDATORY_YN AS essential,            CASE               WHEN PUBLIC_YN = 'Y' AND PUBMANDATORY_YN = 'Y' THEN 'Y'               ELSE 'N'            END AS publicYn       FROM ST_COM_METADIC       WHERE     USE_YN = 'Y'            AND COLL_TYPE = ?    ORDER BY DECODE(inputCheck,'ZZ',1), SUBSTR(inputCheck,0,2), pkYn DESC, essential DESC, publicYn DESC, DISP_ORDER  
+DEBUG [2014-09-11 14:49:50,221] (JakartaCommonsLoggingImpl.java[debug]:27) - {pstm-145172} Parameters: [B]
+DEBUG [2014-09-11 14:49:50,221] (JakartaCommonsLoggingImpl.java[debug]:27) - {pstm-145172} Types: [java.lang.String]
+DEBUG [2014-09-11 14:49:50,221] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145173} ResultSet
+DEBUG [2014-09-11 14:49:50,221] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145173} Header: [ELEMENT, INPUTCHECK, ALLOWCODEGROUP, PKYN, ESSENTIAL, PUBLICYN]
+DEBUG [2014-09-11 14:49:50,221] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145173} Result: [CONTRIBUTE_ID, ZZ, null, Y, Y, Y]
+DEBUG [2014-09-11 14:49:50,221] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145173} Result: [RELATION_ID, ZZ, null, Y, Y, Y]
+DEBUG [2014-09-11 14:49:50,221] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145173} Result: [ROLE, ZZ, null, Y, Y, Y]
+DEBUG [2014-09-11 14:49:50,221] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145173} Result: [NAME, ZZ, null, N, Y, Y]
+DEBUG [2014-09-11 14:49:50,221] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145173} Result: [RELATION_TYPE, CD, 125, N, Y, Y]
+DEBUG [2014-09-11 14:49:50,221] (JakartaCommonsLoggingImpl.java[debug]:27) - {conn-145174} Connection
+DEBUG [2014-09-11 14:49:50,221] (JakartaCommonsLoggingImpl.java[debug]:27) - {conn-145174} Preparing Statement:    SELECT CODE_NAME      FROM ST_COM_CODE     WHERE USE_YN = 'Y' AND CODE_GROUP = '596' AND CODE_VALUE = ?  
+DEBUG [2014-09-11 14:49:50,221] (JakartaCommonsLoggingImpl.java[debug]:27) - {pstm-145175} Executing Statement:    SELECT CODE_NAME      FROM ST_COM_CODE     WHERE USE_YN = 'Y' AND CODE_GROUP = '596' AND CODE_VALUE = ?  
+DEBUG [2014-09-11 14:49:50,221] (JakartaCommonsLoggingImpl.java[debug]:27) - {pstm-145175} Parameters: [PK]
+DEBUG [2014-09-11 14:49:50,221] (JakartaCommonsLoggingImpl.java[debug]:27) - {pstm-145175} Types: [java.lang.String]
+DEBUG [2014-09-11 14:49:50,237] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145176} ResultSet
+DEBUG [2014-09-11 14:49:50,237] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145176} Header: [CODE_NAME]
+DEBUG [2014-09-11 14:49:50,237] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145176} Result: [PK 중복 여부]
+metaVerification url : http://203.253.211.77:9090/validationMetaXml.jsp?viewNm=IR_CONTRIBUTE_VIEW&columnNm=CONTRIBUTE_ID, RELATION_ID, ROLE&typeGb=PK&xmlTagNm=PK&univId=51018000&chkSum=198904852&version=1
+DEBUG [2014-09-11 14:49:50,549] (JakartaCommonsLoggingImpl.java[debug]:27) - {conn-145177} Connection
+DEBUG [2014-09-11 14:49:50,549] (JakartaCommonsLoggingImpl.java[debug]:27) - {conn-145177} Preparing Statement:    SELECT CODE_NAME      FROM ST_COM_CODE     WHERE USE_YN = 'Y' AND CODE_GROUP = '596' AND CODE_VALUE = ?  
+DEBUG [2014-09-11 14:49:50,549] (JakartaCommonsLoggingImpl.java[debug]:27) - {pstm-145178} Executing Statement:    SELECT CODE_NAME      FROM ST_COM_CODE     WHERE USE_YN = 'Y' AND CODE_GROUP = '596' AND CODE_VALUE = ?  
+DEBUG [2014-09-11 14:49:50,549] (JakartaCommonsLoggingImpl.java[debug]:27) - {pstm-145178} Parameters: [PK]
+DEBUG [2014-09-11 14:49:50,549] (JakartaCommonsLoggingImpl.java[debug]:27) - {pstm-145178} Types: [java.lang.String]
+DEBUG [2014-09-11 14:49:50,565] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145179} ResultSet
+DEBUG [2014-09-11 14:49:50,565] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145179} Header: [CODE_NAME]
+DEBUG [2014-09-11 14:49:50,565] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145179} Result: [PK 중복 여부]
+metaVerification url : http://203.253.211.77:9090/validationMetaXml.jsp?viewNm=IR_CONTRIBUTE_VIEW&columnNm=CONTRIBUTE_ID&xmlTagNm=essential&univId=51018000&chkSum=198904852&version=1
+DEBUG [2014-09-11 14:49:50,721] (JakartaCommonsLoggingImpl.java[debug]:27) - {conn-145180} Connection
+DEBUG [2014-09-11 14:49:50,721] (JakartaCommonsLoggingImpl.java[debug]:27) - {conn-145180} Preparing Statement:    SELECT CODE_NAME      FROM ST_COM_CODE     WHERE USE_YN = 'Y' AND CODE_GROUP = '596' AND CODE_VALUE = ?  
+DEBUG [2014-09-11 14:49:50,721] (JakartaCommonsLoggingImpl.java[debug]:27) - {pstm-145181} Executing Statement:    SELECT CODE_NAME      FROM ST_COM_CODE     WHERE USE_YN = 'Y' AND CODE_GROUP = '596' AND CODE_VALUE = ?  
+DEBUG [2014-09-11 14:49:50,721] (JakartaCommonsLoggingImpl.java[debug]:27) - {pstm-145181} Parameters: [PK]
+DEBUG [2014-09-11 14:49:50,721] (JakartaCommonsLoggingImpl.java[debug]:27) - {pstm-145181} Types: [java.lang.String]
+DEBUG [2014-09-11 14:49:50,737] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145182} ResultSet
+DEBUG [2014-09-11 14:49:50,737] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145182} Header: [CODE_NAME]
+DEBUG [2014-09-11 14:49:50,737] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145182} Result: [PK 중복 여부]
+metaVerification url : http://203.253.211.77:9090/validationMetaXml.jsp?viewNm=IR_CONTRIBUTE_VIEW&columnNm=RELATION_ID&xmlTagNm=essential&univId=51018000&chkSum=198904852&version=1
+DEBUG [2014-09-11 14:49:50,909] (JakartaCommonsLoggingImpl.java[debug]:27) - {conn-145183} Connection
+DEBUG [2014-09-11 14:49:50,909] (JakartaCommonsLoggingImpl.java[debug]:27) - {conn-145183} Preparing Statement:    SELECT CODE_NAME      FROM ST_COM_CODE     WHERE USE_YN = 'Y' AND CODE_GROUP = '596' AND CODE_VALUE = ?  
+DEBUG [2014-09-11 14:49:50,909] (JakartaCommonsLoggingImpl.java[debug]:27) - {pstm-145184} Executing Statement:    SELECT CODE_NAME      FROM ST_COM_CODE     WHERE USE_YN = 'Y' AND CODE_GROUP = '596' AND CODE_VALUE = ?  
+DEBUG [2014-09-11 14:49:50,925] (JakartaCommonsLoggingImpl.java[debug]:27) - {pstm-145184} Parameters: [PK]
+DEBUG [2014-09-11 14:49:50,925] (JakartaCommonsLoggingImpl.java[debug]:27) - {pstm-145184} Types: [java.lang.String]
+DEBUG [2014-09-11 14:49:50,925] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145185} ResultSet
+DEBUG [2014-09-11 14:49:50,925] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145185} Header: [CODE_NAME]
+DEBUG [2014-09-11 14:49:50,925] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145185} Result: [PK 중복 여부]
+metaVerification url : http://203.253.211.77:9090/validationMetaXml.jsp?viewNm=IR_CONTRIBUTE_VIEW&columnNm=ROLE&xmlTagNm=essential&univId=51018000&chkSum=198904852&version=1
+metaVerification url : http://203.253.211.77:9090/validationMetaXml.jsp?viewNm=IR_CONTRIBUTE_VIEW&columnNm=NAME&xmlTagNm=essential&univId=51018000&chkSum=198904852&version=1
+DEBUG [2014-09-11 14:49:51,300] (JakartaCommonsLoggingImpl.java[debug]:27) - {conn-145186} Connection
+DEBUG [2014-09-11 14:49:51,300] (JakartaCommonsLoggingImpl.java[debug]:27) - {conn-145186} Preparing Statement:    SELECT CODE_NAME      FROM ST_COM_CODE     WHERE USE_YN = 'Y' AND CODE_GROUP = '596' AND CODE_VALUE = ?  
+DEBUG [2014-09-11 14:49:51,300] (JakartaCommonsLoggingImpl.java[debug]:27) - {pstm-145187} Executing Statement:    SELECT CODE_NAME      FROM ST_COM_CODE     WHERE USE_YN = 'Y' AND CODE_GROUP = '596' AND CODE_VALUE = ?  
+DEBUG [2014-09-11 14:49:51,300] (JakartaCommonsLoggingImpl.java[debug]:27) - {pstm-145187} Parameters: [CD]
+DEBUG [2014-09-11 14:49:51,300] (JakartaCommonsLoggingImpl.java[debug]:27) - {pstm-145187} Types: [java.lang.String]
+DEBUG [2014-09-11 14:49:51,300] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145188} ResultSet
+DEBUG [2014-09-11 14:49:51,300] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145188} Header: [CODE_NAME]
+DEBUG [2014-09-11 14:49:51,300] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145188} Result: [허용 코드 체크]
+DEBUG [2014-09-11 14:49:51,300] (JakartaCommonsLoggingImpl.java[debug]:27) - {conn-145189} Connection
+DEBUG [2014-09-11 14:49:51,300] (JakartaCommonsLoggingImpl.java[debug]:27) - {conn-145189} Preparing Statement:    SELECT CODE_VALUE      FROM ST_COM_CODE     WHERE USE_YN = 'Y' AND CODE_GROUP = ?  
+DEBUG [2014-09-11 14:49:51,300] (JakartaCommonsLoggingImpl.java[debug]:27) - {pstm-145190} Executing Statement:    SELECT CODE_VALUE      FROM ST_COM_CODE     WHERE USE_YN = 'Y' AND CODE_GROUP = ?  
+DEBUG [2014-09-11 14:49:51,300] (JakartaCommonsLoggingImpl.java[debug]:27) - {pstm-145190} Parameters: [125]
+DEBUG [2014-09-11 14:49:51,300] (JakartaCommonsLoggingImpl.java[debug]:27) - {pstm-145190} Types: [java.lang.String]
+DEBUG [2014-09-11 14:49:51,331] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145191} ResultSet
+DEBUG [2014-09-11 14:49:51,331] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145191} Header: [CODE_VALUE]
+DEBUG [2014-09-11 14:49:51,331] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145191} Result: [C]
+DEBUG [2014-09-11 14:49:51,331] (JakartaCommonsLoggingImpl.java[debug]:27) - {rset-145191} Result: [L]
+metaVerification url : http://203.253.211.77:9090/validationMetaXml.jsp?viewNm=IR_CONTRIBUTE_VIEW&columnNm=RELATION_TYPE&xmlTagNm=CD&univId=51018000&chkSum=198904852&version=1
+DEBUG [2014-09-11 14:49:52,144] (AbstractPlatformTransactionManager.java[processCommit]:752) - Initiating transaction commit
+DEBUG [2014-09-11 14:49:52,144] (DataSourceTransactionManager.java[doCommit]:264) - Committing JDBC transaction on Connection [jdbc:oracle:thin:@121.78.115.125:2521:orcl, UserName=KOCWTEST, Oracle JDBC driver]
+DEBUG [2014-09-11 14:49:52,144] (DataSourceTransactionManager.java[doCleanupAfterCompletion]:322) - Releasing JDBC Connection [jdbc:oracle:thin:@121.78.115.125:2521:orcl, UserName=KOCWTEST, Oracle JDBC driver] after transaction
+DEBUG [2014-09-11 14:49:52,144] (DataSourceUtils.java[doReleaseConnection]:332) - Returning JDBC Connection to DataSource
+DEBUG [2014-09-11 14:49:52,175] (AbstractBeanFactory.java[doGetBean]:242) - Returning cached instance of singleton bean 'velocityConfigurer'
+DEBUG [2014-09-11 14:49:52,175] (AbstractAutowireCapableBeanFactory.java[invokeInitMethods]:1461) - Invoking afterPropertiesSet() on bean with name 'mgr/course/verification_meta_status.json'
+DEBUG [2014-09-11 14:49:52,175] (AbstractBeanFactory.java[doGetBean]:242) - Returning cached instance of singleton bean 'velocityConfigurer'
+DEBUG [2014-09-11 14:49:52,175] (AbstractAutowireCapableBeanFactory.java[invokeInitMethods]:1461) - Invoking afterPropertiesSet() on bean with name 'mgr/course/verification_meta_status.json.action'
+DEBUG [2014-09-11 14:49:52,175] (AbstractBeanFactory.java[doGetBean]:242) - Returning cached instance of singleton bean 'velocityConfigurer'
+DEBUG [2014-09-11 14:49:52,175] (AbstractAutowireCapableBeanFactory.java[invokeInitMethods]:1461) - Invoking afterPropertiesSet() on bean with name 'mgr/course/verification_meta_status.json'
+DEBUG [2014-09-11 14:49:52,206] (GenericConversionService.java[convert]:159) - Converting value 'IR_CONTRIBUTE_VIEW' of java.lang.String to java.lang.String
+DEBUG [2014-09-11 14:49:52,206] (GenericConversionService.java[convert]:186) - Converted to 'IR_CONTRIBUTE_VIEW'
+DEBUG [2014-09-11 14:49:52,206] (GenericConversionService.java[convert]:159) - Converting value 'B' of java.lang.String to java.lang.String
+DEBUG [2014-09-11 14:49:52,206] (GenericConversionService.java[convert]:186) - Converted to 'B'
+DEBUG [2014-09-11 14:49:52,222] (GenericConversionService.java[convert]:159) - Converting value '1' of java.lang.String to java.lang.Integer
+DEBUG [2014-09-11 14:49:52,222] (GenericConversionService.java[convert]:186) - Converted to 1
+DEBUG [2014-09-11 14:49:52,222] (GenericConversionService.java[convert]:159) - Converting value 'meta' of java.lang.String to java.lang.String
+DEBUG [2014-09-11 14:49:52,222] (GenericConversionService.java[convert]:186) - Converted to 'meta'
+DEBUG [2014-09-11 14:49:52,222] (GenericConversionService.java[convert]:159) - Converting value 'SSSS' of java.lang.String to java.lang.String
+DEBUG [2014-09-11 14:49:52,222] (GenericConversionService.java[convert]:186) - Converted to 'SSSS'
+DEBUG [2014-09-11 14:49:52,222] (GenericConversionService.java[convert]:159) - Converting value 'http://203.253.211.77:9090' of java.lang.String to java.lang.String
+DEBUG [2014-09-11 14:49:52,222] (GenericConversionService.java[convert]:186) - Converted to 'http://203.253.211.77:9090'
+DEBUG [2014-09-11 14:49:52,222] (GenericConversionService.java[convert]:159) - Converting value '51018000' of java.lang.String to java.lang.String
+DEBUG [2014-09-11 14:49:52,222] (GenericConversionService.java[convert]:186) - Converted to '51018000'
+DEBUG [2014-09-11 14:49:52,222] (GenericConversionService.java[convert]:159) - Converting value 'admin' of java.lang.String to java.lang.String
+DEBUG [2014-09-11 14:49:52,222] (GenericConversionService.java[convert]:186) - Converted to 'admin'
+DEBUG [2014-09-11 14:49:52,222] (GenericConversionService.java[convert]:159) - Converting value '<IR_COURSE_VIEW>
+
+- 검증 완료
+
+
+<IR_LECTURE_VIEW>
+
+- 검증 완료
+
+
+<IR_TECHNICAL_VIEW>
+
+- 검증 완료
+
+
+<IR_CONTRIBUTE_VIEW>
+
+- 검증 완료
+' of java.lang.String to java.lang.String
+DEBUG [2014-09-11 14:49:52,222] (GenericConversionService.java[convert]:186) - Converted to '<IR_COURSE_VIEW>
+
+- 검증 완료
+
+
+<IR_LECTURE_VIEW>
+
+- 검증 완료
+
+
+<IR_TECHNICAL_VIEW>
+
+- 검증 완료
+
+
+<IR_CONTRIBUTE_VIEW>
+
+- 검증 완료
+'
+DEBUG [2014-09-11 14:49:52,222] (GenericConversionService.java[convert]:159) - Converting value '1' of java.lang.String to java.lang.Integer
+DEBUG [2014-09-11 14:49:52,222] (GenericConversionService.java[convert]:186) - Converted to 1
+DEBUG [2014-09-11 14:49:52,222] (AbstractBeanFactory.java[doGetBean]:242) - Returning cached instance of singleton bean 'controllerAspector'
+DEBUG [2014-09-11 14:49:52,222] (AbstractBeanFactory.java[doGetBean]:242) - Returning cached instance of singleton bean 'transactionManager'
+DEBUG [2014-09-11 14:49:52,222] (AbstractPlatformTransactionManager.java[getTransaction]:365) - Creating new transaction with name [com.kocwsystem.service.course.MetaDicService.updateHistory]: PROPAGATION_REQUIRED,ISOLATION_DEFAULT; ''
+DEBUG [2014-09-11 14:49:52,222] (DataSourceTransactionManager.java[doBegin]:204) - Acquired Connection [jdbc:oracle:thin:@121.78.115.125:2521:orcl, UserName=KOCWTEST, Oracle JDBC driver] for JDBC transaction
+DEBUG [2014-09-11 14:49:52,222] (DataSourceTransactionManager.java[doBegin]:221) - Switching JDBC Connection [jdbc:oracle:thin:@121.78.115.125:2521:orcl, UserName=KOCWTEST, Oracle JDBC driver] to manual commit
+DEBUG [2014-09-11 14:49:52,222] (JakartaCommonsLoggingImpl.java[debug]:27) - {conn-145192} Connection
+DEBUG [2014-09-11 14:49:52,222] (JakartaCommonsLoggingImpl.java[debug]:27) - {conn-145192} Preparing Statement:    UPDATE ST_CTR_VERIFYVIEW_HISTORY    SET   VERIFY_LEVEL = ?,             VERIFY_RESULT_STATUS = ?,             VERIFY_RESULT_DETAIL = ?,             VERIFYDATE = TO_CHAR (SYSDATE, 'YYYYMMDDHH24MISS'),             MODIFIER = ?,             MOD_DATE = SYSDATE     WHERE  UNIVERSITY_ID = ?      AND DP_SEQ = ?     AND  VERIFY_SEQ = ?  
+DEBUG [2014-09-11 14:49:52,222] (JakartaCommonsLoggingImpl.java[debug]:27) - {pstm-145193} Executing Statement:    UPDATE ST_CTR_VERIFYVIEW_HISTORY    SET   VERIFY_LEVEL = ?,             VERIFY_RESULT_STATUS = ?,             VERIFY_RESULT_DETAIL = ?,             VERIFYDATE = TO_CHAR (SYSDATE, 'YYYYMMDDHH24MISS'),             MODIFIER = ?,             MOD_DATE = SYSDATE     WHERE  UNIVERSITY_ID = ?      AND DP_SEQ = ?     AND  VERIFY_SEQ = ?  
+DEBUG [2014-09-11 14:49:52,222] (JakartaCommonsLoggingImpl.java[debug]:27) - {pstm-145193} Parameters: [3, S, <IR_COURSE_VIEW>
+
+- 검증 완료
+
+
+<IR_LECTURE_VIEW>
+
+- 검증 완료
+
+
+<IR_TECHNICAL_VIEW>
+
+- 검증 완료
+
+
+<IR_CONTRIBUTE_VIEW>
+
+- 검증 완료
+, admin, 51018000, 1, 1]
+DEBUG [2014-09-11 14:49:52,222] (JakartaCommonsLoggingImpl.java[debug]:27) - {pstm-145193} Types: [java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.Integer, java.lang.Integer]
+DEBUG [2014-09-11 14:49:52,238] (AbstractPlatformTransactionManager.java[processCommit]:752) - Initiating transaction commit
+DEBUG [2014-09-11 14:49:52,238] (DataSourceTransactionManager.java[doCommit]:264) - Committing JDBC transaction on Connection [jdbc:oracle:thin:@121.78.115.125:2521:orcl, UserName=KOCWTEST, Oracle JDBC driver]
+DEBUG [2014-09-11 14:49:52,238] (DataSourceTransactionManager.java[doCleanupAfterCompletion]:322) - Releasing JDBC Connection [jdbc:oracle:thin:@121.78.115.125:2521:orcl, UserName=KOCWTEST, Oracle JDBC driver] after transaction
+DEBUG [2014-09-11 14:49:52,238] (DataSourceUtils.java[doReleaseConnection]:332) - Returning JDBC Connection to DataSource
+DEBUG [2014-09-11 14:49:52,238] (AbstractBeanFactory.java[doGetBean]:242) - Returning cached instance of singleton bean 'velocityConfigurer'
+DEBUG [2014-09-11 14:49:52,238] (AbstractAutowireCapableBeanFactory.java[invokeInitMethods]:1461) - Invoking afterPropertiesSet() on bean with name '/mgr/blank.vm'
+DEBUG [2014-09-11 14:49:52,253] (AbstractBeanFactory.java[doGetBean]:242) - Returning cached instance of singleton bean 'velocityConfigurer'
+DEBUG [2014-09-11 14:49:52,253] (AbstractAutowireCapableBeanFactory.java[invokeInitMethods]:1461) - Invoking afterPropertiesSet() on bean with name '/mgr/blank.vm.action'
+DEBUG [2014-09-11 14:49:52,253] (AbstractBeanFactory.java[doGetBean]:242) - Returning cached instance of singleton bean 'velocityConfigurer'
+DEBUG [2014-09-11 14:49:52,253] (AbstractAutowireCapableBeanFactory.java[invokeInitMethods]:1461) - Invoking afterPropertiesSet() on bean with name '/mgr/blank.vm'

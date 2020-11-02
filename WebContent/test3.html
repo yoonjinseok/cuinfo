@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge" >
+<title>:::test.html:::</title>
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.2/themes/smoothness/jquery-ui.css">
+<script type="text/javascript" src="/micro/js/jquery-2.1.3.min.js"></script>
+<script type="text/javascript" src="/micro/js/jquery-ui.js"></script>
+<script>
+	$(window).ready(function(){
+		console.log("test3 ready");
+	});
+	
+	$(window).load(function(){
+		console.log("test3 load");
+	});
+	
+	//창닫기 취소 가능
+	$(window).bind("beforeunload",function(){
+		$.ajax({
+			url: "/test2.html",
+			data: {},
+			dataType: "html",
+			async: false,
+			success: function(){
+				alert("s");
+			},
+			error: function(){
+				alert("e");
+			},
+			complite: function(){
+				alert("c");		
+			}
+		});
+		
+	});
+	
+		
+</script>
+</head>
+<body>
+	test3.html
+</body>
+</html>

@@ -1,0 +1,68 @@
+<head>
+	<title>교과과정 보기</title>
+	<script type="text/javascript" language="javascript">
+	
+	$(document).ready(function() {
+		search();
+    });
+    
+	function search()
+	{
+		jQuery.post('areadeptList.ajax.action',  
+				function(data) {
+        			$("#list").html(data);
+		});
+	}
+	
+	function showDetail(deptId)
+	{
+		$("#deptId").val(deptId);
+		
+		searchForm.action= "/home/curri/deptDetail.sub.action?gnb=31";
+		searchForm.method = "post";
+		searchForm.submit();
+		
+	}
+	
+	</script>
+</head>
+	
+<body id="intro">
+<p class="location">
+			<a href="/home/index.main.action">홈</a> <span>></span> <a href="/home/curri/areadept.sub.action?gnb=31">교과과정</a> <span>></span> <a href="/home/curri/areadept.sub.action?gnb=31">교과과정 보기</a> 
+		</p>
+		<h3><img src="/home/images/title/h3_sub_view.gif" alt="교과과정 보기" /></h3>
+		
+		<div class="contentWrap">
+			<!--s:컨텐츠영역-->
+				<div class="main_copy m_b5">분야 및 학과를 선택하면, 해당되는 학과리스트가 나옵니다. </div>
+				<div class="main_copy">학과 리스트에서 해당학교의 학과를 선택하시면, 학과에 대한 전체 커리큐럼이 표시됩니다. </div>
+	
+	#*
+	<div id="location_box"><!-- MainCopyBox  Start -->
+		<h3><img src="/home/images/title/h3_sub_view.gif" alt="교과 과정보기" /></h3>
+		<span class="sns_box">
+            <a href="javascript:sns(1)"><img src="/home/images/icon/sns_1.gif" alt="트위터" /></a>
+            <a href="javascript:sns(2)"><img src="/home/images/icon/sns_2.gif" alt="페이스북" /></a>
+            <a href="javascript:sns(3)"><img src="/home/images/icon/sns_3.gif" alt="미투데이" /></a>
+            <a href="javascript:contentPrint()"><img src="/home/images/icon/sns_4.gif" alt="프린트" /></a>
+		</span>
+		<ul class="location">
+				<li><a href="/home/index.main.action?">Home</a></li>
+				<li><a href="#">사이버대학안내</a></li>
+				<li>교과 과정보기</li>
+		</ul>
+	</div><!-- MainCopyBox  End -->
+	<div class="main_copy">분야 및 학과를 선택하면, 해당되는 학과리스트가 나옵니다.</div>
+	<div class="main_copy">학과 리스트에서 해당학교의 학과를 선택하시면, 학과에 대한 전체 커리큐럼이 표시됩니다</div>
+	*#			
+
+    <div class="univ_table m_l20" >
+    	<div id="list">#parse('home/curri/areadeptList.vm')</div>
+    	<form class="search_box01" id="searchForm" name="searchForm" action="#" onsubmit="try{search();}catch(e){alert(e);}return false;"><!-- box_type01 Start -->
+            <input type="hidden" id="deptId" name="deptId" />
+    	</form>
+    </div>
+
+</body>
+</html>

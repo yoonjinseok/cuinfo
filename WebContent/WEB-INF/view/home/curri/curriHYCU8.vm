@@ -1,0 +1,273 @@
+<head>
+	<title>학과 내비게이션</title>
+	<link rel="stylesheet" type="text/css" href="/home/css/course.css" />
+	<script type="text/javascript" language="javascript">
+	
+	$(document).ready(function() {
+		//search();
+    });
+    function viewDetail(title)
+	{
+		
+		
+		//필요 변수 셋팅
+		$("#text").val(title);
+		$("#deptId").val("40501");
+		$("#univId").val("30");
+		
+		//onsubmit 속성을 비워주어야 submit이 된다.
+		$("#form").attr("method","post");
+		$("#form").attr("onsubmit","");
+		$("#form").attr("action","/home/course/courseSearch3View.sub2.action?gnb=41");
+		$("#form").submit();
+		
+	}
+    	//유사강의검색
+	function viewDetail2(courseId, title)
+	{
+	
+		//필요 변수 셋팅
+		$("#text").val(title);
+		$("#hidetext").val(title);
+		$("#courseId").val(courseId);
+		$("#deptId").val("");
+		
+		//onsubmit 속성을 비워주어야 submit이 된다.
+		$("#form").attr("method","post");
+		$("#form").attr("onsubmit","");
+		$("#form").attr("action","/home/course/courseSearch2.sub2.action?gnb=41&pageType=1&checkbox3=2");
+		$("#form").submit();
+		
+	}
+	</script>
+</head>
+	
+<body id="intro">
+
+	<p class="location">
+		<a href="">홈</a> <span>&gt;</span> <a href="">학과/교과과정</a> <span>&gt;</span> <a href="">교과과정 보기</a> 
+	</p>
+	<h3><img src="/home/images/title/h3_sub_view.gif" alt="교과과정 보기"></h3>
+		
+	
+	<div class="contentWrap">
+		<!--s:컨텐츠영역-->
+			
+			<div class="path_major">
+				<a>한양사이버대학원</a><span>&gt;</span>
+				<a>부동산대학원</a><span>&gt;</span>
+				<a>부동산</a>
+				<a target="_blank" href="http://gs.hycu.ac.kr/lesinfo/?dept=40501" class="btn_info_major"><img src="/home/images/btn/btn_info_major.gif" alt="학과안내 페이지 바로가기"></a>
+																																																																																																												</div>
+			
+			<div id="list" class="univ_table m_l0">
+				<table cellspacing="0" cellpadding="0" summary="교과과정 보기"><!-- table_type1 st01 Start -->
+				<caption>교과과정 보기</caption>
+				<colgroup>
+					<col width="20%">
+					<col width="40%">
+					<col width="20%">
+				</colgroup>
+				<thead>
+					<tr>
+						<th scope="col">학기</th>
+						<th scope="col">교과목명</th>
+						<th scope="col">학점</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr class="line02">
+						<th class="line02" rowspan="4">1</th>
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('자산세무의이해');"><p>자산세무의이해</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','자산세무의이해');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>
+					<tr>
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('건축계획특론');"><p>건축계획특론</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','건축계획특론');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>
+					<tr>
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('첨단건축도시개발사례연구');"><p>첨단건축도시개발사례연구</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','첨단건축도시개발사례연구');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>
+					<tr class="line01">
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('프로젝트파이낸싱(PF)의이해와실제');"><p>프로젝트파이낸싱(PF)의이해와실제</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','프로젝트파이낸싱(PF)의이해와실제');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>
+					
+					<tr class="line02">
+						<th class="line02" rowspan="4">2</th>
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('부동산정책특론');"><p>부동산정책특론</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','부동산정책특론');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>
+					<tr>
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('부동산물권변동론');"><p>부동산물권변동론</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','부동산물권변동론');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>
+					<tr>
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('도시공간정책연구론');"><p>도시공간정책연구론</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','도시공간정책연구론');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>
+					<tr class="line01">
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('국토및SOC계획과정책');"><p>국토및SOC계획과정책</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','국토및SOC계획과정책');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>
+					
+					<tr class="line02">
+						<th class="line02" rowspan="6">3</th>
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('논문연구');"><p>논문연구</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','논문연구');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 0
+						</td>
+					</tr>
+					<tr>
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('부동산계약의이론과실무');"><p>부동산계약의이론과실무</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','부동산계약의이론과실무');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>
+					<tr>
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('부동산투자금융론');"><p>부동산투자금융론</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','부동산투자금융론');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>
+					<tr>
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('부동산시장분석론');"><p>부동산시장분석론</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','부동산시장분석론');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>
+					<tr>
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('BIM과건설관리');"><p>BIM과건설관리</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','BIM과건설관리');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>
+					<tr class="line01">
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('BIM과자산관리');"><p>BIM과자산관리</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','BIM과자산관리');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>
+					
+					
+					<tr class="line02">
+						<th class="line02" rowspan="5">4</th>
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('논문연구');"><p>논문연구</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','논문연구');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 0
+						</td>
+					</tr>
+					<tr>
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('부동산세제의실제와역할');"><p>부동산세제의실제와역할</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','부동산세제의실제와역할');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>
+					<tr>
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('부동산개발특론');"><p>부동산개발특론</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','부동산개발특론');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>																			
+					
+					
+					<tr>
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('도시방재시스템특론');"><p>도시방재시스템특론</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','도시방재시스템특론');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>
+					<tr class="line01">
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('자산평가론');"><p>자산평가론</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','자산평가론');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>
+					
+					<tr class="line02">
+						<th class="line02">5</th>
+						<td class="t_left line02" colspan="2">
+							<p>졸업논문/혹은 논문대체 과목</p>
+						</td>
+					</tr>
+					
+				</tbody>
+				</table>	
+			</div>
+			
+			<p class="m_b5"><img src="/home/images/course/txt_info_search.gif" alt="전체 사이버대학을 대상으로 유사강의 검색"></p>
+			<br>
+			
+		<!--e:컨텐츠영역-->
+	</div>
+
+	
+	<form class="search_box01" id="form" name="form" action="#" onsubmit="try{search();}catch(e){alert(e);}return false;"><!-- box_type01 Start -->
+        <input type="hidden" id="courseId" name="courseId" />
+        <input type="hidden" id="hidetext" name="hidetext" />
+        <input type="hidden" id="text" name="text" />
+        <input type="hidden" id="deptId" name="deptId" value="" />
+        <input type="hidden" id="univId" name="univId" value="" />
+	</form>
+
+	<div class="page_num">
+		<div id="pg" name="pg"></div>
+	</div>
+
+</body>
+</html>

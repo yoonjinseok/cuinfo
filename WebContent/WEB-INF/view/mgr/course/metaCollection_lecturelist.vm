@@ -1,0 +1,37 @@
+
+<table cellspacing="0" cellpadding="0" class="list_type01" summary="차시별강의관리"><!-- list_type01 Start -->
+	<caption>차시별강의관리</caption>
+	<colgroup>
+		<col width="5%" />
+		<col width="5%" />
+		<col width="5%" />
+		<col width="18%" />
+		<col width="8%" />
+		<col width="30%" />
+		<col width="8%" />
+	</colgroup>
+	<thead>
+		<tr>
+			<th scope="col">선택</th>
+			<th scope="col">차시</th>
+			<th scope="col">번호</th>
+			<th scope="col">강의</th>
+			<th scope="col">교수자</th>
+			<th scope="col">강의경로</th>
+			<th scope="col">수정일</th>
+		</tr>
+	</thead>
+	<tbody>
+		#foreach($item in $lectureList)
+		<tr>
+			<td><input type="checkbox" id="lectureIds" name="lectureIds" value="$!item.lectureId"/></td>
+			<td>$item.groups</td>
+			<td>$item.orders</td>
+			<td><a href="javascript:lecturemod('$!item.courseId', '$!item.lectureId');">$!item.title</a></td>
+			<td>$!item.master</a></td>
+			<td>$!htmlUtils.substring($item.movLocation, 30, '...')</td>
+			<td>$dateformatter.print($!item.modDate, $!locale)</td>
+		</tr>
+		#end
+	</tbody>
+</table><!-- list_type01 End -->

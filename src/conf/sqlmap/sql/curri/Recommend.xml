@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="EUC-KR"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="RecommendDao">
+	<typeAlias alias="Recommend" type="com.cyberup.model.curri.Recommend"/>
+	
+	<select id="sampleLectureList" resultClass="Recommend" parameterClass="Recommend">
+	SELECT B.TITLE as title, B.COURSE_ID AS courseID, B.COURSE_IDENTIFIER AS courseIdentifier
+    	FROM CU_UNIV_RECOMMEND A, CU_SVC_COURSE B
+   		WHERE A.DATA_TYPE='1' AND A.COURSE_ID=B.COURSE_ID AND A.UNIVERSITY_ID=#universityID#
+<!-- 		ORDER BY A.COURSE_ORDER ASC -->
+		order by a.REG_DATE desc
+	</select>
+	
+	<select id="recommendLectureList" resultClass="Recommend" parameterClass="Recommend">
+	SELECT B.TITLE as title, B.COURSE_ID AS courseID, B.COURSE_IDENTIFIER AS courseIdentifier
+    	FROM CU_UNIV_RECOMMEND A, CU_SVC_COURSE B
+	   WHERE A.DATA_TYPE='2' AND A.COURSE_ID=B.COURSE_ID AND A.UNIVERSITY_ID=#universityID#
+<!-- 		ORDER BY A.COURSE_ORDER ASC -->
+		order by a.REG_DATE desc
+	</select>
+	
+</sqlMap>

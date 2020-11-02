@@ -1,0 +1,368 @@
+<head>
+	<title>학과 내비게이션</title>
+	<link rel="stylesheet" type="text/css" href="/home/css/course.css" />
+	<script type="text/javascript" language="javascript">
+	
+	$(document).ready(function() {
+		//search();
+    });
+    function viewDetail(title)
+	{
+		
+		
+		//필요 변수 셋팅
+		$("#text").val(title);
+		$("#deptId").val("310210");
+		$("#univId").val("35");
+		
+		//onsubmit 속성을 비워주어야 submit이 된다.
+		$("#form").attr("method","post");
+		$("#form").attr("onsubmit","");
+		$("#form").attr("action","/home/course/courseSearch3View.sub2.action?gnb=41");
+		$("#form").submit();
+		
+	}
+    	//유사강의검색
+	function viewDetail2(courseId, title)
+	{
+	
+		//필요 변수 셋팅
+		$("#text").val(title);
+		$("#hidetext").val(title);
+		$("#courseId").val(courseId);
+		$("#deptId").val("");
+		
+		//onsubmit 속성을 비워주어야 submit이 된다.
+		$("#form").attr("method","post");
+		$("#form").attr("onsubmit","");
+		$("#form").attr("action","/home/course/courseSearch2.sub2.action?gnb=41&pageType=1&checkbox3=2");
+		$("#form").submit();
+		
+	}
+	</script>
+</head>
+	
+<body id="intro">
+
+	<p class="location">
+		<a href="">홈</a> <span>&gt;</span> <a href="">학과/교과과정</a> <span>&gt;</span> <a href="">교과과정 보기</a> 
+	</p>
+	<h3><img src="/home/images/title/h3_sub_view.gif" alt="교과과정 보기"></h3>
+		
+	
+	<div class="contentWrap">
+		<!--s:컨텐츠영역-->
+			
+			<div class="path_major">
+				<a>원광디지털대학원</a><span>&gt;</span>
+				<a>웰빙문화대학원</a><span>&gt;</span>
+				<a>자연건강학과</a>
+				<a target="_blank" href="https://www.wdu.ac.kr/graduateS/introductionM/intro.do" class="btn_info_major"><img src="/home/images/btn/btn_info_major.gif" alt="학과안내 페이지 바로가기"></a>
+																																																																																																												</div>
+			
+			<div id="list" class="univ_table m_l0">
+				<table cellspacing="0" cellpadding="0" summary="교과과정 보기"><!-- table_type1 st01 Start -->
+				<caption>교과과정 보기</caption>
+				<colgroup>
+					<col width="20%">
+					<col width="40%">
+					<col width="20%">
+				</colgroup>
+				<thead>
+					<tr>
+						<th scope="col">학기</th>
+						<th scope="col">교과목명</th>
+						<th scope="col">학점</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr class="line02">
+						<th class="line02" rowspan="8">1</th>
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('한의학개론');"><p>한의학개론</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','한의학개론');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>
+					<tr>
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('요가생리학');"><p>요가생리학</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','요가생리학');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>	
+					<tr>
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('자연건강학세미나');"><p>자연건강학세미나</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','자연건강학세미나');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>
+					<tr>
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('산림치유학');"><p>산림치유학</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','산림치유학');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>
+					<tr>
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('심신통합치유연구');"><p>심신통합치유연구</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','심신통합치유연구');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>																		
+					<tr>
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('보건요가특론');"><p>보건요가특론 </p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','보건요가특론 ');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>
+					<tr>
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('식품재료학특론');"><p>식품재료학특론</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','식품재료학특론');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>
+					<tr class="line01">
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('세계의 건강음식연구');"><p>세계의 건강음식연구</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','세계의 건강음식연구');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>
+					
+					<tr class="line02">
+						<th class="line02" rowspan="9">2</th>
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('한의학개론');"><p>한의학개론</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','한의학개론');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>
+					<tr>
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('약선학총론');"><p>약선학총론</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','약선학총론');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>
+					<tr>
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('안따랑가요가');"><p>안따랑가요가</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','안따랑가요가');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>
+					<tr>
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('원예치료학');"><p>원예치료학</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','원예치료학');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>
+					<tr>
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('고급본초학');"><p>고급본초학</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','고급본초학');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>																			
+					<tr>
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('심리메카니즘연구');"><p>심리메카니즘연구</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','심리메카니즘연구');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>
+					<tr>
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('뇌과학연구');"><p>뇌과학연구</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','뇌과학연구');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>
+					<tr>
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('연구방법론');"><p>연구방법론</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','연구방법론');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>
+					<tr class="line01">
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('변증진단연구');"><p>변증진단연구</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','변증진단연구');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>
+					
+					<tr class="line02">
+						<th class="line02" rowspan="8">3</th>
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('한방약리학');"><p>한방약리학</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','한방약리학');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>
+					<tr>
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('사상체질과 약선특론');"><p>사상체질과 약선특론</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','사상체질과 약선특론');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>	
+					<tr>
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('동종요법연구');"><p>동종요법연구</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','동종요법연구');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>
+					<tr>
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('응용근육생리학특론');"><p>응용근육생리학특론</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','응용근육생리학특론');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>																		
+					<tr>
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('명상테라피특론');"><p>명상테라피특론</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','명상테라피특론');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>
+					<tr>
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('하타요가테라피');"><p>하타요가테라피</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','하타요가테라피');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>
+					<tr>
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('약선처방특론');"><p>약선처방특론</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','약선처방특론');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>
+					<tr class="line01">
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('한국약선조리연구');"><p>한국약선조리연구</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','한국약선조리연구');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>
+					
+					
+					<tr class="line02">
+						<th class="line02" rowspan="6">4</th>
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('운동처방론');"><p>운동처방론</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','운동처방론');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>
+					<tr>
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('보건양생과 추나연구');"><p>보건양생과 추나연구</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','보건양생과 추나연구');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>
+					<tr>
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('아유르베다특론');"><p>아유르베다특론</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','아유르베다특론');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>																			
+					
+					<tr>
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('요가원전');"><p>요가원전</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','요가원전');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>
+					<tr>
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('노인건강관리와 약선연구');"><p>노인건강관리와 약선연구</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','노인건강관리와 약선연구');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>
+					<tr class="line01">
+						<td class="t_left line02">
+							<a href="javascript:viewDetail('약선과 식이요법세미나');"><p>약선과 식이요법세미나</p></a>
+						</td>
+						<td>
+							<a href="javascript:viewDetail2('','약선과 식이요법세미나');"><img src="/home/images/btn/btn_reading_glasses.gif" alt="돋보기"></a> 3
+						</td>
+					</tr>
+					
+					<tr class="line02">
+						<th class="line02">5</th>
+						<td class="t_left line02" colspan="2">
+							<p>학위논문 연구발표 또는 학점이수 졸업자는 과목이수</p></a>
+						</td>
+					</tr>
+					
+				</tbody>
+				</table>	
+			</div>
+			
+			<p class="m_b5"><img src="/home/images/course/txt_info_search.gif" alt="전체 사이버대학을 대상으로 유사강의 검색"></p>
+			<br>
+			
+		<!--e:컨텐츠영역-->
+	</div>
+
+	
+	<form class="search_box01" id="form" name="form" action="#" onsubmit="try{search();}catch(e){alert(e);}return false;"><!-- box_type01 Start -->
+        <input type="hidden" id="courseId" name="courseId" />
+        <input type="hidden" id="hidetext" name="hidetext" />
+        <input type="hidden" id="text" name="text" />
+        <input type="hidden" id="deptId" name="deptId" value="" />
+        <input type="hidden" id="univId" name="univId" value="" />
+	</form>
+
+	<div class="page_num">
+		<div id="pg" name="pg"></div>
+	</div>
+
+</body>
+</html>

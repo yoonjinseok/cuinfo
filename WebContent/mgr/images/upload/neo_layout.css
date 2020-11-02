@@ -1,0 +1,32 @@
+@charset "utf-8";
+
+
+#headwrap { width: 100%; }
+
+
+#header { width: 800px; margin: 0 auto; height: 80px; padding: 0 100px 0 100px; position: relative; }
+.logo { margin: 8px 0 0 0; }
+.logo a {  }
+.logo a img { vertical-align: top; }
+
+.logo_sub { position: absolute; right: 100px; top: 21px; }
+
+.college { position: absolute; left: 100px; top: 27px; padding: 0 0 0 25px; height: 43px; }
+.college h2 { height: 31px; padding: 12px 27px 0 0; font-size: 16px; color: #fff; font-weight: bold; line-height: 100%; vertical-align: middle; }
+
+.container { width: 800px; margin: 0 auto 60px; padding: 0 100px 0 100px; }
+.container #Content { width: 1000px; }
+.container .Content { width: 800px; }
+.container2 { width: 830px; margin: 0 auto 0px; padding: 0 0px 0 10px; }
+.container2 .Content2 { width: 830px; }
+
+#Footer { width: 100%; height: 27px; background: #e6e6e6; }
+#Footer address { float: left; text-align: center; color: #666;}
+#Footer .foot { width: 800px; margin: 0 auto; padding: 9px 100px 7px 100px; }
+#Footer .foot p { text-align: center; color: #999; line-height: 100%; vertical-align: middle; font-family: Gulim; }
+#Footer .foot p a { color: #999; }
+
+.location { width: 100%; text-align: right; margin: 0 0 10px 0; }
+.location a { color: #666; }
+.location .here { color: #666; }
+

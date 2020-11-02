@@ -1,0 +1,139 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	     xmlns:aop="http://www.springframework.org/schema/aop"
+   		 xmlns:p="http://www.springframework.org/schema/p"     
+	     xmlns:tx="http://www.springframework.org/schema/tx"
+	     xmlns:context="http://www.springframework.org/schema/context"
+	     xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+           http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd
+           http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.0.xsd 
+           http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+	
+	<description>KOCW SERVICE BEANS</description>
+	
+	<context:annotation-config />  
+
+	<bean id="metadataService" class="net.kocw.core.metadata.service.MetadataServiceImpl"
+		p:kemDao-ref="kemDao"
+		p:metadataDao-ref="metadataDao"
+	/>
+	
+	<bean id="transferService" class="net.kocw.management.service.TransferServiceImpl"
+		p:transferHistoryService-ref="transferHistoryService" >
+		<property name="metadataTempDao" ref="metadataTempDao" />
+		<property name="organizationDao" ref="organizationDao" />
+		<property name="transferDao" ref="transferDao" />
+		<property name="transactionTemplate" ref="kocwTransactionTemplate" />
+		<property name="metadataService" ref="metadataService" />
+		
+	</bean>
+	
+	<bean id="metadataTempService" class="net.kocw.management.service.MetadataTempServiceImpl">
+		<property name="metadataTempDao" ref="metadataTempDao" />
+		<property name="institutionDao" ref="institutionDao" />
+	</bean>
+	
+	<bean id="dataProviderService" class="net.kocw.oai.service.DataProviderServiceImpl">
+		<property name="kemDao" 				ref="kemDao" />
+		<property name="identifyDao" 			ref="identifyDao" />
+		<property name="metadataFormatDao"		ref="metadataFormatDao" />
+		<property name="serviceOrgDao"			ref="serviceOrgDao" />
+		<property name="setDao"					ref="setDao" />
+		<property name="transferDao"			ref="transferDao" />
+		<property name="oaiRequestHistoryDao"	ref="oaiRequestHistoryDao" />
+		<property name="schemaTransferDao"		ref="schemaTransferDao" />
+	</bean>
+	
+	<bean id="userinfoKocwdpMapService" class="net.kocw.management.service.UserinfoKocwdpMapServiceImpl">
+		<property name="userinfoKocwdpMapDao" ref="userinfoKocwdpMapDao" />
+	</bean>
+	
+	<bean id="transferHistoryService" class="net.kocw.management.service.TransferHistoryServiceImpl">
+		<property name="transferHistoryDao" ref="transferHistoryDao" />
+	</bean>
+	
+	<bean id="batchUploadService" class="net.kocw.management.service.BatchUploadServiceImpl">
+		<property name="batchUploadDao" ref="batchUploadDao" />
+	</bean>
+
+	<!-- 기관관리 Servic -->
+	<bean id="organizationService" class="net.kocw.management.service.OrganizationServiceImpl">
+		<property name="organizationDao" ref="organizationDao" />
+	</bean>
+	
+	<!-- 사용자관리 Servic -->
+	<bean id="managerService" class="net.kocw.management.service.ManagerServiceImpl">
+		<property name="managerDao" ref="managerDao" />
+	</bean>
+	
+	<!-- 엑셀파일 업로드 -->
+	<bean id="excelInputer" class="net.kocw.tools.batch.excel.ExcelInputerForLangs"
+		p:taxonomyService-ref="taxonomyService"
+		p:metadataService-ref="metadataService"
+	/>
+	
+	<!-- XML파일 업로드 -->
+	<bean id="xmlInputer" class="net.kocw.tools.batch.xml.XmlInputer"
+		p:taxonomyService-ref="taxonomyService"
+		p:metadataService-ref="metadataService"
+	/>
+	
+	<bean id="taxonomyService" class="net.kocw.core.taxonomy.service.TaxonomyServiceImpl"
+		p:taxonomyDao-ref="taxonomyDao"
+	/>
+	
+	<!-- 메타데이터관리 service -->
+	<bean id="metadataMgtService" class="net.kocw.management.service.MetadataMgtServiceImpl">
+		<property name="metadataMgtDao" ref="metadataMgtDao" />
+		<property name="metadataDao" ref="metadataDao" />
+	</bean>
+
+	<!-- 커뮤니티_Q&A -->
+	<bean id="questionService" class="net.kocw.management.service.QuestionServiceImpl"
+		p:questionDao-ref="questionDao"
+	/>
+	
+	<!-- 커뮤니티_공지사항 -->
+	<bean id="noticeService" class="net.kocw.management.service.NoticeServiceImpl"
+		p:noticeDao-ref="noticeDao"
+	/>
+	 
+	<!-- 사용자의견 -->
+	<bean id="commentService" class="net.kocw.management.service.CommentServiceImpl"
+		p:commentDao-ref="commentDao"
+	/> 
+	 
+	<bean id="commonCodeService" class="net.kocw.management.service.CommonCodeServiceImpl"
+		p:commonCodeDao-ref="commonCodeDao"
+	/>
+	
+	<bean id="universityService" class="net.kocw.management.service.UniversityServiceImpl"
+		p:universityDao-ref="universityDao"
+	/>
+	
+	<bean id="deadlinkService" class="net.kocw.management.service.DeadlinkServiceImpl"
+		p:deadlinkDao-ref="deadlinkDao"
+	/> 
+	 
+	<bean id="dataQualityService" class="net.kocw.management.service.DataQualityServiceImpl"
+		p:dataQualityDao-ref="dataQualityDao"
+	/> 
+	
+	<bean id="rssFeedConfigService" class="net.kocw.management.service.RssFeedConfigServiceImpl"
+		p:rssFeedConfigDao-ref="rssFeedConfigDao"
+	/>	
+	
+	<bean id="statisticsService" class="net.kocw.management.service.StatisticsServiceImpl"
+		p:statisticsDao-ref="statisticsDao"
+	/>
+	
+	<bean id="getRecordService" class="net.kocw.management.service.GetRecordServiceImpl"
+		p:institutionDao-ref="institutionDao"
+		p:organizationDao-ref="organizationDao"
+	/>
+	
+	<!-- Openlab management service -->
+	<bean id="openlabService" class="net.kocw.management.service.OpenlabServiceImpl"	/> 
+	
+</beans>

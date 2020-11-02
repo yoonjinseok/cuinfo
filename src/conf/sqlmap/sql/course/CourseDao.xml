@@ -1,0 +1,404 @@
+<?xml version="1.0" encoding="EUC-KR"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="CourseDao">
+	<typeAlias alias="course" type="com.cyberup.model.course.Course"/>
+	
+	<select id="selectDistList" resultClass="Integer"  parameterClass="map">
+		SELECT A.COURSE_ID as courseId
+		FROM CU_SVC_COURSE A 
+			, CU_UNIV_INFO B
+			, CU_CTR_DATAPROVIDER C
+		WHERE A.UNIVERSITY_ID = B.UNIVERSITY_ID 
+			AND B.UNIVERSITY_ID = C.UNIVERSITY_ID
+			AND B.USE_YN = 'Y'
+			AND C.USE_YN = 'Y'
+			AND NVL(A.DEL_YN,' ') != 'Y' 
+			AND NVL(A.IS_TEMP,' ') != 'Y'
+			AND (A.SVC_STATUS = 'T' OR (A.SVC_STATUS = 'A' AND A.PUBLIC_YN = 'Y' AND C.AUTO_YN = 'Y'))
+			<isNotEmpty property="startDate" prepend="AND">
+                TO_CHAR(A.MOD_DATE, 'yyyy-mm-dd') <![CDATA[>=]]> #startDate,javaType=String#
+            </isNotEmpty>
+            <isNotEmpty property="endDate" prepend="AND">
+                TO_CHAR(A.MOD_DATE, 'yyyy-mm-dd') <![CDATA[<=]]> #endDate,javaType=String#
+            </isNotEmpty>
+	</select>
+	
+	<select id="selectDistDelList" resultClass="Integer"  parameterClass="map">
+		SELECT A.COURSE_ID as courseId
+		FROM CU_SVC_COURSE A 
+			, CU_UNIV_INFO B
+			, CU_CTR_DATAPROVIDER C
+		WHERE A.UNIVERSITY_ID = B.UNIVERSITY_ID 
+			AND B.UNIVERSITY_ID = C.UNIVERSITY_ID
+			AND B.USE_YN = 'Y'
+			AND C.USE_YN = 'Y'
+			AND NVL(A.IS_TEMP,' ') != 'Y'
+			AND (
+			(
+			 NVL(A.DEL_YN,' ') = 'Y'
+			 <isNotEmpty property="startDate" prepend="AND">
+                TO_CHAR(A.DEL_DATE, 'yyyy-mm-dd') <![CDATA[>=]]> #startDate,javaType=String#
+             </isNotEmpty>
+             <isNotEmpty property="endDate" prepend="AND">
+                TO_CHAR(A.DEL_DATE, 'yyyy-mm-dd') <![CDATA[<=]]> #endDate,javaType=String#
+             </isNotEmpty>
+             )
+             OR 
+             (
+             A.SVC_STATUS = 'E'
+             <isNotEmpty property="startDate" prepend="AND">
+                TO_CHAR(A.MOD_DATE, 'yyyy-mm-dd') <![CDATA[>=]]> #startDate,javaType=String#
+             </isNotEmpty>
+             <isNotEmpty property="endDate" prepend="AND">
+                TO_CHAR(A.MOD_DATE, 'yyyy-mm-dd') <![CDATA[<=]]> #endDate,javaType=String#
+             </isNotEmpty>
+             )
+             )
+	</select>
+	
+	<select id="selectIdsOfIdentifier" resultClass="Integer"  parameterClass="map">
+		SELECT COURSE_ID as courseId
+		FROM CU_SVC_COURSE A
+		WHERE NVL(A.DEL_YN,' ') != 'Y' 
+		AND A.UNIVERSITY_ID = #universityId#
+		AND COURSE_IDENTIFIER = #courseIdentifier#
+		<isNotEmpty property="islock" prepend="AND">
+           NVL(IS_LOCK,' ') != #islock#
+        </isNotEmpty>
+        ORDER BY COURSE_ID ASC
+	</select>
+	
+	<select id="selectList" resultClass="course"  parameterClass="map">
+		SELECT   a.*
+            FROM 
+            (
+				SELECT ROW_NUMBER () OVER (
+					ORDER BY 
+					<isEqual property="sorting" compareValue="1">B.UNIV_NAME <isEqual property="ascending" compareValue="1">DESC</isEqual>, </isEqual>
+					<isEqual property="sorting" compareValue="2">A.COURSE_IDENTIFIER <isEqual property="ascending" compareValue="1">DESC</isEqual>, </isEqual>
+					<isEqual property="sorting" compareValue="3">A.TITLE <isEqual property="ascending" compareValue="1">DESC</isEqual>, </isEqual>
+					<isEqual property="sorting" compareValue="4">A.MANAGER <isEqual property="ascending" compareValue="1">DESC</isEqual>, </isEqual>
+					<isEqual property="sorting" compareValue="5">A.TERM_YEAR <isEqual property="ascending" compareValue="1">DESC</isEqual>, </isEqual>
+					<isEqual property="sorting" compareValue="6">A.TERM_SEMESTER <isEqual property="ascending" compareValue="1">DESC</isEqual>, </isEqual>
+					<isEqual property="sorting" compareValue="7">A.RIGHTS <isEqual property="ascending" compareValue="1">DESC</isEqual>, </isEqual>
+					<isEqual property="sorting" compareValue="8">A.SVC_STATUS <isEqual property="ascending" compareValue="1">DESC</isEqual>, </isEqual>
+					<isEqual property="sorting" compareValue="9">A.MOD_DATE <isEqual property="ascending" compareValue="1">DESC</isEqual>, </isEqual>
+					 A.MOD_DATE DESC, A.TERM_YEAR DESC, A.TERM_SEMESTER DESC) as recNum
+					, COUNT (*) OVER () totalCnt
+		            , A.COURSE_ID as courseId, A.COURSE_IDENTIFIER as courseIdentifier, A.UNIVERSITY_ID as universityId, B.UNIV_NAME as universityName
+					, A.PUBLIC_YN as publicYn, A.TITLE as title, A.KEYWORD as keyword
+					, A.DEPARTMENT_ID as departmentId, A.DEPARTMENT as department, A.TERM_YEAR as termYear
+					, A.TERM_SEMESTER as termSemester, A.SVC_START as svcStart, A.SVC_END as svcEnd
+					, A.SVC_STATUS as svcStatus, A.REGISTER as register, A.REG_DATE as regDate
+					, A.MODIFIER as modifier, A.MOD_DATE as modDate
+					, A.TYPE as type, A.RIGHTS as rights, A.LANGUAGE as language, A.MANAGER as manager
+					, A.GRAD_YEAR as gradYear, A.GRAD_SEMESTER as gradSemester, A.DEL_YN as delYn
+					, A.PREVTHUMBNAIL as prevthumbnail, A.PREVURI as prevuri
+					, A.IS_LOCK as isLock, A.IS_TEMP as isTemp, A.DELETOR as deletor, A.DEL_DATE as delDate
+				FROM CU_SVC_COURSE A 
+					, CU_UNIV_INFO B
+				WHERE A.UNIVERSITY_ID = B.UNIVERSITY_ID 
+					AND B.USE_YN = 'Y'
+					AND NVL(A.DEL_YN,' ') != 'Y' 
+					AND NVL(A.IS_TEMP,' ') != 'Y'
+					<isNotEmpty property="modStartDate" prepend="AND">
+		                TO_CHAR(A.MOD_DATE, 'yyyy-mm-dd') <![CDATA[>=]]> #modStartDate,javaType=String#
+		            </isNotEmpty>
+		            <isNotEmpty property="modEndDate" prepend="AND">
+		                TO_CHAR(A.MOD_DATE, 'yyyy-mm-dd') <![CDATA[<=]]> #modEndDate,javaType=String#
+		            </isNotEmpty>
+		            <isNotEmpty property="svcStatus" prepend="AND">
+		            	A.SVC_STATUS = #svcStatus,javaType=String#
+		            </isNotEmpty>
+		            <isNotEmpty property="universityName" prepend="AND">
+		            	B.UNIV_NAME LIKE concat(concat('%',#universityName#),'%')
+		            </isNotEmpty>
+		            <isNotEmpty property="department" prepend="AND">
+		            	A.DEPARTMENT LIKE concat(concat('%',#department#),'%')
+		            </isNotEmpty>
+		            <isEqual property="isPrev" compareValue="Y" prepend="AND">
+		            	NVL(A.PREVURI,' ') != ' '
+		            </isEqual>
+		            <isEqual property="isPrev" compareValue="N" prepend="AND">
+		            	NVL(A.PREVURI,' ') = ' '
+		            </isEqual>
+		            <isNotEmpty property="publicYn" prepend="AND">
+		            	A.PUBLIC_YN = #publicYn#
+		            </isNotEmpty>
+		            <isNotEmpty property="termYearStart" prepend="AND">
+		            	A.TERM_YEAR <![CDATA[>=]]> #termYearStart#
+		            </isNotEmpty>
+		            <isNotEmpty property="termYearEnd" prepend="AND">
+		            	A.TERM_YEAR <![CDATA[<=]]> #termYearEnd#
+		            </isNotEmpty>
+		            <isNotEmpty property="type" prepend="AND">
+		            	A.TYPE = #type,javaType=String#
+		            </isNotEmpty>
+		            <isNotEmpty property="searchValue" prepend="AND">
+		            	A.$searchField$ LIKE concat(concat('%',#searchValue#),'%')
+		            </isNotEmpty>
+        	) a
+        WHERE CEIL (recNum / #showCnt,javaType=Integer#) = #currPage,javaType=Integer#
+        ORDER BY recNum ASC
+	</select>
+	
+	<select id="selectList2" resultClass="course"  parameterClass="course">
+		SELECT   a.*
+            FROM 
+            (
+				SELECT ROW_NUMBER () OVER (
+					ORDER BY 
+					<isEqual property="sorting" compareValue="1">B.UNIV_NAME <isEqual property="ascending" compareValue="1">DESC</isEqual>, </isEqual>
+					<isEqual property="sorting" compareValue="2">A.COURSE_IDENTIFIER <isEqual property="ascending" compareValue="1">DESC</isEqual>, </isEqual>
+					<isEqual property="sorting" compareValue="3">A.TITLE <isEqual property="ascending" compareValue="1">DESC</isEqual>, </isEqual>
+					<isEqual property="sorting" compareValue="4">A.MANAGER <isEqual property="ascending" compareValue="1">DESC</isEqual>, </isEqual>
+					<isEqual property="sorting" compareValue="5">A.TERM_YEAR <isEqual property="ascending" compareValue="1">DESC</isEqual>, </isEqual>
+					<isEqual property="sorting" compareValue="6">A.TERM_SEMESTER <isEqual property="ascending" compareValue="1">DESC</isEqual>, </isEqual>
+					<isEqual property="sorting" compareValue="7">A.RIGHTS <isEqual property="ascending" compareValue="1">DESC</isEqual>, </isEqual>
+					<isEqual property="sorting" compareValue="8">A.SVC_STATUS <isEqual property="ascending" compareValue="1">DESC</isEqual>, </isEqual>
+					<isEqual property="sorting" compareValue="9">A.MOD_DATE <isEqual property="ascending" compareValue="1">DESC</isEqual>, </isEqual>
+					 A.MOD_DATE DESC, A.TERM_YEAR DESC, A.TERM_SEMESTER DESC) as recNum
+					, COUNT (*) OVER () totalCnt
+		            , A.COURSE_ID as courseId, A.COURSE_IDENTIFIER as courseIdentifier, A.UNIVERSITY_ID as universityId, B.UNIV_NAME as universityName
+					, A.PUBLIC_YN as publicYn, A.TITLE as title, A.KEYWORD as keyword
+					, A.DEPARTMENT_ID as departmentId, A.DEPARTMENT as department, A.TERM_YEAR as termYear
+					, A.TERM_SEMESTER as termSemester, A.SVC_START as svcStart, A.SVC_END as svcEnd
+					, A.SVC_STATUS as svcStatus, A.REGISTER as register, A.REG_DATE as regDate
+					, A.MODIFIER as modifier, A.MOD_DATE as modDate
+					, A.TYPE as type, A.RIGHTS as rights, A.LANGUAGE as language, A.MANAGER as manager
+					, A.GRAD_YEAR as gradYear, A.GRAD_SEMESTER as gradSemester, A.DEL_YN as delYn
+					, A.PREVTHUMBNAIL as prevthumbnail, A.PREVURI as prevuri
+					, A.IS_LOCK as isLock, A.IS_TEMP as isTemp, A.DELETOR as deletor, A.DEL_DATE as delDate
+				FROM CU_SVC_COURSE A 
+					, CU_UNIV_INFO B
+				WHERE A.UNIVERSITY_ID = B.UNIVERSITY_ID 
+					AND B.USE_YN = 'Y'
+					AND NVL(A.DEL_YN,' ') != 'Y' 
+					AND NVL(A.IS_TEMP,' ') != 'Y'
+					<isNotEqual property="gradYear" compareValue="0" prepend="AND">
+		            	A.grad_year = #gradYear#
+		            </isNotEqual>
+					<isNotEqual property="gradSemester" compareValue="0" prepend="AND">
+		            	A.grad_semester = #gradSemester#
+		            </isNotEqual>
+					<isNotEqual property="courseId" compareValue="0" prepend="AND">
+		            	A.course_id = #courseId#
+		            </isNotEqual>
+		            <isNotEmpty property="regStartDate" prepend="AND">
+		                TO_CHAR(A.REG_DATE, 'yyyy-mm-dd') <![CDATA[>=]]> #regStartDate,javaType=String#
+		            </isNotEmpty>
+		            <isNotEmpty property="regEndDate" prepend="AND">
+		                TO_CHAR(A.REG_DATE, 'yyyy-mm-dd') <![CDATA[<=]]> #regEndDate,javaType=String#
+		            </isNotEmpty>		       
+		            
+					<isNotEmpty property="modStartDate" prepend="AND">
+		                TO_CHAR(A.MOD_DATE, 'yyyy-mm-dd') <![CDATA[>=]]> #modStartDate,javaType=String#
+		            </isNotEmpty>
+		            <isNotEmpty property="modEndDate" prepend="AND">
+		                TO_CHAR(A.MOD_DATE, 'yyyy-mm-dd') <![CDATA[<=]]> #modEndDate,javaType=String#
+		            </isNotEmpty>
+		            <isNotEmpty property="svcStatus" prepend="AND">
+		            	A.SVC_STATUS = #svcStatus,javaType=String#
+		            </isNotEmpty>
+		            <isNotEmpty property="universityName" prepend="AND">
+		            	B.UNIV_NAME LIKE concat(concat('%',#universityName#),'%')
+		            </isNotEmpty>
+		            <isNotEmpty property="department" prepend="AND">
+		            	A.DEPARTMENT LIKE concat(concat('%',#department#),'%')
+		            </isNotEmpty>
+		            <isEqual property="isPrev" compareValue="Y" prepend="AND">
+		            	NVL(A.PREVURI,' ') != ' '
+		            </isEqual>
+		            <isEqual property="isPrev" compareValue="N" prepend="AND">
+		            	NVL(A.PREVURI,' ') = ' '
+		            </isEqual>
+		            <isNotEmpty property="publicYn" prepend="AND">
+		            	A.PUBLIC_YN = #publicYn#
+		            </isNotEmpty>
+		            <isNotEmpty property="termYearStart" prepend="AND">
+		            	A.TERM_YEAR <![CDATA[>=]]> #termYearStart#
+		            </isNotEmpty>
+		            <isNotEmpty property="termYearEnd" prepend="AND">
+		            	A.TERM_YEAR <![CDATA[<=]]> #termYearEnd#
+		            </isNotEmpty>
+		            <isNotEmpty property="type" prepend="AND">
+		            	A.TYPE = #type,javaType=String#
+		            </isNotEmpty>
+		            <isNotEmpty property="searchValue" prepend="AND">
+		            	A.$searchField$ LIKE concat(concat('%',#searchValue#),'%')
+		            </isNotEmpty>
+        	) a
+        WHERE CEIL (recNum / #showCnt,javaType=Integer#) = #currPage,javaType=Integer#
+        ORDER BY recNum ASC
+	</select>
+	
+	<select id="selectListOfUniv" resultClass="course"  parameterClass="map">
+		SELECT A.COURSE_ID as courseId, A.COURSE_IDENTIFIER as courseIdentifier
+			, A.UNIVERSITY_ID as universityId, AA.UNIV_NAME as universityName
+			, A.PUBLIC_YN as publicYn, A.TITLE as title, A.KEYWORD as keyword
+			, A.DEPARTMENT_ID as departmentId, A.DEPARTMENT as department, A.TERM_YEAR as termYear
+			, A.TERM_SEMESTER as termSemester, A.SVC_START as svcStart, A.SVC_END as svcEnd
+			, A.SVC_STATUS as svcStatus, A.REGISTER as register, A.REG_DATE as regDate
+			, A.MODIFIER as modifier, A.MOD_DATE as modDate
+			, A.TYPE as type, A.RIGHTS as rights, A.LANGUAGE as language, A.MANAGER as manager
+			, A.GRAD_YEAR as gradYear, A.GRAD_SEMESTER as gradSemester, A.DEL_YN as delYn
+			, A.PREVTHUMBNAIL as prevthumbnail, A.PREVURI as prevuri
+			, A.IS_LOCK as isLock, A.IS_TEMP as isTemp, A.DELETOR as deletor, A.DEL_DATE as delDate
+		FROM CU_UNIV_INFO AA
+			, CU_SVC_COURSE A
+		WHERE A.UNIVERSITY_ID = AA.UNIVERSITY_ID 
+			AND AA.USE_YN = 'Y'
+			AND AA.UNIVERSITY_ID = #universityId#
+			AND NVL(A.DEL_YN,' ') != 'Y' 
+			AND NVL(A.IS_TEMP,' ') != 'Y'
+	</select>
+	
+	<select id="selectInfo" resultClass="course"  parameterClass="Integer">
+		SELECT A.COURSE_ID as courseId, A.COURSE_IDENTIFIER as courseIdentifier
+			, A.UNIVERSITY_ID as universityId, AA.UNIV_NAME as universityName
+			, A.PUBLIC_YN as publicYn, A.TITLE as title, A.KEYWORD as keyword
+			, A.DEPARTMENT_ID as departmentId, A.DEPARTMENT as department, A.TERM_YEAR as termYear
+			, A.TERM_SEMESTER as termSemester, A.SVC_START as svcStart, A.SVC_END as svcEnd
+			, A.SVC_STATUS as svcStatus, A.REGISTER as register, A.REG_DATE as regDate
+			, A.MODIFIER as modifier, A.MOD_DATE as modDate
+			, A.TYPE as type, A.RIGHTS as rights, A.LANGUAGE as language, A.MANAGER as manager
+			, A.GRAD_YEAR as gradYear, A.GRAD_SEMESTER as gradSemester, A.DEL_YN as delYn
+			, A.PREVTHUMBNAIL as prevthumbnail, A.PREVURI as prevuri
+			, A.IS_LOCK as isLock, A.IS_TEMP as isTemp, A.DELETOR as deletor, A.DEL_DATE as delDate
+			, D.KEM_VAL as credit
+			, E.KEM_VAL as assessment, F.KEM_VAL as subtitle
+			, G.KEM_VAL as planLocation, H.KEM_VAL as description
+		FROM CU_UNIV_INFO AA
+			, CU_SVC_COURSE A
+					LEFT JOIN CU_SVC_COURSE_KEM D
+				ON A.COURSE_ID = D.COURSE_ID AND A.COURSE_ID = D.COLLTYPE_ID AND D.METADIC_ID = 105
+					LEFT JOIN CU_SVC_COURSE_KEM_L E
+				ON A.COURSE_ID = E.COURSE_ID AND A.COURSE_ID = E.COLLTYPE_ID AND E.METADIC_ID = 104
+					LEFT JOIN CU_SVC_COURSE_KEM F
+				ON A.COURSE_ID = F.COURSE_ID AND A.COURSE_ID = F.COLLTYPE_ID AND F.METADIC_ID = 6
+					LEFT JOIN CU_SVC_COURSE_KEM_L G
+				ON A.COURSE_ID = G.COURSE_ID AND A.COURSE_ID = G.COLLTYPE_ID AND G.METADIC_ID = 102
+					LEFT JOIN CU_SVC_COURSE_KEM_L H
+				ON A.COURSE_ID = H.COURSE_ID AND A.COURSE_ID = H.COLLTYPE_ID AND H.METADIC_ID = 8
+		WHERE AA.UNIVERSITY_ID = A.UNIVERSITY_ID 
+			AND AA.USE_YN = 'Y'
+			AND A.COURSE_ID = #courseId,javaType=Integer#
+	</select>
+	
+	<update id="updateInfo" parameterClass="course">
+		UPDATE CU_SVC_COURSE SET 
+			PUBLIC_YN = #publicYn#, TITLE = #title#, KEYWORD = #keyword#
+			, DEPARTMENT_ID = #departmentId#, DEPARTMENT = #department#, TERM_YEAR = CASE WHEN #termYear# = 0 THEN TERM_YEAR ELSE #termYear# END 
+			, TERM_SEMESTER = NVL(#termSemester#,TERM_SEMESTER), SVC_START = #svcStart#, SVC_END = #svcEnd#
+			, MODIFIER = #modifier#, MOD_DATE = SYSDATE
+			, TYPE=#type#, RIGHTS = #rights#, LANGUAGE=#language#
+			, MANAGER = #manager#, GRAD_YEAR = #gradYear#, GRAD_SEMESTER = #gradSemester#
+			, PREVTHUMBNAIL = #prevthumbnail#, PREVURI = #prevuri#
+		WHERE COURSE_ID = #courseId,javaType=Integer#
+	</update>
+	<update id="updateStatus" parameterClass="map">
+		UPDATE CU_SVC_COURSE SET 
+			SVC_STATUS = #svcStatus#
+			, MODIFIER = #modifier#, MOD_DATE = SYSDATE
+		WHERE COURSE_ID = #courseId,javaType=Integer#
+	</update>
+	<update id="updateModDate" parameterClass="map">
+		UPDATE CU_SVC_COURSE SET 
+			MODIFIER = #modifier#, MOD_DATE = SYSDATE
+		WHERE COURSE_ID = #courseId,javaType=Integer#
+	</update>
+	
+	<select id="selectKey" resultClass="integer">
+		SELECT SEQ_COURSE_ID.nextVal as courseId FROM dual
+	</select>
+	
+	<insert id="insertInfo" parameterClass="course">
+		INSERT INTO CU_SVC_COURSE 
+			(COURSE_ID, COURSE_IDENTIFIER, TYPE, UNIVERSITY_ID
+			, PUBLIC_YN, TITLE, KEYWORD, RIGHTS, LANGUAGE
+			, PREVTHUMBNAIL,PREVURI
+			, MANAGER, GRAD_YEAR, GRAD_SEMESTER
+			, DEPARTMENT_ID, DEPARTMENT, TERM_YEAR
+			, TERM_SEMESTER, SVC_START, SVC_END
+			, SVC_STATUS, REGISTER, REG_DATE, DEL_YN
+			, MODIFIER, MOD_DATE
+			, IS_LOCK, IS_TEMP)
+		 values(#courseId#, #courseIdentifier#, #type#, 
+		 	case when #universityId#='28' and SUBSTR(#courseIdentifier#,1,2)='01' then  28
+		 		 when #universityId#='28' and SUBSTR(#courseIdentifier#,1,2)='02' then  31
+		 		 when #universityId#='28' and SUBSTR(#courseIdentifier#,1,2)='03' then  32
+		 		 when #universityId#='28' and SUBSTR(#courseIdentifier#,1,2)='04' then  30
+		 		 when #universityId#='28' and SUBSTR(#courseIdentifier#,1,2)='05' then  29
+		 		 when #universityId#='34' and SUBSTR(#courseIdentifier#,1,2)='01' then  34
+				 when #universityId#='34' and SUBSTR(#courseIdentifier#,1,2)='02' then  33
+		 		 when #universityId#='10' and SUBSTR(#courseIdentifier#,1,2)='01' then  37
+				 when #universityId#='10' and SUBSTR(#courseIdentifier#,1,2)='02' then  36
+		 		 when #universityId#='42' and SUBSTR(#courseIdentifier#,1,2)='01' then  42
+				 when #universityId#='42' and SUBSTR(#courseIdentifier#,1,2)='02' then  40
+			else #universityId#	 		 
+		 	end
+			, #publicYn#, #title#, #keyword#, #rights#, #language#
+			, #prevthumbnail#, #prevuri#
+			, #manager#, #gradYear#, #gradSemester#
+			, #departmentId#, #department#, #termYear#
+			, #termSemester#, #svcStart#, #svcEnd#
+			, #svcStatus#, #register#, SYSDATE, 'N'
+			, #register#, SYSDATE
+			, #isLock#, #isTemp#)
+	</insert>
+	
+	<delete id="deleteInfo"  parameterClass="Integer">
+		DELETE FROM CU_SVC_COURSE 
+		WHERE 
+			COURSE_ID = #courseId,javaType=Integer#
+	</delete>
+	<update id="updateDeleteInfo"  parameterClass="map">
+		UPDATE CU_SVC_COURSE SET
+			DEL_YN = 'Y'
+			, DELETOR = #deletor#
+			, DEL_DATE = SYSDATE
+		WHERE COURSE_ID = #courseId,javaType=Integer#
+	</update>
+	
+	<select id="selectCourseStatus" parameterClass="java.lang.String" resultClass="Integer">
+		SELECT svc_status FROM cu_svc_course
+		WHERE course_id = #courseId,javaType=Integer#
+	</select>
+	<update id="updateIsLock" parameterClass="map">
+		update cu_svc_course
+		set IS_LOCK = #flag#, MODIFIER=#modifier#, MOD_DATE=SYSDATE
+		where course_id = #courseId#
+	</update>
+	<update id="updateIsTemp" parameterClass="map">
+		update cu_svc_course
+		set IS_TEMP = #flag#, MODIFIER=#modifier#, MOD_DATE=SYSDATE
+		where course_id = #courseId#
+	</update>
+
+	<select id="selectCourseIsLock" parameterClass="java.lang.String" resultClass="map">
+		SELECT MAX(IS_LOCK) FROM cu_svc_course
+		WHERE UNIVERSITY_ID = #universityId#
+		AND course_identifier = #courseIdentifier#
+		AND NVL(DEL_YN,' ') != 'Y' 
+	</select>
+	
+	<select id="checkRecommend" parameterClass="HashMap" resultClass="HashMap">
+		select data_type type, count(*) cnt from CU_UNIV_RECOMMEND a
+		 where a.COURSE_ID = #courseId# and a.data_type = #type#
+		 group by data_type	
+	</select>
+	
+	<insert id="insertRecommend" parameterClass="HashMap">
+		INSERT INTO CU_UNIV_RECOMMEND
+		(RECOMMEND_ID, UNIVERSITY_ID, DATA_TYPE, COURSE_ID, COURSE_ORDER, REGISTER, REG_DATE) 
+		select (select nvl(max(recommend_id) + 1,0) from cu_univ_recommend), university_id, #type#, course_id, 0, 'system', sysdate from cu_svc_course a
+		 where course_id = #courseId#	
+	</insert>
+	
+	<delete id="deleteRecommend" parameterClass="HashMap">
+		delete cu_univ_recommend
+		 where course_id = #courseId# and data_type = #type#
+	</delete>
+	
+</sqlMap>

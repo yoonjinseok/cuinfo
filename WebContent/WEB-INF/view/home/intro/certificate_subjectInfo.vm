@@ -1,0 +1,125 @@
+<html>
+	<head>
+		<title>자격증강좌보유리스트</title>
+		<script type="text/javascript" language="javascript">
+			$(document).ready(function(){
+				setRecordCnt($totalCnt, $currPage, $totalPage, $showCnt);
+			});
+			
+			function viewDetail(courseId, title){
+			
+				//필요 변수 셋팅
+				$("#hidetext").val(title);
+				$("#courseId").val(courseId);
+				
+				//onsubmit 속성을 비워주어야 submit이 된다.
+				$("#form").attr("method","post");
+				$("#form").attr("onsubmit","");
+				$("#form").attr("action","/home/course/courseSearchView.sub.action?gnb=4$!param.pageType");
+				$("#form").submit();
+				
+			}
+			
+			//커리큘럼보기 클릭시
+			function viewCurriculum(universityId, univdeptId){
+				$("#universityId").val(universityId);
+				$("#univdeptId").val(univdeptId);
+				
+				$("#form").attr("method","post");
+				$("#form").attr("onsubmit","");
+				$("#form").attr("action","/home/curri/curriculum.sub.action?gnb=31");
+				$("#form").submit();
+			}
+			
+			//커리큘럼보기 클릭시
+			function viewOverall(universityId){
+				$("#university_id").val(universityId);
+				$("#form").attr("method","post");
+				$("#form").attr("onsubmit","");
+				$("#form").attr("action","/home/intro/overall.sub.action?gnb=12");
+				$("#form").submit();
+			}
+			
+		</script>
+	</head>
+	<body>
+	<p class="location">
+		<a href="">홈</a> <span>></span> <a href="">사이버대학안내</a> <span>></span> <a href="">학위취득/국가자격증</a> 
+	</p>
+	<h3>
+		#if($gnb == "13" || $gnb == "131")
+		<img src="/home/images/intro/title5_01.gif" alt="사회복지사" /> <img src="/home/images/title/c_02.gif" alt="사회복지 자격증 필수이수학과를  검색하여 과목의 리스트가 표시된다." />
+		#elseif($gnb == "132")
+		<img src="/home/images/intro/title5_02.gif" alt="보육교사" /> <img src="/home/images/title/c_08.gif" alt="보육교사 자격증 필수이수학과를  검색하여 과목의 리스트가 표시된다." /> 
+		#elseif($gnb == "133")
+		<img src="/home/images/intro/title5_03.gif" alt="평생교육사" /> <img src="/home/images/title/c_09.gif" alt="평생교육사 자격증 필수이수학과를  검색하여 과목의 리스트가 표시된다." />
+		#elseif($gnb == "134")
+		<img src="/home/images/intro/title5_04.gif" alt="건강가정사" /> <img src="/home/images/title/c_10.gif" alt="건강가정사 자격증 필수이수학과를  검색하여 과목의 리스트가 표시된다." />
+		#end
+		
+	</h3>
+
+<div class="contentWrap">
+	
+	<form class="" id="form" name="form" action="#" onsubmit="try{search();}catch(e){alert(e);}return false;">
+		<input type="hidden" id="publicListSize"	name="publicListSize" 	value=""/>
+		<input type="hidden" id="totalSearch"	 	name="totalSearch" 		value="1"/>
+    	<input type="hidden" id="showCnt" 			name="showCnt" 			value="10"/>
+    	<input type="hidden" id="currPage" 			name="currPage" 		value="1"/>
+    	<input type="hidden" id="classifyId" 		name="classifyId" 		value=""/>
+    	<input type="hidden" id="courseId" 			name="courseId" 		value=""/>
+    	<input type="hidden" id="courseIdentifier" 	name="courseIdentifier" value=""/>
+    	<input type="hidden" id="gubunId" 			name="gubunId" 			value=""/>
+    	<input type="hidden" id="universityId" 		name="universityId" 	value=""/>
+    	<input type="hidden" id="university_id" 	name="university_id" 	value=""/>
+    	<input type="hidden" id="hidetext" 			name="hidetext" 		value=""/>
+    	<input type="hidden" id="univdeptId" 		name="univdeptId" 		value=""/>
+    </form>
+    	
+	<h4 class="n_sub_tit"><img src="/home/images/intro/h4_s_tit01.gif" alt="학교별 과정 목록" /></h4>
+	<div class="m_120">
+		<table cellspacing="0" cellpadding="0" class="table_type1 st01 st01" summary="학교별 과정 목록"><!-- table_type1 st01 Start -->
+			<caption>학교별 과정 목록</caption>
+			<colgroup>
+				<col width="7%">
+				<col width="25%">
+				<col width="25%">
+				<col width="25%">
+				<col width="18%">
+			</colgroup>
+			<thead>
+				<tr>
+					<th scope="col" class="first">&nbsp;</th>
+					<th scope="col">학교</th>
+					<th scope="col">학과</th>
+					<th scope="col">강좌</th>
+					<th scope="col">자격증페이지</th>
+				</tr>
+			</thead>
+			<tbody>
+				#if($courseList)
+				#if($courseList.size() > 0)
+				#foreach($list in $courseList)
+				<tr>
+					<td class="t_center">$list.recNum</td>
+					<td class="t_center"><a href="javascript:viewOverall($list.universityId)">$list.universityName</a></td><!--학교소개-->
+					<td class="t_center"><a href="javascript:viewCurriculum('$list.universityId','$list.departmentId');">$list.department</a></td><!--교과과정-->
+					<td class="t_center"><a href="javascript:viewDetail('$list.courseId','$list.title')">$list.title</a></td><!--강좌상세-->
+					<td class="t_center"><a target="_blank" href="$list.linkurl"><img src="/home/images/btn/btn_go.gif" alt="바로가기"/></a></td>
+				</tr>
+				#end
+				#else
+				<tr>
+					<td class="t_center" colspan="5">검색된 내용이 없습니다.</td>
+				</tr>
+				#end
+				#end
+			</tbody>
+		</table><!-- list_type01 End -->
+	</div>
+	<div class="page_num" id="page_num" style="">
+		<div id="pg" name="pg"></div>
+	</div>
+	
+	</body>
+</html>	

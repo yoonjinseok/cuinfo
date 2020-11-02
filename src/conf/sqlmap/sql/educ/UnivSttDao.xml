@@ -1,0 +1,629 @@
+<?xml version="1.0" encoding="EUC-KR"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="UnivSttDao">
+	<typeAlias alias="univStt" type="com.cyberup.model.educ.UnivStt"/>
+	<typeAlias alias="fileUpload" type="com.cyberup.model.home.FileUpload"/>
+	
+	<!-- 대학별 통계문서 관리 / 베진국 / 2012-11-05 -->	
+	<select id="selectList" resultClass="univStt"  parameterClass="map">
+         SELECT DT.*
+         FROM(
+                SELECT
+                       ROW_NUMBER () OVER (ORDER BY S.REG_DATE DESC, A.UNIVERSITY_ID ASC ) AS recNum, 
+                       COUNT (*) OVER () totalCnt,
+                       CASE WHEN U.STT_UNIV_ID is null THEN 0 ELSE U.STT_UNIV_ID END sttUnivID, 
+                       A.UNIVERSITY_ID as universityID, 
+                       A.UNIV_NAME as univName,                    
+                       U.UPLOAD_ST as uploadState,    
+                       CASE WHEN U.PUT_STATE is null THEN 'N' ELSE U.PUT_STATE END putState,                  
+                       
+                      S.TERM_STATE as termState,
+                      TO_CHAR(S.DEADLINE, 'yyyy-mm-dd') as deadline,
+                      S.STT_NAME as sttName,
+                      S.GATHER_STATE as gatherState,
+                      S.ATTACH_UPFILE_GID as upfileGid,
+                      S.REGISTER AS register,
+                      (SELECT ADMIN_NAME FROM CU_ADMIN A WHERE A.ADMIN_ID=S.REGISTER) AS registerNM,
+                      S.REG_DATE AS regDate,
+                      S.STT_ID as sttID,
+<!--                       U.ATTACH_UPFILE_ID as   upfileID, -->
+                      S.ATTACH_UPFILE_ID as upfileID
+                  FROM CU_STATISITICS S  JOIN CU_UNIV_INFO A ON  A.GUBUN_ID != 169
+                       LEFT JOIN CU_STT_UNIVERSITY U ON  U.STT_ID = S.STT_ID  AND  A.UNIVERSITY_ID = U.UNIVERSITY_ID       	     
+                 WHERE S.USE_YN = 'Y' 
+		            <isNotEmpty property="universityID">
+				    	<isNotEqual property="universityID" compareValue="0" prepend="AND">		    	
+				    		A.UNIVERSITY_ID = #universityID#
+				    	</isNotEqual>
+				    </isNotEmpty>	
+				    <isNotEmpty property="termState" prepend="AND">		    	
+				    	S.TERM_STATE = #termState#
+				    </isNotEmpty>		    
+				    <isNotEmpty property="sttName" prepend="AND">
+				   	 	S.STT_NAME LIKE concat(concat('%',#sttName#),'%')
+				    </isNotEmpty>
+				    <isNotEmpty property="sttRegDate" prepend="AND">
+				    	TO_CHAR(S.REG_DATE, 'yyyy-mm-dd') <![CDATA[=]]> #sttRegDate,javaType=String#
+				    </isNotEmpty>
+				    <isNotEmpty property="putState" prepend="AND">
+				   	 	U.PUT_STATE = #putState#
+				    </isNotEmpty>
+				    <isNotEmpty property="sstUnivIDs" prepend="AND">
+				   	 	U.STT_UNIV_ID in ($sstUnivIDs$)
+				    </isNotEmpty>				  
+                ) DT
+		 WHERE CEIL (recNum / #showCnt,javaType=Integer#) = #currPage,javaType=Integer#
+		 order by sttName desc
+		   	 	
+	</select>	
+	
+	<!-- 내용 보기 -->
+	<select id="selectInfo" resultClass="univStt"  parameterClass="univStt">
+		SELECT
+			U.STT_UNIV_ID as sttUnivID, 
+            U.UNIVERSITY_ID as universityID,	                 
+            U.UPLOAD_ST as uploadState,	                  
+            U.PUT_STATE as putState,
+            s.ATTACH_UPFILE_GID as upfileGid,	
+            U.REGISTER AS register,
+            (SELECT ADMIN_NAME FROM CU_ADMIN A WHERE A.ADMIN_ID=U.REGISTER) AS registerNM,
+            U.REG_DATE AS regDate,
+            (SELECT ADMIN_NAME FROM CU_ADMIN A WHERE A.ADMIN_ID=U.MODIFIER) AS modifierNM,
+            U.MODIFIER AS modifier,
+            U.MOD_DATE AS modDate,
+            
+            S.STT_ID as sttID, 
+            S.TERM_STATE as termState,
+            TO_CHAR(S.DEADLINE, 'yyyy-mm-dd') as deadline,
+            S.STT_NAME as sttName,
+            S.GATHER_STATE as gatherState,
+            U.ATTACH_UPFILE_ID as upfileID,
+            case when to_char(sysdate, 'yyyymmdd') &lt;= to_char(deadline, 'yyyymmdd') then 'N' else 'Y' end isEnd
+         FROM CU_STT_UNIVERSITY U LEFT JOIN CU_STATISITICS S ON U.STT_ID = S.STT_ID
+		 WHERE 1 = 1
+		 	 <isNotEmpty property="sttUnivID">
+		 	 	<isNotEqual property="sttUnivID" compareValue="0" prepend="AND">		 
+		 	   U.STT_UNIV_ID = #sttUnivID,javaType=long#
+		 	    </isNotEqual>
+		 	 </isNotEmpty>
+		 	 <isNotEqual property="sttID" compareValue="0" prepend="AND">
+		 	   S.STT_ID = #sttID#
+		 	 </isNotEqual>
+	 	 	<isNotEqual property="universityID" compareValue="0" prepend="AND">
+	 	 		U.UNIVERSITY_ID = #universityID#
+	 	 	</isNotEqual>
+		 	 
+	</select>	
+	
+	<!-- 힉교담당자 미등록 교과부 통계 파일 개수 -->
+	<select id="selectSttFileCnt" resultClass="int"  parameterClass="int">
+		SELECT COUNT(*)        
+          FROM CU_STATISITICS S  JOIN CU_UNIV_INFO A ON  A.GUBUN_ID != 169
+               LEFT JOIN CU_STT_UNIVERSITY U ON  U.STT_ID = S.STT_ID  AND  A.UNIVERSITY_ID = U.UNIVERSITY_ID       	     
+         WHERE S.USE_YN = 'Y' 
+         		AND S.GATHER_STATE != 'Y'
+         		AND A.UNIVERSITY_ID = #universityID#
+         		AND (U.PUT_STATE IS NULL OR U.PUT_STATE = 'N' )
+	</select>	
+	
+	<!--  내용 입력 -->
+	<insert id="insertInfo" parameterClass="univStt">		      
+		INSERT INTO CU_STT_UNIVERSITY( 
+			STT_UNIV_ID, UNIVERSITY_ID,
+            UPLOAD_ST, REG_DATE, REGISTER,
+            STT_ID, PUT_STATE)
+		VALUES(
+			#sttUnivID#, #universityID#,
+			'', SYSDATE, #register#,
+			#sttID#, 'N')
+	</insert>
+		
+	<!-- 내용 업데이트 -->	
+	<update id="updateInfo" parameterClass="univStt">
+		UPDATE CU_STT_UNIVERSITY
+	   	SET MODIFIER		= #modifier#,
+	        ATTACH_UPFILE_GID = #upfileGid#,
+	        UPLOAD_ST		= #uploadState#,
+	   		PUT_STATE		= #putState#,
+	        MOD_DATE 		= SYSDATE,
+	        ATTACH_UPFILE_ID = #upfileID#
+		WHERE STT_UNIV_ID = #sttUnivID#
+	</update>
+	
+	<update id="updateFailInfo" parameterClass="univStt">
+		UPDATE CU_STT_UNIVERSITY
+	   	SET MODIFIER		= #modifier#,
+	        ATTACH_UPFILE_GID = null,
+	        UPLOAD_ST		= #uploadState#,
+	   		PUT_STATE		= 'N',
+	        MOD_DATE 		= SYSDATE,
+	        ATTACH_UPFILE_ID = null
+		WHERE STT_UNIV_ID = #sttUnivID#
+	</update>
+	
+	<!-- 수집상태 변경 -->	
+	<update id="upUploadSt" parameterClass="long">
+		UPDATE CU_STT_UNIVERSITY
+	   	SET UPLOAD_ST		= 'Y',
+	   		PUT_STATE		= 'Y'
+		WHERE STT_UNIV_ID = #sttUnivID#
+	</update>
+	
+	
+	<delete id="deleteInfo"  parameterClass="long">
+		DELETE 
+		FROM CU_STT_UNIVERSITY 
+		WHERE STT_ID = #sttID,javaType=long#
+	</delete>
+	
+	<!-- 교과부통계 연령별 정보 삭제 -->
+	<delete id="deleteAge"  parameterClass="long">
+		DELETE 
+		FROM CU_STT_AGE 
+		WHERE STT_UNIV_ID = #sttUnivID,javaType=long#
+	</delete>
+	
+	<!-- 교과부통계 입학금,수업료 정보 삭제 -->
+	<delete id="deleteFee"  parameterClass="long">
+		DELETE 
+		FROM CU_STT_FEE 
+		WHERE STT_UNIV_ID = #sttUnivID,javaType=long#
+	</delete>
+	
+	<!-- 교과부통계 졸업생현황 정보 삭제 -->
+	<delete id="deleteGraduate"  parameterClass="long">
+		DELETE 
+		FROM CU_STT_GRADUATE 
+		WHERE STT_UNIV_ID = #sttUnivID,javaType=long#
+	</delete>
+	
+	<!-- 교과부통계 직업별 정보 삭제 -->
+	<delete id="deleteJob"  parameterClass="long">
+		DELETE 
+		FROM CU_STT_JOB 
+		WHERE STT_UNIV_ID = #sttUnivID,javaType=long#
+	</delete>
+	
+	<!-- 교과부통계 시간제 정보 삭제 -->
+	<delete id="deletePartTime"  parameterClass="long">
+		DELETE 
+		FROM CU_STT_PART_TIME 
+		WHERE STT_UNIV_ID = #sttUnivID,javaType=long#
+	</delete>
+	
+	<!-- 교과부통계 정원외 재학생 현황 정보 삭제 -->
+	<delete id="deleteReadStdt"  parameterClass="long">
+		DELETE 
+		FROM CU_STT_READ_STDT 
+		WHERE STT_UNIV_ID = #sttUnivID,javaType=long#
+	</delete>
+	
+	<!-- 교과부통계 입학정원현황 정보 삭제 -->
+	<delete id="deleteRegisterStdt"  parameterClass="long">
+		DELETE 
+		FROM CU_STT_REGISTER_STDT 
+		WHERE STT_UNIV_ID = #sttUnivID,javaType=long#
+	</delete>
+	
+	<!-- 교과부통계 재학생 현황 정보 삭제 -->
+	<delete id="deleteTeacherData"  parameterClass="long">
+		DELETE 
+		FROM CU_STT_TEACHER_DATA 
+		WHERE STT_UNIV_ID = #sttUnivID,javaType=long#
+	</delete>
+	
+	<!-- 교과부통계 대학교 현황 정보 삭제 -->
+	<delete id="deleteUnivData"  parameterClass="long">
+		DELETE 
+		FROM CU_STT_UNIV_DATA 
+		WHERE STT_UNIV_ID = #sttUnivID,javaType=long#
+	</delete>
+	
+	<!-- 파일이 모두 삭제되었으면 부모테이블의 그룹 파일 값 NULL으로 세팅 -->	
+	<update id="initFileBoard" parameterClass="int">
+		UPDATE  CU_STT_UNIVERSITY 
+				SET ATTACH_UPFILE_GID = NULL
+				WHERE ATTACH_UPFILE_GID = #upfileGid#
+				 	  AND NOT EXISTS
+				 	  		(SELECT * 
+			    			FROM CU_SVC_ATTFILEUPLOAD 
+			    			WHERE UPFILE_GID = ATTACH_UPFILE_GID
+			    				  AND UPFILE_GID = #upfileGid#) 
+	</update>
+	
+	<!-- 대학 리스트 검색 -->
+	<select id="univList" parameterClass="map" resultClass="univStt">
+		SELECT A.UNIVERSITY_ID universityID,
+               A.UNIV_NAME||CASE WHEN a.university_id = '19' and #gubunId# != '0' THEN '(학사학위과정)' WHEN a.university_id ='20' and #gubunId# != '0' THEN '(전문학사학위과정)' END univName,
+               CASE WHEN CSU.PUT_STATE is null or CSU.PUT_STATE = '' THEN 'N' ELSE CSU.PUT_STATE END putState,
+               (select COUNT(COURSE_ID) from cu_svc_course SC where university_id = a.university_id and svc_status = 'A') cnt,
+               CASE WHEN STT_UNIV_ID is null THEN 0 ELSE STT_UNIV_ID END as sttUnivID               
+          FROM CU_UNIV_INFO A LEFT JOIN  CU_STT_UNIVERSITY CSU ON  CSU.STT_ID = #sttID# AND A.UNIVERSITY_ID = CSU.UNIVERSITY_ID       	   
+         WHERE A.GUBUN_ID != 169      	   
+		<isNotEmpty property="gubunId">
+        	<isNotEqual property="gubunId" compareValue="0">
+			AND	A.GUBUN_ID = #gubunId#							        
+        	</isNotEqual>
+        </isNotEmpty>
+        ORDER BY A.UNIV_NAME ASC
+	</select>
+	
+	<!-- 파일이 모두 삭제되었으면 부모테이블의 그룹 파일 값 NULL으로 세팅 -->	
+	<update id="upPutState" parameterClass="String" >
+		UPDATE  CU_STT_UNIVERSITY 
+		   SET PUT_STATE = 'N',
+		   	   UPLOAD_ST = ''
+	     WHERE STT_UNIV_ID in ($sstUnivIDs$)
+	</update>
+	
+	<!-- 대학교 통계 파일 다운 -->	
+	<select id="selUnivDown" resultClass="fileUpload"  parameterClass="map">		
+       SELECT UPFILE_ID as upfileId, 
+       		  UPFILE_GID as upfileGid, 
+       		  UPFILE_PATH as upfilePath, 
+       		  UPFILE_SIZE as upfileSize,
+			  UPFILE_FILENAME as upfileFilename, 
+			  UPFILE_SOURCE as upfileSource, 
+			  UPFILE_REGISTER as upfileRegister,
+			  UPFILE_REGDATE as upfileRegdate,
+			  I.UNIV_NAME AS univName
+         FROM CU_STT_UNIVERSITY U 
+         		JOIN CU_SVC_ATTFILEUPLOAD F ON U.ATTACH_UPFILE_GID = F.UPFILE_GID AND U.ATTACH_UPFILE_ID = F.UPFILE_ID
+         	  	JOIN  CU_UNIV_INFO I ON U.UNIVERSITY_ID = I.UNIVERSITY_ID
+		 WHERE  U.STT_ID = #sttID# 
+		        AND U.STT_UNIV_ID in ($sstUnivIDs$)   
+			
+	</select>
+	
+	<!-- 대학교 통계 파일 다운 -->	
+	<select id="selSttFileDown" resultClass="fileUpload"  parameterClass="map">		
+       SELECT UPFILE_ID as upfileId, 
+       		  UPFILE_GID as upfileGid, 
+       		  UPFILE_PATH as upfilePath, 
+       		  UPFILE_SIZE as upfileSize,
+			  UPFILE_FILENAME as upfileFilename, 
+			  UPFILE_SOURCE as upfileSource, 
+			  UPFILE_REGISTER as upfileRegister,
+			  UPFILE_REGDATE as upfileRegdate
+         FROM CU_SVC_ATTFILEUPLOAD F 
+		 WHERE  F.UPFILE_GID = #fileGid# 
+		        
+			
+	</select>
+	
+	<!-- 파일 gid값 생성  -->
+	<select id="selectSEQ_STT_UNIVERSITY" resultClass="int">
+	       SELECT SEQ_STT_UNIVERSITY.nextVal as sttUnivID FROM dual
+	</select>
+	
+	
+	<!-- 내용 업데이트 -->	
+	<update id="updateSttGatherStateY" parameterClass="String">
+		UPDATE CU_STATISITICS CS
+	   	SET CS.GATHER_STATE	= 'Y'	    	
+		WHERE CS.STT_ID = #sttID#
+		  AND (SELECT COUNT(*)
+		  		FROM CU_STT_UNIVERSITY CSU
+		  		WHERE CSU.STT_ID = #sttID#
+		  			  AND CSU.PUT_STATE = 'Y')
+		  	  = 
+		  	  (SELECT COUNT(*) FROM CU_UNIV_INFO WHERE GUBUN_ID != 169)
+	</update>
+	
+	
+	<!-- 대학별 현황표(일반현황) (CU_STT_UNIV_DATA) -->	
+	<update id="insertSttUnivData" parameterClass="map" >
+		MERGE INTO CU_STT_UNIV_DATA
+		USING DUAL
+		ON ( STT_UNIV_ID = #sttUnivID# ) 
+		WHEN MATCHED THEN
+			update set STUDENT_IN_CNT = #3#, 
+					   FORMATION_CNT = #2#
+		WHEN NOT MATCHED THEN
+		insert( ID, 
+				STT_UNIV_ID, 
+				STUDENT_IN_CNT, 
+				FORMATION_CNT 
+			  ) 
+		values( SEQ_STT_UNIV_DATA.nextVal ,
+				#sttUnivID#, 
+				#3#,
+				#2#
+			  )
+	</update>
+	
+	<!-- 재학생수 현황 (전임교원 확보 현황) -->	
+	<update id="insertSttTeacherData" parameterClass="map" >
+		MERGE INTO CU_STT_TEACHER_DATA
+		USING DUAL
+		ON ( STT_UNIV_ID = #sttUnivID# ) 
+		WHEN MATCHED THEN
+			update set STUDENT_IN_CNT = #1#, 
+					   STUDENT_OUT_CNT = #2#, 
+					   STUDENT_HOUR_CNT = #3#, 
+					   STUDENT_COLLEGE_CNT = #4#,
+					   TOTAL_CNT = #5#
+		WHEN NOT MATCHED THEN
+		insert( ID, 
+				STT_UNIV_ID, 
+				STUDENT_IN_CNT, 
+				STUDENT_OUT_CNT, 
+				STUDENT_HOUR_CNT, 
+				STUDENT_COLLEGE_CNT,
+				TOTAL_CNT
+			  ) 
+		values( SEQ_STT_TEACHER_DATA.nextVal ,
+				#sttUnivID#, 
+				#1#, 
+				#2#, 
+				#3#,
+				#4#,
+				#5#
+			  )
+	</update>
+	
+	<!-- 입학정원 현황, 입학 정원 대비 등록율(정원내학생등록상황) -->	
+	<update id="insertSttRegisterStdt" parameterClass="map" >
+		MERGE INTO CU_STT_REGISTER_STDT
+		USING DUAL
+		ON ( STT_UNIV_ID = #sttUnivID# AND CLASS = #1# ) 
+		WHEN MATCHED THEN
+			update set STUDENT_IN_CNT = #2#, 
+					   STUDENT_REGISTER_CNT = #3#
+		WHEN NOT MATCHED THEN
+		insert( ID, 
+				STT_UNIV_ID, 
+				STUDENT_IN_CNT, 
+				CLASS, 
+				STUDENT_REGISTER_CNT
+			  ) 
+		values(SEQ_STT_REGISTER_STDT.nextVal ,
+				#sttUnivID#, 
+				#2#, 
+				#1#, 
+				#3#
+			  )
+			  
+	</update>
+	
+	
+	<!-- 정원외 재학생 현황 (정원외학생) -->	
+	<update id="insertSttReadStdt" parameterClass="map" >
+		MERGE INTO CU_STT_READ_STDT
+		USING DUAL
+		ON ( STT_UNIV_ID = #sttUnivID# ) 
+		WHEN MATCHED THEN
+			update set  INDUSTRY = #1#, 
+						SOLDIER = #2#, 
+						ALIEN = #3#, 
+						GRADE_THREE = #4#, 
+						SPECIAL = #5#, 
+						NORTH_KOREA = #6#,
+						CHANGE = #7#, 
+						NATIONAL_BASIC = #8#, 
+						OTHER = #9#, 
+						TOTAL = #10#
+		WHEN NOT MATCHED THEN
+		insert( ID, 
+				STT_UNIV_ID, 
+				INDUSTRY, 
+				SOLDIER, 
+				ALIEN, 
+				GRADE_THREE, 
+				SPECIAL, 
+				NORTH_KOREA,
+				CHANGE, 
+				NATIONAL_BASIC, 
+				OTHER, 
+				TOTAL
+			  ) 
+		values( SEQ_STT_READ_STDT.nextVal ,
+				#sttUnivID#, 
+				#1#, 
+				#2#, 
+				#3#, 
+				#4#, 
+				#5#, 
+				#6#, 
+				#7#, 
+				#8#, 
+				#9#, 
+				#10#
+			  )
+			  
+	</update>
+	
+	<!-- 시간제 -->	
+	<update id="insertPartTime" parameterClass="map" >
+		MERGE INTO CU_STT_PART_TIME
+		USING DUAL
+		ON ( STT_UNIV_ID = #sttUnivID# ) 
+		WHEN MATCHED THEN
+			update set  RECRUITMENT_CNT = #1#, 
+						REGISTER_CNT = #2#, 
+						REGISTER_RATE = #3#, 
+						CREDIT_COST = #4#, 
+						LECTURE_CNT = #5#, 
+						APPLICATION_CNT = #6#
+		WHEN NOT MATCHED THEN
+		insert( ID, 
+				STT_UNIV_ID, 
+				RECRUITMENT_CNT, 
+				REGISTER_CNT, 
+				REGISTER_RATE, 
+				CREDIT_COST, 
+				LECTURE_CNT, 
+				APPLICATION_CNT
+			  ) 
+		values( SEQ_STT_PART_TIME.nextVal ,
+				#sttUnivID#, 
+				#1#, 
+				#2#, 
+				#3#, 
+				#4#, 
+				#5#, 
+				#6#				
+			  )
+	</update>
+	
+	<!-- 연령 성별 -->	
+	<update id="insertSttAge" parameterClass="map" >
+		MERGE INTO CU_STT_AGE
+		USING DUAL
+		ON ( STT_UNIV_ID = #sttUnivID# ) 
+		WHEN MATCHED THEN
+			update set	SEX_M = #1#,
+			  			SEX_G = #2#, 
+						AGE_TOTAL = #3#,
+						AGE_10 = #4#, 
+						AGE_20_INITIAL = #5#, 
+						AGE_20_AFTER = #6#, 
+						AGE_30 = #7#, 
+						AGE_40 = #8#,
+						AGE_50 = #9#,
+						AGE_60 = #10#
+		WHEN NOT MATCHED THEN
+		insert( ID, 
+				STT_UNIV_ID,
+				SEX_M,
+				SEX_G, 
+				AGE_TOTAL,
+				AGE_10, 
+				AGE_20_INITIAL, 
+				AGE_20_AFTER, 
+				AGE_30, 
+				AGE_40,
+				AGE_50,
+				AGE_60
+			  ) 
+		values( SEQ_STT_AGE.nextVal ,
+				#sttUnivID#, 
+				#1#, 
+				#2#, 
+				#3#, 
+				#4#,
+				#5#, 
+				#6#,			
+				#7#,			
+				#8#,			
+				#9#,			
+				#10#			
+			  )
+	</update>
+	
+	<!-- 입학금.수업료 -->	
+	<update id="insertSttFee" parameterClass="map" >
+		MERGE INTO CU_STT_FEE
+		USING DUAL
+		ON ( STT_UNIV_ID = #sttUnivID# ) 
+		WHEN MATCHED THEN
+			update set	APPLICATION_FEE = #1#,
+			  			ENTRANCE_FRE = #2#, 
+						CREDIT = #3#,
+						TRAINING_FEE = #4#, 
+						OTHER = #5#, 
+						TUITION = #6#, 
+						PRE_TUTION = #7#,
+						HIKE = #8#
+		WHEN NOT MATCHED THEN
+		insert( ID, 
+				STT_UNIV_ID,
+				APPLICATION_FEE,
+				ENTRANCE_FRE, 
+				CREDIT,
+				TRAINING_FEE, 
+				OTHER, 
+				TUITION, 
+				PRE_TUTION, 
+				HIKE
+			  ) 
+		values( SEQ_STT_FEE.nextVal ,
+				#sttUnivID#, 
+				#1#, 
+				#2#, 
+				#3#, 
+				#4#,
+				#5#, 
+				#6#,			
+				#7#,			
+				#8#						
+			  )
+			  
+	</update>
+	
+	<!-- 학력 직업 -->	
+	<update id="insertSttJob" parameterClass="map" >
+		MERGE INTO CU_STT_JOB
+		USING DUAL
+		ON ( STT_UNIV_ID = #sttUnivID# ) 
+		WHEN MATCHED THEN
+			update set	ADMIN_CNT = #1#,
+						EXPERT_CNT = #2#, 
+						AFFAIRS_CNT = #3#,
+						SERVE_CNT = #4#, 
+						MARKET_CNT = #5#, 
+						AGRICULTURE_CNT = #6#, 
+						TECHNICIAN_CNT = #7#, 
+						MACHINERY_CNT = #8#,
+						LABOR_CNT = #9#,
+						SOLDIER_CNT = #10#,
+						UNEMPLOYED_CNT = #11#,
+						TOTAL = #12#
+		WHEN NOT MATCHED THEN
+		insert( ID, 
+				STT_UNIV_ID,
+				ADMIN_CNT,
+				EXPERT_CNT, 
+				AFFAIRS_CNT,
+				SERVE_CNT, 
+				MARKET_CNT, 
+				AGRICULTURE_CNT, 
+				TECHNICIAN_CNT, 
+				MACHINERY_CNT,
+				LABOR_CNT,
+				SOLDIER_CNT,
+				UNEMPLOYED_CNT,
+				TOTAL
+			  ) 
+		values( SEQ_STT_JOB.nextVal ,
+				#sttUnivID#, 
+				#1#, 
+				#2#, 
+				#3#, 
+				#4#,
+				#5#, 
+				#6#,			
+				#7#,			
+				#8#,
+				#9#,					
+				#10#,					
+				#11#,					
+				#12#				
+			  )
+			  
+	</update>
+	
+	<!-- 졸업생현황 -->	
+	<update id="insertSttGraduate" parameterClass="map" >
+		MERGE INTO CU_STT_GRADUATE
+		USING DUAL
+		ON ( STT_UNIV_ID = #sttUnivID# AND YEAR = #1#) 
+		WHEN MATCHED THEN
+			update set	GRADUATE_CNT = #2#
+		WHEN NOT MATCHED THEN
+		insert( ID, 
+				STT_UNIV_ID,
+				GRADUATE_CNT,
+				YEAR
+			  ) 
+		values( SEQ_STT_GRADUATE.nextVal ,
+				#sttUnivID#, 
+				#2#, 
+				#1#			
+			  )
+			  
+	</update>
+  
+	
+</sqlMap>

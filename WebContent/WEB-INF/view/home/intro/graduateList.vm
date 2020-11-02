@@ -1,0 +1,29 @@
+#if($graduateList)
+<div class="tabs_cont">
+	##<div class="bul02 m_b5 m_t0"><span class="">$!graduate</span></div>
+	<div class="tbl_wrap03 univ_table3 m_l0">
+		<table class="" cellspacing="0" cellpadding="0" summary="학과 내비게이션" style="width:100%;" ><!-- table_type1 st01 Start -->
+		<caption>대학원 내비게이션</caption>
+		<colgroup>
+			<col width="10%">
+			<col width="90%">
+		</colgroup>
+		<tbody>
+			<tr class="bottom">
+				<th class="tit">대학원</th>
+				<td class="t_left">
+					#if($graduateList)
+					#foreach($list in $graduateList)
+					<li>
+						<a href="javascript:overallUnivInfo2('$list.universityId');">$list.univName</a>
+						<div id="$!list.deptId" class="layST" style="display:none;"></div>
+					</li>
+					#end
+					#end
+				</td>
+			</tr>
+		</tbody>
+	  </table>
+	</div>
+</div>
+#end

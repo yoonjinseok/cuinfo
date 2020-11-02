@@ -1,0 +1,227 @@
+<html>
+	<head>
+		<title>통합검색페이지</title>
+	</head>
+	<body>
+<div id="container">
+	
+	<!-- container Start -->
+	<!--s: left :각메뉴별 body에 클래스를 변경 바랍니다.-->
+	<!--s:사이버대학안내 <body id="newLayout" class="sub_intro"> 클래스를 바꿔주세요.-->
+	<!--<div id="snb">
+		<h2>정보자료실</h2>
+		<ul>
+			<li id="snb1" class="on">
+				<a href="">사이버대학이란?</a>
+				<div class="snb_sub_list">
+					<a class="on" href="#">- 개요 및 특징</a>
+					<a class="" href="#">- 신입생/편입생 안내</a>
+					<a class="" href="#">- 시간제등록 안내</a>
+				</div>
+			</li>
+			<li id="snb2" class=""><a href="#">대학소개</a></li>
+			<li id="snb3" class="">
+				<a href="#">학위취득/국가자격증</a>
+				<div class="snb_sub_list">
+					<a class="" href="#">- 사회복지사</a>
+					<a class="" href="#">- 보육교사</a>
+					<a class="" href="#">- 평생교육사</a>
+					<a class="" href="#">- 건강가정사</a>
+				</div>
+			</li>
+			<li id="snb4" class="">
+				<a href="#">진학가이드</a>
+				<div class="snb_sub_list">
+					<a class="" href="#">- 나의 전형 미리보기</a>
+					<a class="" href="#">- 대학별 문의</a>
+				</div>
+			</li>
+			<li id="snb5" class=""><a href="#">성공수기</a></li>
+			<li id="snb6" class=""><a href="#">특성화 사업</a></li>
+		</ul>
+	</div>-->
+	<!--e:사이버대학안내-->
+	<!--s:입학안내 <body id="newLayout" class="sub_entr"> -->
+	<!--div id="snb">
+		<h2>입학안내</h2>
+		<ul>
+			<li id="snb1" class="on">
+				<a href="">입학절차 안내</a>
+				<div class="snb_sub_list">
+					<a class="on" href="#">- 개요 및 특징</a>
+					<a class="" href="#">- 신입생/편입생 안내</a>
+				</div>
+			</li>
+			<li id="snb2" class=""><a href="#">모집 요강 </a></li>
+			<li id="snb3" class=""><a href="#">대학 정보현황</a></li>
+		</ul>
+	</div-->
+	<!--e:입학안내-->
+	<!--s:교과과정 <body id="newLayout" class="sub_curriculum"> -->
+	<!--div id="snb">
+		<h2>교과과정</h2>
+		<ul>
+			<li id="snb1" class="on"><a href="">교과과정 보기</a></li>
+			<li id="snb2" class="">
+				<a href="#">학과네비게이션</a>
+				<div class="snb_sub_list">
+					<a class="on" href="#">- 개요 및 특징</a>
+					<a class="" href="#">- 신입생/편입생 안내</a>
+				</div>
+			</li>
+			<li id="snb3" class=""><a href="#">전체학과검색</a></li>
+		</ul>
+	</div-->
+	<!--e:교과과정-->
+	<!--s:강의검색 <body id="newLayout" class="sub_course"> -->
+	<!--div id="snb">
+		<h2>강의검색</h2>
+		<ul>
+			<li id="snb1" class="on"><a href="">강의명 검색 </a></li>
+			<li id="snb2" class=""><a href="#">학과분야별 검색 </a></li>
+			<li id="snb3" class=""><a href="#">학교별 검색</a></li>
+			<li id="snb4" class=""><a href="#">학교별 강의 맛보기</a></li>
+			<li id="snb5" class=""><a href="#">공개강의</a></li>
+		</ul>
+	</div-->
+	<!--e:강의검색-->
+	<!--s:정보자료실 <body id="newLayout" class="sub_refer"> -->
+	<!--div id="snb">
+		<h2>정보자료실</h2>
+		<ul>
+			<li id="snb1" class="on"><a href="">연구/교육 자료 </a></li>
+			<li id="snb2" class=""><a href="#">사이버대학 뉴스 </a></li>
+			<li id="snb3" class=""><a href="#">공지 사항 </a></li>
+			<li id="snb4" class=""><a href="#">자주하는 질문답변</a></li>
+			<li id="snb5" class="">
+				<a href="#">사이버대학 통계</a>
+				<div class="snb_sub_list">
+					<a class="on" href="#">- 대학별 현황표</a>
+					<a class="" href="#">- 입학정원 현황</a>
+					<a class="" href="#">- 입학정원 대비 등록률</a>
+					<a class="" href="#">- 성별 등록생 비율</a>
+					<a class="" href="#">- 연력병 등록생 비율</a>
+					<a class="" href="#">- 직업별 등록생 비율</a>
+					<a class="" href="#">- 학년도별 원격대학 총 졸업생수</a>
+					<a class="" href="#">- 재학생수 현황</a>
+					<a class="" href="#">- 시간제등록생 모집결과</a>
+					<a class="" href="#">- 입학금 및 수업료 현황</a>
+				</div>
+			</li>
+		</ul>
+	</div-->
+	## $tCnt1 : $tCnt2 : $tCnt3
+	
+	<div id="contents" style="margin:0">
+		<p class="location">
+			<a href="">홈</a> <span>&gt;</span> <a href="">통합검색</a>
+		</p>
+		<h3><img src="/home/images/search/h3_search.gif" alt="통합검색" /></h3>
+		<div class="contentWrap" style="width:980px">
+			<!--s:컨텐츠영역-->
+			<ul id="searchGubnTab" class="tab_type1 menu3">
+				<li class="tab1"><a href="javascript:viewMore(0);" #if($gubn == 0)class="on" #end>전체</a> </li>
+				<li class="tab2"><a href="javascript:viewMore(1);" #if($gubn == 1)class="on" #end>강의검색</a> </li>
+				<li class="tab4"><a href="javascript:viewMore(2);" #if($gubn == 2)class="on" #end>게시물</a> </li>
+				<li class="tab3"><a href="javascript:viewMore(3);" #if($gubn == 3)class="on" #end>웹문서</a> </li>
+			</ul>
+			<div class="main_title m_b20">검색어 <b class="orange" id="searchText">$!headerText</b> 에  대한 결과입니다. (총 <b id="tCnt"> $!tCnt </b> 건)</div>		
+			
+			<div class="search_list_area type2">
+
+				<div id="showDiv1" style="">
+					<!-- 강의검색 -->
+					<div class="m_b10"><img src="/home/images/search/sub_title1.gif" alt="강의검색"></div>
+					<div class="top_box search_top_line">
+						<span class="num"><b class="white">총</b> <b id="searchListCnt1"></b> <b class="white">건</b></span>
+						<span class="f_right">
+							##<a href="javascript:chgSort('regDate');" class="">등록순</a>  |
+							##<a href="javascript:chgSort('clicksCnt');" "="" class="on">인기순</a>
+						</span>
+					</div>
+	
+					<div id="searchList1">#parse('home/search/searchList1.vm')</div>
+
+					#if($tCnt1 > 10 && $gubn == 0)
+					<div class="search_more"><a href="javascript:viewMore(1);">강의검색 더보기</a></div>
+					#else
+					<div class=""><a href="#">&nbsp;</a></div>
+					#end
+					
+				</div>
+
+
+				<div id="showDiv2" style="">
+					<!-- 게시물검색 -->
+					<div class="m_b10"><img src="/home/images/search/sub_title2.gif" alt="게시물검색"></div>
+					<div class="top_box search_top_line">
+						<span class="num"><b class="white">총</b> <b id="searchListCnt2"></b> <b class="white">건</b></span>
+						<span class="f_right">
+							##<a href="javascript:chgSort('regDate');" class="">등록순</a>  |
+							##<a href="javascript:chgSort('clicksCnt');" "="" class="on">조회순</a>
+						</span>
+					</div>
+					
+					<div id="searchList2">#parse('home/search/searchList2.vm')</div>
+
+					#if($tCnt2 > 10 && $gubn == 0)
+					<div class="search_more"><a href="javascript:viewMore(2);">게시물검색 더보기</a></div>
+					#elseif($boardsList.size() <= 10 && $gubn == 0)
+					<div class=""><a href="#">&nbsp;</a></div>
+					#end
+					
+				</div>
+
+				<div id="showDiv3" style="">		
+					<!-- 웹문서 -->
+					<div class="m_b10"><img src="/home/images/search/sub_title3.gif" alt="웹문서"></div>
+					<div class="top_box search_top_line">
+						<span class="num"><b class="white">총</b> <b id="searchListCnt3"></b> <b class="white">건</b></span>
+						<span class="f_right">
+							##<a class="on"  href="javascript:chgSort('regDate');">등록순</a>  |
+							##<a href="javascript:chgSort('clicksCnt');"">인기순</a>
+						</span>
+					</div>
+			
+					<div id="searchList3">#parse('home/search/searchList3.vm')</div>
+
+					#if($tCnt3 > 10 && $gubn == 0)
+					<div class="search_more"><a href="javascript:viewMore(3);">웹문서검색 더보기</a></div>
+					#else
+					<div class=""><a href="#">&nbsp;</a></div>
+					#end
+				</div>
+				
+				<dl class="rank_box">
+					<dt>
+						<img src="/home/images/intro/searchMajor_title2.gif" alt="인기검색어" />
+						## <a class="on" href="#"><img src="/home/images/btn/more.gif" alt="more" /></a> 
+					</dt>
+					#foreach($list in $keywordsList)
+						#if($velocityCount <= 10)
+						<dd class="num$velocityCount"><a href="javascript:clickKeyword('$list.keyword')">$list.keyword</a></dd>
+						#end
+					#end
+				</dl>
+		
+				<dl class="rank_box type1" style="display:none;">
+					<dt>
+						<img src="/home/images/intro/searchMajor_title3.gif" alt="추천강의" />
+						##<a class="on" href="javascript:viewMoreCourse();"><img src="/home/images/btn/more.gif" alt="more" /></a>
+					</dt>
+					#foreach($list in $bestCourseList)
+					<dd class="num$velocityCount"><a href="javascript:bestCourseClick('$!list.title')">$!list.title</a></dd>
+					#end
+				</dl>
+			
+				#if($gubn != 0)
+				<div class="page_num">
+					<div id="pg2" name="pg2"></div>
+				</div>
+				#end
+			</div>			
+		<!--e:컨텐츠영역-->
+		</div>
+
+	</body>
+</html>

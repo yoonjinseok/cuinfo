@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="EUC-KR"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="CurriculumDao">
+	<typeAlias alias="board" type="com.cyberup.model.home.Board"/>
+	<typeAlias alias="Curriculum" type="com.cyberup.model.curri.Curriculum"/>
+	
+	<!--
+	2012.11.01 이종호 
+	학과리스트
+	기존의 학과리스트 쿼리가 있으나
+	테이블 구성 및 필요데이터 부족으로 새로 생성
+	 -->
+	<select id="selectDeptList" parameterClass="Curriculum" resultClass="Curriculum">
+		SELECT count(*) over(partition by a.classify_id) rn1,
+		       ROW_NUMBER () OVER (partition by a.classify_id order by a.classify_order,b.dept_order) rn2,
+		       A.CLASSIFY_ID classifyId,
+		       A.CLASSIFY_NAME classifyName,
+		       B.DEPT_ID deptId,
+		       B.DEPT_NAME deptName
+		  FROM CU_REPT_CLASSIFICATION A, CU_REPT_DEPT B
+		 WHERE 1 = 1 AND A.CLASSIFY_ID = B.CLASSIFY_ID AND A.USE_YN = 'Y'
+		 <isNotEmpty property="classifyId">
+		 and a.classify_id = #classifyId#
+		 </isNotEmpty>
+		 order by a.classify_order,rn2
+	</select>
+	
+	<select id="selectDeptDetailList" parameterClass="Curriculum" resultClass="Curriculum">
+	SELECT b.UNIVERSITY_ID universityId,
+	       b.univdept_id univdeptId,
+	       a.dept_name deptName,
+	       b.univdept_name univdeptName,
+	       (SELECT univ_name
+	        FROM   cu_univ_info
+	        WHERE  university_id = b.UNIVERSITY_ID) univName,
+	        count(*) over() totalCnt
+	FROM   CU_REPT_DEPT a, CU_UNIV_DEPT b
+	WHERE  a.DEPT_ID = b.DEPT_ID AND a.DEPT_ID = #deptId#
+	<isNotEqual property="cnt" compareValue="0">
+		<isNotEmpty property="universityId" prepend="AND">
+		b.university_id = #universityId#
+		</isNotEmpty>
+	</isNotEqual>
+	AND EXISTS (SELECT * FROM cu_svc_course WHERE university_id = b.university_id AND department_id = b.univdept_id)
+	</select>
+	
+	<select id="selectCurriculumList" parameterClass="Curriculum" resultClass="Curriculum">
+			WITH data1
+		     AS (SELECT DISTINCT
+		                sc.UNIVERSITY_ID universityId,
+		                department_id departmentId,
+		                sc.course_id AS courseId,
+		                sc.title AS title,
+<!-- 		                NVL (sc.grad_semester, '0') AS gradth, -->
+						nvl(decode(NVL (sc.grad_semester, '0'),'0', sc.TERM_SEMESTER, sc.grad_semester),'0') AS gradth,
+<!-- 		                nvl(sc.grad_year,sc.term_year) AS grad, -->
+		                nvl(sc.grad_year,'0') AS grad,
+		                replace(c.KEM_VAL,'.0','') AS credit
+		           FROM    cu_svc_course sc
+		                LEFT JOIN
+		                   CU_SVC_COURSE_KEM c
+		                ON     c.course_id = sc.COURSE_ID
+		                   AND c.COLLTYPE_ID = sc.course_id
+		                   AND c.METADIC_ID = '105'
+		                   AND c.kem_val IS NOT NULL
+		          WHERE  DEPARTMENT_ID = #univdeptId#
+				         AND sc.UNIVERSITY_ID = #universityId# 
+<!-- 				         AND sc.term_year = (select max(term_year) from cu_svc_course where svc_status = 'A')  -->
+		                AND NVL (sc.grad_semester, '0') IN ('0', '1', '2')
+		                AND EXISTS (SELECT '1' FROM (SELECT DISTINCT term_year, term_semester
+                                      FROM (SELECT DENSE_RANK ()
+                                                      OVER (ORDER BY term_year DESC, term_semester DESC)
+                                                      rn,
+                                                   term_year,
+                                                   term_semester
+                                              FROM cu_svc_course
+                                             WHERE DEPARTMENT_ID = #univdeptId# AND UNIVERSITY_ID = #universityId# and term_semester in ('0','1','2'))
+                                     WHERE rn &lt; 3)
+                                     WHERE term_year = sc.term_year AND term_semester = sc.term_semester
+                                     )
+		                ),
+		     data2
+		     AS (SELECT CASE WHEN gradth = '0' or grad not in (1,2,3,4) THEN '9' ELSE to_char(grad) END AS grad,
+		                gradth,
+		                universityId,
+		                departmentId,
+		                DENSE_RANK () OVER (PARTITION BY grad, gradth ORDER BY courseId) rn,
+		                CASE WHEN gradth = '1' OR gradth = '0' THEN courseId END courseId1,
+		                CASE WHEN gradth = '1' OR gradth = '0' THEN title END title1,
+		                CASE WHEN gradth = '1' OR gradth = '0' THEN credit END credit1,
+		                CASE WHEN gradth = '2' THEN courseId END courseId2,
+		                CASE WHEN gradth = '2' THEN title END title2,
+		                CASE WHEN gradth = '2' THEN credit END credit2
+		           FROM data1
+		         ORDER BY gradth)
+		SELECT (SELECT univ_name FROM cu_univ_info WHERE university_id = a.universityId) universityName,
+			   (SELECT UNIV_HOMEPAGE FROM cu_univ_info WHERE university_id = a.universityId) univHomePage,
+			   (SELECT getSip(UNIV_HOMEPAGE) FROM cu_univ_info WHERE university_id = a.universityId) as sip1,
+			   (SELECT getUri(UNIV_HOMEPAGE) FROM cu_univ_info WHERE university_id = a.universityId) as uri1,
+			   (SELECT getQri(UNIV_HOMEPAGE) FROM cu_univ_info WHERE university_id = a.universityId) as qri1,
+			   (SELECT getSp(UNIV_HOMEPAGE) FROM cu_univ_info WHERE university_id = a.universityId) as sp1,
+		       (SELECT UNIVDEPT_DESC FROM cu_univ_dept WHERE university_id = a.universityId AND univdept_id = departmentId) linkurl,
+		       (SELECT getSip(UNIVDEPT_DESC) FROM cu_univ_dept WHERE university_id = a.universityId AND univdept_id = departmentId) as sip2,
+		       (SELECT getUri(UNIVDEPT_DESC) FROM cu_univ_dept WHERE university_id = a.universityId AND univdept_id = departmentId) as uri2,
+		       (SELECT getQri(UNIVDEPT_DESC) FROM cu_univ_dept WHERE university_id = a.universityId AND univdept_id = departmentId) as qri2,
+		       (SELECT getSp(UNIVDEPT_DESC) FROM cu_univ_dept WHERE university_id = a.universityId AND univdept_id = departmentId) as sp2,
+		       (SELECT univdept_name FROM cu_univ_dept WHERE university_id = a.universityId AND univdept_id = departmentId) univdeptName,
+		       REPLACE (REPLACE (NVL (grad, '9'), '9', '공통'), '0', '공통') grad,
+		       COUNT (*) OVER (PARTITION BY grad) cnt,
+		       ROW_NUMBER () OVER (PARTITION BY grad ORDER BY grad) rn,
+		       MAX (courseId1) courseId1,
+		       MAX (title1) title1,
+		       MAX (credit1) credit1,
+		       MAX (courseId2) courseId2,
+		       MAX (title2) title2,
+		       MAX (credit2) credit2
+		  FROM data2 a
+		GROUP BY grad,
+		         rn,
+		         universityId,
+		         departmentId
+		ORDER BY grad, rn, courseid1, courseid2
+	</select>
+	
+	<select id="selectClassifyList" resultClass="Curriculum">
+		SELECT   classify_id classifyId, classify_name classifyName
+		FROM     CU_REPT_CLASSIFICATION
+		where USE_YN = 'Y'
+		ORDER BY CLASSIFY_ORDER	
+	</select>
+	
+	<select id="deptUnivList" resultClass="Curriculum" parameterClass="Curriculum">
+		select * from CU_REPT_CLASSIFICATION a, CU_REPT_DEPT b, CU_UNIV_DEPT c
+		where a.CLASSIFY_ID = b.CLASSIFY_ID
+		and c.use_yn = 'Y'
+		and b.DEPT_ID = c.DEPT_ID
+		order by a.CLASSIFY_ORDER, b.DEPT_ORDER
+	</select>
+	
+	<select id="selectUnivList" resultClass="Curriculum" parameterClass="Curriculum">
+		SELECT university_id universityId,
+         univ_name universityName,
+         univdept_id univdeptId,
+         dept_id deptId,
+         cnt
+        FROM (SELECT a.UNIVERSITY_ID,
+                     a.UNIV_NAME,
+                     b.UNIVDEPT_ID,
+                     b.dept_id,
+                     COUNT (b.UNIVDEPT_ID)
+                        OVER (PARTITION BY a.UNIVERSITY_ID, a.UNIV_NAME)
+                        cnt,
+                     row_number() over(partition by a.univ_name order by a.univ_name) rn 
+                FROM cu_univ_info a, cu_univ_dept b
+               WHERE a.UNIVERSITY_ID = b.UNIVERSITY_ID AND dept_id = #deptId# and b.use_yn = 'Y'
+               and a.gubun_id in ('51','52','163'))
+    where rn = 1
+    ORDER BY universityName
+	<!-- 
+		SELECT a.UNIVERSITY_ID universityId, a.UNIV_NAME universityName, b.UNIVDEPT_ID univdeptId
+		FROM   cu_univ_info a, cu_univ_dept b
+		WHERE  a.UNIVERSITY_ID = b.UNIVERSITY_ID AND dept_id = #deptId#	
+		order by a.univ_name
+	 -->
+	</select>
+	
+</sqlMap>

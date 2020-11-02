@@ -1,0 +1,67 @@
+
+<table cellspacing="0" cellpadding="0" class="list_type01" summary="과정관리"><!-- list_type01 Start -->
+	<caption>과정관리</caption>
+	<colgroup>
+		<col width="5%" />
+		<col width="15%" />
+		<col width="*%" />
+		<col width="10%" />
+		<col width="15%" />
+		<col width="15%" />
+	</colgroup>
+	<thead>
+		<tr>
+			<th scope="col">NO</th>
+			<th scope="col">분류</th>
+			<th scope="col">질문</th>
+			<th scope="col">조회수</th>
+			<th scope="col">작성자</th>
+			<th scope="col">등록일</th>
+		</tr>
+	</thead>
+	<tbody>
+
+		#foreach($step in $faqList)
+		<tr>
+			<td>$!step.rowNum</td>
+			<td>$!step.sectionName</td>
+			<td style="text-align:left; !important;"><a href="javascript:modify($!step.faqId);">$!step.question</a></td>
+			<td>$!step.hitsCnt</td>
+			<td>$!step.adminName</td>
+			<td>$dateformatter.print($!step.regDate, $locale)</td>
+		</tr>
+		#end
+		
+		#if(!$faqList.size() && "$!faqList.size()" == "")
+			#set($tempCnt = 0)
+		#else
+			#set($tempCnt = $faqList.size())
+		#end
+
+		#set($cnt = $tempCnt + 1)
+		
+		#if($cnt <= $showCnt)
+		#foreach($blank in [$cnt..$showCnt])
+		<tr>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+		</tr>
+		#end
+		#end
+		
+	
+
+	</tbody>
+</table><!-- list_type01 End -->
+
+<script>
+	#if($faqList)
+	setRecordCnt($totalCnt, $currPage, $totalPage, $showCnt);
+	#else
+	setRecordCnt(0, 1, 1, 10);
+	#end
+</script>

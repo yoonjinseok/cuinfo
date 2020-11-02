@@ -1,0 +1,153 @@
+<head>
+	<title>대학별 통계자료 관리</title>
+	<script type="text/javascript" language="javascript">
+	function search()
+	{
+		goPage(1);
+	}
+	
+	function setRecordCnt(totalCnt, currPage, totalPage, showCnt)
+	{
+		$("#tCnt").text(totalCnt);
+		$("#cPage").text(currPage);
+		$("#tPage").text(totalPage);
+		
+		setPaging($("#pg"), totalCnt, showCnt, currPage);
+	}
+	
+	function goPage(page)
+	{
+		$("#currPage").val(page);
+		
+		jQuery.post('univStt_list.ajax.action', 
+				$("#searchForm").formSerialize(), 
+				function(data) {
+        			$("#list").html(data);
+		});
+	}
+
+	function goReload()
+	{
+		jQuery.post('univStt_list.ajax.action', 
+				$("#searchForm").formSerialize(), 
+				function(data) {
+        			$("#list").html(data);
+		});
+	}
+	
+	function modify(sttUnivID, sttID, universityID)
+	{
+		var params ="sttUnivID=" + sttUnivID + "&sttID=" + sttID  + "&universityID=" + universityID ;
+		showWin('/mgr/educ/univStt_modify.pop.action?' + params, 'modwin', 800, 550);
+	}
+	
+	function reg()
+	{
+		showWin('/mgr/educ/univStt_write.pop.action', 'regwin', 800, 530);
+	}
+	
+	function upGatherState(sttID)
+	{
+		//document.location.href = '/mgr/educ/univStt_gather.pop.action?sttID=' + sttID;
+		showWin('/mgr/educ/univStt_gather.pop.action?sttID=' + sttID, 'gatherwin', 800, 550);
+	}
+
+	//디비에 저장된 내용 다운로드
+	/*
+    function selSttFileDown(fileGid, sttID)
+    {
+    	document.location.href = 'univStt_selSttFileDown.json?fileGid=' + fileGid + "&sttID=" + sttID;
+    }
+    */
+    
+    //디비에 저장된 내용 다운로드
+    function selSttFileDown(fileID)
+    {
+    	if(fileID == "0" || fileID == "" || fileID == "889815" || fileID == "889821")
+    		alert("다운로드 가능한 파일이 없습니다.");
+    	else
+    		document.location.href = 'univStt_selSttFileDown.json?fileID=' + fileID;
+    }
+    
+	$(document).ready(function() {
+		search();
+
+		showCalendar($('#radio-4'));
+    });	
+
+	
+	</script>
+</head>
+<body>
+<div id="location_box"><!-- MainCopyBox  Start -->
+ <h3><img src="/mgr/images/educ/title2.gif" alt="대학별 통계 자료 관리"></h3>
+ <ul class="location">
+	 <li><a href="/mgr/main.sub.action">Home</a></li>
+	 <li><a href="/mgr/educ/statisitics.sub.action?gnb=41">교과부통계</a></li>
+	 <li>대학별 통계 자료 관리</li>
+ </ul>
+</div><!-- MainCopyBox  End -->
+<form class="search_box01" id="searchForm" name="searchForm" action="#" onsubmit="try{search();}catch(e){alert(e);}return false;"><!-- box_type01 Start -->
+<input type="hidden" id="showCnt" name="showCnt" value="15"/>
+<input type="hidden" id="currPage" name="currPage" value="1"/>
+	<fieldset class="inner">
+		<table cellspacing="0" cellpadding="0" summary="검색" class="border_none_table">
+			<caption>검색</caption>
+			<tbody>
+				<tr>
+					<td>
+						<label for="select-1">구분</label>
+                        <select id="select-1" name="searchValue1" style="width:60px;">
+                        	<option value="">선택</option>
+                        	<option value="Y">정기</option>
+                        	<option value="N">비정기</option>
+                        </select>
+					</td>
+					<td>
+						<label for="select-3">상태</label>
+                        <select id="select-3" name="searchValue3" title="검색내용2" style="width:80px;">
+                        	<option value="">선택</option>
+                        	<option value="Y">업로드완료</option>
+                        	<option value="N">미등록</option>
+                        </select>
+					</td>
+					#if($authLeverlId == "6")
+					<td>
+						<label for="select-5">대학교명</label>
+                        <select id="select-5" name="searchValue5" title="검색내용5" style="width:160px;">
+                        	<option value="">선택</option>
+                        	#foreach($list in $univList)
+                        	<option value="$!list.universityId">$!list.univName</option>
+                        	#end
+                        </select>
+					</td>	
+					#end		
+				</tr>
+				<tr>
+					<td #if($authLeverlId == "6") colspan="2" #end	>
+						<label for="text-2">통계명</label>
+						<input type="text" id="text-2" name="searchValue2" size="23" title="검색내용2"/> 
+					</td>
+					
+					<td >
+						<label for="radio-4">일자 </label>
+						<input type="text" id="radio-4" name="searchValue4" size="10" title="검색내용4" onChange="setDateFormat(this)"/> 
+						<input type="image" style="width:52px;height:21px;border:0px;" src="/mgr/images/btn/search.gif" alt="검색" />
+					</td>				
+				</tr>
+			</tbody>
+		</table>
+	</fieldset>
+</form><!-- box_type01 End -->
+<div class="list_top01">
+	<span>제목 클릭 시 관리 페이지로 이동됩니다.</span>
+	<span class="f_right">total : <em id="tCnt">0</em>건(<em id="cPage">1</em>/<em id="tPage">15</em>page)</span>
+</div>
+<div id="list">#parse('mgr/educ/univStt_list.vm')</div>
+<div class="page_num">
+	<div id="pg" name="pg"></div>
+</div>
+
+
+</body>
+</html>

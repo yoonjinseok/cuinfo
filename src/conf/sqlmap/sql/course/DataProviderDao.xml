@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="EUC-KR"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="DataProviderDao">
+	<typeAlias alias="dataProvider" type="com.cyberup.model.course.DataProvider"/>
+	
+	<select id="selectList" resultClass="dataProvider"  parameterClass="map">
+		SELECT   a.*
+            FROM 
+            (
+				SELECT ROW_NUMBER () OVER (ORDER BY DP_REGDATE DESC) as recNum
+					, COUNT (*) OVER () totalCnt
+		            , A.UNIVERSITY_ID as universityId, B.UNIV_NAME as universityName, A.ORG_ID as orgId, PROTOCOL_VER as protocolVer
+					, DELIMITER as delimiter, DATE_FORMAT as dateFormat, REPOSITORY_IDENTIFIER as repositoryIdentifier
+					, ALLOWALL_YN as allowallYn, DP_NAME as dpName, DP_URL as dpUrl
+					, A.ADMIN_NAME as adminName, A.ADMIN_EMAIL as adminEmail, A.USE_YN as useYn, A.AUTO_YN as autoYn
+					, DP_REGISTER as dpRegister, NVL(REGISTERTBL.ADMIN_NAME,'') as dpRegisterName, DP_REGDATE as dpRegdate
+					, DP_MODIFIER as dpModifier, NVL(MODIFIERTBL.ADMIN_NAME,'') as dpModifierName, DP_MODDATE as dpModdate
+				FROM CU_CTR_DATAPROVIDER A
+						LEFT JOIN CU_ADMIN REGISTERTBL
+		                	ON A.DP_REGISTER = REGISTERTBL.ADMIN_ID
+		                LEFT JOIN CU_ADMIN MODIFIERTBL
+		                	ON A.DP_MODIFIER = MODIFIERTBL.ADMIN_ID
+		             , CU_UNIV_INFO B
+				WHERE A.UNIVERSITY_ID = B.UNIVERSITY_ID 
+						AND B.USE_YN = 'Y'
+					<isNotEmpty property="universityName" prepend="AND">
+		                B.UNIV_NAME LIKE concat(concat('%',#universityName#),'%')
+		            </isNotEmpty>
+		            <isNotEmpty property="useYn" prepend="AND">
+		                A.USE_YN = #useYn#
+		            </isNotEmpty>
+        ) a
+        WHERE CEIL (recNum / #showCnt,javaType=Integer#) = #currPage,javaType=Integer#
+        ORDER BY recNum ASC
+	</select>
+	
+	<select id="selectInfo" resultClass="dataProvider"  parameterClass="int">
+		SELECT A.UNIVERSITY_ID as universityId, B.UNIV_NAME as universityName, A.ORG_ID as orgId, PROTOCOL_VER as protocolVer
+			, DELIMITER as delimiter, DATE_FORMAT as dateFormat, REPOSITORY_IDENTIFIER as repositoryIdentifier
+			, A.ALLOWALL_YN as allowallYn, DP_NAME as dpName, DP_URL as dpUrl
+			, A.ADMIN_NAME as adminName, A.ADMIN_EMAIL as adminEmail, A.USE_YN as useYn, A.AUTO_YN as autoYn
+			, DP_REGISTER as dpRegister, NVL(REGISTERTBL.ADMIN_NAME,'') as dpRegisterName, DP_REGDATE as dpRegdate
+			, DP_MODIFIER as dpModifier, NVL(MODIFIERTBL.ADMIN_NAME,'') as dpModifierName, DP_MODDATE as dpModdate
+		FROM CU_CTR_DATAPROVIDER A
+				LEFT JOIN CU_ADMIN REGISTERTBL
+                	ON A.DP_REGISTER = REGISTERTBL.ADMIN_ID
+                LEFT JOIN CU_ADMIN MODIFIERTBL
+                	ON A.DP_MODIFIER = MODIFIERTBL.ADMIN_ID 
+             , CU_UNIV_INFO B
+		WHERE A.UNIVERSITY_ID = B.UNIVERSITY_ID 
+			AND B.USE_YN = 'Y'
+			AND A.UNIVERSITY_ID = #universityId,javaType=Integer#
+	</select>
+	
+	<update id="updateInfo" parameterClass="dataProvider">
+		UPDATE CU_CTR_DATAPROVIDER SET 
+			DP_NAME = #dpName#, DP_URL = #dpUrl#
+			, ADMIN_NAME = #adminName#, ADMIN_EMAIL = #adminEmail#, USE_YN = #useYn#, AUTO_YN = #autoYn#
+			, DP_MODIFIER = #dpModifier#, DP_MODDATE = SYSDATE
+		WHERE UNIVERSITY_ID = #universityId,javaType=Integer#
+	</update>
+	
+	<insert id="insertInfo" parameterClass="dataProvider">
+		INSERT INTO CU_CTR_DATAPROVIDER 
+			(UNIVERSITY_ID, DP_NAME, DP_URL
+			, ADMIN_NAME, ADMIN_EMAIL, USE_YN, AUTO_YN
+			, DP_REGISTER, DP_REGDATE, DP_MODIFIER
+			, DP_MODDATE)
+		 values(#universityId#, #dpName#, #dpUrl#
+			, #adminName#, #adminEmail#, #useYn#, #autoYn#
+			, #dpRegister#, SYSDATE, #dpRegister#, SYSDATE)
+	</insert>
+	
+	<delete id="deleteInfo"  parameterClass="int">
+		DELETE FROM CU_CTR_DATAPROVIDER 
+		WHERE 
+		UNIVERSITY_ID = #universityId,javaType=Integer#
+	</delete>
+
+</sqlMap>

@@ -1,0 +1,761 @@
+<%@page contentType="text/html;charset=utf-8"%>
+<%@ taglib uri="http://www.opensymphony.com/sitemesh/decorator" prefix="decorator" %>
+<%@ taglib uri="http://www.opensymphony.com/sitemesh/page" prefix="page" %>
+<%@page import="org.springframework.web.context.WebApplicationContext"%>
+<%@page import="org.springframework.web.context.support.WebApplicationContextUtils"%>
+<%
+
+String gnb = request.getParameter("gnb");
+String URL = "/home";
+String BodyType = "";
+
+String GnbOn1  	= ""; String GnbOn2   = "";	String GnbOn3 	= ""; String GnbOn4  = ""; String GnbOn5	=	""; String GnbOn6 =	"";
+String SnbOn11 	= ""; String SnbOn111 = ""; String SnbOn112 = ""; String SnbOn113 = "";
+String SnbOn12 	= ""; String SnbOn121 	= ""; 
+String SnbOn13  = ""; String SnbOn131 = ""; String SnbOn132 = ""; String SnbOn133 = ""; String SnbOn134 = ""; String SnbOn135=""; 
+String SnbOn14  = ""; String SnbOn141 = ""; String SnbOn142 = ""; 
+String SnbOn15  = ""; 
+String SnbOn16  = ""; String SnbOn161  = ""; String SnbOn162  = "";
+
+//입학안내
+String SnbOn21 	= ""; String SnbOn211 = ""; String SnbOn212 = ""; 
+String SnbOn22  = ""; 
+String SnbOn23  = "";
+
+//교과과정
+String SnbOn31 	= ""; 
+String SnbOn32  = ""; String SnbOn321  = ""; String SnbOn322  = ""; 
+String SnbOn33 	= "";
+
+//강의검색
+String SnbOn41 	= ""; 
+String SnbOn42  = ""; 
+String SnbOn43 	= ""; 
+String SnbOn44  = ""; 
+String SnbOn45  = "";
+
+//정보자료실
+String SnbOn51	= ""; 
+String SnbOn52	= "";
+String SnbOn53	= "";
+String SnbOn54	= "";
+String SnbOn55	= ""; String SnbOn551	= ""; String SnbOn552	= ""; String SnbOn553	= ""; String SnbOn554	= ""; String SnbOn555	= ""; String SnbOn556	= ""; String SnbOn557	= ""; String SnbOn558	= ""; String SnbOn559	= ""; String SnbOn5510= ""; String SnbOn5511= "";
+
+String Category = "";
+String MainTitle= "";
+String SubTitle = "";
+String TitleImg = "";
+String PageID   = "";
+String PageClass= "";
+String PageUrl 	= "/home/index.main.action";
+
+if(gnb == null){ gnb = "0"; }
+int cate_int = Integer.parseInt(gnb);
+System.out.println("check gnb ==> " + gnb);
+System.out.println("check gnb ==> " + gnb);
+System.out.println("check gnb ==> " + gnb);
+
+/************************************************************************************************************/
+//사이버대학안내
+String GnbName1   = "사이버대학 안내";
+//1.사이버대학이란?
+String SnbNmae11  = "사이버대학이란?";		String PageUrl11  = "/home/intro/summary.sub.action?gnb=11";
+String SnbNmae111 = "소개 및 특징";		String PageUrl111 = "/home/intro/summary.sub.action?gnb=111";
+String SnbNmae112 = "학기 및 수업 안내";	String PageUrl112 = "/home/intro/guidenew.sub.action?gnb=112";
+String SnbNmae114 = "연혁";	String PageUrl114 = "/home/intro/yearHistory.sub.action?gnb=114";
+// String SnbNmae113 = "시간제등록 안내";		String PageUrl113 = "/home/intro/guideTime.sub.action?gnb=113";
+//String SnbNmae113 = "시간제등록 안내";		String PageUrl113 = "/home/entr/enterStep_New.sub.action?gnb=211";
+//2.대학소개
+String SnbNmae12  = "대학 소개";			String PageUrl12  = "/home/intro/overall.sub.action?gnb=12";
+String SnbNmae121  = "대학원 소개";		String PageUrl121  = "/home/intro/overallGraduate.sub.action?gnb=121";
+//3.학위치득/국가자격증
+String SnbNmae13  = "학위취득/국가자격증";	String PageUrl13  = "/home/intro/certificate1.sub.action?gnb=13";
+String SnbNmae131 = "사회복지사";			String PageUrl131 = "/home/intro/certificate1.sub.action?gnb=131";
+String SnbNmae132 = "보육교사";			String PageUrl132 = "/home/intro/certificate2.sub.action?gnb=132";
+String SnbNmae133 = "평생교육사";			String PageUrl133 = "/home/intro/certificate3.sub.action?gnb=133";
+String SnbNmae134 = "건강가정사";			String PageUrl134 = "/home/intro/certificate4.sub.action?gnb=134";
+String SnbNmae135 = "과목리스트";			String PageUrl135 = "/home/intro/certificate_subjectInfo.sub.action?gnb=135";
+//4.진학가이드
+String SnbNmae14  = "진학가이드";			String PageUrl14  = "/home/intro/serviceGuide.sub.action?gnb=14";
+String SnbNmae141 = "나의 전형 미리보기";	String PageUrl141 = "/home/intro/serviceGuide.sub.action?gnb=141";
+String SnbNmae142 = "대학별 문의";			String PageUrl142 = "/home/intro/serviceQuestion.sub.action?gnb=142";
+//5.성공수기
+String SnbNmae15  = "성공수기";			String PageUrl15  = "/home/intro/successStory.sub.action?gnb=15";
+//6.교육부지원 사업
+String SnbNmae16  = "교육부지원사업";			String PageUrl16  = "/home/intro/characterization.sub.action?gnb=16";
+String SnbNmae161  = "소개 및 특징";			String PageUrl161  = "/home/intro/characterization.sub.action?gnb=161";
+//String SnbNmae162 = "사업 성과물";			String PageUrl162  = "/home/intro/characterizationResult.sub.action?gnb=162";
+
+
+if((Integer.toString(cate_int).substring(0,1).equals("1"))){	 
+	MainTitle="사이버대학 안내";		GnbOn1 = "on" ;	Category = "/home/intro/summary.sub.action?gnb=11"; PageClass = "sub_intro";
+}
+
+if(cate_int == 11) {SubTitle="사이버대학이란?";		TitleImg="title1";	SnbOn11="on"; SnbOn111="on"; PageUrl = "/home/intro/summary.sub.action?gnb=11";	}
+if(cate_int == 111){SubTitle="사이버대학이란?";		TitleImg="title1";	SnbOn11="on"; SnbOn111="on"; PageUrl = "/home/intro/summary.sub.action?gnb=111";	}
+if(cate_int == 112){SubTitle="사이버대학이란?";		TitleImg="title1";	SnbOn11="on"; SnbOn112="on"; PageUrl = "/home/intro/guidenew.sub.action?gnb=112";	}
+if(cate_int == 113){SubTitle="사이버대학이란?";		TitleImg="title1";	SnbOn11="on"; SnbOn113="on"; PageUrl = "/home/intro/guideTime.sub.action?gnb=113";	}
+if(cate_int == 114){SubTitle="사이버대학이란?";		TitleImg="title1";	SnbOn11="on"; SnbOn113="on"; PageUrl = "/home/intro/yearHistory.sub.action?gnb=114";	}
+if(cate_int == 12) {SubTitle="대학 소개";				TitleImg="title2";	SnbOn12="on";				 PageUrl = "/home/intro/overall.sub.action?gnb=12";	}
+if(cate_int == 121){SubTitle="대학원 소개";			TitleImg="title2";	SnbOn121="on";				 PageUrl = "/home/intro/overallGraduate.sub.action?gnb=121";	}
+if(cate_int == 13) {SubTitle="학위취득/국가자격증";	TitleImg="title3";	SnbOn13="on"; SnbOn131="on"; PageUrl = "/home/intro/certificate1.sub.action?gnb=131";	}
+if(cate_int == 131){SubTitle="학위취득/국가자격증";	TitleImg="title3";	SnbOn13="on"; SnbOn131="on"; PageUrl = "/home/intro/certificate1.sub.action?gnb=131";	}
+if(cate_int == 132){SubTitle="학위취득/국가자격증";	TitleImg="title3";	SnbOn13="on"; SnbOn132="on"; PageUrl = "/home/intro/certificate2.sub.action?gnb=132";	}
+if(cate_int == 133){SubTitle="학위취득/국가자격증";	TitleImg="title3";	SnbOn13="on"; SnbOn133="on"; PageUrl = "/home/intro/certificate3.sub.action?gnb=133";	}
+if(cate_int == 134){SubTitle="학위취득/국가자격증";	TitleImg="title3";	SnbOn13="on"; SnbOn134="on"; PageUrl = "/home/intro/certificate4.sub.action?gnb=134";	}
+if(cate_int == 135){SubTitle="학위취득/국가자격증";	TitleImg="title3";	SnbOn13="on"; SnbOn135="on"; PageUrl = "/home/intro/certificate_subjectInfo.sub.action?gnb=135";	}
+if(cate_int == 14) {SubTitle="진학가이드";			TitleImg="title4";	SnbOn14="on"; SnbOn141="on"; PageUrl = "/home/intro/serviceGuide.sub.action?gnb=14";     	}
+if(cate_int == 141){SubTitle="진학가이드";			TitleImg="title4";	SnbOn14="on"; SnbOn141="on"; PageUrl = "/home/intro/serviceGuide.sub.action?gnb=141";     	}
+if(cate_int == 142){SubTitle="진학가이드";			TitleImg="title4";	SnbOn14="on"; SnbOn142="on"; PageUrl = "/home/intro/serviceQuestion.sub.action?gnb=142";     	}
+if(cate_int == 15) {SubTitle="성공수기";				TitleImg="title5";	SnbOn15="on"; PageUrl = "/home/intro/successStory.sub.action?gnb=15";}
+if(cate_int == 16) {SubTitle="교육부지원사업";			TitleImg="title6";	SnbOn16="on"; PageUrl = "/home/intro/characterization.sub.action?gnb=16";}
+if(cate_int == 161) {SubTitle="교육부지원사업";			TitleImg="title6";	SnbOn16="on"; SnbOn161="on"; PageUrl = "/home/intro/characterization.sub.action?gnb=161";}
+//if(cate_int == 162) {SubTitle="교육부지원사업";			TitleImg="title6";	SnbOn16="on"; SnbOn162="on"; PageUrl = "/home/intro/characterizationResult.sub.action?gnb=162";}
+
+
+/************************************************************************************************************/
+//입학안내
+String GnbName2   = "입학안내";
+//1.입학 구분 및 절차
+String SnbNmae21  = "입학 구분 및 절차";				String PageUrl21  = "/home/entr/enterStep_New.sub.action?gnb=211";
+String SnbNmae211 = "신입학/편입학 안내";				String PageUrl211 = "/home/entr/enterStep_New.sub.action?gnb=211";
+String SnbNmae212 = "시간제 등록 안내";					String PageUrl212 = "/home/entr/enterStep_Time.sub.action?gnb=212";
+//2.모집요강
+String SnbNmae22  = "모집요강";					String PageUrl22  = "/home/entr/enterGuide.sub.action?gnb=22";
+//3.대학 정보현황
+String SnbNmae23  = "대학 정보 현황";				String PageUrl23  = "/home/entr/univStats.sub.action?gnb=23";
+
+if((Integer.toString(cate_int).substring(0,1).equals("2"))){		
+	MainTitle="입학안내";	GnbOn2 = "on" ;	Category = "/home/entr/enterStep_New.sub.action?gnb=21"; PageClass = "sub_entr";
+}
+if(cate_int == 21) {SubTitle="입학 구분 및 절차";		TitleImg="title1";	SnbOn21="on"; SnbOn211="on"; PageUrl = "/home/entr/enterStep_New.sub.action?gnb=211";		}
+if(cate_int == 211){SubTitle="입학 구분 및 절차";		TitleImg="title1";	SnbOn21="on"; SnbOn211="on"; PageUrl = "/home/entr/enterStep_New.sub.action?gnb=211";		}
+if(cate_int == 212){SubTitle="입학 구분 및 절차";		TitleImg="title1";	SnbOn21="on"; SnbOn212="on"; PageUrl = "/home/entr/enterStep_Time.sub.action?gnb=212";		}
+if(cate_int == 22) {SubTitle="모집요강";			TitleImg="title2";	SnbOn22="on";				 PageUrl = "/home/entr/enterGuide.sub.action?gnb=22";		}
+if(cate_int == 23) {SubTitle="대학 정보 현황";		TitleImg="title3";	SnbOn23="on";				 PageUrl = "/home/entr/univStats.sub.action?gnb=23";		}
+
+
+/************************************************************************************************************/
+//교과과정
+String GnbName3		= "교과과정";
+//1.교과과정보기
+String SnbNmae31  	= "교과과정보기";				String PageUrl31	= "/home/curri/areadept.sub.action?gnb=31";
+//2.학과정보
+String SnbNmae32  	= "학과정보";			String PageUrl32	= "/home/curri/navigationMajorArea.sub.action?gnb=32";
+String SnbNmae321  	= "학과 내비게이션";			String PageUrl321	= "/home/curri/navigationMajorArea.sub.action?gnb=321";
+String SnbNmae322  	= "학과 개설 현황";			String PageUrl322	= "/home/curri/major.sub.action?gnb=322";
+//3.전체학과검색
+String SnbNmae33  	= "전체학과검색";				String PageUrl33	= "/home/curri/searchMajor.sub.action?gnb=33";
+
+if((Integer.toString(cate_int).substring(0,1).equals("3"))){
+	MainTitle="교과과정";		GnbOn3 ="on" ;	Category = "/home/intro/summary.sub.action?gnb=31"; PageClass = "sub_curri";
+}
+if(cate_int == 31) {SubTitle="교과과정 보기";		TitleImg="title1";	SnbOn31="on"; PageUrl = "/home/curri/curriculum.sub.action?gnb=31";	}
+if(cate_int == 32) {SubTitle="학과정보";	TitleImg="title3";	SnbOn32="on"; PageUrl = "/home/curri/navigationMajorArea.sub.action?gnb=32"; SnbOn321="on";}
+if(cate_int == 321){SubTitle="학과 내비게이션";	TitleImg="title3";	SnbOn32="on"; PageUrl = "/home/curri/navigationMajorArea.sub.action?gnb=321"; SnbOn321="on";}
+if(cate_int == 322){SubTitle="학과 개설 현황";		TitleImg="title3";	SnbOn32="on"; PageUrl = "/home/curri/major.sub.action?gnb=322";	SnbOn322="on";}
+if(cate_int == 33) {SubTitle="전체학과검색";		TitleImg="title3";	SnbOn33="on"; PageUrl = "/home/curri/major.sub.action?gnb=33";	}
+
+
+/************************************************************************************************************/
+//강의검색
+String GnbName4   = "강의검색";
+//1.강의명 검색
+String SnbNmae41  = "강의명 검색";					String PageUrl41  = "/home/course/courseSearch.sub.action?gnb=41&pageType=1";
+//2.학과분야별 검색
+//String SnbNmae42  = "학과분야별 검색";					String PageUrl42  = "/home/course/searchByMajorArea.sub.action?gnb=42&pageType=2";
+String SnbNmae42  = "학과분야별 검색";					String PageUrl42  = "/home/course/courseSearch.sub.action?gnb=42&pageType=2";
+//3.학교별 검색
+//String SnbNmae43  = "학교별 검색";					String PageUrl43  = "/home/course/searchByUniv.sub.action?gnb=43&pageType=3";
+String SnbNmae43  = "학교별 검색";					String PageUrl43  = "/home/course/courseSearch.sub.action?gnb=43&pageType=3";
+//4.학교별 강의 맛보기
+String SnbNmae44  = "학교별 강의 맛보기";			String PageUrl44  = "/home/course/sampleCourse.sub.action?gnb=44";
+//5.공개강의
+String SnbNmae45  = "공개강의";					String PageUrl45  = "/home/course/publicCourse.sub.action?gnb=45";
+
+
+if((Integer.toString(cate_int).substring(0,1).equals("4"))){
+	MainTitle="강의검색";		GnbOn4 = "on" ;	Category = "/home/course/courseSearch.sub.action?gnb=41"; PageClass = "sub_course";
+}
+if(cate_int == 41) {SubTitle="강의명 검색";		TitleImg="title1";	SnbOn41="on";				 PageUrl = "/home/course/courseSearch.sub.action?gnb=41";		}
+if(cate_int == 42) {SubTitle="학과분야별 검색";	TitleImg="title2";	SnbOn42="on";				 PageUrl = "/home/course/searchByMajorArea.sub.action?gnb=42";	}
+if(cate_int == 43) {SubTitle="학교별 검색";		TitleImg="title3";	SnbOn43="on";				 PageUrl = "/home/course/searchByUniv.sub.action?gnb=43";		}
+if(cate_int == 44) {SubTitle="학교별 강의 맛보기";	TitleImg="title4";	SnbOn44="on";				 PageUrl = "/home/course/searchByUniv.sub.action?gnb=44";		}
+if(cate_int == 45) {SubTitle="공개강의";			TitleImg="title5";	SnbOn45="on";				 PageUrl = "/home/course/searchByUniv.sub.action?gnb=45";		}
+
+
+/************************************************************************************************************/
+//정보자료실
+String GnbName5   = "정보자료실";
+//연구/교육자료
+String SnbNmae51  = "연구/교육 자료";				String PageUrl51  = "/home/refer/board.sub.action?gnb=51&gID=153";
+//사이버대학 뉴스
+String SnbNmae52  = "사이버대학 뉴스";				String PageUrl52  = "/home/refer/boardNews.sub.action?gnb=52";
+//공지사항
+String SnbNmae53  = "공지사항";					String PageUrl53  = "/home/refer/board.sub.action?gnb=53&gID=154";
+//자주하는 질문 답변
+String SnbNmae54  = "자주 묻는 질문";			String PageUrl54  = "/home/refer/faq.sub.action?gnb=54&gID=156";
+//사이버대학 통계
+String SnbNmae55  = "사이버대학 통계";					String PageUrl55  = "/home/eudc/statistics.sub.action?gnb=55";
+String SnbNmae551  = "대학별 현황표";					String PageUrl551  = "/home/eudc/statistics.sub.action?gnb=55&gubunNm=univ";
+String SnbNmae552  = "입학정원 현황";					String PageUrl552  = "/home/eudc/statistics.sub.action?gnb=55&gubunNm=entrancePro";
+String SnbNmae553  = "입학정원 대비 등록률";			String PageUrl553  = "/home/eudc/statistics.sub.action?gnb=55&gubunNm=entrance";
+String SnbNmae554  = "성별 등록생 비율";				String PageUrl554  = "/home/eudc/statistics.sub.action?gnb=55&gubunNm=sex";
+String SnbNmae555  = "연령별 등록생 비율";				String PageUrl555  = "/home/eudc/statistics.sub.action?gnb=55&gubunNm=age";
+String SnbNmae556  = "직업별 등록생 비율";				String PageUrl556  = "/home/eudc/statistics.sub.action?gnb=55&gubunNm=job";
+String SnbNmae557  = "학년도별 원격대학 총 졸업생 수";	String PageUrl557  = "/home/eudc/statistics.sub.action?gnb=55&gubunNm=graduate";
+String SnbNmae558  = "재학생수 현황";					String PageUrl558  = "/home/eudc/statistics.sub.action?gnb=55&gubunNm=student";
+String SnbNmae559  = "시간제등록생 모집 결과";			String PageUrl559  = "/home/eudc/statistics.sub.action?gnb=55&gubunNm=time";
+String SnbNmae5510  = "입학금 및 수업료 현황";			String PageUrl5510  = "/home/eudc/statistics.sub.action?gnb=55&gubunNm=fee";
+
+if((Integer.toString(cate_int).substring(0,1).equals("5"))){
+	MainTitle="정보자료실";	GnbOn5 = "on" ;	Category = "/home/refer/board.sub.action?gnb=51";PageClass = "sub_refer";
+}
+if(cate_int == 51) {SubTitle="연구/교육 자료";					TitleImg="title1";	SnbOn51="on";				 PageUrl = "/home/refer/board.sub.action?gnb=51&gID=153";      	}
+if(cate_int == 52) {SubTitle="사이버대학뉴스";				TitleImg="title2";	SnbOn52="on";				 PageUrl = "/home/refer/boardNews.sub.action?gnb=52";     	}
+if(cate_int == 53) {SubTitle="대학행사 안내";					TitleImg="title3";	SnbOn53="on";				 PageUrl = "/home/refer/boardUniv.sub.action?gnb=53";     	}
+if(cate_int == 54) {SubTitle="원격대학 협의회 동정";			TitleImg="title5";	SnbOn54="on";				 PageUrl = "/home/refer/board.sub.action?gnb=55&gID=152";      	}
+if(cate_int == 55) {SubTitle="공지사항";						TitleImg="title5";	SnbOn55="on";				 PageUrl = "/home/refer/board.sub.action?gnb=55&gID=155";    	}
+if(cate_int == 55) {SubTitle="자주 묻는 질문";				TitleImg="title7";	SnbOn55="on";				 PageUrl = "/home/refer/faq.sub.action?gnb=54&gID=156";		}
+if(cate_int == 55) {SubTitle="교과부통계";					TitleImg="h3_edu_fac";	SnbOn55="on";			 PageUrl = "/home/eudc/statistics.sub.action?gnb=55";		}
+if(cate_int == 551){SubTitle="대학별 현황표";					TitleImg="h3_edu_fac";	SnbOn55="on";			 PageUrl = "/home/eudc/statistics.sub.action?gnb=55&gubunNm=univ";		}
+if(cate_int == 552){SubTitle="입학정원 현황";					TitleImg="h3_edu_fac";	SnbOn55="on";			 PageUrl = "/home/eudc/statistics.sub.action?gnb=55&gubunNm=entrancePro";		}
+if(cate_int == 553){SubTitle="입학정원 대비 등록률";			TitleImg="h3_edu_fac";	SnbOn55="on";			 PageUrl = "/home/eudc/statistics.sub.action?gnb=55&gubunNm=entrance";		}
+if(cate_int == 554){SubTitle="성별 등록생 비율";				TitleImg="h3_edu_fac";	SnbOn55="on";			 PageUrl = "/home/eudc/statistics.sub.action?gnb=55&gubunNm=sex";		}
+if(cate_int == 555){SubTitle="연령별 등록생 비율";				TitleImg="h3_edu_fac";	SnbOn55="on";			 PageUrl = "/home/eudc/statistics.sub.action?gnb=55&gubunNm=age";		}
+if(cate_int == 556){SubTitle="직업별 등록생 비율";				TitleImg="h3_edu_fac";	SnbOn55="on";			 PageUrl = "/home/eudc/statistics.sub.action?gnb=55&gubunNm=job";		}
+if(cate_int == 557){SubTitle="학년도별 원격대학 총 졸업생 수";	TitleImg="h3_edu_fac";	SnbOn55="on";			 PageUrl = "/home/eudc/statistics.sub.action?gnb=55&gubunNm=graduate";		}
+if(cate_int == 558){SubTitle="재학생수 현황";					TitleImg="h3_edu_fac";	SnbOn55="on";			 PageUrl = "/home/eudc/statistics.sub.action?gnb=55&gubunNm=student";		}
+if(cate_int == 559){SubTitle="시간제등록생 모집 결과";			TitleImg="h3_edu_fac";	SnbOn55="on";			 PageUrl = "/home/eudc/statistics.sub.action?gnb=55&gubunNm=time";		}
+if(cate_int ==5510){SubTitle="입학금 및 수업료 현황";			TitleImg="h3_edu_fac";	SnbOn55="on";			 PageUrl = "/home/eudc/statistics.sub.action?gnb=55&gubunNm=fee";		}
+
+/************************************************************************************************************/
+
+
+WebApplicationContext ctx = WebApplicationContextUtils.getWebApplicationContext(getServletContext());
+
+%>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en" class="main">
+<head>
+    <link rel="SHORTCUT ICON" href="http://www.cuinfo.net/favicon.ico" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+   	<meta name="Description" content="CUinfo 사이버 대학 종합정보 서비스" />
+    <meta name="Keywords" content="사이버 대학, 사이버대학 포털, 사이버 대학 종합정보 서비스" />
+    <meta name="Author" content="KERIS" />
+    <title><decorator:title default="사이버대학포탈" /></title>
+    
+    <link rel="stylesheet" type="text/css" href="/home/css/layout.css" />
+    <script type="text/javascript" language="javascript" src="/home/js/jquery-1.6.4.min.js"></script>
+    <script type="text/javascript" language="javascript" src="/home/js/jquery.fadeSliderToggle.js"></script>
+	<script type="text/javascript" language="javascript" src="/home/js/jquery.popupWindow.js"></script>
+	<script type="text/javascript" language="javascript" src="/home/js/jquery.form.js"></script>
+	<script type="text/javascript" language="javascript" src="/home/js/common.js"></script>
+	<script type="text/javascript" language="javascript" src="/home/js/layout.js"></script>    
+	<script type="text/javascript" language="javascript" src="/home/js/flashinside.js"></script>
+	<script type="text/javascript" language="javascript" src="/home/js/jquery.yakurotate.min.js"></script>
+	<script type="text/javascript" language="javascript" src="/home/js/main.js"></script>
+	<script type="text/javascript" language="javascript" src="/home/mediaplayer/jwplayer.js"></script>
+	    
+	<script language="vbscript" src="/home/js/urldecode.vbs"></script>
+	<script language="javascript" src="/home/js/cuinfo.net.js"></script>
+	
+	<script type="text/javascript" language="javascript">
+    
+    //onload 함수.
+    window.onload = function(){
+    	
+	   	$("#gnb li").find("div").hide();
+    	$("#gnb li[id^=gnb] a").each(forEachMouseover);
+    	//$("#gnb div[id^=gnb_sub]").each(forEachMouseleave);
+    	$("#gnb li[id^=gnb]").each(forEachMouseleave1);
+    	
+    	//플래쉬 호출
+    	//Flash2('flash','movie/main.swf','910','245','#ffffff','transparent');
+    	
+    };
+    
+    function forEachMouseleave1()
+    {
+    	$(this).mouseleave(function(){
+    		//$(this).find("div").slideUp("fast");
+    		$(this).find("div").hide();
+    	});
+    }
+    function forEachMouseleave()
+    {
+    	$(this).mouseleave(function(){
+    		//$(this).slideUp("fast");
+			//alert($(this).attr("id"));    		
+    		
+    		$(this).hide();
+    	});
+    }
+    
+    function forEachMouseover()
+    {
+    	$(this).mouseenter(function(){
+    		$(this).parent().find("div").slideDown("normal",function(){
+    			//$("#gnb div:not(:animated)").slideUp("fast");
+    			$("#gnb div:not(:animated)").hide();
+    		});
+    	});
+    }
+      
+    //검색
+	function headerSearch(page)
+	{
+		var day = new Date(); 
+		var y = day.getYear(); 
+		if(y<2000)y = y+1900; 
+		var mon = day.getMonth() + 1; 
+		var date = day.getDate();
+		
+		if(mon < 10)
+			mon = "0" + mon;
+		if(date < 10)
+			date = "0" + date;
+			
+		
+		var today = y + "" + (mon) + "" +date;
+    	var headerText = $("#headerText").val();
+
+		$("#currPage2").val(page);
+		
+    	//$("body").addClass("main");
+    	var headerText = $("#headerText").val();
+    	
+    	if(headerText == "")
+		{
+    		alert("검색어를 입력 해주세요");
+    		return;
+		}
+    	
+    	//키워드 클릭 수 입력
+    	
+    	
+   		jQuery.post('/home/search/keyword_save.json', 
+   				{keyword:headerText,regDT:today}, 
+   				function(data) {
+   					
+   		});
+    	/*
+   		jQuery.post('/home/search/combineSearch.ajax.action', 
+   				$("#headerForm").formSerialize(), 
+   				function(data) {
+           			$("#container").html(data);
+           			//searchGubn 값에 따라 show,hide
+           			var searchGubn = $("#searchGubn").val();
+           			$("#searchText").text($("#headerText").val());
+           			tabClick(searchGubn);
+           			$("#searchGubn2").val(searchGubn);
+           			document.location.href = "#header";
+           			
+           			
+           			var sort = $("#sort").val();
+           			if(sort == "regDate" || sort == ""){
+           		    	$(".f_right a:even").attr("class","on");
+           		    	$(".f_right a:odd").attr("class","");
+           	    	}
+           			else{
+           		    	$(".f_right a:even").attr("class","");
+           		    	$(".f_right a:odd").attr("class","on");
+           	    	}
+   		});
+   		*/
+   		//onsubmit 속성을 비워주어야 submit이 된다.
+		$("#headerForm").attr("method","post");
+		$("#headerForm").attr("onsubmit","");
+		$("#headerForm").attr("action","/home/search/combineSearch.search.action");
+		$("#headerForm").submit();
+	}
+    
+    function tabClick(no)
+    {
+    	var searchGubn2 = $("#searchGubn2").val();
+    	
+    	//탭변경후 보던 페이지와 다를경우 검색 페이징을 숨기고 검색을 실행한다.
+    	if(no != searchGubn2){
+    		$("#pg2").hide();
+    		headerSearch(1);
+    	}
+    	
+    	$("div[id^=showDiv]").hide();
+    	$("#searchGubnTab li").find("a").removeClass();
+    	$("#searchGubn option:eq("+no+")").attr("selected","selected");
+		switch(parseInt(no))
+		{
+			case 0:
+				//$("#tCnt").text(parseInt($("#searchListCnt1").text()) + parseInt($("#searchListCnt2").text()) + parseInt($("#searchListCnt3").text()));
+				$("div[id^=showDiv]").show();
+				$("#pg2").hide();
+				$("#searchGubnTab li:nth-child(1)").find("a").addClass("on");
+				break;
+			case 1:
+				$("#showDiv1").show();
+				$("#tCnt").text($("#searchListCnt1").text());
+				$("#searchGubnTab li:nth-child(2)").find("a").addClass("on");
+				break;
+			case 2:
+				$("#showDiv2").show();
+				$("#tCnt").text($("#searchListCnt2").text());
+				$("#searchGubnTab li:nth-child(3)").find("a").addClass("on");
+				break;
+			case 3:
+				$("#showDiv3").show();
+				$("#tCnt").text($("#searchListCnt3").text());
+				$("#searchGubnTab li:nth-child(4)").find("a").addClass("on");
+				break;
+		}
+    	
+    }
+
+    function selectSearchGubn(){
+		$("#searchGubn").toggle();
+    }
+    
+    function selectSearchGubnItem(no){
+    	$("#searchGubn").toggle();
+		if(no == 0)
+			$(".sel_title").text("통합검색");
+		else if(no == 1)
+			$(".sel_title").text("강의검색");
+		else if(no == 2)
+			$(".sel_title").text("게시물검색");
+		else if(no == 3)
+			$(".sel_title").text("웹문서");
+		
+		$("#searchGubn2").val(no);
+    }
+    
+    function viewDetail1(courseId,courseIdentifier, title)
+	{
+    	
+    	var headerText = $("#headerText").val();
+    	
+    	//alert(headerText + ":" + title);
+    	
+    	document.location.href = '/home/course/viewDetail_header.sub.action?gnb=31&courseId='+courseId+'&courseIdentifier='+courseIdentifier+'&gnb=31&text='+escape(encodeURIComponent(headerText))+'&hideText='+escape(encodeURIComponent(title));
+    	
+    	
+	}
+
+    function viewDetail2(gubn,id)
+	{
+    	
+    	var headerText = $("#headerText").val();
+    	
+    	switch(parseInt(gubn))
+    	{
+	    	case 1:
+	    		document.location.href = '/home/refer/boardUniv_view_header.sub.action?boardID='+id+'&gnb=42&searchText='+escape(encodeURIComponent(headerText));
+	    		break;
+	    	case 2:
+	    		document.location.href = '/home/refer/board_view_header.sub.action?boardID='+id+'&gnb=45&searchText='+escape(encodeURIComponent(headerText))+'&gID=154';
+	    		break;
+	    	case 3:
+	    		document.location.href = '/home/refer/faq_list_header.sub.action?faqContent='+escape(encodeURIComponent(headerText))+'&gnb=47&gID=156&selectRadio1=3';
+	    		break;
+    	}
+    	
+	}
+	
+    function viewMore(no)
+    {
+    	tabClick(no);
+    	$("#searchGubn").val(no);
+    	headerSearch(1);
+    }
+    
+	function setRecordCnt2(totalCnt, currPage, totalPage, showCnt)
+	{
+		$("#cPage").text(currPage);
+		$("#tPage").text(totalPage);
+		setPaging2($("#pg2"), totalCnt, showCnt, currPage);
+	}
+	
+	function showAllMenu()
+    {
+    	if($("#sitemap").css("display") == "none")
+    		$("#sitemap").css("display","block");
+    	else
+    		$("#sitemap").css("display","none");
+    }
+	
+	function clickKeyword(keyword)
+	{
+		
+		var day = new Date(); 
+		var y = day.getYear(); 
+		if(y<2000)y = y+1900; 
+		var mon = day.getMonth(); 
+		var date = day.getDate(); 
+		var today = y + "" + (mon+1) + "" +date;
+    	var headerText = $("#headerText").val();
+		
+		//키워드 클릭 수 입력
+   		jQuery.post('/mgr/stats/keyword_save.ajax.action', 
+   				{keyword:headerText,regDT:today}, 
+   				function(data) {
+   		});
+		//alert(keyword);
+		$("#headerText").val(keyword);
+		headerSearch(1);
+	}
+	
+	function viewMoreCourse()
+	{
+		document.location.href = "/home/course/recommendByUniv.sub.action?gnb=35";
+	}
+    function bestCourseClick( title )
+    {
+    	$("#headerText").val(title);
+    	headerSearch(1);
+    }
+    
+    function chgSort(str)
+    {
+    	var sort = $("#sort").val(); 
+    	
+    	if(sort == str)
+    		chgOrder();
+    	else
+    		$("#order").val("1");
+    	
+    	var sort = $("#sort").val(); 
+    	$("#sort").val(str);
+    	
+    	if(sort != str)
+    		headerSearch(1);
+    }
+    
+    function chgOrder()
+    {
+    	var order = $("#order").val();
+    	
+    	if(order == "0")
+    		$("#order").val("1");
+    	if(order == "1")
+    		$("#order").val("0");
+    	headerSearch(1);
+    }
+    
+    //about cuinfo 팝업
+    function popAboutCuinfo(){
+		var aboutCuinfo = window.open("/home/aboutCuinfo.html","","width=746,height=615,toolbar=no,location=no");
+		
+		if(aboutCuinfo)
+			aboutCuinfo.focus();
+    }
+    
+    </script>
+    
+    <decorator:head />
+</head>
+
+<body id="newLayout" class="sub_intro">
+<div id="header"><!-- Header Start -->
+	<h1><a href="/home/index.main.action">CUinfo</a></h1>
+
+	<div id="header_link"><!-- top_link Start -->
+	<ul class="header_link util_bg">
+		<!--			<li class="link1"><a href="#"></a></li>-->
+		<li class="util1"><a href="javascript:popAboutCuinfo();">About CUinfo</a></li>
+		<li class="util6"><a class="" href="javascript:showAllMenu();">전체메뉴</a></li><!--*20130125 추가-->
+		<li class="util7"><a class="" href="javascript:bookmark();">즐겨찾기</a></li><!--20130125 추가-->
+<!--		<li class="util2"><a href="#">SITEMAP</a></li>-->
+		<li class="util3"><a href="http://www.kocw.net/" target="_new" onClick="dcsMultiTrack('DCS.dcssip','www.kocw.net','DCS.dcsuri','/','DCS.qry','','WT.ti','Offsite Link - kocw','WT.sp','kocw')">KOCW</a></li>
+		<li class="util4"><a href="http://www.riss.kr/" target="_new" onClick="dcsMultiTrack('DCS.dcssip','www.riss.kr','DCS.dcsuri','/','DCS.qry','','WT.ti','Offsite Link - riss','WT.sp','riss')">RISS</a></li>
+	</ul>
+	</div>
+	<!-- top_link End --> <!-- 검색 -->
+	<form id="headerForm" name="headerForm" action="#" onsubmit="try{headerSearch();}catch(e){alert(e);}return false;"><!-- box_type01 Start -->
+	
+	<input type="hidden" id="showCnt2" name="showCnt2" value="10" /> 
+	<input type="hidden" id="currPage2" name="currPage2" value="1" /> 
+	<input type="hidden" id="tabNo" name="tabNo" value="1" /> 
+	<input type="hidden" id="sort" name="sort" value="" /> 
+	<input type="hidden" id="order" name="order" value="0" /> 
+	<input type="hidden" id="searchGubn2" name="searchGubn" value="0" />
+	
+	<fieldset class="top_search">
+		<div class="search_box">
+			<a href="javascript:selectSearchGubn();"><span class="sel_title" title="검색 선택">통합검색</span></a>
+			<ul class="select_li" id="searchGubn">
+				<li onclick="javascript:selectSearchGubnItem(0);">통합검색</li><a></a>
+				<li onclick="javascript:selectSearchGubnItem(1);" value="1">강의검색</li>
+				<li onclick="javascript:selectSearchGubnItem(2);" value="2">게시물검색</li>
+				<li onclick="javascript:selectSearchGubnItem(3);" value="3">웹문서</li>
+			</ul>
+			<input type="text" id="headerText" name="headerText" value="" size="20" title="검색어입력"/><a class="btn" href="javascript:headerSearch();">검색</a>
+		</div>
+	</fieldset>
+	
+	</form>
+	<!-- 검색 -->
+
+
+<!-- 탑 롤업메뉴 -->
+<div id="gnb">
+<ul>
+	<!-- banner_tab01 Start -->
+	<li id="gnb1" class="<%=GnbOn1 %>">
+		<a href="<%=PageUrl11%>"><%=GnbName1%></a>
+		<div id="gnb_sub1" style="display: none;">
+			<a href="<%=PageUrl11%>"><%=SnbNmae11%></a> 
+			<a href="<%=PageUrl12%>"><%=SnbNmae12%></a>
+			<a href="<%=PageUrl121%>"><%=SnbNmae121%></a>
+			<a href="<%=PageUrl13%>"><%=SnbNmae13%></a> 
+			<a href="<%=PageUrl14%>"><%=SnbNmae14%></a>
+			<a href="<%=PageUrl15%>"><%=SnbNmae15%></a>
+			<a href="<%=PageUrl16%>"><%=SnbNmae16%></a>
+		</div>
+	</li>
+	
+	<li id="gnb2" class="<%=GnbOn2 %>">
+		<a href="<%=PageUrl21%>"><%=GnbName2%></a>
+		<div id="gnb_sub2" style="display: none;">
+			<a href="<%=PageUrl21%>"><%=SnbNmae21%></a> 
+			<a href="<%=PageUrl22%>"><%=SnbNmae22%></a>
+			<a href="<%=PageUrl23%>"><%=SnbNmae23%></a>
+		</div>
+	</li>
+	
+	<li id="gnb3" class="<%=GnbOn3 %>">
+		<a href="<%=PageUrl31%>"><%=GnbName3%></a>
+		<div id="gnb_sub3">
+			<a class="<%=SnbOn31%>" href="<%=PageUrl31%>"><%=SnbNmae31%></a>
+			<a class="<%=SnbOn32%>" href="<%=PageUrl32%>"><%=SnbNmae32%></a>
+			<a class="<%=SnbOn33%>" href="<%=PageUrl33%>"><%=SnbNmae33%></a>
+		</div>
+	</li>
+	
+	<li id="gnb4" class="<%=GnbOn4 %>">
+		<a href="<%=PageUrl41%>"><%=GnbName4%></a>
+		<div id="gnb_sub4" style="display: none;">
+			<a href="<%=PageUrl41%>"><%=SnbNmae41%></a> 
+			<a href="<%=PageUrl42%>"><%=SnbNmae42%></a>
+			<a href="<%=PageUrl43%>"><%=SnbNmae43%></a>
+			<a href="<%=PageUrl44%>"><%=SnbNmae44%></a>
+			<a href="<%=PageUrl45%>"><%=SnbNmae45%></a>
+		</div>
+	</li>
+	
+	<li id="gnb5" class="<%=GnbOn5 %>">
+		<a href="<%=PageUrl51%>"><%=GnbName5%></a>
+		<div id="gnb_sub5" style="display: none;">
+			<a href="<%=PageUrl51%>"><%=SnbNmae51%></a> 
+			<a href="<%=PageUrl52%>"><%=SnbNmae52%></a>
+			<a href="<%=PageUrl53%>"><%=SnbNmae53%></a> 
+			<a href="<%=PageUrl54%>"><%=SnbNmae54%></a>
+			<a href="<%=PageUrl55%>"><%=SnbNmae55%></a> 
+		</div>
+	</li>
+	
+</ul>
+<!-- <a href="javascript:showAllMenu();" class="btn_all_menu"><img src="/home/images/new/btn_all_menu.gif" alt="전체메뉴" /></a> -->
+<!-- <a href="javascript:bookmark();" class="btn_bookmark"><img src="/home/images/new/btn_bookmark.gif" alt="즐겨찾기" /></a> -->
+<!-- banner_tab01 End --></div>
+
+<div id="sitemap" style="display:none;">
+	<a href="javascript:showAllMenu();" class="_sitemap_close"><img alt="닫기" src="/home/images/new/btn_close.png" /></a>
+	<ul><!-- sitemap Start -->
+		<li id="sitemap1" class="<%=GnbOn1%>">
+			<span><%=GnbName1%></span>
+			<div id="gnb_sub1">
+				<a class="<%=SnbOn11%>" href="<%=PageUrl11%>"><%=SnbNmae11%></a>
+				<div class="sitemap_sub">
+					<a href="<%=PageUrl111 %>"><%=SnbNmae111%></a>
+					<a href="<%=PageUrl112 %>"><%=SnbNmae112%></a>
+					<a href="<%=PageUrl114 %>"><%=SnbNmae114%></a>  
+<%-- 					<a href="<%=PageUrl113 %>"><%=SnbNmae113%></a> --%>
+				</div>
+				<a class="<%=SnbOn12%>" href="<%=PageUrl12%>"><%=SnbNmae12%></a> 
+				<a class="<%=SnbOn121%>" href="<%=PageUrl121%>"><%=SnbNmae121%></a> 
+				<a class="<%=SnbOn13%>" href="<%=PageUrl13%>"><%=SnbNmae13%></a>
+				<div class="sitemap_sub">
+					<a href="<%=PageUrl131 %>"><%=SnbNmae131%></a> 
+					<a href="<%=PageUrl132 %>"><%=SnbNmae132%></a> 
+					<a href="<%=PageUrl133 %>"><%=SnbNmae133%></a> 
+					<%-- <a href="<%=PageUrl134 %>"><%=SnbNmae134%></a>--%>
+				</div>
+				<a class="<%=SnbOn14%>" href="<%=PageUrl14%>"><%=SnbNmae14%></a> 
+				<div class="sitemap_sub">
+					<a href="<%=PageUrl141 %>"><%=SnbNmae141%></a> 
+					<a href="<%=PageUrl142 %>"><%=SnbNmae142%></a>
+				</div>
+				<a class="<%=SnbOn15%>" href="<%=PageUrl15%>"><%=SnbNmae15%></a>
+				<a class="<%=SnbOn16%>" href="<%=PageUrl16%>"><%=SnbNmae16%></a>
+					<div class="sitemap_sub">
+						<a href="<%=PageUrl161 %>"><%=SnbNmae161%></a> 
+						<%-- <a href="<%=PageUrl162 %>"><%=SnbNmae162%></a>--%>
+					</div>
+			</div>
+		</li>
+		<li id="sitemap2" class="<%=GnbOn2%>">
+			<span><%=GnbName2%></span>
+			<div id="gnb_sub2">
+				<a class="<%=SnbOn21%>" href="<%=PageUrl21%>"><%=SnbNmae21%></a>
+				<div class="sitemap_sub">
+					<a href="<%=PageUrl211 %>"><%=SnbNmae211%></a> 
+					<a href="<%=PageUrl212 %>"><%=SnbNmae212%></a>
+				</div>
+				<a class="<%=SnbOn22%>" href="<%=PageUrl22%>"><%=SnbNmae22%></a> 
+				<a class="<%=SnbOn23%>" href="<%=PageUrl23%>"><%=SnbNmae23%></a>
+			</div>
+		</li>
+		<li id="sitemap3" class="<%=GnbOn3%>">
+			<span><%=GnbName3%></span>
+			<div id="gnb_sub3">
+				<a class="<%=SnbOn31%>" href="<%=PageUrl31%>"><%=SnbNmae31%></a> 
+				<a class="<%=SnbOn32%>" href="<%=PageUrl32%>"><%=SnbNmae32%></a>
+				<div class="sitemap_sub">
+					<a class="<%=SnbOn321%>" href="<%=PageUrl321%>"><%=SnbNmae321%></a>
+					<a class="<%=SnbOn322%>" href="<%=PageUrl322%>"><%=SnbNmae322%></a>
+				</div>
+				<a class="<%=SnbOn33%>" href="<%=PageUrl33%>"><%=SnbNmae33%></a>
+			</div>
+		</li>
+		<li id="sitemap4" class="<%=GnbOn4%>">
+			<span><%=GnbName4%></span>
+			<div id="gnb_sub3">
+				<a class="<%=SnbOn41%>" href="<%=PageUrl41%>"><%=SnbNmae41%></a>
+				<a class="<%=SnbOn42%>" href="<%=PageUrl42%>"><%=SnbNmae42%></a>
+				<a class="<%=SnbOn43%>" href="<%=PageUrl43%>"><%=SnbNmae43%></a>
+				<a class="<%=SnbOn44%>" href="<%=PageUrl44%>"><%=SnbNmae44%></a>
+				<a class="<%=SnbOn45%>" href="<%=PageUrl45%>"><%=SnbNmae45%></a>
+			</div>
+		</li>
+		<li id="sitemap5" class="<%=GnbOn5%>">
+			<span><%=GnbName5%></span>
+			<div id="gnb_sub4">
+				<a class="<%=SnbOn51%>" href="<%=PageUrl51%>"><%=SnbNmae51%></a>
+				<a class="<%=SnbOn52%>" href="<%=PageUrl52%>"><%=SnbNmae52%></a>
+				<a class="<%=SnbOn53%>" href="<%=PageUrl53%>"><%=SnbNmae53%></a>
+				<a class="<%=SnbOn54%>" href="<%=PageUrl54%>"><%=SnbNmae54%></a>
+				<a class="<%=SnbOn55%>" href="<%=PageUrl55%>"><%=SnbNmae55%></a>
+				<div class="sitemap_sub">
+					<a href="<%=PageUrl551%>"><%=SnbNmae551%></a>
+					<a href="<%=PageUrl552%>"><%=SnbNmae552%></a>
+					<a href="<%=PageUrl553%>"><%=SnbNmae553%></a>
+					<a href="<%=PageUrl554%>"><%=SnbNmae554%></a>
+					<a href="<%=PageUrl555%>"><%=SnbNmae555%></a>
+					<a href="<%=PageUrl556%>"><%=SnbNmae556%></a>
+					<a href="<%=PageUrl557%>">학년도별 원격대학 총<br />졸업생수</a>
+					<a href="<%=PageUrl558%>"><%=SnbNmae558%></a>
+					<a href="<%=PageUrl559%>"><%=SnbNmae559%></a>
+					<a href="<%=PageUrl5510%>"><%=SnbNmae5510%></a>
+				</div>
+			</div>
+		</li>
+	</ul><!-- sitemap End -->
+</div>
+	
+</div><!-- Header End -->
+<decorator:body />
+
+ <%@ include file="/home/include/footer_main.jsp" %>  
+</body>
+</html>

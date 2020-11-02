@@ -1,0 +1,111 @@
+<head>
+	<title>강의정보수정</title>
+	<script type="text/javascript" language="javascript">
+	function goCourse()
+	{
+		document.location.href='metaCollection_read.pop.action?courseId=$!lecture.courseId';
+	}
+	function mod()
+	{
+		document.location.href='metaCollection_lecturemodify.pop.action?courseId=$!lecture.courseId&lectureId=$!lecture.lectureId';
+	}
+	</script>
+</head>
+<body>
+<div style="width:90%;padding-left:30px;padding-top:30px;">
+<form id="writeForm" action="#" onsubmit="try{save();}catch(e){alert(e);}return false;">
+<input type="hidden" id="courseId" name="courseId" value="$!lecture.courseId"/>
+<input type="hidden" id="lectureId" name="lectureId" value="$!lecture.lectureId"/>
+<h2>강좌정보</h2>	
+<table cellspacing="0" cellpadding="0" class="form_type01" summary="강좌정보관리"><!-- list_type01 Start -->
+	<caption>강좌정보관리</caption>
+	<colgroup>
+		<col width="15%" />
+		<col width="35%" />
+		<col width="15%" />
+		<col width="35%" />
+	</colgroup>
+	<tbody>
+		<tr>
+			<th scope="row">제목</th>
+			<td colspan="3">$!course.title</td>
+		</tr>
+		<tr>
+			<th scope="row">개설자</th>
+			<td colspan="3">$!course.manager</td>
+		</tr>
+	</tbody>
+</table><!-- list_type01 End -->
+
+<h2>강의정보</h2>	
+<table cellspacing="0" cellpadding="0" class="form_type01" summary="강의정보관리"><!-- list_type01 Start -->
+	<caption>강의정보관리</caption>
+	<colgroup>
+		<col width="15%" />
+		<col width="35%" />
+		<col width="15%" />
+		<col width="35%" />
+	</colgroup>
+	<tbody>
+		<tr>
+			<th scope="row">차시-번호</th>
+			<td colspan="3">$!lecture.groups - $!lecture.orders</td>
+		</tr>
+		<tr>
+			<th scope="row">제목</th>
+			<td colspan="3">$!lecture.title</td>
+		</tr>
+		<tr>
+			<th scope="row">교수자</th>
+			<td colspan="3">$!lecture.master</td>
+		</tr>
+		<tr>
+			<th scope="row">설명</th>
+			<td colspan="3">$!lecture.description</td>
+		</tr>
+		<tr>
+			<th scope="row">주제어</th>
+			<td colspan="3">$!lecture.keyword</td>
+		</tr>
+		<tr>
+			<th scope="row">강의위치</th>
+			<td colspan="3">$!lecture.movLocation</td>
+		</tr>
+		<tr>
+			<th scope="row">관련자료</th>
+			<td colspan="3">
+				#foreach($item in $!lecture.getLecFileList())
+				#if($velocityCount > 1)<br/>#end
+				$!item.location
+				#if($!item.title != '')
+				<br/>
+				$!item.title
+				#end
+				#end
+			</td>
+		</tr>
+		<tr>
+			<th scope="row">등록일시</th>
+			<td colspan="3">
+				 $!{lecture.register}($datetimeformatter.print($!lecture.regDate, $!locale))
+			</td>
+		</tr>
+		<tr>
+			<th scope="row">수정일시</th>
+			<td colspan="3">
+				$!{lecture.modifier}($datetimeformatter.print($!lecture.modDate, $!locale))
+			</td>
+		</tr>
+	</tbody>
+</table><!-- list_type01 End -->
+
+
+<div class="btn_box_type03" style="text-align:left;">
+	<a href="javascript:mod();" id="modifyBtn"><img src="/mgr/images/btn/btn_lecturemodify.gif" /></a>
+	<a href="javascript:goCourse();"><img src="/mgr/images/btn/btn_previous.gif" /></a>
+</div>
+
+</form>
+</div>
+</body>
+</html>

@@ -1,0 +1,106 @@
+<head>
+	<title>학위취득/국가자격증</title>
+	<script type="text/javascript">
+		function viewCourseList(text) {
+			##필요 변수 셋팅
+			$("#text").val(text);
+			
+			##onsubmit 속성을 비워주어야 submit이 된다.
+			$("#form").attr("method","post");
+			$("#form").attr("onsubmit","");
+			$("#form").attr("action","/home/intro/certificate_subjectInfo.sub.action?gnb=$gnb");
+			$("#form").submit();
+		}
+	</script>
+</head>
+<body>
+	
+<form method="post" id="form" name="form" action="#">
+	<input type="hidden" id="text" 		name="text" 	value="">
+	<input type="hidden" id="showCnt" 	name="showCnt" 	value="10"/>
+	<input type="hidden" id="currPage" 	name="currPage"	value="1"/>
+</form>
+
+<p class="location">
+	<a href="/home/index.main.action">홈</a> <span>></span> <a href="/home/intro/summary.sub.action?gnb=11">사이버대학 안내</a> <span>></span> <a href="/home/intro/certificate1.sub.action?gnb=13">학위취득/국가자격증</a> 
+</p>
+<h3>
+	<img src="/home/images/intro/title5_04.gif" alt="사회복지학 개론" />
+</h3>
+
+<div class="feature t_center"><img src="/home/images/intro/intro_title4.gif" alt="건강가정사란?건강가정기본법'에 규정된 건강가정사업을 수행하기 위해 관련 분야에 대한 학식과 경험을 가진 전문가입니다.(건강가정기본법 제 35조 제2,3항)" /></div>
+<dl class="feature">
+  <dt><img src="/home/images/intro/certificate3_stext1.gif" alt="건강가정사 역할" /></dt>
+    <!--<dd>건강가정사는 '건강가정기본법'에 규정된 건강가정사업을 수행하기 위하여 관련분야에 대한 학식과 경험을 가진 전문가로서 대학 또는 이와 동등 이상의 학교에서 사회복지학·가정학·여성학 등 관련교과목을 이수하고 졸업한 자에게 주어진다./<br />(건강가정기본법 제35조 제2, 3항).</dd>
+    <dd>교육과학기술부가 실사하는 평생교육사의 직무는 평생교육프로그램을 기획, 개발, 조직, 운영, 평가하고 성인들에 대한 학습 상담과 생애개발을 지원하며 학습 환경 및 조직에 대한 교육적 자문을 수행하는 것이다. 관련법 (평생교육법 제17 조)</dd>
+-->
+<dd>건강가정사는 전국 시도 및 시/군/구 건강가정지원센터에서 다음과 같은 업무를 담당한다.<br />(건강가정기본법 시행령 제15조)<br/>
+    <span>- 가정문제의 예방, 상담 및 개선</span><br/>
+    <span>- 건강가정의 유지를 위한 프로그램의 개발</span><br/>
+    <span>- 건강가정 교육(민주적이고 양성평등한 가족관계 교육을 포함)</span><br/>
+    <span>- 가정생활문화운동의 전개</span><br/>
+    <span>- 가정 관련 정보 및 자료제공</span><br/>
+    <span>- 가정에 대한 방문 및 실태 파악</span><br/>
+    <span>- 아동보호전문기관 등 지역사회자원에의 연계</span><br/>
+    <span>- 그 밖에 건강가정사업과 관련하여 보건복지가족부 장관이 정하는 활동 </span>
+  </dd>
+</dl>
+<dl class="feature">
+  <dt><img src="/home/images/intro/certificate_stext2.gif"  alt="자격기준 "/></dt>
+  <dd>대학 또는 이와 동등 이상의 학교에서 사회복지학·가정학·여성학 등 관련교과목을 이수하고 졸업한 자</dd>
+    ##<dd>건강가정사 자격증은 발급되지 않음</dd>
+</dl>
+<dl class="feature">
+   <dt><img src="/home/images/intro/certificate3_stext2.gif"  alt="건강가정사 교과과정"/></dt>
+  <dd class="no dot_b">(과목 클릭 시 강의 검색으로 이동됩니다.)</dd>     
+  <dd class="no univ_table1 m_l20">
+      <table cellspacing="0" cellpadding="0" summary="과정관리"><!-- table_type1 st01 Start -->
+		<caption>과정관리</caption>
+		<colgroup>
+			<col width="10%" />
+            <col width="15%" />
+            <col width="*" />
+		
+    </colgroup>
+		<thead>
+			<tr>
+				<th scope="col" colspan="2">구분</th>
+				<th scope="col">이수과목</th>
+			</tr>
+		</thead>
+		<tbody>
+            <tr>
+				<th  colspan="2">핵심과목<br/>(5과목 이상)</th>
+                <td><a href="javascript:viewCourseList('건강가정론')">건강가정론</a>, <a href="javascript:viewCourseList('(건강)가정(족)정책론')">(건강)가정(족)정책론</a>, <a href="javascript:viewCourseList('가족상담(및 치료)')">가족상담(및 치료)</a>, <a href="javascript:viewCourseList('가족과 젠더')">가족과 젠더</a> <a href="javascript:viewCourseList('가족복지론')">가족복지론</a>, <br/><a href="javascript:viewCourseList('가족(정)과 문화')">가족(정)과 문화</a>, <a href="javascript:viewCourseList('건강가정현장실습')">건강가정현장실습</a>, <a href="javascript:viewCourseList('가정(족)생활교육')">가정(족)생활교육</a>, <a href="javascript:viewCourseList('여성과(현대)사회')">여성과(현대)사회</a>,<br/><a href="javascript:viewCourseList('비영리기관 운영관리')">비영리기관 운영관리</a> </td>
+                </tr>
+            <tr>
+				<th rowspan="2">관련과목<br/>(7과목<br/>이상)</th>
+                <th>기초이론<br />(4과목 이상)</th>
+                <td><a href="javascript:viewCourseList('가족학')">가족학</a>, <a href="javascript:viewCourseList('가족관계(학)')">가족관계(학)</a>, <a href="javascript:viewCourseList('가족법')">가족법</a>,<a href="javascript:viewCourseList('아동학')">아동학</a>, <a href="javascript:viewCourseList('보육학')">보육학</a>, <a href="javascript:viewCourseList('아동(청소년)복지론')">아동(청소년)복지론</a>, <a href="javascript:viewCourseList('노년학')">노년학</a>, <a href="javascript:viewCourseList('노인복지론')">노인복지론</a>,<br/> <a href="javascript:viewCourseList('인간발달')">인간발달</a>, <a href="javascript:viewCourseList('인간행동과 사회환경')">인간행동과 사회환경</a>, <a href="javascript:viewCourseList('가족(정)(자원)관리')">가족(정)(자원)관리</a>, <a href="javascript:viewCourseList('가계경제')">가계경제</a>, <a href="javascript:viewCourseList('가사노동론')">가사노동론</a>, <a href="javascript:viewCourseList('여가관리론')">여가관리론</a>,<br/> <a href="javascript:viewCourseList('생애주기 영양학')">생애주기 영양학</a>, <a href="javascript:viewCourseList('여성복지론')">여성복지론</a>, <a href="javascript:viewCourseList('주거학')">주거학</a>, <a href="javascript:viewCourseList('여성주의이론')">여성주의이론</a>, <a href="javascript:viewCourseList('정신건강(정신보건사회복지)론')">정신건강(정신보건사회복지)론</a>,<br/> <a href="javascript:viewCourseList('장애인복지론')">장애인복지론</a>, <a href="javascript:viewCourseList('상담이론')">상담이론</a>, <a href="javascript:viewCourseList('일과 가족 가정생활복지론')">일과 가족 가정생활복지론</a>, <a href="javascript:viewCourseList('자원봉사론')">자원봉사론</a>, <a href="javascript:viewCourseList('사회복지(개)론')">사회복지(개)론</a>,<br/> <a href="javascript:viewCourseList('성과사랑')">성과사랑</a>, <a href="javascript:viewCourseList('법여성학')">법여성학</a>, <a href="javascript:viewCourseList('여성과 문화')">여성과 문화</a></td>
+               
+            </tr> 
+             <tr>
+			    <th>상담교육 등 실제(3과목 이상) </th>
+                <td><a href="javascript:viewCourseList('생활설계상담')">생활설계상담</a>, <a href="javascript:viewCourseList('아동상담')">아동상담</a>, <a href="javascript:viewCourseList('영양상담 및 교육')">영양상담 및 교육</a>, <a href="javascript:viewCourseList('소비자상담')">소비자상담</a>, <a href="javascript:viewCourseList('주거상담')">주거상담</a>, <a href="javascript:viewCourseList('부모교육')">부모교육</a>,<a href="javascript:viewCourseList('부부교육')"> 부부교육</a>,<br/> <a href="javascript:viewCourseList('소비자교육')">소비자교육</a>, <a href="javascript:viewCourseList('가정생활과 정보')">가정생활과 정보</a>, <a href="javascript:viewCourseList('가계재무관리')">가계재무관리</a>, <a href="javascript:viewCourseList('주택관리')">주택관리</a>, <a href="javascript:viewCourseList('의생활관리')">의생활관리</a>, <a href="javascript:viewCourseList('지역사회 영양학')">지역사회 영양학</a>,<br/> <a href="javascript:viewCourseList('프로그램 개발과 평가')">프로그램 개발과 평가</a>,<a href="javascript:viewCourseList('사회복지실천기술론')">사회복지실천기술론</a>, <a href="javascript:viewCourseList('지역사회복지론')">지역사회복지론</a>, <a href="javascript:viewCourseList('연구(조사)방법론')">연구(조사)방법론</a>, <a href="javascript:viewCourseList('부부상담')">부부상담</a>,<br/> <a href="javascript:viewCourseList('집단상')">집단상</a>,<a href="javascript:viewCourseList('사회복지실천론')">사회복지실천론</a>, <a href="javascript:viewCourseList('가족(정)과 지역사회')">가족(정)과 지역사회,</a>, <a href="javascript:viewCourseList('여성과 교육')">여성과 교육</a>, <a href="javascript:viewCourseList('여성과 리더십')">여성과 리더십</a>, <a href="javascript:viewCourseList('여성주의 상담')">여성주의 상담</a>,<br/> <a href="javascript:viewCourseList('위기개입론')">위기개입론</a>, <a href="javascript:viewCourseList('사례관리론')">사례관리론</a>
+</td>
+            </tr> 
+           </tbody>
+      </table>
+       </dd>
+       </dl>
+       
+ <dl class="feature">
+  <dt><img src="/home/images/intro/certificate_stext4.gif"  alt="자격증 신청"/></dt>
+  <dd>건강가정지원센터(<a target="_blank" href="http://www.familynet.or.kr" onclick="dcsMultiTrack('DCS.dcssip','http://www.familynet.or.kr','DCS.dcsuri','/','DCS.qry','','WT.ti','Offsite Link - familynet','WT.sp','familynet')">http://www.familynet.or.kr</a>)</dd>
+  <dd>TEL : 1577-9337</dd>
+  ##<dd>※ 국가자격증 외 민간자격증의 '등록' 및 '공인' 여부는 '민간자격운영센터<a href="http://www.pqi.or.kr" target="_blank">(www.pqi.or.kr)</a>'에서 확인하여 주시기 바랍니다.</dd>
+ </dl>
+ #*
+<dl class="feature1">
+  <dd>※ 국가자격증 외 민간자격증의 '등록' 및 '공인' 여부는 '민간자격운영센터<a href="http://www.pqi.or.kr" target="_blank">(www.pqi.or.kr)</a>'에서 확인하여 주시기 바랍니다.</dd>
+ </dl>
+ *#
+       
+</body>
+</html>
+       

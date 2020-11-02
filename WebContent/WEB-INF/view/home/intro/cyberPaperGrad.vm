@@ -1,0 +1,94 @@
+
+<head>
+	<title>사이버 논문 지도</title>
+	<script>
+
+			
+		function openpage(){
+			$("#form").attr("method","post");
+			$("#form").attr("onsubmit","");
+			$("#form").attr("target","_blank");
+			$("#form").attr("action",$("#link").val());
+			
+			var link = $("#link").val();
+			var index = link.indexOf("?") + 1;
+			var qri=link.substring(index);
+			
+			dcsMultiTrack('DCS.dcssip','www.law.go.kr','DCS.dcsuri','/lsInfoP.do','DCS.qry',qri,'WT.ti','Offsite Link - law','WT.sp','law');
+			
+			$("#form").submit();
+		}
+		
+	</script>
+	
+</head>
+<body>
+
+<p class="location">
+	<a href="/home/index2.main2.action">대학원 홈</a> <span>></span> 
+	<a href="/home/intro/summaryGrad.sub2.action?gnb=11">사이버대학원안내</a> <span>></span> 
+	<a href="/home/intro/cyberPaperGrad.sub2.action?gnb=11">사이버 논문 지도</a>
+</p>
+<h3><img src="/home/images3/h3_grad_overview4.png" alt="사이버 논문  지도 및 작성" /></h3>
+		
+		
+		<div class="contentWrap_summary">
+			<!--s:컨텐츠영역-->
+<br/>
+<br/>				
+<dl class="feature4">
+  <dt><img src="/home/images3/grad_title7.gif" alt="사이버 논문 지도 방법" /></dt>
+  		<br/>
+  		<dd class="text">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;사이버대학원은 대학원생의 원활한 논문 집필을 위해 온•오프라인 논문 지도 시스템을 구축하였다.	</dd>
+  		<br/><br/>
+    <dd>&nbsp;&nbsp;&nbsp;<img src="/home/images3/grad_stitle1.gif" alt="논문 지도 시스템 이용" /></dd>
+    	<br/>
+	
+	<dd  class="text">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;시스템 특징<br>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- 온라인을 통한 지도교수와 대학원생 간 1:1 논문지도 가능<br>
+   		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- 화상채팅과 동시에 논문 첨삭 지도 가능 <br>
+   		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- 다양한 학습도구를 활용한 보다 자세한 논문지도 가능 
+   		</dd>
+   	<br/><br/>
+  	<p class="t_center"><img src="/home/images3/grad_images4.gif" alt="논문 지도 시스템 이용 화면" /></p>
+  	
+</dl>
+<dl class="feature4">
+	<br/><br/><br/>
+    <dd>&nbsp;&nbsp;&nbsp;<img src="/home/images3/grad_stitle2.gif" alt="실제 대면을 통한 논문 지도" /></dd>
+    <br/>
+	<dd class="text">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;사전 약속을 통해 직접 지도교수와 대학원이 만나 1:1 논문 지도가 이뤄진다. </dd>
+	<br/>
+	<p class="t_center"><img src="/home/images3/grad_images5_1.gif" alt="실제 논문 지도를 받는 상황 " /></p>
+	<br/>
+	
+  
+</dl>
+<dl class="feature4">
+	<br/><br/><br/>
+    <dd>&nbsp;&nbsp;&nbsp;<img src="/home/images3/grad_stitle3.gif" alt="기타" /></dd>
+    <br/>
+	<dd class="text">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;논문 지도용 게시판 및 쪽지 등을 통해 지도교수와 대학원생 간 논문 수시 지도가 가능하다.  </dd>
+	<dd class="text">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;지도교수와 대학원생 간 메일 및 전화 등을 통해서도 논문지도가 이뤄진다. </dd>
+	<br/><br/>
+	<p class="t_center"><img src="/home/images3/grad_images6.gif" alt="" /></p>
+  
+</dl>
+<dl class="feature4">
+	<br/><br/><br/><br/><br/><br/>
+  <dt><img src="/home/images3/grad_title8.gif" alt="논문지도 작성 절차" /></dt>
+  <br/><br/>
+    <p class="t_center"><img src="/home/images3/grad_images7.gif" alt="논문지도 작성 절차 이미지" /></p>
+  
+</dl>
+
+
+			<!--e:컨텐츠영역-->
+		</div>
+  
+
+<br/>
+
+</body>
+</html>
+

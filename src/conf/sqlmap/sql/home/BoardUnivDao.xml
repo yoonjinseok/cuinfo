@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="EUC-KR"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="BoardUnivDao">
+	<typeAlias alias="boardUniv" type="com.cyberup.model.home.BoardUniv"/>	
+	<!-- 일반 게시판 쿼리 / 오성애 / 2011-10-04 -->	
+	<select id="selectList" resultClass="boardUniv"  parameterClass="map">
+		 SELECT DT.*
+		 FROM(
+	            SELECT
+	                   ROW_NUMBER () OVER (ORDER BY REG_DATE DESC) AS recNum, 
+	                   COUNT (*) OVER () totalCnt,
+	                   BOARD_UNIV_ID as boardID, 
+	                   TITLE as title,
+	                   CONTENT_TYPE_ID as typeID,
+	                   CONTENT as boardContent,
+	                   ATTACH_UPFILE_GID as upfileGid,
+	                   EMAIL as email,
+	                   SUBSTR(EVENT_SDT,5,2) ||'/'||SUBSTR(EVENT_SDT,7,2) as startDT,
+					   SUBSTR(EVENT_EDT,5,2) ||'/'||SUBSTR(EVENT_EDT,7,2) as endDT,
+	                   HITS_CNT as hitsCount,
+	                   B.UNIVERSITY_ID as univID,
+	                   (SELECT UNiV_NAME FROM CU_UNIV_INFO U WHERE U.UNIVERSITY_ID = B.UNIVERSITY_ID) AS univName,
+	                   REGISTER AS regID,
+	                   (SELECT ADMIN_NAME FROM CU_ADMIN A WHERE A.ADMIN_ID=B.REGISTER) AS regName,
+	                   REG_DATE as regDate,
+	                   CASE WHEN TRUNC(SYSDATE-REG_DATE)>1 THEN 'N' ELSE 'Y' END AS newYN
+	              FROM CU_BOARD_UNIV B
+	              WHERE 1 = 1
+	              <isNotEqual property="univID" compareValue="0">
+	              <isNotEmpty property="univID" prepend="AND">
+		   	 		 	B.UNIVERSITY_ID = #univID#
+		   		  </isNotEmpty>
+		   		  </isNotEqual>	
+		   		  
+		   		  <isEqual property="eventState" compareValue="1" prepend="AND"> <!-- 진행중인행사 -->
+			       		TO_CHAR(SYSDATE, 'YYYYMMDD')<![CDATA[ < ]]> EVENT_EDT
+			       		ORDER BY EVENT_SDT, EVENT_EDT, REG_DATE
+				  </isEqual>
+			       <isEqual property="eventState" compareValue="2" prepend="AND"> <!-- 지난행사이면 -->
+			       		TO_CHAR(SYSDATE, 'YYYYMMDD')<![CDATA[ > ]]> EVENT_EDT 
+			       		ORDER BY EVENT_SDT DESC,EVENT_EDT DESC, REG_DATE DESC
+			       </isEqual>	
+	            ) DT 
+		 WHERE CEIL (recNum / #showCnt,javaType=Integer#) = #currPage,javaType=Integer#
+			<isNotEmpty property="searchTitle" prepend="AND">		    	
+		    	title LIKE concat(concat('%',#searchTitle#),'%')
+		    </isNotEmpty>
+		    <isNotEmpty property="searchContent" prepend="AND">
+		    	DBMS_LOB.INSTR(boardContent, #searchContent#)>0
+		    </isNotEmpty>
+		    <isNotEmpty property="searchRegID" prepend="AND">
+		   	 	regID LIKE concat(concat('%',#searchRegID#),'%')
+		    </isNotEmpty>
+		    <isNotEmpty property="searchRegName" prepend="AND">
+		    	regName LIKE concat(concat('%',#searchRegName#),'%')
+		    </isNotEmpty>
+      
+	</select>	
+	
+	<!-- 내용 보기 -->
+	<select id="selectInfo" resultClass="boardUniv"  parameterClass="long">
+		SELECT
+              BOARD_UNIV_ID as boardID,
+              SECTION_ID as sectionID,
+              TITLE as title,
+              CONTENT_TYPE_ID as typeID,
+              CONTENT as boardContent,
+              ATTACH_UPFILE_GID as upfileGid,
+              EMAIL as email,
+              SUBSTR(EVENT_SDT,1,4) ||'-'|| SUBSTR(EVENT_SDT,5,2) ||'-'||SUBSTR(EVENT_SDT,7,2) as startDT,
+			  SUBSTR(EVENT_EDT,1,4) ||'-'||SUBSTR(EVENT_EDT,5,2) ||'-'||SUBSTR(EVENT_EDT,7,2) as endDT,
+              EVENT_SDT as startDT,
+              EVENT_EDT as endDT,
+              NVL(HITS_CNT,0) as hitsCount,
+              B.UNIVERSITY_ID as univID,
+	          (SELECT UNiV_NAME FROM CU_UNIV_INFO U WHERE U.UNIVERSITY_ID = B.UNIVERSITY_ID) AS univName,
+              REGISTER AS regID,
+              (SELECT ADMIN_NAME FROM CU_ADMIN A WHERE A.ADMIN_ID=B.REGISTER) AS regName,
+              REG_DATE AS regDate,
+              MODIFIER AS modID,
+              (SELECT ADMIN_NAME FROM CU_ADMIN A WHERE A.ADMIN_ID=B.MODIFIER) AS modName,
+              MOD_DATE AS modDate
+         FROM CU_BOARD_UNIV B
+		 WHERE BOARD_UNIV_ID = #boardID,javaType=long#
+	</select>	
+	
+	<!-- 게시판 내용 입력 -->
+	<insert id="insertInfo" parameterClass="boardUniv">
+		<selectKey resultClass="long" keyProperty="boardID">
+         SELECT SEQ_BOARD_UNIV_ID.nextVal as boardID FROM dual
+        </selectKey>        
+		INSERT INTO CU_BOARD_UNIV( 
+			BOARD_UNIV_ID, SECTION_ID, TITLE,
+            CONTENT_TYPE_ID, CONTENT,
+            EMAIL, HITS_CNT, ATTACH_UPFILE_GID, 
+            UNIVERSITY_ID, EVENT_SDT, EVENT_EDT, 
+            REGISTER, REG_DATE)
+		VALUES(
+			#boardID#, #sectionID#, #title#,
+			#typeID#, #boardContent#,
+			#email#, 1, #upfileGid#,
+			#univID#, #startDT#, #endDT#,
+			#regID#, SYSDATE)
+	</insert>
+		
+	<!-- 내용 업데이트 -->	
+	<update id="updateInfo" parameterClass="boardUniv">
+		UPDATE CU_BOARD_UNIV
+	   	SET TITLE 			  = #title#,	   		
+	    	CONTENT_TYPE_ID   = #typeID#,
+	        CONTENT 		  = #boardContent#,
+	        <isNotEqual property="upfileGid" compareValue="0">
+	        ATTACH_UPFILE_GID = #upfileGid#,
+	        </isNotEqual>
+	        <isNotEmpty property="sectionID" >
+	        SECTION_ID = #sectionID#,
+	        </isNotEmpty>
+	        EMAIL 			  = #email#,
+	        UNIVERSITY_ID	  = #univID#, 
+	        EVENT_SDT		  = #startDT#, 
+	        EVENT_EDT		  = #endDT#, 
+	        MODIFIER		  = #modID#,
+	        MOD_DATE 		  = SYSDATE
+		WHERE BOARD_UNIV_ID   = #boardID#
+	</update>
+			
+	
+	<!-- 글 내용 클릭 시 hit수를 증가시킨다. -->
+	<update id="updateHitsCount" parameterClass="boardUniv">
+		UPDATE CU_BOARD_UNIV
+	   	SET HITS_CNT  = HITS_CNT + 1
+		WHERE BOARD_UNIV_ID = #boardID#
+	</update>	
+	
+	<delete id="deleteInfo"  parameterClass="long">
+		DELETE 
+		FROM CU_BOARD_UNIV 
+		WHERE BOARD_UNIV_ID = #boardID,javaType=long#
+	</delete>
+	
+	
+	<!-- 파일이 모두 삭제되었으면 부모테이블의 그룹 파일 값 NULL으로 세팅 -->	
+	<update id="initFileBoard" parameterClass="int">
+		UPDATE  CU_BOARD_UNIV 
+				SET ATTACH_UPFILE_GID = NULL
+				WHERE ATTACH_UPFILE_GID = #upfileGid#
+	</update>
+
+</sqlMap>

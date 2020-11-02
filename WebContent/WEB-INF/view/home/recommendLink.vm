@@ -1,0 +1,11 @@
+#if($recommendLink)
+#if($recommendLink.size() > 0)
+<h4><img src="/home/images/intro/txt_link_recomm.gif" alt="추천링크" /></h4>
+	<ul>
+	#foreach($list in $recommendLink)
+		<li #if($velocityCount == 1) class="first" #end>$!list.menuName<a href="$!list.url" class="btn_link"><img src="/home/images/btn/btn_link2.gif" alt="바로가기" /></a>
+		</li>
+	#end
+	</ul>
+#end	
+#end

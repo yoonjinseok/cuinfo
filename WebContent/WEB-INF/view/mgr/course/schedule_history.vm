@@ -1,0 +1,110 @@
+<head>
+	<base target="_self"/>
+	<title>스케쥴 이력</title>
+	<script type="text/javascript" language="javascript">
+	function setRecordCnt(totalCnt, currPage, totalPage, showCnt)
+	{
+		$("#tCnt").text(totalCnt);
+		$("#cPage").text(currPage);
+		$("#tPage").text(totalPage);
+		
+		setPaging($("#pg"), totalCnt, showCnt, currPage);
+	}
+	
+	function goPage(page)
+	{
+		if(typeof(page) != "undefined")
+			$("#currPage").val(page);
+		
+		$("#searchForm").submit();
+	}
+	
+	jQuery(document).ready(function () {
+		setRecordCnt($totalCnt, $currPage, $totalPage, $showCnt);
+    });
+	</script>
+</head>
+<body>
+<div style="width:90%;padding-left:30px;padding-top:30px;">
+<form id="searchForm" name="searchForm" action="schedule_history.pop.action" method="post"><!-- box_type01 Start -->
+<input type="hidden" id="currPage" name="currPage" value="$currPage"/>
+<input type="hidden" id="scheduleId" name="scheduleId" value="$!scheduleId"/>
+
+<h2>스케쥴 이력</h2>	
+
+<span><select id="showCnt" name="showCnt" onchange="goPage(1);"><option value="20" selected>20</option><option value="50">50</option><option value="100">100</option></select>건씩 조회</span>
+<script>
+$("#showCnt").val($showCnt);
+</script>
+<span class="f_right">total : <span id="tCnt">00</span>건(<span id="cPage">1</span>/<span id="tPage">10</span>page)</span>
+
+</form><!-- box_type01 End -->
+
+<div id="list">
+<table cellspacing="0" cellpadding="0" class="list_type01" summary="스케쥴이력"><!-- list_type01 Start -->
+	<caption>스케쥴이력</caption>
+	<colgroup>
+		<col width="5%" />
+		<col width="*%" />
+		<col width="*%" />
+		<col width="12%" />
+		<col width="12%" />
+		<col width="12%" />
+		<col width="12%" />
+		<col width="12%" />
+	</colgroup>
+	<thead>
+		<tr>
+			<th scope="col">NO</th>
+			<th scope="col">수집시작일시</th>
+			<th scope="col">수집완료일시</th>
+			<th scope="col">작업유형</th>
+			<th scope="col">수집시작범위</th>
+			<th scope="col">수집종료범위</th>
+			<th scope="col">수집건수</th>
+			<th scope="col">작업결과</th>
+		</tr>
+	</thead>
+	<tbody>
+		#foreach($history in $historyList)
+		<tr>
+			<td>$history.rowNum</td>
+			<td>$datetimeformatter.print($history.startDate,$locale)</td>
+			<td>$datetimeformatter.print($history.endDate,$locale)</td>
+			<td>$history.scheduleTypeName</td>
+			<td>$history.scheduleSdate</td>
+			<td>$history.scheduleEdate</td>
+			<td>#if($history.collectCnt >= 0)$history.collectCnt#end</td>
+			<td>$history.resultName</td>
+		</tr>
+		#end
+		
+		#set($cnt = $historyList.size() + 1)
+		#if($cnt < $showCnt)
+		#foreach($blank in [$cnt..$showCnt])
+		<tr>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+		</tr>
+		#end
+		#end
+	</tbody>
+</table><!-- list_type01 End -->
+</div>
+
+
+
+<div class="page_num">
+	<div id="pg" name="pg"></div>
+	<a class="f_right" href="javascript:window.close();"><img src="/mgr/images/btn/cancel.gif" alt="닫기" /></a>
+</div>
+
+</div>
+</body>
+</html>

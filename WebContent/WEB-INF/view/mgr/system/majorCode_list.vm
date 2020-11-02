@@ -1,0 +1,56 @@
+
+<input type="hidden" id="hidUnivDept" name="hidUnivDept" value="N"/>
+<table cellspacing="0" cellpadding="0" class="list_type01" summary="대표학과 관리"><!-- list_type01 Start -->
+	<caption>대표학과 관리</caption>
+	<colgroup>
+		<col width="8%" />
+		<col width="10%" />
+		<col width="*%" />
+		<col width="20%" />
+		<col width="15%" />
+	</colgroup>
+	<thead>
+		<tr>
+			<th scope="col">NO</th>
+			<th scope="col">학과코드</th>
+			<th scope="col">대표학과명</th>
+			<th scope="col">학과분야</th>
+			<th scope="col">학교측학과 <br/>연결 수 </th>
+		</tr>
+	</thead>
+	<tbody>
+		#foreach($rd in $reptDeptList)
+		<tr>
+			<td>$!rd.rowNum</td>
+			<td><a href="javascript:modify($!rd.deptId);">$!rd.deptId</a></td>
+			<td class="t_left">$!rd.deptName</td>
+			<td class="t_left">$!rd.classifyName</td>
+		#if($!rd.deptLinkCnt == 0)
+			<td>$!rd.deptLinkCnt</td>
+		#else
+			<td><a href="javascript:move('$!rd.deptName');" class="on">$!rd.deptLinkCnt</a></td>
+		#end	
+		</tr>
+		#end
+		
+		#set($cnt = $reptDeptList.size() + 1)
+		#if($cnt < $showCnt)
+		#foreach($blank in [$cnt..$showCnt])
+		<tr>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+		</tr>
+		#end
+		#end
+
+	</tbody>
+</table><!-- list_type01 End -->
+
+<script>
+	#if($reptDeptList)
+	setRecordCnt($totalCnt, $currPage, $totalPage, $showCnt);
+	#end
+</script>

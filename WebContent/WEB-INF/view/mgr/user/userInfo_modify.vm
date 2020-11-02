@@ -1,0 +1,96 @@
+<head>
+	<title>개인정보 수정</title>
+	<script type="text/javascript" language="javascript">
+	function modify()
+	{
+		jQuery.post('update.json', 
+				$("#modifyForm").formSerialize(), 
+				function(data) {
+        			if(data.errors == true)
+        			{
+        				eval(data.message);
+        			}
+        			else
+        			{
+						alert('수정완료하였습니다.');
+						window.close();
+        			}
+		});
+		
+	}
+	</script>
+</head>
+<body>
+<div style="width:90%;padding-left:30px;padding-top:30px;">
+<form id="modifyForm" action="#" onsubmit="try{write();}catch(e){alert(e);}return false;">
+	
+<h2>개인정보 수정</h2>	
+<table cellspacing="0" cellpadding="0" class="form_type01" summary="생산기관관리"><!-- list_type01 Start -->
+	<caption>개인정보 수정</caption>
+	<colgroup>
+		<col width="15%" />
+		<col width="35%" />
+		<col width="15%" />
+		<col width="35%" />
+	</colgroup>
+	<tbody>
+		<tr>
+			<th scope="row">이름</th>
+			<td><input type="text" maxlength="30" size="20" title="이름" name="adminName" id="adminName" value="$!admin.adminName"/> </td>
+			<th scope="row">아이디</th>
+			<td>$!admin.adminId </td>		
+			
+		</tr>
+		<tr>
+			<th scope="row">새 비밀번호</th>
+			<td><input type="password" maxlength="60" size="20" title="새 비밀번호" name="adminPwd" id="adminPwd" /></br>(4자~15자로 입력) </td>
+			<th scope="row">새 비밀번호 확인</th>
+			<td><input type="password" maxlength="60" size="20" title="새 비밀번호 확인" name="adminPwd2" id="adminPwd2" /> </td>						
+		</tr>
+		<tr>
+			<th scope="row">권한그룹</th>
+			<td colspan="3">$!admin.authLevelName</td>
+		</tr>
+		<tr>
+			<th scope="row">소속</th>
+			<td><input type="text" maxlength="30" size="20" title="소속" name="adminCompany" id="adminCompany" value="$!admin.adminCompany"/></td>
+			<th scope="row">부서</th>
+			<td><input type="text" maxlength="30" size="20" title="부서" name="adminDepart" id="adminDepart" value="$!admin.adminDepart"/> </td>						
+		</tr>
+		<tr>
+			<th scope="row">직위</th>
+			<td><input type="text" maxlength="30" size="20" title="소속" name="adminPosition" id="adminPosition" value="$!admin.adminPosition"/></td>
+			<th scope="row">직책</th>
+			<td><input type="text" maxlength="30" size="20" title="직책" name="adminDuty" id="adminDuty" value="$!admin.adminDuty"/> </td>						
+		</tr>
+		<tr>
+			<th scope="row">게시연락처</th>
+			<td colspan="3"><input type="text" maxlength="20" size="40" title="게시연락처" name="adminPhone" id="adminPhone" value="$!admin.adminPhone"/></td>
+		</tr>
+			<th scope="row">이메일</th>
+			<td colspan="3"><input type="text" maxlength="200" size="40" title="이메일" name="adminEmail" id="adminEmail" value="$!admin.adminEmail"/></td>		
+		<tr>
+		</tr>
+			<th scope="row">허용아이피</th>
+			<td colspan="3">
+				$!adminList.acceptIp
+			</td>		
+		<tr>
+			<th scope="row">등록정보</th>
+			<td>$!admin.registerName ($datetimeformatter.print($!admin.regDate, $!locale))</td>
+			<th scope="row">수정정보</th>
+			<td>#if("$!admin.modifierName" !="") $!admin.modifierName ($datetimeformatter.print($!admin.modDate, $!locale)) #end </td>
+		</tr>
+	</tbody>
+</table><!-- list_type01 End -->
+
+
+<div class="btn_box_type03">
+	<a href="javascript:modify();"><img src="/mgr/images/btn/save.gif" alt="저장" /></a>
+	<a href="javascript:window.close();"><img src="/mgr/images/btn/cancel.gif" alt="취소" /></a>
+</div>
+
+</form>
+</div>
+</body>
+</html>

@@ -1,0 +1,2268 @@
+<?xml version="1.0" encoding="EUC-KR"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="CourseSearchDao">
+
+	<typeAlias alias="courseSearch" type="com.cyberup.model.course.CourseSearch"/>
+
+	<select id="univDeptList" resultClass="courseSearch" parameterClass="courseSearch">
+		WITH t1 AS (SELECT term_year, term_semester
+		              FROM (SELECT DISTINCT
+		                           DENSE_RANK ()
+		                           OVER (ORDER BY TERM_YEAR DESC, TERM_SEMESTER DESC)
+		                              RN,
+		                           TERM_YEAR,
+		                           TERM_SEMESTER
+		                      FROM CU_SVC_COURSE
+		                     WHERE TERM_SEMESTER IN ('1', '2', '01', '02')
+		                     	   AND UNIVERSITY_ID &lt; 25
+		                           AND SVC_STATUS = 'A')
+		             WHERE rn &lt; 3),
+		     D1
+		        AS (SELECT NVL (
+		                      (SELECT RD.DEPT_ID
+		                         FROM CU_UNIV_DEPT UD, CU_REPT_DEPT RD
+		                        WHERE     RD.DEPT_ID = UD.DEPT_ID
+		                              AND SC.UNIVERSITY_ID = UD.UNIVERSITY_ID
+		                              AND SC.DEPARTMENT_ID = UD.UNIVDEPT_ID),
+		                      0)
+		                      AS DEPT_ID
+		              FROM CU_SVC_COURSE SC, t1 b
+		             WHERE     SC.SVC_STATUS = 'A'
+		             <isEmpty property="checkbox3">
+		                   AND sc.term_year = b.term_year
+		                   AND sc.term_semester = b.term_semester
+		             </isEmpty>
+		             <isNotEmpty property="checkbox3">
+			    		<isNotEqual property="checkbox3" compareValue="3">
+			    		   AND sc.term_year = b.term_year
+		                   AND sc.term_semester = b.term_semester
+			    		</isNotEqual>
+			    	 </isNotEmpty>      
+		                   ),
+		     D2 AS (  SELECT CLASSIFY_ID, COUNT (*) AS CNT
+		                FROM D1 A, CU_REPT_DEPT B
+		               WHERE A.DEPT_ID = B.DEPT_ID
+		            GROUP BY CLASSIFY_ID)
+		  SELECT C.CLASSIFY_ID AS classifyId,
+		         MAX (CLASSIFY_NAME) AS classifyName,
+		         CASE WHEN (LENGTH (MAX (CLASSIFY_NAME))) &gt; 5 THEN 'Y' ELSE 'N' END
+		            AS overYn,
+		         NVL (SUM (CNT), 0) AS cnt
+		    FROM CU_REPT_CLASSIFICATION C, D2 D
+		   WHERE C.CLASSIFY_ID = D.CLASSIFY_ID(+) AND C.USE_YN = 'Y'
+		GROUP BY C.CLASSIFY_ID
+		ORDER BY MAX (CLASSIFY_ORDER)
+	</select>
+	<select id="univDeptListForPublic" resultClass="courseSearch" parameterClass="courseSearch">
+		WITH D1 AS(        
+        SELECT 
+                NVL((SELECT RD.DEPT_ID
+                         FROM CU_UNIV_DEPT UD , CU_REPT_DEPT RD 
+                         WHERE RD.DEPT_ID = UD.DEPT_ID
+                         	 		AND SC.UNIVERSITY_ID = UD.UNIVERSITY_ID
+                                    AND SC.DEPARTMENT_ID = UD.UNIVDEPT_ID ),0) AS DEPT_ID
+		        FROM CU_SVC_COURSE SC   
+		        WHERE SC.SVC_STATUS = 'A'
+		        AND SC.UNIVERSITY_ID &lt; 25
+		        AND PREVTHUMBNAIL IS NOT NULL
+                AND PREVURI IS NOT NULL
+		        <isEmpty property="checkbox3" prepend="AND">
+		    		EXISTS (
+			            SELECT TERM_YEAR,TERM_SEMESTER
+			            FROM (            
+							SELECT DISTINCT DENSE_RANK() OVER(ORDER BY TERM_YEAR DESC, TERM_SEMESTER DESC ) RN, TERM_YEAR, TERM_SEMESTER FROM CU_SVC_COURSE
+							WHERE TERM_SEMESTER IN ('1','2','01','02')
+							AND SVC_STATUS = 'A'
+			            ) T
+			            WHERE RN &lt; 3
+                       	AND T.TERM_YEAR = SC.TERM_YEAR
+                       	AND T.TERM_SEMESTER = SC.TERM_SEMESTER )
+		        </isEmpty>
+		        <isNotEmpty property="checkbox3">
+			    		<isNotEqual property="checkbox3" compareValue="3" prepend="AND">
+			    		EXISTS (
+				            SELECT TERM_YEAR,TERM_SEMESTER
+				            FROM (            
+								SELECT DISTINCT DENSE_RANK() OVER(ORDER BY TERM_YEAR DESC, TERM_SEMESTER DESC ) RN, TERM_YEAR, TERM_SEMESTER FROM CU_SVC_COURSE
+								WHERE TERM_SEMESTER IN ('1','2','01','02')
+								AND SVC_STATUS = 'A'
+				            ) T
+				            WHERE RN &lt; 3
+	                       	AND T.TERM_YEAR = SC.TERM_YEAR
+	                       	AND T.TERM_SEMESTER = SC.TERM_SEMESTER )
+			    		</isNotEqual>
+			    </isNotEmpty>     
+		),
+		D2 AS (
+		    SELECT CLASSIFY_ID, COUNT(*) AS CNT
+		    FROM D1 A, CU_REPT_DEPT B
+		    WHERE  A.DEPT_ID= B.DEPT_ID
+		    GROUP BY CLASSIFY_ID
+		)
+		SELECT  C.CLASSIFY_ID as classifyId ,
+		         MAX(CLASSIFY_NAME) AS  classifyName,
+		         CASE WHEN (LENGTH(MAX(CLASSIFY_NAME))) &gt; 5 THEN 'Y' ELSE 'N' END  AS  overYn,
+		         NVL(SUM(CNT),0) AS cnt
+		FROM CU_REPT_CLASSIFICATION C, D2 D
+		WHERE  C.CLASSIFY_ID = D.CLASSIFY_ID(+)
+		AND C.USE_YN = 'Y'
+		AND CNT &gt; 0
+		GROUP BY  C.CLASSIFY_ID
+		ORDER BY  MAX(CLASSIFY_ORDER)
+	
+	</select>
+	<select id="yearListForPublic" resultClass="courseSearch" parameterClass="courseSearch">
+		WITH D1 AS(        
+        SELECT 
+                NVL((SELECT RD.DEPT_ID
+                         FROM CU_UNIV_DEPT UD , CU_REPT_DEPT RD 
+                         WHERE RD.DEPT_ID = UD.DEPT_ID
+                         	 		AND SC.UNIVERSITY_ID = UD.UNIVERSITY_ID
+                                    AND SC.DEPARTMENT_ID = UD.UNIVDEPT_ID ),0) AS DEPT_ID
+                                    ,TERM_YEAR
+		        FROM CU_SVC_COURSE SC   
+		        WHERE SC.SVC_STATUS = 'A'
+		        AND SC.UNIVERSITY_ID &lt; 25 
+		        AND PREVTHUMBNAIL IS NOT NULL
+                AND PREVURI IS NOT NULL
+		        <isEmpty property="checkbox3" prepend="AND">
+		    		EXISTS (
+			            SELECT TERM_YEAR,TERM_SEMESTER
+			            FROM (            
+							SELECT DISTINCT DENSE_RANK() OVER(ORDER BY TERM_YEAR DESC, TERM_SEMESTER DESC ) RN, TERM_YEAR, TERM_SEMESTER FROM CU_SVC_COURSE
+							WHERE TERM_SEMESTER IN ('1','2','01','02')
+							AND SVC_STATUS = 'A'
+			            ) T
+			            WHERE RN &lt; 3
+                       	AND T.TERM_YEAR = SC.TERM_YEAR
+                       	AND T.TERM_SEMESTER = SC.TERM_SEMESTER )
+		        </isEmpty>
+		        <isNotEmpty property="checkbox3">
+			    		<isNotEqual property="checkbox3" compareValue="3" prepend="AND">
+			    		EXISTS (
+				            SELECT TERM_YEAR,TERM_SEMESTER
+				            FROM (            
+								SELECT DISTINCT DENSE_RANK() OVER(ORDER BY TERM_YEAR DESC, TERM_SEMESTER DESC ) RN, TERM_YEAR, TERM_SEMESTER FROM CU_SVC_COURSE
+								WHERE TERM_SEMESTER IN ('1','2','01','02')
+								AND SVC_STATUS = 'A'
+				            ) T
+				            WHERE RN &lt; 3
+	                       	AND T.TERM_YEAR = SC.TERM_YEAR
+	                       	AND T.TERM_SEMESTER = SC.TERM_SEMESTER )
+			    		</isNotEqual>
+			    </isNotEmpty>     
+		),
+		D2 AS (
+		    SELECT TERM_YEAR, COUNT(*) AS CNT
+		    FROM D1 A, CU_REPT_DEPT B
+		    WHERE  A.DEPT_ID= B.DEPT_ID
+		    GROUP BY TERM_YEAR
+		)
+		SELECT  TERM_YEAR as yearName ,
+		         CASE WHEN (LENGTH(MAX(CLASSIFY_NAME))) &gt; 5 THEN 'Y' ELSE 'N' END  AS  overYn,
+		         CNT AS cnt
+		FROM CU_REPT_CLASSIFICATION C, D2 D
+		WHERE C.USE_YN = 'Y'
+		AND CNT &gt; 0
+		GROUP BY  TERM_YEAR,CNT
+		ORDER BY TERM_YEAR DESC
+	
+	</select>
+	
+	<select id="rollUpList"  resultClass="courseSearch" parameterClass="courseSearch">
+		SELECT a.classify_id AS classifyId,
+		       a.DEPT_ID AS deptId,
+		       a.dept_name AS deptName,
+		       (SELECT COUNT (*)
+		          FROM cu_svc_course c
+		         WHERE 1=1
+		         	<isEqual property="classifyId" compareValue="0" prepend="AND">
+		               NOT EXISTS (SELECT '1' FROM cu_univ_dept ud WHERE univdept_id = c.department_id AND university_id = c.university_id AND UD.DEPT_ID != A.DEPT_ID)
+		         	</isEqual>
+		         	<isNotEqual property="classifyId" compareValue="0" prepend="AND">
+		               EXISTS (SELECT '1' FROM cu_univ_dept ud WHERE univdept_id = c.department_id AND university_id = c.university_id AND UD.DEPT_ID = A.DEPT_ID)
+		         	</isNotEqual>
+		               AND c.SVC_STATUS = 'A'
+						<isEmpty property="checkbox3" prepend="AND">
+				    		EXISTS (
+					            SELECT TERM_YEAR,TERM_SEMESTER
+					            FROM (            
+									SELECT DISTINCT DENSE_RANK() OVER(ORDER BY TERM_YEAR DESC, TERM_SEMESTER DESC ) RN, TERM_YEAR, TERM_SEMESTER FROM CU_SVC_COURSE
+									WHERE TERM_SEMESTER IN ('1','2','01','02')
+									AND SVC_STATUS = 'A'
+					            ) T
+					            WHERE RN &lt; 3
+		                       	AND T.TERM_YEAR = C.TERM_YEAR
+		                       	AND T.TERM_SEMESTER = C.TERM_SEMESTER )
+				        </isEmpty>
+				        <isNotEmpty property="checkbox3">
+					    		<isNotEqual property="checkbox3" compareValue="3" prepend="AND">
+					    		EXISTS (
+						            SELECT TERM_YEAR,TERM_SEMESTER
+						            FROM (            
+										SELECT DISTINCT DENSE_RANK() OVER(ORDER BY TERM_YEAR DESC, TERM_SEMESTER DESC ) RN, TERM_YEAR, TERM_SEMESTER FROM CU_SVC_COURSE
+										WHERE TERM_SEMESTER IN ('1','2','01','02')
+										AND SVC_STATUS = 'A'
+						            ) T
+						            WHERE RN &lt; 3
+			                       	AND T.TERM_YEAR = C.TERM_YEAR
+			                       	AND T.TERM_SEMESTER = C.TERM_SEMESTER )
+					    		</isNotEqual>
+					    </isNotEmpty> 
+		                              )
+		          cnt
+		  FROM cu_rept_dept a
+		 WHERE 1 = 1 AND classify_id = #classifyId#
+	</select>
+	<select id="rollUpListForPublic"  resultClass="courseSearch" parameterClass="courseSearch">
+		SELECT a.classify_id AS classifyId,
+		       a.DEPT_ID AS deptId,
+		       a.dept_name AS deptName,
+		       (SELECT COUNT (*)
+		          FROM cu_svc_course c
+		         WHERE 1=1
+		         	AND PREVTHUMBNAIL IS NOT NULL
+                	AND PREVURI IS NOT NULL
+                	AND UNIVERSITY_ID &lt; 25
+		         	<isEqual property="classifyId" compareValue="0" prepend="AND">
+		               NOT EXISTS (SELECT '1' FROM cu_univ_dept ud WHERE univdept_id = c.department_id AND university_id = c.university_id AND UD.DEPT_ID != A.DEPT_ID)
+		         	</isEqual>
+		         	<isNotEqual property="classifyId" compareValue="0" prepend="AND">
+		               EXISTS (SELECT '1' FROM cu_univ_dept ud WHERE univdept_id = c.department_id AND university_id = c.university_id AND UD.DEPT_ID = A.DEPT_ID)
+		         	</isNotEqual>
+		               AND c.SVC_STATUS = 'A'
+						<isEmpty property="checkbox3" prepend="AND">
+				    		EXISTS (
+					            SELECT TERM_YEAR,TERM_SEMESTER
+					            FROM (            
+									SELECT DISTINCT DENSE_RANK() OVER(ORDER BY TERM_YEAR DESC, TERM_SEMESTER DESC ) RN, TERM_YEAR, TERM_SEMESTER FROM CU_SVC_COURSE
+									WHERE TERM_SEMESTER IN ('1','2','01','02')
+									AND SVC_STATUS = 'A'
+					            ) T
+					            WHERE RN &lt; 3
+		                       	AND T.TERM_YEAR = C.TERM_YEAR
+		                       	AND T.TERM_SEMESTER = C.TERM_SEMESTER )
+				        </isEmpty>
+				        <isNotEmpty property="checkbox3">
+					    		<isNotEqual property="checkbox3" compareValue="3" prepend="AND">
+					    		EXISTS (
+						            SELECT TERM_YEAR,TERM_SEMESTER
+						            FROM (            
+										SELECT DISTINCT DENSE_RANK() OVER(ORDER BY TERM_YEAR DESC, TERM_SEMESTER DESC ) RN, TERM_YEAR, TERM_SEMESTER FROM CU_SVC_COURSE
+										WHERE TERM_SEMESTER IN ('1','2','01','02')
+										AND SVC_STATUS = 'A'
+						            ) T
+						            WHERE RN &lt; 3
+			                       	AND T.TERM_YEAR = C.TERM_YEAR
+			                       	AND T.TERM_SEMESTER = C.TERM_SEMESTER )
+					    		</isNotEqual>
+					    </isNotEmpty> 
+		                              )
+		          cnt
+		  FROM cu_rept_dept a
+		 WHERE 1 = 1 AND classify_id = #classifyId#
+	</select>
+	<select id="selectPublicCourseList" parameterClass="courseSearch" resultClass="courseSearch">
+		SELECT   a.*
+            FROM 
+            (
+				SELECT ROW_NUMBER () OVER (ORDER BY a.mod_date desc , A.TERM_YEAR DESC, A.TERM_SEMESTER DESC, a.reg_date desc) as recNum
+					, COUNT (*) OVER () totalCnt
+		            , A.COURSE_ID as courseId, A.COURSE_IDENTIFIER as courseIdentifier, A.UNIVERSITY_ID as universityId, B.UNIV_NAME as universityName
+					, A.PUBLIC_YN as publicYn, A.TITLE as title, A.KEYWORD as keyword
+					, A.DEPARTMENT_ID as departmentId, A.DEPARTMENT as department, A.TERM_YEAR as termYear
+					, A.TERM_SEMESTER as termSemester, A.SVC_START as svcStart, A.SVC_END as svcEnd
+					, A.SVC_STATUS as svcStatus, A.REGISTER as register, A.REG_DATE as regDate
+					, A.MODIFIER as modifier, A.MOD_DATE as modDate
+					, A.TYPE as type, A.RIGHTS as rights, A.LANGUAGE as language, A.MANAGER as manager
+					, A.GRAD_YEAR as gradYear, A.GRAD_SEMESTER as gradSemester, A.DEL_YN as delYn
+					, A.PREVTHUMBNAIL as prevthumbnail, A.PREVURI as prevuri
+					, A.IS_LOCK as isLock, A.IS_TEMP as isTemp, A.DELETOR as deletor, A.DEL_DATE as delDate
+					, d.kem_val as description
+				FROM CU_SVC_COURSE A 
+					join CU_UNIV_INFO B
+                 		  on A.UNIVERSITY_ID = B.UNIVERSITY_ID
+					LEFT JOIN CU_SVC_COURSE_KEM_L d
+		                  ON d.COURSE_ID = A.COURSE_ID AND d.COLLTYPE_ID = A.COURSE_ID AND d.METADIC_ID = '8'
+				WHERE B.USE_YN = 'Y'
+          and A.PUBLIC_YN = 'Y'
+          AND A.UNIVERSITY_ID &lt; 25
+          and a.svc_status = 'A'
+					AND NVL(A.DEL_YN,' ') != 'Y' 
+					AND NVL(A.IS_TEMP,' ') != 'Y'
+					and A.PREVTHUMBNAIL is not null and A.PREVURI is not null
+					<isNotEmpty property="deptId" prepend="AND">
+						<isEqual property="deptId" compareValue="0">
+						NOT EXISTS (SELECT '1' FROM cu_univ_dept ud WHERE univdept_id = a.department_id AND university_id = a.university_id AND UD.DEPT_ID != '0')			
+						</isEqual>
+						<isNotEqual property="deptId" compareValue="0">
+		    	     	exists (select '1' from cu_univ_dept where dept_id = #deptId# and university_id = a.university_id and univdept_id = a.department_id)
+						</isNotEqual>
+					</isNotEmpty>
+					<isNotEmpty property="classifyId2" prepend="AND">
+						<isEqual property="classifyId2" compareValue="0">
+							not exists (select '1' from cu_univ_dept where dept_id IN (SELECT DEPT_ID FROM CU_REPT_DEPT WHERE CLASSIFY_ID IN ('1','2','3','4','5','6','7','8','9','10','11','12','80')) and university_id = a.university_id and univdept_id = a.department_id)
+						</isEqual>
+						<isNotEqual property="classifyId2" compareValue="0">
+							<isNotEqual property="classifyId2" compareValue="9999">
+							exists (select '1' from cu_univ_dept where dept_id IN (SELECT DEPT_ID FROM CU_REPT_DEPT WHERE CLASSIFY_ID=#classifyId#) and university_id = a.university_id and univdept_id = a.department_id)
+							</isNotEqual>
+						</isNotEqual>
+					</isNotEmpty>
+					<isNotEmpty property="gubunId" prepend="AND">
+						B.GUBUN_ID = #gubunId#
+					</isNotEmpty>
+					<isNotEqual property="universityId" compareValue="0" prepend="AND">
+						A.UNIVERSITY_ID = #universityId#
+					</isNotEqual>
+					<isNotEqual property="checkbox1" compareValue="0" prepend="AND">
+						A.PUBLIC_YN = 'Y'
+					</isNotEqual>
+					<isNotEqual property="checkbox5" compareValue="0" prepend="AND">
+						A.PUBLIC_YN = 'Y'
+					</isNotEqual>
+			        <isNotEmpty property="checkbox3">
+			    		<isNotEqual property="checkbox3" compareValue="3" prepend="AND">
+			    		EXISTS (
+				            SELECT TERM_YEAR,TERM_SEMESTER
+				            FROM (            
+								SELECT DISTINCT DENSE_RANK() OVER(ORDER BY TERM_YEAR DESC, TERM_SEMESTER DESC ) RN, TERM_YEAR, TERM_SEMESTER FROM CU_SVC_COURSE
+								WHERE TERM_SEMESTER IN ('1','2','01','02')
+								AND SVC_STATUS = 'A'
+				            ) T
+				            WHERE RN &lt; 3
+	                       	AND T.TERM_YEAR = A.TERM_YEAR
+	                       	AND T.TERM_SEMESTER = A.TERM_SEMESTER )
+			    		</isNotEqual>
+			    	</isNotEmpty>
+			    	<isNotEmpty property="text">
+			        	<isEqual property="select" compareValue="1" prepend="AND">
+			        	title like '%'||#text#||'%'
+			        	</isEqual>
+			        	<isEqual property="select" compareValue="2" prepend="AND">
+			        	manager like '%'||#text#||'%'
+			        	</isEqual>
+			        	<isEqual property="select" compareValue="3" prepend="AND">
+			        	univ_name like '%'||#text#||'%'
+			        	</isEqual>
+			        	<isEqual property="select" compareValue="4" prepend="AND">
+			        	d.kem_val like '%'||#text#||'%'
+			        	</isEqual>
+			        	<isEqual property="select" compareValue="5" prepend="AND">
+			        	keyword like '%'||#text#||'%'
+			        	</isEqual>
+			        	<isEqual property="select" compareValue="6" prepend="AND">
+			        	department like '%'||#text#||'%'
+			        	</isEqual>
+			        </isNotEmpty>	
+			        <isNotEmpty property="yearName" prepend="AND">
+			        	A.term_year=#yearName#
+			        </isNotEmpty>
+					
+        	) a
+        WHERE CEIL (recNum / 12) = #currPage,javaType=Integer#
+        ORDER BY recNum ASC	
+	</select>
+	
+	
+	<select id="searchPublicOpenCourse" parameterClass="courseSearch" resultClass="courseSearch">
+	WITH data1
+		     AS (  select COUNT(*) OVER () totalCnt,
+		                A.COURSE_ID AS courseId,
+		                A.COURSE_IDENTIFIER AS courseIdentifier,
+		                A.UNIVERSITY_ID AS universityId,
+		                B.UNIV_NAME AS universityName,
+		                A.PUBLIC_YN AS publicYn,
+		                A.TITLE AS title,
+		                A.KEYWORD AS keyword,
+		                A.DEPARTMENT_ID AS departmentId,
+		                A.DEPARTMENT AS department,
+		                A.TERM_YEAR AS termYear,
+		                A.TERM_SEMESTER AS termSemester,
+		                A.SVC_START AS svcStart,
+		                A.SVC_END AS svcEnd,
+		                A.SVC_STATUS AS svcStatus,
+		                A.REGISTER AS register,
+		                A.REG_DATE AS regDate,
+		                A.MODIFIER AS modifier,
+		                A.MOD_DATE AS modDate,
+		                A.TYPE AS type,
+		                A.RIGHTS AS rights,
+		                A.LANGUAGE AS language,
+		                A.MANAGER AS manager,
+		                A.GRAD_YEAR AS gradYear,
+		                A.GRAD_SEMESTER AS gradSemester,
+		                A.DEL_YN AS delYn,
+		                A.PREVTHUMBNAIL AS prevthumbnail,
+		                A.PREVURI AS prevuri,
+		                A.IS_LOCK AS isLock,
+		                A.IS_TEMP AS isTemp,
+		                A.DELETOR AS deletor,
+		                A.DEL_DATE AS delDate,
+		                replace(c.kem_val,'.0','') AS credit,
+		                d.kem_val AS description,
+		                (select sum(clicks_cnt) from CU_LOG_COURSE_CLICKS where course_id = a.course_id) as clicksCnt
+		                , (select univdept_desc from cu_univ_dept where univdept_id = a.department_id and university_id = a.university_id) univDeptUrl
+		         FROM   CU_SVC_COURSE A
+		                JOIN CU_UNIV_INFO B
+		                  ON A.university_id = B.UNIVERSITY_ID
+		                LEFT JOIN CU_SVC_COURSE_KEM c
+		                  ON c.COURSE_ID = A.COURSE_ID AND c.COLLTYPE_ID = A.COURSE_ID AND c.METADIC_ID = '105'
+		                LEFT JOIN CU_SVC_COURSE_KEM_L d
+		                  ON d.COURSE_ID = A.COURSE_ID AND d.COLLTYPE_ID = A.COURSE_ID AND d.METADIC_ID = '8'
+		         WHERE  B.USE_YN = 'Y' AND B.gubun_id!='169' AND NVL(A.DEL_YN, ' ') != 'Y' AND NVL(A.IS_TEMP, ' ') != 'Y' AND A.SVC_STATUS = 'A' 
+		         		and A.PUBLIC_YN = 'Y' and A.PREVTHUMBNAIL is not null and A.PREVURI is not null
+					<isNotEmpty property="deptId" prepend="AND">
+		    	     	exists (select '1' from cu_univ_dept where dept_id = #deptId# and university_id = a.university_id and univdept_id = a.department_id)
+					</isNotEmpty>
+					<isNotEmpty property="gubunId" prepend="AND">
+						B.GUBUN_ID = #gubunId#
+					</isNotEmpty>
+					<isNotEqual property="universityId" compareValue="0" prepend="AND">
+						A.UNIVERSITY_ID = #universityId#
+					</isNotEqual>
+					<isNotEqual property="checkbox1" compareValue="0" prepend="AND">
+						A.PUBLIC_YN = 'Y'
+					</isNotEqual>
+					<isNotEqual property="checkbox5" compareValue="0" prepend="AND">
+						A.PUBLIC_YN = 'Y'
+					</isNotEqual>
+					<isNotEmpty property="text">
+			        	<isEqual property="select" compareValue="1" prepend="AND">
+			        	title like '%'||#text#||'%'
+			        	</isEqual>
+			        	<isEqual property="select" compareValue="2" prepend="AND">
+			        	manager like '%'||#text#||'%'
+			        	</isEqual>
+			        	<isEqual property="select" compareValue="3" prepend="AND">
+			        	univ_name like '%'||#text#||'%'
+			        	</isEqual>
+			        	<isEqual property="select" compareValue="4" prepend="AND">
+			        	d.kem_val like '%'||#text#||'%'
+			        	</isEqual>
+			        	<isEqual property="select" compareValue="5" prepend="AND">
+			        	keyword like '%'||#text#||'%'
+			        	</isEqual>
+			        	<isEqual property="select" compareValue="6" prepend="AND">
+			        	department like '%'||#text#||'%'
+			        	</isEqual>
+			        </isNotEmpty>
+			    	)
+              , data2 as (
+              SELECT 
+              			ROW_NUMBER() OVER (ORDER BY d1.modDate DESC, d1.termYear DESC, d1.termSemester DESC, d1.regDate DESC) AS recNum,
+		                d1.*
+		         FROM   data1 d1
+              )
+		SELECT *
+		FROM   data2
+		WHERE  ceil(recNum / 4) = #currPageForPublic,javaType=Integer#
+	</select>
+	
+	<select id="searchOpenCourse" parameterClass="courseSearch" resultClass="courseSearch">
+	
+	<!-- 오성애 과장님 튜닝 -->
+	
+WITH COURSETB AS (
+       SELECT   *
+         FROM (
+                    SELECT  
+					<isEmpty property="odbykey">
+						ROW_NUMBER() OVER (ORDER BY rn, rv) AS recNum,
+					</isEmpty>
+					<isNotEmpty property="odbykey">
+						<isEqual property="odbykey" compareValue="regdate">
+						ROW_NUMBER() OVER (ORDER BY rn, rv) AS recNum,
+						</isEqual>
+						<isNotEqual property="odbykey" compareValue="regdate">
+	     				ROW_NUMBER() OVER (ORDER BY $odbykey$ $odby$) AS recNum,
+						</isNotEqual>
+					</isNotEmpty>
+                             COUNT(*) OVER() AS totalcnt,
+                              A.COURSE_ID AS courseId,
+			                   A.COURSE_IDENTIFIER AS courseIdentifier,
+			                   A.UNIVERSITY_ID AS universityId,
+			                   univName AS universityName,
+			                   univName,
+			                   A.PUBLIC_YN AS publicYn,
+			                   A.TITLE AS title,
+			                   A.KEYWORD AS keyword,
+			                   A.DEPARTMENT_ID AS departmentId,
+			                   A.DEPARTMENT AS department,
+			                   A.TERM_YEAR AS termYear,
+			                   A.TERM_SEMESTER AS termSemester,
+			                   A.SVC_START AS svcStart,
+			                   A.SVC_END AS svcEnd,
+			                   A.SVC_STATUS AS svcStatus,
+			                   A.REGISTER AS REGISTER,
+			                   A.REG_DATE AS regDate,
+			                   A.MODIFIER AS modifier,
+			                   A.MOD_DATE AS modDate,
+			                   A.TYPE AS TYPE,
+			                   A.RIGHTS AS rights,
+			                   A.LANGUAGE AS LANGUAGE,
+			                   A.MANAGER AS manager,
+			                   A.GRAD_YEAR AS gradYear,
+			                   A.GRAD_SEMESTER AS gradSemester,
+			                   A.DEL_YN AS delYn,
+			                   A.PREVTHUMBNAIL AS prevthumbnail,
+			                   A.PREVURI AS prevuri,
+			                   A.IS_LOCK AS isLock,
+			                   A.IS_TEMP AS isTemp,
+			                   A.DELETOR AS deletor,
+			                   A.DEL_DATE AS delDate,
+			                   A.UNIV_HOMEPAGE AS univHomePage 
+                    FROM (
+                        select 
+                                ROW_NUMBER ()
+                                           OVER (PARTITION BY A.university_id
+                                                 ORDER BY A.reg_date desc  )
+                                              rn,
+                                    DBMS_RANDOM.VALUE (0, 1) as rv, a.*, b.univ_name as univName,B.UNIV_HOMEPAGE,
+                                    (SELECT SUM (clicks_cnt)
+				                      FROM CU_LOG_COURSE_CLICKS
+				                     WHERE course_id = A.course_id)
+				                      AS clicksCnt,
+				                   (SELECT univdept_desc
+				                      FROM cu_univ_dept
+				                     WHERE univdept_id = A.department_Id
+				                           AND university_id = A.university_id)
+				                      univDeptUrl
+                        from CU_SVC_COURSE a, cu_univ_info b  
+                        WHERE  1=1
+                        AND b.gubun_id !='169'
+                        and b.use_yn = 'Y'
+                        and a.university_id = b.university_id
+                        and NVL (A.DEL_YN, ' ') != 'Y'
+	                    AND NVL (A.IS_TEMP, ' ') != 'Y'
+	                    AND A.SVC_STATUS = 'A'
+	                    <isNotEmpty property="deptId" prepend="AND">
+							<isEqual property="deptId" compareValue="0">
+							NOT EXISTS (SELECT '1' FROM cu_univ_dept ud WHERE univdept_id = a.department_id AND university_id = a.university_id AND UD.DEPT_ID != '0')			
+							</isEqual>
+							<isNotEqual property="deptId" compareValue="0">
+			    	     	exists (select '1' from cu_univ_dept where dept_id = #deptId# and university_id = a.university_id and univdept_id = a.department_id)
+							</isNotEqual>
+						</isNotEmpty>
+						<isNotEmpty property="gubunId" prepend="AND">
+							B.GUBUN_ID = #gubunId#
+						</isNotEmpty>
+						<isNotEqual property="universityId" compareValue="0" prepend="AND">
+							A.UNIVERSITY_ID = #universityId#
+						</isNotEqual>
+						<isNotEqual property="checkbox1" compareValue="0" prepend="AND">
+							A.PUBLIC_YN = 'Y'
+						</isNotEqual>
+						<isNotEqual property="checkbox5" compareValue="0" prepend="AND">
+							A.PUBLIC_YN = 'Y'
+						</isNotEqual>
+				        <isNotEmpty property="checkbox3">
+				    		<isNotEqual property="checkbox3" compareValue="3" prepend="AND">
+				    		EXISTS (
+					            SELECT TERM_YEAR,TERM_SEMESTER
+					            FROM (            
+									SELECT DISTINCT DENSE_RANK() OVER(ORDER BY TERM_YEAR DESC, TERM_SEMESTER DESC ) RN, TERM_YEAR, TERM_SEMESTER FROM CU_SVC_COURSE
+									WHERE TERM_SEMESTER IN ('1','2','01','02')
+									AND SVC_STATUS = 'A'
+					            ) T
+					            WHERE RN &lt; 3
+		                       	AND T.TERM_YEAR = A.TERM_YEAR
+		                       	AND T.TERM_SEMESTER = A.TERM_SEMESTER )
+				    		</isNotEqual>
+				    	</isNotEmpty>
+				    	<isNotEmpty property="text">
+				        	<isEqual property="select" compareValue="1" prepend="AND">
+				        	title like '%'||#text#||'%'
+				        	</isEqual>
+				        	<isEqual property="select" compareValue="2" prepend="AND">
+				        	manager like '%'||#text#||'%'
+				        	</isEqual>
+				        	<isEqual property="select" compareValue="3" prepend="AND">
+				        	univ_name like '%'||#text#||'%'
+				        	</isEqual>
+				        	<isEqual property="select" compareValue="4" prepend="AND">
+				        	d.kem_val like '%'||#text#||'%'
+				        	</isEqual>
+				        	<isEqual property="select" compareValue="5" prepend="AND">
+				        	keyword like '%'||#text#||'%'
+				        	</isEqual>
+				        	<isEqual property="select" compareValue="6" prepend="AND">
+				        	department like '%'||#text#||'%'
+				        	</isEqual>
+				        </isNotEmpty>	
+                                                      
+                    ) A
+                    <isEqual property="isDetail" compareValue="Y">
+		        	where TERM_YEAR between #sdate# and #edate#
+		        </isEqual>
+		        <isEqual property="isDetail" compareValue="Y">
+		       	<isNotEmpty property="text1">
+		       		$terms1$ 
+							(
+			       			<isNotEmpty property="text1">
+			       			$select1$ like '%'||#text1#||'%'
+			       			</isNotEmpty>
+			       			<isNotEmpty property="text02" prepend="or">
+			       			(
+			       			$select1$ like '%'||#text02#||'%'
+			       			</isNotEmpty>
+			       			<isNotEmpty property="text03" prepend="and">
+			       			$select1$ like '%'||#text03#||'%'
+			       			</isNotEmpty>
+			       			<isNotEmpty property="text04" prepend="and">
+			       			$select1$ like '%'||#text04#||'%'
+			       			</isNotEmpty>
+			       			<isNotEmpty property="text05" prepend="and">
+			       			$select1$ like '%'||#text05#||'%'
+			       			</isNotEmpty>
+			       			<isNotEmpty property="text06" prepend="and">
+			       			$select1$ like '%'||#text06#||'%'
+			       			</isNotEmpty>
+			       			<isNotEmpty property="text07" prepend="and">
+			       			$select1$ like '%'||#text07#||'%'
+			       			</isNotEmpty>
+			       			<isNotEmpty property="text08" prepend="and">
+			       			$select1$ like '%'||#text08#||'%'
+			       			</isNotEmpty>
+			       			<isNotEmpty property="text09" prepend="and">
+			       			$select1$ like '%'||#text09#||'%'
+			       			</isNotEmpty>
+			       			<isNotEmpty property="text10" prepend="and">
+			       			$select1$ like '%'||#text10#||'%'
+			       			</isNotEmpty>
+			       			<isNotEmpty property="text02">
+			       			)
+			       			</isNotEmpty>
+		       				)
+		       	</isNotEmpty>
+		       	
+		       	<isNotEmpty property="text2">
+		       		$terms2$ 
+							(
+			       			<isNotEmpty property="text2">
+			       			$select2$ like '%'||#text2#||'%'
+			       			</isNotEmpty>
+			       			<isNotEmpty property="text12" prepend="or">
+			       			(
+			       			$select2$ like '%'||#text12#||'%'
+			       			</isNotEmpty>
+			       			<isNotEmpty property="text13" prepend="and">
+			       			$select2$ like '%'||#text13#||'%'
+			       			</isNotEmpty>
+			       			<isNotEmpty property="text14" prepend="and">
+			       			$select2$ like '%'||#text14#||'%'
+			       			</isNotEmpty>
+			       			<isNotEmpty property="text15" prepend="and">
+			       			$select2$ like '%'||#text15#||'%'
+			       			</isNotEmpty>
+			       			<isNotEmpty property="text16" prepend="and">
+			       			$select2$ like '%'||#text16#||'%'
+			       			</isNotEmpty>
+			       			<isNotEmpty property="text17" prepend="and">
+			       			$select2$ like '%'||#text17#||'%'
+			       			</isNotEmpty>
+			       			<isNotEmpty property="text18" prepend="and">
+			       			$select2$ like '%'||#text18#||'%'
+			       			</isNotEmpty>
+			       			<isNotEmpty property="text19" prepend="and">
+			       			$select2$ like '%'||#text19#||'%'
+			       			</isNotEmpty>
+			       			<isNotEmpty property="text20" prepend="and">
+			       			$select2$ like '%'||#text20#||'%'
+			       			</isNotEmpty>
+			       			<isNotEmpty property="text12">
+			       			)
+			       			</isNotEmpty>
+		       				)
+		       	</isNotEmpty>
+		       	
+		       	<isNotEmpty property="text3">
+		       		$terms3$ 
+							(
+			       			<isNotEmpty property="text3">
+			       			$select3$ like '%'||#text3#||'%'
+			       			</isNotEmpty>
+			       			<isNotEmpty property="text22" prepend="or">
+			       			(
+			       			$select3$ like '%'||#text22#||'%'
+			       			</isNotEmpty>
+			       			<isNotEmpty property="text23" prepend="and">
+			       			$select3$ like '%'||#text23#||'%'
+			       			</isNotEmpty>
+			       			<isNotEmpty property="text24" prepend="and">
+			       			$select3$ like '%'||#text24#||'%'
+			       			</isNotEmpty>
+			       			<isNotEmpty property="text25" prepend="and">
+			       			$select3$ like '%'||#text25#||'%'
+			       			</isNotEmpty>
+			       			<isNotEmpty property="text26" prepend="and">
+			       			$select3$ like '%'||#text26#||'%'
+			       			</isNotEmpty>
+			       			<isNotEmpty property="text27" prepend="and">
+			       			$select3$ like '%'||#text27#||'%'
+			       			</isNotEmpty>
+			       			<isNotEmpty property="text28" prepend="and">
+			       			$select3$ like '%'||#text28#||'%'
+			       			</isNotEmpty>
+			       			<isNotEmpty property="text29" prepend="and">
+			       			$select3$ like '%'||#text29#||'%'
+			       			</isNotEmpty>
+			       			<isNotEmpty property="text30" prepend="and">
+			       			$select3$ like '%'||#text30#||'%'
+			       			</isNotEmpty>
+			       			<isNotEmpty property="text22">
+			       			)
+			       			</isNotEmpty>
+		       				)
+		       	</isNotEmpty>	
+		       	</isEqual>  
+               )
+           WHERE  ceil(recNum / #showCnt,javaType=Integer#) = #currPage,javaType=Integer#
+		 )
+		SELECT
+				A.*,  
+                   REPLACE (c.kem_val, '.0', '') AS credit,
+                       CASE
+                      WHEN LENGTH ( d.kem_val ) &gt; 147
+                      THEN
+                         SUBSTR ( d.kem_val , 0, 147) || '...'
+                      ELSE
+                          d.kem_val 
+                   END AS                 description,
+                   getSip (a.univHomePage) AS sip,
+                   getUri (a.univHomePage) AS uri,
+                   getQri (a.univHomePage) AS qri,
+                   getSp (a.univHomePage) AS sp                   
+              FROM COURSETB  A
+                   JOIN CU_UNIV_INFO B
+                      ON A.universityId = B.UNIVERSITY_ID
+                   LEFT JOIN CU_SVC_COURSE_KEM c
+                      ON     c.COURSE_ID = A.courseId
+                         AND c.METADIC_ID = '105'
+                   LEFT JOIN CU_SVC_COURSE_KEM_L d
+                      ON     d.COURSE_ID = A.courseId
+                         AND d.METADIC_ID = '8'
+	
+	<!-- 실서버 9i 의 속도에 맞춰서 쿼리 변경 -->
+	<!-- 
+		WITH data1
+		     AS (  select 
+		     			row_number() over(partition by a.university_id order by a.reg_date $odby$) rn,dbms_random.value(0,1) rv,
+		                A.COURSE_ID AS courseId,
+		                A.COURSE_IDENTIFIER AS courseIdentifier,
+		                A.UNIVERSITY_ID AS universityId,
+		                B.UNIV_NAME AS universityName,
+		                A.PUBLIC_YN AS publicYn,
+		                A.TITLE AS title,
+		                A.KEYWORD AS keyword,
+		                A.DEPARTMENT_ID AS departmentId,
+		                A.DEPARTMENT AS department,
+		                A.TERM_YEAR AS termYear,
+		                A.TERM_SEMESTER AS termSemester,
+		                A.SVC_START AS svcStart,
+		                A.SVC_END AS svcEnd,
+		                A.SVC_STATUS AS svcStatus,
+		                A.REGISTER AS register,
+		                A.REG_DATE AS regDate,
+		                A.MODIFIER AS modifier,
+		                A.MOD_DATE AS modDate,
+		                A.TYPE AS type,
+		                A.RIGHTS AS rights,
+		                A.LANGUAGE AS language,
+		                A.MANAGER AS manager,
+		                A.GRAD_YEAR AS gradYear,
+		                A.GRAD_SEMESTER AS gradSemester,
+		                A.DEL_YN AS delYn,
+		                A.PREVTHUMBNAIL AS prevthumbnail,
+		                A.PREVURI AS prevuri,
+		                A.IS_LOCK AS isLock,
+		                A.IS_TEMP AS isTemp,
+		                A.DELETOR AS deletor,
+		                A.DEL_DATE AS delDate,
+		                replace(c.kem_val,'.0','') AS credit,
+		                d.kem_val AS description,
+		                B.UNIV_HOMEPAGE as univHomePage,
+		                getSip(B.UNIV_HOMEPAGE) as sip,
+		                getUri(B.UNIV_HOMEPAGE) as uri,
+		                getQri(B.UNIV_HOMEPAGE) as qri,
+		                getSp(B.UNIV_HOMEPAGE) as sp,
+		                b.univ_name as univName,
+		                (select sum(clicks_cnt) from CU_LOG_COURSE_CLICKS where course_id = a.course_id) as clicksCnt
+		                , (select univdept_desc from cu_univ_dept where univdept_id = a.department_id and university_id = a.university_id) univDeptUrl
+		         FROM   CU_SVC_COURSE A
+		                JOIN CU_UNIV_INFO B
+		                  ON A.university_id = B.UNIVERSITY_ID
+		                LEFT JOIN CU_SVC_COURSE_KEM c
+		                  ON c.COURSE_ID = A.COURSE_ID AND c.COLLTYPE_ID = A.COURSE_ID AND c.METADIC_ID = '105'
+		                LEFT JOIN CU_SVC_COURSE_KEM_L d
+		                  ON d.COURSE_ID = A.COURSE_ID AND d.COLLTYPE_ID = A.COURSE_ID AND d.METADIC_ID = '8'
+		         WHERE  B.USE_YN = 'Y' AND NVL(A.DEL_YN, ' ') != 'Y' AND NVL(A.IS_TEMP, ' ') != 'Y' AND A.SVC_STATUS = 'A' 
+					<isNotEmpty property="deptId" prepend="AND">
+						<isEqual property="deptId" compareValue="0">
+						NOT EXISTS (SELECT '1' FROM cu_univ_dept ud WHERE univdept_id = a.department_id AND university_id = a.university_id AND UD.DEPT_ID != '0')			
+						</isEqual>
+						<isNotEqual property="deptId" compareValue="0">
+		    	     	exists (select '1' from cu_univ_dept where dept_id = #deptId# and university_id = a.university_id and univdept_id = a.department_id)
+						</isNotEqual>
+					</isNotEmpty>
+					<isNotEmpty property="gubunId" prepend="AND">
+						B.GUBUN_ID = #gubunId#
+					</isNotEmpty>
+					<isNotEqual property="universityId" compareValue="0" prepend="AND">
+						A.UNIVERSITY_ID = #universityId#
+					</isNotEqual>
+					<isNotEqual property="checkbox1" compareValue="0" prepend="AND">
+						A.PUBLIC_YN = 'Y'
+					</isNotEqual>
+					<isNotEqual property="checkbox5" compareValue="0" prepend="AND">
+						A.PUBLIC_YN = 'Y'
+					</isNotEqual>
+			        <isNotEmpty property="checkbox3">
+			    		<isNotEqual property="checkbox3" compareValue="3" prepend="AND">
+			    		EXISTS (
+				            SELECT TERM_YEAR,TERM_SEMESTER
+				            FROM (            
+								SELECT DISTINCT DENSE_RANK() OVER(ORDER BY TERM_YEAR DESC, TERM_SEMESTER DESC ) RN, TERM_YEAR, TERM_SEMESTER FROM CU_SVC_COURSE
+								WHERE TERM_SEMESTER IN ('1','2','01','02')
+								AND SVC_STATUS = 'A'
+				            ) T
+				            WHERE RN &lt; 3
+	                       	AND T.TERM_YEAR = A.TERM_YEAR
+	                       	AND T.TERM_SEMESTER = A.TERM_SEMESTER )
+			    		</isNotEqual>
+			    	</isNotEmpty>
+			    	<isNotEmpty property="text">
+			        	<isEqual property="select" compareValue="1" prepend="AND">
+			        	title like '%'||#text#||'%'
+			        	</isEqual>
+			        	<isEqual property="select" compareValue="2" prepend="AND">
+			        	manager like '%'||#text#||'%'
+			        	</isEqual>
+			        	<isEqual property="select" compareValue="3" prepend="AND">
+			        	univ_name like '%'||#text#||'%'
+			        	</isEqual>
+			        	<isEqual property="select" compareValue="4" prepend="AND">
+			        	d.kem_val like '%'||#text#||'%'
+			        	</isEqual>
+			        	<isEqual property="select" compareValue="5" prepend="AND">
+			        	keyword like '%'||#text#||'%'
+			        	</isEqual>
+			        	<isEqual property="select" compareValue="6" prepend="AND">
+			        	department like '%'||#text#||'%'
+			        	</isEqual>
+			        </isNotEmpty>	
+			    	)
+              , data2 as (
+              SELECT 
+              		<isEmpty property="odbykey">
+              			ROW_NUMBER() OVER (ORDER BY d1.modDate DESC, d1.termYear DESC, d1.termSemester DESC, d1.regDate DESC) AS recNum,
+			        </isEmpty>
+					<isNotEmpty property="odbykey">
+						<isEqual property="odbykey" compareValue="regdate">
+						ROW_NUMBER() OVER (ORDER BY rn, rv) AS recNum,
+						</isEqual>
+						<isNotEqual property="odbykey" compareValue="regdate">
+	     				ROW_NUMBER() OVER (ORDER BY $odbykey$ $odby$) AS recNum,
+						</isNotEqual>
+					</isNotEmpty>
+		                COUNT(*) OVER () totalCnt,d1.*
+		         FROM   data1 d1
+		         where 1 = 1
+				<isEqual property="isDetail" compareValue="Y" prepend="AND">
+		        	termyear between #sdate# and #edate#
+		        </isEqual>
+		        <isEqual property="isDetail" compareValue="Y">
+		       	<isNotEmpty property="text1">
+		       		$terms1$ 
+							(
+			       			<isNotEmpty property="text1">
+			       			$select1$ like '%'||#text1#||'%'
+			       			</isNotEmpty>
+			       			<isNotEmpty property="text02" prepend="or">
+			       			(
+			       			$select1$ like '%'||#text02#||'%'
+			       			</isNotEmpty>
+			       			<isNotEmpty property="text03" prepend="and">
+			       			$select1$ like '%'||#text03#||'%'
+			       			</isNotEmpty>
+			       			<isNotEmpty property="text04" prepend="and">
+			       			$select1$ like '%'||#text04#||'%'
+			       			</isNotEmpty>
+			       			<isNotEmpty property="text05" prepend="and">
+			       			$select1$ like '%'||#text05#||'%'
+			       			</isNotEmpty>
+			       			<isNotEmpty property="text06" prepend="and">
+			       			$select1$ like '%'||#text06#||'%'
+			       			</isNotEmpty>
+			       			<isNotEmpty property="text07" prepend="and">
+			       			$select1$ like '%'||#text07#||'%'
+			       			</isNotEmpty>
+			       			<isNotEmpty property="text08" prepend="and">
+			       			$select1$ like '%'||#text08#||'%'
+			       			</isNotEmpty>
+			       			<isNotEmpty property="text09" prepend="and">
+			       			$select1$ like '%'||#text09#||'%'
+			       			</isNotEmpty>
+			       			<isNotEmpty property="text10" prepend="and">
+			       			$select1$ like '%'||#text10#||'%'
+			       			</isNotEmpty>
+			       			<isNotEmpty property="text02">
+			       			)
+			       			</isNotEmpty>
+		       				)
+		       	</isNotEmpty>
+		       	
+		       	<isNotEmpty property="text2">
+		       		$terms2$ 
+							(
+			       			<isNotEmpty property="text2">
+			       			$select2$ like '%'||#text2#||'%'
+			       			</isNotEmpty>
+			       			<isNotEmpty property="text12" prepend="or">
+			       			(
+			       			$select2$ like '%'||#text12#||'%'
+			       			</isNotEmpty>
+			       			<isNotEmpty property="text13" prepend="and">
+			       			$select2$ like '%'||#text13#||'%'
+			       			</isNotEmpty>
+			       			<isNotEmpty property="text14" prepend="and">
+			       			$select2$ like '%'||#text14#||'%'
+			       			</isNotEmpty>
+			       			<isNotEmpty property="text15" prepend="and">
+			       			$select2$ like '%'||#text15#||'%'
+			       			</isNotEmpty>
+			       			<isNotEmpty property="text16" prepend="and">
+			       			$select2$ like '%'||#text16#||'%'
+			       			</isNotEmpty>
+			       			<isNotEmpty property="text17" prepend="and">
+			       			$select2$ like '%'||#text17#||'%'
+			       			</isNotEmpty>
+			       			<isNotEmpty property="text18" prepend="and">
+			       			$select2$ like '%'||#text18#||'%'
+			       			</isNotEmpty>
+			       			<isNotEmpty property="text19" prepend="and">
+			       			$select2$ like '%'||#text19#||'%'
+			       			</isNotEmpty>
+			       			<isNotEmpty property="text20" prepend="and">
+			       			$select2$ like '%'||#text20#||'%'
+			       			</isNotEmpty>
+			       			<isNotEmpty property="text12">
+			       			)
+			       			</isNotEmpty>
+		       				)
+		       	</isNotEmpty>
+		       	
+		       	<isNotEmpty property="text3">
+		       		$terms3$ 
+							(
+			       			<isNotEmpty property="text3">
+			       			$select3$ like '%'||#text3#||'%'
+			       			</isNotEmpty>
+			       			<isNotEmpty property="text22" prepend="or">
+			       			(
+			       			$select3$ like '%'||#text22#||'%'
+			       			</isNotEmpty>
+			       			<isNotEmpty property="text23" prepend="and">
+			       			$select3$ like '%'||#text23#||'%'
+			       			</isNotEmpty>
+			       			<isNotEmpty property="text24" prepend="and">
+			       			$select3$ like '%'||#text24#||'%'
+			       			</isNotEmpty>
+			       			<isNotEmpty property="text25" prepend="and">
+			       			$select3$ like '%'||#text25#||'%'
+			       			</isNotEmpty>
+			       			<isNotEmpty property="text26" prepend="and">
+			       			$select3$ like '%'||#text26#||'%'
+			       			</isNotEmpty>
+			       			<isNotEmpty property="text27" prepend="and">
+			       			$select3$ like '%'||#text27#||'%'
+			       			</isNotEmpty>
+			       			<isNotEmpty property="text28" prepend="and">
+			       			$select3$ like '%'||#text28#||'%'
+			       			</isNotEmpty>
+			       			<isNotEmpty property="text29" prepend="and">
+			       			$select3$ like '%'||#text29#||'%'
+			       			</isNotEmpty>
+			       			<isNotEmpty property="text30" prepend="and">
+			       			$select3$ like '%'||#text30#||'%'
+			       			</isNotEmpty>
+			       			<isNotEmpty property="text22">
+			       			)
+			       			</isNotEmpty>
+		       				)
+		       	</isNotEmpty>	
+		       	</isEqual>         
+              )
+		SELECT recNum,
+		       totalCnt,
+		       rn,
+		       rv,
+		       courseId,
+		       courseIdentifier,
+		       universityId,
+		       universityName,
+		       publicYN,
+		       title,
+		       keyword,
+		       departmentId,
+		       department,
+		       termYear,
+		       termSemester,
+		       svcStart,
+		       svcEnd,
+		       svcStatus,
+		       TYPE,
+		       rights,
+		       LANGUAGE,
+		       manager,
+		       gradYear,
+		       gradSemester,
+		       delYN,
+		       prevthumbnail,
+		       prevuri,
+		       isLock,
+		       isTemp,
+		       deletor,
+		       deldate,
+		       credit,
+		       CASE WHEN length(description) > 147 THEN substr(description,0,147)||'...' ELSE description END description,
+		       univHomepage,
+		       sip,
+		       uri,
+		       qri,
+		       sp,
+		       univName,
+		       clicksCnt,
+		       univdeptUrl		       
+		FROM   data2
+		WHERE  ceil(recNum / #showCnt,javaType=Integer#) = #currPage,javaType=Integer#
+	 -->
+	
+	<!-- 11g 기준 쿼리 -->
+	<!-- 
+			WITH data1
+		     AS (SELECT 
+				     	<isEmpty property="odbykey">
+		     			ROW_NUMBER() OVER (ORDER BY A.MOD_DATE DESC, A.TERM_YEAR DESC, A.TERM_SEMESTER DESC, a.reg_date DESC) AS recNum
+				        </isEmpty>
+						<isNotEmpty property="odbykey">
+		     			ROW_NUMBER() OVER (ORDER BY A.MOD_DATE DESC, A.TERM_YEAR DESC, A.TERM_SEMESTER DESC, a.reg_date DESC) AS recNum
+						</isNotEmpty>
+		                ,COUNT(*) OVER () totalCnt,
+		                A.COURSE_ID AS courseId,
+		                A.COURSE_IDENTIFIER AS courseIdentifier,
+		                A.UNIVERSITY_ID AS universityId,
+		                B.UNIV_NAME AS universityName,
+		                A.PUBLIC_YN AS publicYn,
+		                A.TITLE AS title,
+		                A.KEYWORD AS keyword,
+		                A.DEPARTMENT_ID AS departmentId,
+		                A.DEPARTMENT AS department,
+		                A.TERM_YEAR AS termYear,
+		                A.TERM_SEMESTER AS termSemester,
+		                A.SVC_START AS svcStart,
+		                A.SVC_END AS svcEnd,
+		                A.SVC_STATUS AS svcStatus,
+		                A.REGISTER AS register,
+		                A.REG_DATE AS regDate,
+		                A.MODIFIER AS modifier,
+		                A.MOD_DATE AS modDate,
+		                A.TYPE AS type,
+		                A.RIGHTS AS rights,
+		                A.LANGUAGE AS language,
+		                A.MANAGER AS manager,
+		                A.GRAD_YEAR AS gradYear,
+		                A.GRAD_SEMESTER AS gradSemester,
+		                A.DEL_YN AS delYn,
+		                A.PREVTHUMBNAIL AS prevthumbnail,
+		                A.PREVURI AS prevuri,
+		                A.IS_LOCK AS isLock,
+		                A.IS_TEMP AS isTemp,
+		                A.DELETOR AS deletor,
+		                A.DEL_DATE AS delDate
+		         FROM   CU_SVC_COURSE A, CU_UNIV_INFO B
+		         WHERE  A.UNIVERSITY_ID = B.UNIVERSITY_ID 
+		         AND B.USE_YN = 'Y' 
+		         AND NVL(A.DEL_YN, ' ') != 'Y' 
+		         AND NVL(A.IS_TEMP, ' ') != 'Y'
+		         AND A.SVC_STATUS = 'A'
+				<isNotEmpty property="deptId" prepend="AND">
+	    	     	department_id in (select univdept_id from cu_univ_dept where dept_id =  #deptId#)
+				</isNotEmpty>
+				<isNotEmpty property="gubunId" prepend="AND">
+					GUBUN_ID = #gubunId#
+				</isNotEmpty>
+				<isNotEqual property="universityId" compareValue="0" prepend="AND">
+					A.UNIVERSITY_ID = #universityId#
+				</isNotEqual>
+				<isNotEqual property="checkbox1" compareValue="0" prepend="AND">
+					A.PUBLIC_YN = 'Y'
+				</isNotEqual>
+				<isNotEqual property="checkbox5" compareValue="0" prepend="AND">
+					A.PUBLIC_YN = 'Y'
+				</isNotEqual>
+				<isEqual property="isDetail" compareValue="Y" prepend="AND">
+	        		TERM_YEAR between #sdate# and #edate#
+		        </isEqual>
+		        <isNotEmpty property="checkbox3">
+		    		<isNotEqual property="checkbox3" compareValue="3" prepend="AND">
+		    		EXISTS (
+			            SELECT TERM_YEAR,TERM_SEMESTER
+			            FROM (            
+							SELECT DISTINCT DENSE_RANK() OVER(ORDER BY TERM_YEAR DESC, TERM_SEMESTER DESC ) RN, TERM_YEAR, TERM_SEMESTER FROM CU_SVC_COURSE
+							WHERE TERM_SEMESTER IN ('1','2')
+			            )  B
+			            WHERE RN &lt; 3
+                       	AND B.TERM_YEAR = a.TERM_YEAR
+                       	AND B.TERM_SEMESTER = a.TERM_SEMESTER )
+		    		</isNotEqual>
+		    	</isNotEmpty>
+		         )
+		SELECT   (SELECT kem_val
+		          FROM   cu_svc_course_kem
+		          WHERE  course_id = a.courseId AND colltype_id = a.courseId AND METADIC_ID = '105')
+		           credit,
+		         (SELECT univ_name
+		          FROM   cu_univ_info
+		          WHERE  university_id = universityId)
+		           univName,
+		         (SELECT DBMS_LOB.SUBSTR(kem_val, 150, 1)
+		          FROM   cu_svc_course_kem_l
+		          WHERE  course_id = a.courseId AND colltype_id = a.courseId AND METADIC_ID = '8')
+		           description,
+		         (SELECT kem_val
+		          FROM   cu_svc_course_kem
+		          WHERE  course_id = a.courseId AND colltype_id = a.courseId AND METADIC_ID = '71')
+		           contName,
+		         (SELECT kem_val
+		          FROM   cu_svc_course_kem
+		          WHERE  course_id = a.courseId AND colltype_id = a.courseId AND METADIC_ID = '13')
+		           deptName,
+		         a.*
+		FROM     data1 a
+		WHERE    ceil(recNum / #showCnt,javaType=Integer#) = #currPage,javaType=Integer#
+		ORDER BY recNum
+		
+		 -->
+	<!-- 상세검색 옵션추가 필요 -->
+	<!-- 
+			<isNotEmpty property="text1">
+       			$terms1$ 
+					(
+	       			<isNotEmpty property="text1">
+	       			$select1$ like '%'||#text1#||'%'
+	       			</isNotEmpty>
+	       			<isNotEmpty property="text02" prepend="or">
+	       			(
+	       			$select1$ like '%'||#text02#||'%'
+	       			</isNotEmpty>
+	       			<isNotEmpty property="text03" prepend="and">
+	       			$select1$ like '%'||#text03#||'%'
+	       			</isNotEmpty>
+	       			<isNotEmpty property="text04" prepend="and">
+	       			$select1$ like '%'||#text04#||'%'
+	       			</isNotEmpty>
+	       			<isNotEmpty property="text05" prepend="and">
+	       			$select1$ like '%'||#text05#||'%'
+	       			</isNotEmpty>
+	       			<isNotEmpty property="text06" prepend="and">
+	       			$select1$ like '%'||#text06#||'%'
+	       			</isNotEmpty>
+	       			<isNotEmpty property="text07" prepend="and">
+	       			$select1$ like '%'||#text07#||'%'
+	       			</isNotEmpty>
+	       			<isNotEmpty property="text08" prepend="and">
+	       			$select1$ like '%'||#text08#||'%'
+	       			</isNotEmpty>
+	       			<isNotEmpty property="text09" prepend="and">
+	       			$select1$ like '%'||#text09#||'%'
+	       			</isNotEmpty>
+	       			<isNotEmpty property="text10" prepend="and">
+	       			$select1$ like '%'||#text10#||'%'
+	       			</isNotEmpty>
+	       			<isNotEmpty property="text02">
+	       			)
+	       			</isNotEmpty>
+       				)
+		       	</isNotEmpty>
+		       	
+		       	<isNotEmpty property="text2">
+		       		$terms2$ 
+					(
+	       			<isNotEmpty property="text2">
+	       			$select2$ like '%'||#text2#||'%'
+	       			</isNotEmpty>
+	       			<isNotEmpty property="text12" prepend="or">
+	       			(
+	       			$select2$ like '%'||#text12#||'%'
+	       			</isNotEmpty>
+	       			<isNotEmpty property="text13" prepend="and">
+	       			$select2$ like '%'||#text13#||'%'
+	       			</isNotEmpty>
+	       			<isNotEmpty property="text14" prepend="and">
+	       			$select2$ like '%'||#text14#||'%'
+	       			</isNotEmpty>
+	       			<isNotEmpty property="text15" prepend="and">
+	       			$select2$ like '%'||#text15#||'%'
+	       			</isNotEmpty>
+	       			<isNotEmpty property="text16" prepend="and">
+	       			$select2$ like '%'||#text16#||'%'
+	       			</isNotEmpty>
+	       			<isNotEmpty property="text17" prepend="and">
+	       			$select2$ like '%'||#text17#||'%'
+	       			</isNotEmpty>
+	       			<isNotEmpty property="text18" prepend="and">
+	       			$select2$ like '%'||#text18#||'%'
+	       			</isNotEmpty>
+	       			<isNotEmpty property="text19" prepend="and">
+	       			$select2$ like '%'||#text19#||'%'
+	       			</isNotEmpty>
+	       			<isNotEmpty property="text20" prepend="and">
+	       			$select2$ like '%'||#text20#||'%'
+	       			</isNotEmpty>
+	       			<isNotEmpty property="text12">
+	       			)
+	       			</isNotEmpty>
+       				)
+		       	</isNotEmpty>
+		       	<isNotEmpty property="text3">
+		       		$terms3$ 
+					(
+	       			<isNotEmpty property="text3">
+	       			$select3$ like '%'||#text3#||'%'
+	       			</isNotEmpty>
+	       			<isNotEmpty property="text22" prepend="or">
+	       			(
+	       			$select3$ like '%'||#text22#||'%'
+	       			</isNotEmpty>
+	       			<isNotEmpty property="text23" prepend="and">
+	       			$select3$ like '%'||#text23#||'%'
+	       			</isNotEmpty>
+	       			<isNotEmpty property="text24" prepend="and">
+	       			$select3$ like '%'||#text24#||'%'
+	       			</isNotEmpty>
+	       			<isNotEmpty property="text25" prepend="and">
+	       			$select3$ like '%'||#text25#||'%'
+	       			</isNotEmpty>
+	       			<isNotEmpty property="text26" prepend="and">
+	       			$select3$ like '%'||#text26#||'%'
+	       			</isNotEmpty>
+	       			<isNotEmpty property="text27" prepend="and">
+	       			$select3$ like '%'||#text27#||'%'
+	       			</isNotEmpty>
+	       			<isNotEmpty property="text28" prepend="and">
+	       			$select3$ like '%'||#text28#||'%'
+	       			</isNotEmpty>
+	       			<isNotEmpty property="text29" prepend="and">
+	       			$select3$ like '%'||#text29#||'%'
+	       			</isNotEmpty>
+	       			<isNotEmpty property="text30" prepend="and">
+	       			$select3$ like '%'||#text30#||'%'
+	       			</isNotEmpty>
+	       			<isNotEmpty property="text22">
+	       			)
+	       			</isNotEmpty>
+       				)
+		       	</isNotEmpty>
+		       	 -->		
+		
+	<!-- 
+	SELECT  aa.*
+			,'' contName 
+             ,NVL (
+                   (SELECT CLASSIFY_NAME
+                  FROM CU_REPT_CLASSIFICATION A, CU_REPT_DEPT B
+                    WHERE A.CLASSIFY_ID = B.CLASSIFY_ID
+                 AND B.DEPT_ID = aa.deptId),
+                   '기타'
+                   )
+                   AS CLASSIFY_NAME
+             ,CASE WHEN description1 is null then ''
+			      WHEN to_number( LENGTHB(TO_CHAR(description1))) <![CDATA[<]]> 175 THEN TO_CHAR(description1)
+			      WHEN to_number( LENGTHB(TO_CHAR(substr(description1,1, 130)))) <![CDATA[<]]> 175 THEN TO_CHAR(substr(description1,1, 130)) || '...'
+			      WHEN to_number( LENGTHB(TO_CHAR(substr(description1,1, 125)))) <![CDATA[<]]> 175 THEN TO_CHAR(substr(description1,1, 125)) || '...'
+			      WHEN to_number( LENGTHB(TO_CHAR(substr(description1,1, 120)))) <![CDATA[<]]> 175 THEN TO_CHAR(substr(description1,1, 120)) || '...'
+			      WHEN to_number( LENGTHB(TO_CHAR(substr(description1,1, 115)))) <![CDATA[<]]> 175 THEN TO_CHAR(substr(description1,1, 115)) || '...'
+			      WHEN to_number( LENGTHB(TO_CHAR(substr(description1,1, 110)))) <![CDATA[<]]> 175 THEN TO_CHAR(substr(description1,1, 110)) || '...'
+			      WHEN to_number( LENGTHB(TO_CHAR(substr(description1,1, 105)))) <![CDATA[<]]> 175 THEN TO_CHAR(substr(description1,1, 105)) || '...'
+			      WHEN to_number( LENGTHB(TO_CHAR(substr(description1,1, 100)))) <![CDATA[<]]> 175 THEN TO_CHAR(substr(description1,1, 100)) || '...'
+			      WHEN to_number( LENGTHB(TO_CHAR(substr(description1,1, 95)))) <![CDATA[<]]> 175 THEN TO_CHAR(substr(description1,1, 95)) || '...'
+			      WHEN to_number( LENGTHB(TO_CHAR(substr(description1,1, 90)))) <![CDATA[<]]> 175 THEN TO_CHAR(substr(description1,1, 90)) || '...'
+			      WHEN to_number( LENGTHB(TO_CHAR(substr(description1,1, 85)))) <![CDATA[<]]> 175 THEN TO_CHAR(substr(description1,1, 85)) || '...'
+			 ELSE
+			   TO_CHAR(substr(description1,1, 80)) || '...'
+			END as description
+	from (
+			select
+				<isEmpty property="odbykey">
+		        ROW_NUMBER() OVER(ORDER BY regdate desc) as recNum 
+		        </isEmpty>
+				<isNotEmpty property="odbykey">
+				ROW_NUMBER() OVER(ORDER BY $odbykey$ $odby$) as recNum 
+				</isNotEmpty>
+					,a.*
+					,count(*) over() totalCnt
+            FROM 
+            (
+			 SELECT DT.*
+          	FROM (SELECT 
+          				SC.COURSE_ID courseId,
+                       	COURSE_IDENTIFIER courseIdentifier,
+                       	UNIVERSITY_ID universityId,
+                       	(select univ_name from cu_univ_info where university_id = sc.university_id) univName,
+                       	PUBLIC_YN publicYn,
+                       	TITLE title,
+                       	TITLE mainTitle,
+                       	KEYWORD keyword,
+                       	DEPARTMENT_ID departmentId,
+                       	DEPARTMENT department,
+                       	DEPARTMENT deptName,
+                       	TERM_YEAR termYear,
+                       	to_number(trim(translate(TERM_SEMESTER, '1234567890' || TERM_SEMESTER, '1234567890'))) termSemester,
+                       	SVC_START svcStart,
+                       	SVC_END svcEnd,
+                       	SVC_STATUS svcStatus,
+                       	REGISTER register,
+                       	REG_DATE regDate,
+                       	MODIFIER modifier,
+                       	MOD_DATE modDate,
+                       	'' contName,
+                       	NVL ((SELECT sum(clicks_cnt) FROM CU_LOG_COURSE_CLICKS C WHERE   COURSE_ID = SC.COURSE_ID and rownum = 1),0) as clicksCnt,
+                        replace(nvl(B.KEM_VAL,0),'.0','') as credit,
+                       C.KEM_VAL as description1,
+                       D.KEM_VAL as
+                          subTitle,
+                       	NVL (
+                          (SELECT A.DEPT_ID
+                             FROM CU_REPT_DEPT A, CU_UNIV_DEPT B
+                            WHERE A.DEPT_ID = B.DEPT_ID
+                            	  AND B.UNIVERSITY_ID = SC.UNIVERSITY_ID
+                                  AND B.UNIVDEPT_ID = SC.DEPARTMENT_ID),
+                          0)
+                          AS deptId
+                  FROM CU_SVC_COURSE SC
+                  		LEFT JOIN CU_SVC_COURSE_KEM B
+                        ON sc.COURSE_ID = B.COURSE_ID AND sc.COURSE_ID = B.COLLTYPE_ID AND B.METADIC_ID = 25
+                        LEFT JOIN CU_SVC_COURSE_KEM_L C
+                        ON sc.COURSE_ID = C.COURSE_ID AND sc.COURSE_ID = C.COLLTYPE_ID AND C.METADIC_ID = 8
+                        LEFT JOIN CU_SVC_COURSE_KEM D
+                        ON sc.COURSE_ID = D.COURSE_ID AND sc.COURSE_ID = D.COLLTYPE_ID AND D.METADIC_ID = 13
+                where 1=1
+                and sc.SVC_STATUS = 'A'
+                <isNotEmpty property="gubunId" prepend="AND">
+                	EXISTS ( select '1' from cu_univ_info where university_id = sc.university_id and gubun_id = #gubunId#)
+                </isNotEmpty>
+                <isNotEmpty property="checkbox3">
+		    		<isNotEqual property="checkbox3" compareValue="3" prepend="AND">
+		    		EXISTS (
+			            SELECT TERM_YEAR,TERM_SEMESTER
+			            FROM (            
+			                SELECT  ROW_NUMBER() OVER(ORDER BY TERM_YEAR DESC, TERM_SEMESTER DESC) AS RN,
+			                      TERM_YEAR ,
+			                      TERM_SEMESTER
+			                 FROM CU_SVC_COURSE
+			                WHERE TERM_YEAR &gt;= TO_CHAR(SYSDATE,'YYYY')-2
+			                AND TERM_SEMESTER IN ('1','2')
+			                AND SVC_STATUS = 'A'
+			                GROUP BY TERM_YEAR ,TERM_SEMESTER
+			                ORDER BY TERM_YEAR  DESC, TERM_SEMESTER DESC                
+			            )  B
+			            WHERE RN &lt; 3
+                       	AND B.TERM_YEAR = SC.TERM_YEAR
+                       	AND B.TERM_SEMESTER = SC.TERM_SEMESTER )
+		    		</isNotEqual>
+		    	</isNotEmpty>
+                  ) DT
+         	WHERE 1=1
+			<isNotEmpty property="deptId" prepend="AND">
+         	DT.deptId = #deptId#
+			</isNotEmpty>
+			<isNotEqual property="universityId" compareValue="0" prepend="AND">
+			DT.universityId = #universityId#
+			</isNotEqual>
+			<isNotEqual property="checkbox1" compareValue="0" prepend="AND">
+			DT.publicYn = 'Y'
+			</isNotEqual>
+			<isNotEqual property="checkbox5" compareValue="0" prepend="AND">
+			DT.publicYn = 'Y'
+			</isNotEqual>
+			) a
+			where 1=1
+		-->
+        <!-- 고급검색에서 사용하는 조건 -->
+        <!-- 
+        <isEqual property="isDetail" compareValue="Y" prepend="AND">
+        	termyear between #sdate# and #edate#
+        </isEqual>
+        
+       	<isNotEmpty property="text1">
+       		$terms1$ 
+					(
+	       			<isNotEmpty property="text1">
+	       			$select1$ like '%'||#text1#||'%'
+	       			</isNotEmpty>
+	       			<isNotEmpty property="text02" prepend="or">
+	       			(
+	       			$select1$ like '%'||#text02#||'%'
+	       			</isNotEmpty>
+	       			<isNotEmpty property="text03" prepend="and">
+	       			$select1$ like '%'||#text03#||'%'
+	       			</isNotEmpty>
+	       			<isNotEmpty property="text04" prepend="and">
+	       			$select1$ like '%'||#text04#||'%'
+	       			</isNotEmpty>
+	       			<isNotEmpty property="text05" prepend="and">
+	       			$select1$ like '%'||#text05#||'%'
+	       			</isNotEmpty>
+	       			<isNotEmpty property="text06" prepend="and">
+	       			$select1$ like '%'||#text06#||'%'
+	       			</isNotEmpty>
+	       			<isNotEmpty property="text07" prepend="and">
+	       			$select1$ like '%'||#text07#||'%'
+	       			</isNotEmpty>
+	       			<isNotEmpty property="text08" prepend="and">
+	       			$select1$ like '%'||#text08#||'%'
+	       			</isNotEmpty>
+	       			<isNotEmpty property="text09" prepend="and">
+	       			$select1$ like '%'||#text09#||'%'
+	       			</isNotEmpty>
+	       			<isNotEmpty property="text10" prepend="and">
+	       			$select1$ like '%'||#text10#||'%'
+	       			</isNotEmpty>
+	       			<isNotEmpty property="text02">
+	       			)
+	       			</isNotEmpty>
+       				)
+       	</isNotEmpty>
+       	
+       	<isNotEmpty property="text2">
+       		$terms2$ 
+					(
+	       			<isNotEmpty property="text2">
+	       			$select2$ like '%'||#text2#||'%'
+	       			</isNotEmpty>
+	       			<isNotEmpty property="text12" prepend="or">
+	       			(
+	       			$select2$ like '%'||#text12#||'%'
+	       			</isNotEmpty>
+	       			<isNotEmpty property="text13" prepend="and">
+	       			$select2$ like '%'||#text13#||'%'
+	       			</isNotEmpty>
+	       			<isNotEmpty property="text14" prepend="and">
+	       			$select2$ like '%'||#text14#||'%'
+	       			</isNotEmpty>
+	       			<isNotEmpty property="text15" prepend="and">
+	       			$select2$ like '%'||#text15#||'%'
+	       			</isNotEmpty>
+	       			<isNotEmpty property="text16" prepend="and">
+	       			$select2$ like '%'||#text16#||'%'
+	       			</isNotEmpty>
+	       			<isNotEmpty property="text17" prepend="and">
+	       			$select2$ like '%'||#text17#||'%'
+	       			</isNotEmpty>
+	       			<isNotEmpty property="text18" prepend="and">
+	       			$select2$ like '%'||#text18#||'%'
+	       			</isNotEmpty>
+	       			<isNotEmpty property="text19" prepend="and">
+	       			$select2$ like '%'||#text19#||'%'
+	       			</isNotEmpty>
+	       			<isNotEmpty property="text20" prepend="and">
+	       			$select2$ like '%'||#text20#||'%'
+	       			</isNotEmpty>
+	       			<isNotEmpty property="text12">
+	       			)
+	       			</isNotEmpty>
+       				)
+       	</isNotEmpty>
+       	
+       	<isNotEmpty property="text3">
+       		$terms3$ 
+					(
+	       			<isNotEmpty property="text3">
+	       			$select3$ like '%'||#text3#||'%'
+	       			</isNotEmpty>
+	       			<isNotEmpty property="text22" prepend="or">
+	       			(
+	       			$select3$ like '%'||#text22#||'%'
+	       			</isNotEmpty>
+	       			<isNotEmpty property="text23" prepend="and">
+	       			$select3$ like '%'||#text23#||'%'
+	       			</isNotEmpty>
+	       			<isNotEmpty property="text24" prepend="and">
+	       			$select3$ like '%'||#text24#||'%'
+	       			</isNotEmpty>
+	       			<isNotEmpty property="text25" prepend="and">
+	       			$select3$ like '%'||#text25#||'%'
+	       			</isNotEmpty>
+	       			<isNotEmpty property="text26" prepend="and">
+	       			$select3$ like '%'||#text26#||'%'
+	       			</isNotEmpty>
+	       			<isNotEmpty property="text27" prepend="and">
+	       			$select3$ like '%'||#text27#||'%'
+	       			</isNotEmpty>
+	       			<isNotEmpty property="text28" prepend="and">
+	       			$select3$ like '%'||#text28#||'%'
+	       			</isNotEmpty>
+	       			<isNotEmpty property="text29" prepend="and">
+	       			$select3$ like '%'||#text29#||'%'
+	       			</isNotEmpty>
+	       			<isNotEmpty property="text30" prepend="and">
+	       			$select3$ like '%'||#text30#||'%'
+	       			</isNotEmpty>
+	       			<isNotEmpty property="text22">
+	       			)
+	       			</isNotEmpty>
+       				)
+       	</isNotEmpty>
+       	 -->
+        <!-- 고급검색에서 사용하는 조건 -->
+        <!-- 
+			) aa
+        WHERE CEIL (recNum / #showCnt,javaType=Integer#) = #currPage,javaType=Integer#
+        ORDER BY recNum ASC
+         -->
+	</select>
+	
+	<select id="searchOpenCourse2" parameterClass="courseSearch" resultClass="courseSearch">
+	
+	<!-- 오성애 과장님 튜닝 -->
+	
+WITH COURSETB AS (
+       SELECT   *
+         FROM (
+                    SELECT  
+					<isEmpty property="odbykey">
+						ROW_NUMBER() OVER (ORDER BY rn, rv) AS recNum,
+					</isEmpty>
+					<isNotEmpty property="odbykey">
+						<isEqual property="odbykey" compareValue="regdate">
+						ROW_NUMBER() OVER (ORDER BY rn, rv) AS recNum,
+						</isEqual>
+						<isNotEqual property="odbykey" compareValue="regdate">
+	     				ROW_NUMBER() OVER (ORDER BY $odbykey$ $odby$) AS recNum,
+						</isNotEqual>
+					</isNotEmpty>
+                             COUNT(*) OVER() AS totalcnt,
+                              A.COURSE_ID AS courseId,
+			                   A.COURSE_IDENTIFIER AS courseIdentifier,
+			                   A.UNIVERSITY_ID AS universityId,
+			                   univName AS universityName,
+			                   univName,
+			                   A.PUBLIC_YN AS publicYn,
+			                   A.TITLE AS title,
+			                   A.KEYWORD AS keyword,
+			                   A.DEPARTMENT_ID AS departmentId,
+			                   A.DEPARTMENT AS department,
+			                   A.TERM_YEAR AS termYear,
+			                   A.TERM_SEMESTER AS termSemester,
+			                   A.SVC_START AS svcStart,
+			                   A.SVC_END AS svcEnd,
+			                   A.SVC_STATUS AS svcStatus,
+			                   A.REGISTER AS REGISTER,
+			                   A.REG_DATE AS regDate,
+			                   A.MODIFIER AS modifier,
+			                   A.MOD_DATE AS modDate,
+			                   A.TYPE AS TYPE,
+			                   A.RIGHTS AS rights,
+			                   A.LANGUAGE AS LANGUAGE,
+			                   A.MANAGER AS manager,
+			                   A.GRAD_YEAR AS gradYear,
+			                   A.GRAD_SEMESTER AS gradSemester,
+			                   A.DEL_YN AS delYn,
+			                   A.PREVTHUMBNAIL AS prevthumbnail,
+			                   A.PREVURI AS prevuri,
+			                   A.IS_LOCK AS isLock,
+			                   A.IS_TEMP AS isTemp,
+			                   A.DELETOR AS deletor,
+			                   A.DEL_DATE AS delDate,
+			                   A.UNIV_HOMEPAGE AS univHomePage 
+                    FROM (
+                        select 
+                                ROW_NUMBER ()
+                                           OVER (PARTITION BY A.university_id
+                                                 ORDER BY A.reg_date desc  )
+                                              rn,
+                                    DBMS_RANDOM.VALUE (0, 1) as rv, a.*, b.univ_name as univName,B.UNIV_HOMEPAGE,
+                                    (SELECT SUM (clicks_cnt)
+				                      FROM CU_LOG_COURSE_CLICKS
+				                     WHERE course_id = A.course_id)
+				                      AS clicksCnt,
+				                   (SELECT univdept_desc
+				                      FROM cu_univ_dept
+				                     WHERE univdept_id = A.department_Id
+				                           AND university_id = A.university_id)
+				                      univDeptUrl
+                        from CU_SVC_COURSE a, cu_univ_info b  
+                        WHERE  1=1
+                        AND b.gubun_id ='169'
+                        and b.use_yn = 'Y'
+                        and a.university_id = b.university_id
+                        and NVL (A.DEL_YN, ' ') != 'Y'
+	                    AND NVL (A.IS_TEMP, ' ') != 'Y'
+	                    AND A.SVC_STATUS = 'A'
+		                <isNotEmpty property="text">
+				        	<isEqual property="select" compareValue="1" prepend="AND">
+				        	title like '%'||#text#||'%'
+				        	</isEqual>
+				        	<isEqual property="select" compareValue="2" prepend="AND">
+				        	manager like '%'||#text#||'%'
+				        	</isEqual>
+				        	<isEqual property="select" compareValue="3" prepend="AND">
+				        	univ_name like '%'||#text#||'%'
+				        	</isEqual>
+				        	<isEqual property="select" compareValue="4" prepend="AND">
+				        	d.kem_val like '%'||#text#||'%'
+				        	</isEqual>
+				        	<isEqual property="select" compareValue="5" prepend="AND">
+				        	keyword like '%'||#text#||'%'
+				        	</isEqual>
+				        	<isEqual property="select" compareValue="6" prepend="AND">
+				        	department like '%'||#text#||'%'
+				        	</isEqual>
+				        </isNotEmpty>
+	                    <isNotEmpty property="deptId" prepend="AND">
+							<isEqual property="deptId" compareValue="0">
+							NOT EXISTS (SELECT '1' FROM cu_univ_dept ud WHERE univdept_id = a.department_id AND university_id = a.university_id AND UD.DEPT_ID != '0')			
+							</isEqual>
+							<isNotEqual property="deptId" compareValue="0">
+			    	     	exists (select '1' from cu_univ_dept where dept_id = #deptId# and university_id = a.university_id and univdept_id = a.department_id)
+							</isNotEqual>
+						</isNotEmpty>
+						<isNotEmpty property="gubunId" prepend="AND">
+							B.GUBUN_ID = #gubunId#
+						</isNotEmpty>
+						
+						<!-- 
+						<isNotEqual property="universityId" compareValue="0" prepend="AND">
+							A.UNIVERSITY_ID = #universityId#
+						</isNotEqual>
+						 -->
+						<isNotEqual property="gubn2" compareValue="" prepend="AND">
+							A.UNIVERSITY_ID = #gubn2#
+						</isNotEqual>
+						<isNotEmpty property="gubn1" prepend="AND">
+							b.UNIV_NAME like '%'||#gubn1#||'%'
+						</isNotEmpty>
+						
+						<isNotEqual property="checkbox1" compareValue="0" prepend="AND">
+							A.PUBLIC_YN = 'Y'
+						</isNotEqual>
+						<isNotEqual property="checkbox5" compareValue="0" prepend="AND">
+							A.PUBLIC_YN = 'Y'
+						</isNotEqual>
+				        <isNotEmpty property="checkbox3">
+				    		<isNotEqual property="checkbox3" compareValue="3" prepend="AND">
+				    		EXISTS (
+					            SELECT TERM_YEAR,TERM_SEMESTER
+					            FROM (            
+									SELECT DISTINCT DENSE_RANK() OVER(ORDER BY TERM_YEAR DESC, TERM_SEMESTER DESC ) RN, TERM_YEAR, TERM_SEMESTER FROM CU_SVC_COURSE
+									WHERE TERM_SEMESTER IN ('1','2','01','02')
+									AND SVC_STATUS = 'A'
+					            ) T
+					            WHERE RN &lt; 3
+		                       	AND T.TERM_YEAR = A.TERM_YEAR
+		                       	AND T.TERM_SEMESTER = A.TERM_SEMESTER )
+		                       	
+				    		</isNotEqual>
+				    	</isNotEmpty>
+				    	<isNotEmpty property="text">
+				        	<isEqual property="select" compareValue="1" prepend="AND">
+				        	title like '%'||#text#||'%'
+				        	</isEqual>
+				        	<isEqual property="select" compareValue="2" prepend="AND">
+				        	manager like '%'||#text#||'%'
+				        	</isEqual>
+				        	<isEqual property="select" compareValue="3" prepend="AND">
+				        	univ_name like '%'||#text#||'%'
+				        	</isEqual>
+				        	<isEqual property="select" compareValue="4" prepend="AND">
+				        	d.kem_val like '%'||#text#||'%'
+				        	</isEqual>
+				        	<isEqual property="select" compareValue="5" prepend="AND">
+				        	keyword like '%'||#text#||'%'
+				        	</isEqual>
+				        	<isEqual property="select" compareValue="6" prepend="AND">
+				        	department like '%'||#text#||'%'
+				        	</isEqual>
+				        </isNotEmpty>	
+                                                      
+                    ) A
+                    <isEqual property="isDetail" compareValue="Y">
+					where TERM_YEAR between #sdate# and #edate#
+		        </isEqual>
+		        <isEqual property="isDetail" compareValue="Y">
+		       	<isNotEmpty property="text1">
+		       		$terms1$ 
+							(
+			       			<isNotEmpty property="text1">
+			       			$select1$ like '%'||#text1#||'%'
+			       			</isNotEmpty>
+			       			<isNotEmpty property="text02" prepend="or">
+			       			(
+			       			$select1$ like '%'||#text02#||'%'
+			       			</isNotEmpty>
+			       			<isNotEmpty property="text03" prepend="and">
+			       			$select1$ like '%'||#text03#||'%'
+			       			</isNotEmpty>
+			       			<isNotEmpty property="text04" prepend="and">
+			       			$select1$ like '%'||#text04#||'%'
+			       			</isNotEmpty>
+			       			<isNotEmpty property="text05" prepend="and">
+			       			$select1$ like '%'||#text05#||'%'
+			       			</isNotEmpty>
+			       			<isNotEmpty property="text06" prepend="and">
+			       			$select1$ like '%'||#text06#||'%'
+			       			</isNotEmpty>
+			       			<isNotEmpty property="text07" prepend="and">
+			       			$select1$ like '%'||#text07#||'%'
+			       			</isNotEmpty>
+			       			<isNotEmpty property="text08" prepend="and">
+			       			$select1$ like '%'||#text08#||'%'
+			       			</isNotEmpty>
+			       			<isNotEmpty property="text09" prepend="and">
+			       			$select1$ like '%'||#text09#||'%'
+			       			</isNotEmpty>
+			       			<isNotEmpty property="text10" prepend="and">
+			       			$select1$ like '%'||#text10#||'%'
+			       			</isNotEmpty>
+			       			<isNotEmpty property="text02">
+			       			)
+			       			</isNotEmpty>
+		       				)
+		       	</isNotEmpty>
+		       	
+		       	<isNotEmpty property="text2">
+		       		$terms2$ 
+							(
+			       			<isNotEmpty property="text2">
+			       			$select2$ like '%'||#text2#||'%'
+			       			</isNotEmpty>
+			       			<isNotEmpty property="text12" prepend="or">
+			       			(
+			       			$select2$ like '%'||#text12#||'%'
+			       			</isNotEmpty>
+			       			<isNotEmpty property="text13" prepend="and">
+			       			$select2$ like '%'||#text13#||'%'
+			       			</isNotEmpty>
+			       			<isNotEmpty property="text14" prepend="and">
+			       			$select2$ like '%'||#text14#||'%'
+			       			</isNotEmpty>
+			       			<isNotEmpty property="text15" prepend="and">
+			       			$select2$ like '%'||#text15#||'%'
+			       			</isNotEmpty>
+			       			<isNotEmpty property="text16" prepend="and">
+			       			$select2$ like '%'||#text16#||'%'
+			       			</isNotEmpty>
+			       			<isNotEmpty property="text17" prepend="and">
+			       			$select2$ like '%'||#text17#||'%'
+			       			</isNotEmpty>
+			       			<isNotEmpty property="text18" prepend="and">
+			       			$select2$ like '%'||#text18#||'%'
+			       			</isNotEmpty>
+			       			<isNotEmpty property="text19" prepend="and">
+			       			$select2$ like '%'||#text19#||'%'
+			       			</isNotEmpty>
+			       			<isNotEmpty property="text20" prepend="and">
+			       			$select2$ like '%'||#text20#||'%'
+			       			</isNotEmpty>
+			       			<isNotEmpty property="text12">
+			       			)
+			       			</isNotEmpty>
+		       				)
+		       	</isNotEmpty>
+		       	
+		       	<isNotEmpty property="text3">
+		       		$terms3$ 
+							(
+			       			<isNotEmpty property="text3">
+			       			$select3$ like '%'||#text3#||'%'
+			       			</isNotEmpty>
+			       			<isNotEmpty property="text22" prepend="or">
+			       			(
+			       			$select3$ like '%'||#text22#||'%'
+			       			</isNotEmpty>
+			       			<isNotEmpty property="text23" prepend="and">
+			       			$select3$ like '%'||#text23#||'%'
+			       			</isNotEmpty>
+			       			<isNotEmpty property="text24" prepend="and">
+			       			$select3$ like '%'||#text24#||'%'
+			       			</isNotEmpty>
+			       			<isNotEmpty property="text25" prepend="and">
+			       			$select3$ like '%'||#text25#||'%'
+			       			</isNotEmpty>
+			       			<isNotEmpty property="text26" prepend="and">
+			       			$select3$ like '%'||#text26#||'%'
+			       			</isNotEmpty>
+			       			<isNotEmpty property="text27" prepend="and">
+			       			$select3$ like '%'||#text27#||'%'
+			       			</isNotEmpty>
+			       			<isNotEmpty property="text28" prepend="and">
+			       			$select3$ like '%'||#text28#||'%'
+			       			</isNotEmpty>
+			       			<isNotEmpty property="text29" prepend="and">
+			       			$select3$ like '%'||#text29#||'%'
+			       			</isNotEmpty>
+			       			<isNotEmpty property="text30" prepend="and">
+			       			$select3$ like '%'||#text30#||'%'
+			       			</isNotEmpty>
+			       			<isNotEmpty property="text22">
+			       			)
+			       			</isNotEmpty>
+		       				)
+		       	</isNotEmpty>	
+		       	</isEqual>  
+               )
+           WHERE  ceil(recNum / #showCnt,javaType=Integer#) = #currPage,javaType=Integer#
+		 )
+		SELECT
+				A.*,  
+                   REPLACE (c.kem_val, '.0', '') AS credit,
+                       CASE
+                      WHEN LENGTH ( d.kem_val ) &gt; 147
+                      THEN
+                         SUBSTR ( d.kem_val , 0, 147) || '...'
+                      ELSE
+                          d.kem_val 
+                   END AS                 description,
+                   getSip (a.univHomePage) AS sip,
+                   getUri (a.univHomePage) AS uri,
+                   getQri (a.univHomePage) AS qri,
+                   getSp (a.univHomePage) AS sp                   
+              FROM COURSETB  A
+                   JOIN CU_UNIV_INFO B
+                      ON A.universityId = B.UNIVERSITY_ID
+                   LEFT JOIN CU_SVC_COURSE_KEM c
+                      ON     c.COURSE_ID = A.courseId
+                         AND c.METADIC_ID = '105'
+                   LEFT JOIN CU_SVC_COURSE_KEM_L d
+                      ON     d.COURSE_ID = A.courseId
+                         AND d.METADIC_ID = '8'
+
+	</select>
+	<select id="searchOpenCourseForCertificate" parameterClass="courseSearch" resultClass="courseSearch">
+		with data1
+	     as (SELECT ROW_NUMBER() OVER (ORDER BY A.MOD_DATE DESC, A.TERM_YEAR DESC, A.TERM_SEMESTER DESC, a.reg_date DESC) AS recNum,
+	                COUNT(*) OVER () totalCnt,
+	                A.COURSE_ID AS courseId,
+	                A.COURSE_IDENTIFIER AS courseIdentifier,
+	                A.UNIVERSITY_ID AS universityId,
+	                B.UNIV_NAME AS universityName,
+	                A.PUBLIC_YN AS publicYn,
+	                A.TITLE AS title,
+	                A.KEYWORD AS keyword,
+	                A.DEPARTMENT_ID AS departmentId,
+	                A.DEPARTMENT AS department,
+	                A.TERM_YEAR AS termYear,
+	                A.TERM_SEMESTER AS termSemester,
+	                A.SVC_START AS svcStart,
+	                A.SVC_END AS svcEnd,
+	                A.SVC_STATUS AS svcStatus,
+	                A.REGISTER AS register,
+	                A.REG_DATE AS regDate,
+	                A.MODIFIER AS modifier,
+	                A.MOD_DATE AS modDate,
+	                A.TYPE AS type,
+	                A.RIGHTS AS rights,
+	                A.LANGUAGE AS language,
+	                A.MANAGER AS manager,
+	                A.GRAD_YEAR AS gradYear,
+	                A.GRAD_SEMESTER AS gradSemester,
+	                A.DEL_YN AS delYn,
+	                A.PREVTHUMBNAIL AS prevthumbnail,
+	                A.PREVURI AS prevuri,
+	                A.IS_LOCK AS isLock,
+	                A.IS_TEMP AS isTemp,
+	                A.DELETOR AS deletor,
+	                A.DEL_DATE AS delDate
+	                , (select univdept_desc from cu_univ_dept where univdept_id = a.department_id and university_id = a.university_id) univDeptUrl
+	         FROM   CU_SVC_COURSE A, CU_UNIV_INFO B
+	         WHERE  A.UNIVERSITY_ID = B.UNIVERSITY_ID AND B.USE_YN = 'Y' AND NVL(A.DEL_YN, ' ') != 'Y' AND NVL(A.IS_TEMP, ' ') != 'Y'
+	                AND A.SVC_STATUS = 'A' and a.title like '%'||#text#||'%')
+			select (select a.DEPT_NAME
+			        from   cu_rept_dept a, CU_UNIV_DEPT b
+			        where  a.DEPT_ID = b.DEPT_ID and b.UNIVDEPT_ID = dt.departmentId and b.university_id = dt.universityId)
+			         deptName,
+			        (select link_url from cu_univ_link where university_id = dt.universityId and link_gubun_id = '166') linkurl,
+			       dt.*
+			from   data1 dt
+			WHERE  ceil(recNum / #showCnt,javaType=Integer#) = #currPage,javaType=Integer#
+	</select>
+	
+	
+	
+	
+	<select id="selectCourseInfo" resultClass="courseSearch"  parameterClass="courseSearch">
+		SELECT A.COURSE_ID as courseId, A.COURSE_IDENTIFIER as courseIdentifier
+			, A.UNIVERSITY_ID as universityId, AA.UNIV_NAME as universityName
+			, A.PUBLIC_YN as publicYn, A.TITLE as title, A.KEYWORD as keyword
+			, A.DEPARTMENT_ID as departmentId, A.DEPARTMENT as department, A.TERM_YEAR as termYear
+			, A.TERM_SEMESTER as termSemester, A.SVC_START as svcStart, A.SVC_END as svcEnd
+			, A.SVC_STATUS as svcStatus, A.REGISTER as register, A.REG_DATE as regDate
+			, A.MODIFIER as modifier, A.MOD_DATE as modDate
+			, A.TYPE as type, A.RIGHTS as rights, A.LANGUAGE as language, A.MANAGER as manager
+			, A.GRAD_YEAR as gradYear, A.GRAD_SEMESTER as gradSemester, A.DEL_YN as delYn
+			, A.PREVTHUMBNAIL as prevthumbnail, A.PREVURI as prevuri
+			, A.IS_LOCK as isLock, A.IS_TEMP as isTemp, A.DELETOR as deletor, A.DEL_DATE as delDate
+			, replace(d.kem_val,'.0','') as credit
+			, E.KEM_VAL as assessment, F.KEM_VAL as subtitle
+			, G.KEM_VAL as planLocation, H.KEM_VAL as description
+			, AA.UNIV_HOMEPAGE as univHomePage
+			, getSip(AA.UNIV_HOMEPAGE) as sip
+			, getUri(AA.UNIV_HOMEPAGE) as uri
+			, getQri(AA.UNIV_HOMEPAGE) as qir
+			, getSp(AA.UNIV_HOMEPAGE) as sp
+			, a.manager as manager
+			, (select sum(clicks_cnt) from CU_LOG_COURSE_CLICKS where course_id = a.course_id) as clicksCnt
+			, (select univdept_desc from cu_univ_dept where univdept_id = a.department_id and university_id = a.university_id) univDeptUrl
+			, I.KEM_VAL as attfile1
+		FROM CU_UNIV_INFO AA
+			, CU_SVC_COURSE A
+					LEFT JOIN CU_SVC_COURSE_KEM D
+				ON A.COURSE_ID = D.COURSE_ID AND A.COURSE_ID = D.COLLTYPE_ID AND D.METADIC_ID = 105
+					LEFT JOIN CU_SVC_COURSE_KEM_L E
+				ON A.COURSE_ID = E.COURSE_ID AND A.COURSE_ID = E.COLLTYPE_ID AND E.METADIC_ID = 104
+					LEFT JOIN CU_SVC_COURSE_KEM F
+				ON A.COURSE_ID = F.COURSE_ID AND A.COURSE_ID = F.COLLTYPE_ID AND F.METADIC_ID = 6
+					LEFT JOIN CU_SVC_COURSE_KEM_L G
+				ON A.COURSE_ID = G.COURSE_ID AND A.COURSE_ID = G.COLLTYPE_ID AND G.METADIC_ID = 102
+					LEFT JOIN CU_SVC_COURSE_KEM_L H
+				ON A.COURSE_ID = H.COURSE_ID AND A.COURSE_ID = H.COLLTYPE_ID AND H.METADIC_ID = 8
+          			LEFT JOIN CU_SVC_COURSE_KEM I
+				ON A.COURSE_ID = H.COURSE_ID AND A.COURSE_ID = H.COLLTYPE_ID AND H.METADIC_ID = 64				
+		WHERE AA.UNIVERSITY_ID = A.UNIVERSITY_ID 
+			AND AA.USE_YN = 'Y'
+			AND A.COURSE_ID = #courseId,javaType=Integer#
+	</select>
+	
+	<select id="selectCourseInfo3" resultClass="courseSearch"  parameterClass="java.lang.String">
+		SELECT A.COURSE_ID as courseId, A.COURSE_IDENTIFIER as courseIdentifier
+			, A.UNIVERSITY_ID as universityId, AA.UNIV_NAME as universityName
+			, A.PUBLIC_YN as publicYn, A.TITLE as title, A.KEYWORD as keyword
+			, A.DEPARTMENT_ID as departmentId, A.DEPARTMENT as department, A.TERM_YEAR as termYear
+			, A.TERM_SEMESTER as termSemester, A.SVC_START as svcStart, A.SVC_END as svcEnd
+			, A.SVC_STATUS as svcStatus, A.REGISTER as register, A.REG_DATE as regDate
+			, A.MODIFIER as modifier, A.MOD_DATE as modDate
+			, A.TYPE as type, A.RIGHTS as rights, A.LANGUAGE as language, A.MANAGER as manager
+			, A.GRAD_YEAR as gradYear, A.GRAD_SEMESTER as gradSemester, A.DEL_YN as delYn
+			, A.PREVTHUMBNAIL as prevthumbnail, A.PREVURI as prevuri
+			, A.IS_LOCK as isLock, A.IS_TEMP as isTemp, A.DELETOR as deletor, A.DEL_DATE as delDate
+			, replace(d.kem_val,'.0','') as credit
+			, E.KEM_VAL as assessment, F.KEM_VAL as subtitle
+			, G.KEM_VAL as planLocation, H.KEM_VAL as description
+			, AA.UNIV_HOMEPAGE as univHomePage
+			, getSip(AA.UNIV_HOMEPAGE) as sip
+			, getUri(AA.UNIV_HOMEPAGE) as uri
+			, getQri(AA.UNIV_HOMEPAGE) as qir
+			, getSp(AA.UNIV_HOMEPAGE) as sp
+			, a.manager as manager
+			, (select sum(clicks_cnt) from CU_LOG_COURSE_CLICKS where course_id = a.course_id) as clicksCnt
+			, (select univdept_desc from cu_univ_dept where univdept_id = a.department_id and university_id = a.university_id) univDeptUrl
+			, I.KEM_VAL as attfile1
+		FROM CU_UNIV_INFO AA
+			, CU_SVC_COURSE A
+					LEFT JOIN CU_SVC_COURSE_KEM D
+				ON A.COURSE_ID = D.COURSE_ID AND A.COURSE_ID = D.COLLTYPE_ID AND D.METADIC_ID = 105
+					LEFT JOIN CU_SVC_COURSE_KEM_L E
+				ON A.COURSE_ID = E.COURSE_ID AND A.COURSE_ID = E.COLLTYPE_ID AND E.METADIC_ID = 104
+					LEFT JOIN CU_SVC_COURSE_KEM F
+				ON A.COURSE_ID = F.COURSE_ID AND A.COURSE_ID = F.COLLTYPE_ID AND F.METADIC_ID = 6
+					LEFT JOIN CU_SVC_COURSE_KEM_L G
+				ON A.COURSE_ID = G.COURSE_ID AND A.COURSE_ID = G.COLLTYPE_ID AND G.METADIC_ID = 102
+					LEFT JOIN CU_SVC_COURSE_KEM_L H
+				ON A.COURSE_ID = H.COURSE_ID AND A.COURSE_ID = H.COLLTYPE_ID AND H.METADIC_ID = 8
+          			LEFT JOIN CU_SVC_COURSE_KEM I
+				ON A.COURSE_ID = H.COURSE_ID AND A.COURSE_ID = H.COLLTYPE_ID AND H.METADIC_ID = 64				
+		WHERE AA.UNIVERSITY_ID = A.UNIVERSITY_ID 
+			AND AA.USE_YN = 'Y'
+			AND A.COURSE_ID = #foundId#
+	</select>
+	
+	<select id="selectCourseInfo_tmp" resultClass="courseSearch"  parameterClass="map">
+		SELECT A.COURSE_ID as courseId, A.COURSE_IDENTIFIER as courseIdentifier
+			, A.UNIVERSITY_ID as universityId, AA.UNIV_NAME as universityName
+			, A.PUBLIC_YN as publicYn, A.TITLE as title, A.KEYWORD as keyword
+			, A.DEPARTMENT_ID as departmentId, A.DEPARTMENT as department, A.TERM_YEAR as termYear
+			,to_number(trim(translate(A.TERM_SEMESTER, '1234567890' || A.TERM_SEMESTER, '1234567890'))) as termSemester
+			, to_char(to_date(A.SVC_START,'yyyymmdd'),'yyyy/mm/dd') AS svcStart
+            , to_char(to_date(A.SVC_END,'yyyymmdd'),'yyyy/mm/dd') AS svcEnd
+			, A.SVC_STATUS as svcStatus, '' statusMemo, A.REGISTER as register, A.REG_DATE as regDate
+			, A.MODIFIER as modifier, A.MOD_DATE as modDate
+			, B.KEM_VAL as language
+			,to_number(trim(translate(C.KEM_VAL, '1234567890' || C.KEM_VAL, '1234567890'))) as grad
+<!-- 			, replace(nvl(D.KEM_VAL,0),'.0','')||' 학점' AS credit -->
+			, replace(nvl(D.KEM_VAL,0),'.0','') AS credit
+			, E.KEM_VAL as assessment, F.KEM_VAL as subtitle, G.KEM_VAL as secsubtitle
+			, H.KEM_VAL as description, K.KEM_VAL as secdescription, J.KEM_VAL as seckeyword
+			,(SELECT sum(clicks_cnt) FROM CU_LOG_COURSE_CLICKS WHERE COURSE_ID = A.COURSE_ID) clicksCnt
+			,(select location from cu_svc_attfile where course_id = a.course_id and lecture_id = 0 and gubn= 'S' and rownum = 1) attfile1
+            ,(select title from cu_svc_attfile where course_id = a.course_id and lecture_id = 0 and gubn= 'S' and rownum = 1) attfileIdTitle1
+            ,(select location from cu_svc_attfile where course_id = a.course_id and lecture_id = 0 and gubn= 'E' and rownum = 1) attfileId2
+            ,(select title from cu_svc_attfile where course_id = a.course_id and lecture_id = 0 and gubn= 'E' and rownum = 1) attfileIdTitle2
+			,'0' location
+			,TO_CHAR(A.REG_DATE,'YYYYMMDD') regDt
+			,'' contName
+			,(SELECT univdept_desc FROM cu_univ_dept where univdept_id = A.DEPARTMENT_ID and university_id = a.university_id) univdeptlink
+			,(SELECT univ_homepage FROM cu_univ_info WHERE university_id = A.university_id) univHomePage                         
+		FROM CU_UNIV_INFO AA
+			, CU_SVC_COURSE A LEFT JOIN CU_SVC_COURSE_KEM B
+				ON A.COURSE_ID = B.COURSE_ID AND A.COURSE_ID = B.COLLTYPE_ID AND B.METADIC_ID = 4
+				 	LEFT JOIN CU_SVC_COURSE_KEM C
+				ON A.COURSE_ID = C.COURSE_ID AND A.COURSE_ID = C.COLLTYPE_ID AND C.METADIC_ID = 14
+					LEFT JOIN CU_SVC_COURSE_KEM D
+				ON A.COURSE_ID = D.COURSE_ID AND A.COURSE_ID = D.COLLTYPE_ID AND D.METADIC_ID = 25
+					LEFT JOIN CU_SVC_COURSE_KEM_L E
+				ON A.COURSE_ID = E.COURSE_ID AND A.COURSE_ID = E.COLLTYPE_ID AND E.METADIC_ID = 24
+					LEFT JOIN CU_SVC_COURSE_KEM F
+				ON A.COURSE_ID = F.COURSE_ID AND A.COURSE_ID = F.COLLTYPE_ID AND F.METADIC_ID = 6
+					LEFT JOIN CU_SVC_COURSE_KEM G
+				ON A.COURSE_ID = G.COURSE_ID AND A.COURSE_ID = G.COLLTYPE_ID AND G.METADIC_ID = 7
+					LEFT JOIN CU_SVC_COURSE_KEM_L H
+				ON A.COURSE_ID = H.COURSE_ID AND A.COURSE_ID = H.COLLTYPE_ID AND H.METADIC_ID = 8
+					LEFT JOIN CU_SVC_COURSE_KEM J
+				ON A.COURSE_ID = J.COURSE_ID AND A.COURSE_ID = J.COLLTYPE_ID AND J.METADIC_ID = 11
+					LEFT JOIN CU_SVC_COURSE_KEM_L K
+				ON A.COURSE_ID = K.COURSE_ID AND A.COURSE_ID = K.COLLTYPE_ID AND K.METADIC_ID = 9
+		WHERE AA.UNIVERSITY_ID = A.UNIVERSITY_ID 
+			AND AA.USE_YN = 'Y'
+			<isNotEqual property="courseId" prepend="AND" compareValue="0">
+                A.COURSE_ID = #courseId,javaType=Integer#
+            </isNotEqual>
+            <isNotEmpty property="courseIdentifier" prepend="AND">
+            	A.COURSE_IDENTIFIER = #courseIdentifier,javaType=String#
+            </isNotEmpty>
+	</select>
+	
+	
+	<select id="selectLectureList" parameterClass="courseSearch" resultClass="courseSearch">
+		SELECT 
+				row_number() OVER (PARTITION BY A.GROUPS ORDER BY A.COURSE_ID, A.GROUPS, A.orders) rn,
+				row_number() OVER (PARTITION BY a.LECTURE_ID ORDER BY a.COURSE_ID, a.groups, a.orders) rn1,
+		       a.LECTURE_ID AS lectureId,
+		       a.TITLE AS title,
+		       a.LECTURE_IDENTIFIER AS lectureIdentifier,
+		       a.COURSE_ID AS courseId,
+		       a.KEYWORD AS keyword,
+		       a.ORDERS AS orders,
+		       a."GROUPS" AS "groups",
+		       a.MOV_LOCATION AS movLocation,
+		       b.ATTFILE_ID AS attfileId,
+		       b.RELATION_ID AS relationId,
+		       b.ATTFILE_IDENTIFIER AS attfileIdentifier,
+		       b.LOCATION,
+		       b.UPFILE_ID,
+		       (SELECT upfile_path || '/' || upfile_source
+		        FROM   CU_SVC_ATTFILEUPLOAD
+		        WHERE  upfile_id = b.UPFILE_ID)
+		         AS upfile,
+		       b.RELATION_TYPE
+		FROM   CU_SVC_LECTURE a, CU_SVC_ATTFILE b
+		WHERE  a.lecture_id = b.RELATION_ID(+) AND b.RELATION_TYPE(+) = 'L' AND a.course_id = #courseId,javaType=Integer#
+		ORDER BY a.groups, a.orders 
+	</select>
+	
+	<select id="selectLectureList3" parameterClass="java.lang.String" resultClass="courseSearch">
+		SELECT 
+				row_number() OVER (PARTITION BY A.GROUPS ORDER BY A.COURSE_ID, A.GROUPS, A.orders) rn,
+				row_number() OVER (PARTITION BY a.LECTURE_ID ORDER BY a.COURSE_ID, a.groups, a.orders) rn1,
+		       a.LECTURE_ID AS lectureId,
+		       a.TITLE AS title,
+		       a.LECTURE_IDENTIFIER AS lectureIdentifier,
+		       a.COURSE_ID AS courseId,
+		       a.KEYWORD AS keyword,
+		       a.ORDERS AS orders,
+		       a."GROUPS" AS "groups",
+		       a.MOV_LOCATION AS movLocation,
+		       b.ATTFILE_ID AS attfileId,
+		       b.RELATION_ID AS relationId,
+		       b.ATTFILE_IDENTIFIER AS attfileIdentifier,
+		       b.LOCATION,
+		       b.UPFILE_ID,
+		       (SELECT upfile_path || '/' || upfile_source
+		        FROM   CU_SVC_ATTFILEUPLOAD
+		        WHERE  upfile_id = b.UPFILE_ID)
+		         AS upfile,
+		       b.RELATION_TYPE
+		FROM   CU_SVC_LECTURE a, CU_SVC_ATTFILE b
+		WHERE  a.lecture_id = b.RELATION_ID(+) AND b.RELATION_TYPE(+) = 'L' AND a.course_id = #foundId#
+		ORDER BY a.groups, a.orders 
+	</select>
+	
+	<select id="univList" parameterClass="courseSearch" resultClass="courseSearch">
+		WITH data1
+		     AS (SELECT rn, term_year, term_semester
+		           FROM (SELECT ROW_NUMBER ()
+		                           OVER (ORDER BY TERM_YEAR DESC, TERM_SEMESTER DESC)
+		                           AS RN,
+		                        TERM_YEAR,
+		                        TERM_SEMESTER
+		                   FROM CU_SVC_COURSE
+		                  WHERE     TERM_YEAR >= TO_CHAR (SYSDATE, 'YYYY') - 2
+		                        AND TERM_SEMESTER IN ('1', '2', '01', '02')
+		                        AND SVC_STATUS = 'A'
+		                 GROUP BY TERM_YEAR, TERM_SEMESTER)
+					<isNotEmpty property="checkbox3">
+						<isNotEqual property="checkbox3" compareValue="3">
+		          		WHERE rn &lt; 3
+		          		</isNotEqual>
+					</isNotEmpty>
+		          
+		          )
+		SELECT a.UNIVERSITY_ID universityId,
+		       a.UNIV_NAME||CASE WHEN a.university_id = '19' and #gubunId# != '0' THEN '(학사학위과정)' WHEN a.university_id ='20' and #gubunId# != '0' THEN '(전문학사학위과정)' END univName,
+		       NVL (
+		          (SELECT course_id
+		             FROM cu_svc_course b, data1 c
+		            WHERE     a.university_id = b.university_id
+		                  AND b.TERM_YEAR = c.term_year
+		                  AND b.TERM_SEMESTER = c.term_semester
+		                  AND ROWNUM = 1),
+		          0)
+		          cnt
+		  FROM cu_univ_info a
+		 WHERE 1=1
+		 <isEmpty property="gubunId">
+	        and a.gubun_id in ('51','52','163')
+		</isEmpty>
+		<isNotEmpty property="gubunId">
+        	<isEqual property="gubunId" compareValue="0">
+	        and a.gubun_id in ('51','52','163')
+        	</isEqual>
+        	<isNotEqual property="gubunId" compareValue="0">
+			AND	A.GUBUN_ID = #gubunId#							        
+        	</isNotEqual>
+       	</isNotEmpty>
+
+		order by univ_name
+
+	
+	<!-- 
+		SELECT 
+                    A.UNIVERSITY_ID universityId
+                    ,A.UNIV_NAME||CASE WHEN a.university_id = '19' and #gubunId# != '0' THEN '(학사학위과정)' WHEN a.university_id ='20' and #gubunId# != '0' THEN '(전문학사학위과정)' END univName
+                    ,(select COUNT(COURSE_ID) from cu_svc_course SC where university_id = a.university_id and svc_status = 'A'
+                    <isNotEmpty property="checkbox3">
+						<isNotEqual property="checkbox3" compareValue="3" prepend="AND">
+							EXISTS (
+						            SELECT TERM_YEAR,TERM_SEMESTER
+						            FROM (            
+						                SELECT  ROW_NUMBER() OVER(ORDER BY TERM_YEAR DESC, TERM_SEMESTER DESC) AS RN,
+						                      TERM_YEAR ,
+						                      TERM_SEMESTER
+						                 FROM CU_SVC_COURSE
+						                WHERE TERM_YEAR &gt;= TO_CHAR(SYSDATE,'YYYY')-2
+						                AND TERM_SEMESTER IN ('1','2','01','02')
+						                AND SVC_STATUS = 'A'
+						                GROUP BY TERM_YEAR ,TERM_SEMESTER
+						                ORDER BY TERM_YEAR  DESC, TERM_SEMESTER DESC                
+						            )  B
+						            WHERE RN &lt; 3
+			                       	AND B.TERM_YEAR = SC.TERM_YEAR
+			                       	AND B.TERM_SEMESTER = SC.TERM_SEMESTER )
+						</isNotEqual>
+					</isNotEmpty>
+                    ) cnt
+        FROM CU_UNIV_INFO A
+        WHERE 1=1
+		<isEmpty property="gubunId">
+	        and a.gubun_id in ('51','52','163')
+		</isEmpty>
+		<isNotEmpty property="gubunId">
+        	<isEqual property="gubunId" compareValue="0">
+	        and a.gubun_id in ('51','52','163')
+        	</isEqual>
+        	<isNotEqual property="gubunId" compareValue="0">
+			AND	A.GUBUN_ID = #gubunId#							        
+        	</isNotEqual>
+        </isNotEmpty>
+        ORDER BY A.UNIV_NAME ASC
+        -->
+	</select>
+	
+	<select id="univListForPublic" parameterClass="courseSearch" resultClass="courseSearch">
+		WITH DATA AS
+  (SELECT A.UNIVERSITY_ID universityId,
+            A.UNIV_NAME
+            univName,
+         (SELECT COUNT (COURSE_ID)
+            FROM CU_SVC_COURSE SC
+           WHERE university_id = A.university_id AND svc_status = 'A'
+           AND PREVTHUMBNAIL IS NOT NULL
+                AND PREVURI IS NOT NULL
+           )
+            cnt
+    FROM CU_UNIV_INFO A
+   WHERE 1 = 1 
+   AND A.gubun_id IN ('51', '52', '163')
+)
+   SELECT * FROM DATA
+   WHERE CNT &gt; 0   
+ORDER BY UNIVNAME ASC
+	</select>
+	
+	<select id="univList2" parameterClass="courseSearch" resultClass="courseSearch">
+		SELECT 
+                    A.UNIVERSITY_ID universityId
+                    ,A.UNIV_NAME||CASE WHEN a.university_id = '19' and #gubunId# != '0' THEN '(학사학위과정)' WHEN a.university_id ='20' and #gubunId# != '0' THEN '(전문학사학위과정)' END univName
+                    ,(select COUNT(COURSE_ID) from cu_svc_course SC where university_id = a.university_id and svc_status = 'A'
+<!--                    <isNotEmpty property="checkbox3">-->
+<!--						<isNotEqual property="checkbox3" compareValue="3" prepend="AND">-->
+<!--							EXISTS (-->
+<!--						            SELECT TERM_YEAR,TERM_SEMESTER-->
+<!--						            FROM (            -->
+<!--						                SELECT  ROW_NUMBER() OVER(ORDER BY TERM_YEAR DESC, TERM_SEMESTER DESC) AS RN,-->
+<!--						                      TERM_YEAR ,-->
+<!--						                      TERM_SEMESTER-->
+<!--						                 FROM CU_SVC_COURSE-->
+<!--						                WHERE TERM_YEAR &gt;= TO_CHAR(SYSDATE,'YYYY')-2-->
+<!--						                AND TERM_SEMESTER IN ('1','2')-->
+<!--						                AND SVC_STATUS = 'A'-->
+<!--						                GROUP BY TERM_YEAR ,TERM_SEMESTER-->
+<!--						                ORDER BY TERM_YEAR  DESC, TERM_SEMESTER DESC                -->
+<!--						            )  B-->
+<!--						            WHERE RN &lt; 3-->
+<!--			                       	AND B.TERM_YEAR = SC.TERM_YEAR-->
+<!--			                       	AND B.TERM_SEMESTER = SC.TERM_SEMESTER )-->
+<!--						</isNotEqual>-->
+<!--					</isNotEmpty>-->
+                    ) cnt,
+                    (select link_url from cu_univ_link where university_id = a.university_id and link_gubun_id = '167' and rownum = '1') univSampleLink,
+                    (select getSip(link_url) from cu_univ_link where university_id = a.university_id and link_gubun_id = '167' and rownum = '1') as sip,
+                    (select getUri(link_url) from cu_univ_link where university_id = a.university_id and link_gubun_id = '167' and rownum = '1') as uri,
+                    (select getQri(link_url) from cu_univ_link where university_id = a.university_id and link_gubun_id = '167' and rownum = '1') as qri,
+                    (select getSp(link_url) from cu_univ_link where university_id = a.university_id and link_gubun_id = '167' and rownum = '1') as sp
+        FROM CU_UNIV_INFO A
+        WHERE 1=1
+		<isEmpty property="gubunId">
+	        and a.gubun_id in ('51','52','163')
+		</isEmpty>
+		<isNotEmpty property="gubunId">
+        	<isEqual property="gubunId" compareValue="0">
+	        and a.gubun_id in ('51','52','163')
+        	</isEqual>
+        	<isNotEqual property="gubunId" compareValue="0">
+			AND	A.GUBUN_ID = #gubunId#							        
+        	</isNotEqual>
+        </isNotEmpty>
+        ORDER BY A.UNIV_NAME ASC
+	</select>
+	
+
+	<select id="clicksCnt" parameterClass="java.lang.Integer" resultClass="java.lang.Integer">
+	SELECT 
+            nvl((SELECT sum(clicks_cnt) FROM CU_LOG_COURSE_CLICKS WHERE COURSE_ID = #courseId#),0) cnt 
+	FROM dual
+	</select>
+
+	<select id="selectCourseId" resultClass="java.lang.String"  parameterClass="courseSearch">
+		SELECT course_id as courseId FROM
+		(SELECT row_number() over( order by term_year desc) RN,CU_SVC_COURSE.* 
+		FROM CU_SVC_COURSE 
+		WHERE UNIVERSITY_ID= #univId#
+		AND DEPARTMENT_ID= #deptId#
+		AND REPLACE(TRIM(TITLE),' ','') = REPLACE(TRIM(#text#),' ','')
+	)
+	where RN = 1
+	</select>
+
+</sqlMap>

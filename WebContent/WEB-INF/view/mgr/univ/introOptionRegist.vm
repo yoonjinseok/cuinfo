@@ -1,0 +1,564 @@
+<head>
+	<title>학교정보관리</title>
+	<script type="text/javascript" language="javascript">
+	
+	$(document).ready(function(){
+
+			//radio 버튼에 이벤트 추가			
+			radioClick();
+			
+			//radio 값 선택
+			radioSelect();
+			
+			//형태에 따라 textarea 와 file 을 보이도록 셋팅
+			showDiv();
+			
+	});
+
+	//형태값에 따른 radio 선택
+	
+	function radioSelect()
+	{
+		var greeting_type_id 	= "$univOptionInfo.greeting_type_id";
+		var vision_type_id 		= "$univOptionInfo.vision_type_id";
+		var location_type_id 	= "$univOptionInfo.location_type_id";
+		var public_type_id 		= "$univOptionInfo.public_type_id";
+		
+		$("input:radio[name=greeting_type_id]").filter("[value="+greeting_type_id+"]").attr("checked",true);
+		$("input:radio[name=vision_type_id]").filter("[value="+vision_type_id+"]").attr("checked",true);
+		$("input:radio[name=location_type_id]").filter("[value="+location_type_id+"]").attr("checked",true);
+		$("input:radio[name=public_type_id]").filter("[value="+public_type_id+"]").attr("checked",true);
+		
+		radioClick();
+	}
+
+
+	//형태값에 따른 div 처리
+	
+	function showDiv()
+	{
+		//형태값에 따라 보여줄 div 를 선택
+		
+		$("input[type=radio]").each(function()
+		{
+
+			var name = this.name;
+			var value = $("input[name="+name+"]:checked").val();
+			
+			if(value == "19")
+			{
+				$("div[id=i_"+name+"]").show();
+				$("div[id=t_"+name+"]").hide();
+			}
+			else
+			{
+				$("div[id=i_"+name+"]").hide();
+				$("div[id=t_"+name+"]").show();
+			}
+			
+			
+			
+		})
+		
+			if("$!univOptionInfo.originalFilename_0" != "")
+				$("#file0").hide();
+			if("$!univOptionInfo.originalFilename_1" != "")
+				$("#file1").hide();
+			if("$!univOptionInfo.originalFilename_2" != "")
+				$("#file2").hide();
+			if("$!univOptionInfo.originalFilename_3" != "")
+				$("#file3").hide();
+	}
+
+	//radio 버튼 선택시 
+
+	function radioClick()
+	{
+		$("input[type=radio]").click(function()
+		{
+			var name = this.name;
+			
+			if($(this).val() == "19")
+			{
+				$("div[id=i_"+name+"]").show();
+				$("div[id=t_"+name+"]").hide();
+			}
+			else
+			{
+				$("div[id=i_"+name+"]").hide();
+				$("div[id=t_"+name+"]").show();
+			}
+			
+		})
+	}
+
+	//저장
+
+	function save()
+	{
+		/*
+		alert("저장");
+		alert("public_content = " + $("#public_content").val());
+		alert($("#form").formSerialize());
+		*/
+		
+		if($("#greeting_content").val().indexOf("\'") != -1) {
+			alert("' 는 사용할 수 없습니다.\n    \" 를 사용해주세요.");
+			$("#greeting_content").focus();
+			return;
+		}
+		if($("#vision_content").val().indexOf("\'") != -1) {
+			alert("' 는 사용할 수 없습니다.\n    \" 를 사용해주세요.");
+			$("#vision_content").focus();
+			return;
+		}
+		if($("#location_content").val().indexOf("\'") != -1) {
+			alert("' 는 사용할 수 없습니다.\n    \" 를 사용해주세요.");
+			$("#location_content").focus();
+			return;
+		}
+		if($("#public_content").val().indexOf("\'") != -1) {
+			alert("' 는 사용할 수 없습니다.\n    \" 를 사용해주세요.");
+			$("#public_content").focus();
+			return;
+		}
+		
+		if($("#form").formSerialize().indexOf("\'") != -1) {
+			alert("' 는 사용할 수 없습니다.\n    \" 를 사용해주세요.");
+			return;
+		}
+		
+		jQuery.post('introOptionResist_save.json', 
+				$("#form").formSerialize(), 
+				function(data) {
+        			if(data.errors == true)
+        			{
+        				eval(data.message);
+        			}
+        			else
+        			{
+        				alert("저장되었습니다.");
+        				
+						opener.goPage();
+						window.close();
+        			}
+		});
+	}
+
+	//파일선택
+
+	function setUploadResult0(originalFilename, srcName, fileSize)
+	{
+		$("#uploadTB0").append('<div class="icon" id=\''+srcName+'\'><a href="javascript:download(\''+srcName+'\');">'+originalFilename+'</a><span>('+getFileSize(fileSize)+')</span><a href="javascript:delRow0(\''+srcName+'\');"><img src="/mgr/images/btn/btn_del.gif" /></a></div>');
+		$("#file0").hide(); 
+		
+		$("input[name=originalFilename_0]").val(originalFilename);
+		$("input[name=srcName_0]").val(srcName);
+		$("input[name=fileSize_0]").val(fileSize);
+	}
+
+	function setUploadResult1(originalFilename, srcName, fileSize)
+	{
+		$("#uploadTB1").append('<div class="icon" id=\''+srcName+'\'><a href="javascript:download(\''+srcName+'\');">'+originalFilename+'</a><span>('+getFileSize(fileSize)+')</span><a href="javascript:delRow1(\''+srcName+'\');"><img src="/mgr/images/btn/btn_del.gif" /></a></div>');
+		$("#file1").hide(); 
+		
+		$("input[name=originalFilename_1]").val(originalFilename);
+		$("input[name=srcName_1]").val(srcName);
+		$("input[name=fileSize_1]").val(fileSize);
+	}
+	
+	function setUploadResult2(originalFilename, srcName, fileSize)
+	{
+		$("#uploadTB2").append('<div class="icon" id=\''+srcName+'\'><a href="javascript:download(\''+srcName+'\');">'+originalFilename+'</a><span>('+getFileSize(fileSize)+')</span><a href="javascript:delRow2(\''+srcName+'\');"><img src="/mgr/images/btn/btn_del.gif" /></a></div>');
+		$("#file2").hide(); 
+		
+		$("input[name=originalFilename_2]").val(originalFilename);
+		$("input[name=srcName_2]").val(srcName);
+		$("input[name=fileSize_2]").val(fileSize);
+	}
+	
+	function setUploadResult3(originalFilename, srcName, fileSize)
+	{
+		$("#uploadTB3").append('<div class="icon" id=\''+srcName+'\'><a href="javascript:download(\''+srcName+'\');">'+originalFilename+'</a><span>('+getFileSize(fileSize)+')</span><a href="javascript:delRow3(\''+srcName+'\');"><img src="/mgr/images/btn/btn_del.gif" /></a></div>');
+		$("#file3").hide(); 
+		
+		$("input[name=originalFilename_3]").val(originalFilename);
+		$("input[name=srcName_3]").val(srcName);
+		$("input[name=fileSize_3]").val(fileSize);
+	}
+
+	//파일삭제
+	function delRow0(trId)
+	{
+		if(confirm("파일을 삭제 하시겠습니까?")){
+			var fileIndex = 0;
+			var updateYn = 1;
+    		if($("input[name=greeting_img_upfile_id]").val() == "" || $("input[name=greeting_img_upfile_id]").val() == "0"){
+    
+    			jQuery.post('/mgr/common/file_delete.json?srcName=' + trId, 
+        				function(data) {
+                			if(data.errors == true)
+                				eval(data.message);
+        		});
+    		} else {
+    
+        		jQuery.get('introOption_File_delete.json', 
+        			$("#form").formSerialize() + "&fileIndex=" + fileIndex + "&updateYn=" + updateYn,
+        				function(data) {
+                			if(data.errors == true)
+                				eval(data.message);
+        		});
+    		}
+			$("#uploadTB0").find("div[id^="+trId+"]").remove();
+			
+			$("input[name=greeting_img_upfile_id]").val("");
+			$("input[name=originalFilename_0]").val("");
+			$("input[name=srcName_0]").val("");
+			$("input[name=fileSize_0]").val("");
+			
+			$("#file0").show(); 
+		}
+	}
+	
+	function delRow1(trId)
+	{
+		if(confirm("파일을 삭제 하시겠습니까?")){
+			var fileIndex = 1;
+			var updateYn = 1;
+    		if($("input[name=vision_img_upfile_id]").val() == "" || $("input[name=vision_img_upfile_id]").val() == "0"){
+    
+    			jQuery.post('/mgr/common/file_delete.json?srcName=' + trId, 
+        				function(data) {
+                			if(data.errors == true)
+                				eval(data.message);
+        		});
+    		} else {
+    
+        		jQuery.get('introOption_File_delete.json', 
+        			$("#form").formSerialize() + "&fileIndex=" + fileIndex + "&updateYn=" + updateYn,
+        				function(data) {
+                			if(data.errors == true)
+                				eval(data.message);
+        		});
+    		}
+			$("#uploadTB1").find("div[id^="+trId+"]").remove();
+			
+			$("input[name=vision_img_upfile_id]").val("");
+			$("input[name=originalFilename_1]").val("");
+			$("input[name=srcName_1]").val("");
+			$("input[name=fileSize_1]").val("");
+
+			$("#file1").show(); 
+		}
+	}
+	
+	function delRow2(trId)
+	{
+		if(confirm("파일을 삭제 하시겠습니까?")){
+			var fileIndex = 2;
+			var updateYn = 1;
+    		if($("input[name=location_img_upfile_id]").val() == "" || $("input[name=location_img_upfile_id]").val() == "0"){
+    
+    			jQuery.post('/mgr/common/file_delete.json?srcName=' + trId, 
+        				function(data) {
+                			if(data.errors == true)
+                				eval(data.message);
+        		});
+    		} else {
+    
+        		jQuery.get('introOption_File_delete.json', 
+        			$("#form").formSerialize() + "&fileIndex=" + fileIndex + "&updateYn=" + updateYn,
+        				function(data) {
+                			if(data.errors == true)
+                				eval(data.message);
+        		});
+    		}
+			$("#uploadTB2").find("div[id^="+trId+"]").remove();
+			
+			$("input[name=location_img_upfile_id]").val("");
+			$("input[name=originalFilename_2]").val("");
+			$("input[name=srcName_2]").val("");
+			$("input[name=fileSize_2]").val("");
+			
+			$("#file2").show(); 
+		}
+	}
+	
+	function delRow3(trId)
+	{
+		if(confirm("파일을 삭제 하시겠습니까?")){
+			var fileIndex = 3;
+			var updateYn = 1;
+    		if($("input[name=public_img_upfile_id]").val() == "" || $("input[name=public_img_upfile_id]").val() == "0"){
+    
+    			jQuery.post('/mgr/common/file_delete.json?srcName=' + trId, 
+        				function(data) {
+                			if(data.errors == true)
+                				eval(data.message);
+        		});
+    		} else {
+    
+        		jQuery.get('introOption_File_delete.json', 
+        			$("#form").formSerialize() + "&fileIndex=" + fileIndex + "&updateYn=" + updateYn,
+        				function(data) {
+                			if(data.errors == true)
+                				eval(data.message);
+        		});
+    		}
+			$("#uploadTB3").find("div[id^="+trId+"]").remove();
+			
+			$("input[name=public_img_upfile_id]").val("");
+			$("input[name=originalFilename_3]").val("");
+			$("input[name=srcName_3]").val("");
+			$("input[name=fileSize_3]").val("");
+			
+			$("#file3").show(); 
+		}
+	}
+
+	//디비에 저장되기전 내용 다운로드
+    function download(srcName)
+	{
+		document.location.href = '/mgr/common/file_download.json?srcName=' + srcName;
+	}
+	//디비에 저장된후 내용 다운로드
+    function downloadDB(fileGid,fileID)
+    {
+    	if(typeof(fileID) == "undefined")
+    		fileID = "1";
+		document.location.href = '/mgr/home/savedFile_download.json?fileGid=' + fileGid + '&fileID=' + fileID;
+    }
+
+     //미리보기
+    function preview()
+    {
+    	
+    	form.greetingType.value = $("input[name=greeting_type_id]:checked").val();
+    	form.visionType.value = $("input[name=vision_type_id]:checked").val();
+    	form.locationType.value = $("input[name=location_type_id]:checked").val();
+    	form.publicType.value = $("input[name=public_type_id]:checked").val();
+    	
+    	form.action = "/home/intro/overall_preview.sub.action?gnb=12";
+    	form.submit();
+    }
+    
+	</script>
+</head>			
+<body>
+<div style="width:90%;padding-left:30px;padding-top:30px;">
+	
+
+
+<form id="form" name="form" method="post" action="#" onsubmit="try{}catch(e){alert(e);}return false;">
+<h2>학교소개 관리(선택)
+	<a class="f_right" href="javascript:preview();"><img src="/mgr/images/btn/preview.gif" alt="미리보기" /></a>
+	<!-- 
+	-->
+</h2>					
+
+<div class="list_top01">
+	<span>사용자 홈페이지 대학안내 요약 페이지 구성입니다.</span><br/> 
+	<span>Html로 입력할경우 학교주소를 포함한 절대 경로를 입력 바랍니다.</span>
+	<span>Ex) &lt;img src=http://000.ac.kr/imges/test.gif&gt;.</span>
+</div>
+<!-- 신규와 수정을 구분 -->
+<input type="hidden" name="univ_id" 			value="$!univ_id" />
+<input type="hidden" name="university_id" 		value="$!univOptionInfo.university_id" />
+<input type="hidden" name="university_name" 	value="$!univOptionInfo.univ_name" />
+
+<input type="hidden" name="previewGubn" 		value="2" />
+
+
+
+
+
+<!-- 이미지 파일 정보 -->
+<input type="hidden" name="greeting_img_upfile_id" 	value="$!univOptionInfo.greeting_img_upfile_id" />
+<input type="hidden" name="vision_img_upfile_id" 	value="$!univOptionInfo.vision_img_upfile_id" />
+<input type="hidden" name="location_img_upfile_id" 	value="$!univOptionInfo.location_img_upfile_id" />
+<input type="hidden" name="public_img_upfile_id" 	value="$!univOptionInfo.public_img_upfile_id" />
+
+<input type="hidden" name="greetingType" />
+<input type="hidden" name="visionType" />
+<input type="hidden" name="locationType" />
+<input type="hidden" name="publicType" />
+
+<input type="hidden" name="originalFilename_0" 	value="$!univOptionInfo.originalFilename_0" />
+<input type="hidden" name="srcName_0" 			value="$!univOptionInfo.srcName_0" />
+<input type="hidden" name="fileSize_0" 			value="$!univOptionInfo.fileSize_0" />
+
+<input type="hidden" name="originalFilename_1" 	value="$!univOptionInfo.originalFilename_1" />
+<input type="hidden" name="srcName_1" 			value="$!univOptionInfo.srcName_1" />
+<input type="hidden" name="fileSize_1" 			value="$!univOptionInfo.fileSize_1" />
+
+<input type="hidden" name="originalFilename_2" 	value="$!univOptionInfo.originalFilename_2" />
+<input type="hidden" name="srcName_2" 			value="$!univOptionInfo.srcName_2" />
+<input type="hidden" name="fileSize_2" 			value="$!univOptionInfo.fileSize_2" />
+
+<input type="hidden" name="originalFilename_3" 	value="$!univOptionInfo.originalFilename_3" />
+<input type="hidden" name="srcName_3" 			value="$!univOptionInfo.srcName_3" />
+<input type="hidden" name="fileSize_3" 			value="$!univOptionInfo.fileSize_3" />
+
+
+<table cellspacing="0" cellpadding="0" class="form_type01" summary="과정관리"><!-- list_type01 Start -->
+	<caption>과정관리</caption>
+	<colgroup>
+		<col width="15%" />
+		<col width="10%" />
+		<col width="*" />
+		<col width="15%" />
+		<col width="35%" />
+	</colgroup>
+	<tbody>
+		<tr>
+			<th scope="row" rowspan="2">인삿말</th>
+			<th scope="row" class="b_right">형태</th>
+			<td colspan="3">
+				<label for="radio-1"><input type="radio" name="greeting_type_id" id="radio-1" value="18"/> html</label>
+				<label for="radio-2"><input type="radio" name="greeting_type_id" id="radio-2" value="19" /> 이미지</label>
+				<label for="radio-3"><input type="radio" name="greeting_type_id" id="radio-3" value="20" /> 텍스트</label>
+			</td>
+		</tr>	
+		<tr>
+			<th scope="row" class="b_right">내용</th>
+			<td colspan="3" id="uploadTB0">
+				
+				<div id="t_greeting_type_id">
+					<textarea id="greeting_content" name="greeting_content" rows="5" style="width:100%;">$!univOptionInfo.greeting_content</textarea>
+				</div>
+				
+				<div id="i_greeting_type_id" style="display:none;">
+				
+						#if($univOptionInfo.originalFilename_0)
+							<div  class="icon" id='$!univOptionInfo.greeting_img_upfile_id'><a href="javascript:downloadDB('$!univOptionInfo.greeting_img_upfile_id');">$!univOptionInfo.originalFilename_0</a><span>(<script>document.write(getFileSize($!univOptionInfo.fileSize_0))</script>)</span><a href="javascript:delRow0('$!univOptionInfo.greeting_img_upfile_id');"><img src="/mgr/images/btn/btn_del.gif" /></a></div>
+						#end
+					
+					<div id="file0">
+						<iframe id="upload" name="upload" src="/mgr/common/file_write.ifm.action?eventHandler=setUploadResult0&confKey=att" width="100%" height="25" frameborder="0" scrolling="no" style="padding: 0;margin: 0"></iframe>
+					</div>
+					
+				</div>
+				
+			</td>
+		</tr>	
+		<tr>
+			<th scope="row" rowspan="2">비젼</th>
+			<th scope="row" class="b_right">형태</th>
+			<td colspan="3">
+				<label for="radio-4"><input type="radio" name="vision_type_id" id="radio-4" value="18"/> html</label>
+				<label for="radio-6"><input type="radio" name="vision_type_id" id="radio-5" value="19"/> 이미지</label>
+				<label for="radio-6"><input type="radio" name="vision_type_id" id="radio-6" value="20"/> 텍스트</label>
+			</td>
+		</tr>	
+		<tr>
+			<th scope="row" class="b_right">내용</th>
+			<td colspan="3" id="uploadTB1">
+				
+				
+				<div id="t_vision_type_id">
+					<textarea id="vision_content" name="vision_content" rows="5" style="width:100%;">$!univOptionInfo.vision_content</textarea>
+				</div>
+				
+				<div id="i_vision_type_id" style="display:none;">
+					
+						
+						#if($univOptionInfo.originalFilename_1)
+							<div  class="icon" id='$!univOptionInfo.srcName_1'><a href="javascript:downloadDB('$!univOptionInfo.vision_img_upfile_id');">$!univOptionInfo.originalFilename_1</a><span>(<script>document.write(getFileSize($!univOptionInfo.fileSize_1))</script>)</span><a href="javascript:delRow1('$!univOptionInfo.srcName_1');"><img src="/mgr/images/btn/btn_del.gif" /></a></div>
+						#end
+						
+					
+					<div id="file1">
+						<iframe id="upload" name="upload" src="/mgr/common/file_write.ifm.action?eventHandler=setUploadResult1&confKey=att" width="100%" height="25" frameborder="0" scrolling="no" style="padding: 0;margin: 0"></iframe>
+					</div>
+					
+				</div>
+				
+
+			</td>
+		</tr>	
+		<tr>
+			<th scope="row" rowspan="2">오시는길</th>
+			<th scope="row" class="b_right">형태</th>
+			<td colspan="3">
+				<label for="radio-7"><input type="radio" name="location_type_id" id="radio-7" value="18"/> html</label>
+				<label for="radio-8"><input type="radio" name="location_type_id" id="radio-8" value="19"/> 이미지</label>
+				<label for="radio-9"><input type="radio" name="location_type_id" id="radio-9" value="20"/> 텍스트</label>
+			</td>
+		</tr>	
+		<tr>
+			<th scope="row" class="b_right">내용</th>
+			<td colspan="3" id="uploadTB2">
+				
+				<div id="t_location_type_id">
+					<textarea id="location_content" name="location_content" rows="5" style="width:100%;">$!univOptionInfo.location_content</textarea>
+				</div>
+				
+				<div id="i_location_type_id" style="display:none;">
+					
+						
+						#if($univOptionInfo.originalFilename_2)
+							<div  class="icon" id='$!univOptionInfo.location_img_upfile_id'><a href="javascript:downloadDB('$!univOptionInfo.location_img_upfile_id');">$!univOptionInfo.originalFilename_2</a><span>(<script>document.write(getFileSize($!univOptionInfo.fileSize_2))</script>)</span><a href="javascript:delRow2('$!univOptionInfo.location_img_upfile_id');"><img src="/mgr/images/btn/btn_del.gif" /></a></div>
+						#end
+						
+					
+					<div id="file2">
+						<iframe id="upload" name="upload" src="/mgr/common/file_write.ifm.action?eventHandler=setUploadResult2&confKey=att" width="100%" height="25" frameborder="0" scrolling="no" style="padding: 0;margin: 0"></iframe>
+					</div>
+					
+				</div>
+				
+				
+			</td>
+		</tr>	
+		<tr>
+			<th scope="row" rowspan="2">홍보센터</th>
+			<th scope="row" class="b_right">형태</th>
+			<td colspan="3">
+				<label for="radio-10"><input type="radio" name="public_type_id" id="radio-10" value="18"/> html</label>
+				<label for="radio-11"><input type="radio" name="public_type_id" id="radio-11" value="19"/> 이미지</label>
+				<label for="radio-12"><input type="radio" name="public_type_id" id="radio-12" value="20"/> 텍스트</label>
+			</td>
+		</tr>	
+		<tr>
+			<th scope="row" class="b_right">내용</th>
+			<td colspan="3" id="uploadTB3">
+				
+				<div id="t_public_type_id">
+					<textarea id="public_content" name="public_content" rows="5" style="width:100%;">$!univOptionInfo.public_content</textarea>
+				</div>
+				
+				<div id="i_public_type_id" style="display:none;">
+					
+						
+						#if($univOptionInfo.originalFilename_3)
+							<div  class="icon" id='$!univOptionInfo.srcName_3'><a href="javascript:downloadDB('$!univOptionInfo.public_img_upfile_id');">$!univOptionInfo.originalFilename_3</a><span>(<script>document.write(getFileSize($!univOptionInfo.fileSize_3))</script>)</span><a href="javascript:delRow3('$!univOptionInfo.srcName_3');"><img src="/mgr/images/btn/btn_del.gif" /></a></div>
+						#end
+						
+					
+					<div id="file3">
+						<iframe id="upload" name="upload" src="/mgr/common/file_write.ifm.action?eventHandler=setUploadResult3&confKey=att" width="100%" height="25" frameborder="0" scrolling="no" style="padding: 0;margin: 0"></iframe>
+					</div>
+					
+				</div>
+				
+			</td>
+		</tr>	
+		<tr>
+			<th scope="row">등록정보</th>
+			<td colspan="2">$!univOptionInfo.register ($datetimeformatter.print($!univOptionInfo.regDate, $locale))</td>
+			<th scope="row">수정정보</th>
+			<td>$!univOptionInfo.modifier ($datetimeformatter.print($!univOptionInfo.modDate, $locale))</td>
+		</tr>
+	</tbody>
+</table><!-- list_type01 End -->
+
+
+<div class="btn_box_type03">
+	<a href="javascript:save();"><img src="/mgr/images/btn/save.gif" alt="저장" /></a>
+	<a href="javascript:window.close();"><img src="/mgr/images/btn/cancel.gif" alt="취소" /></a>
+</div>
+
+</form>
+</div>
+</body>
+</html>

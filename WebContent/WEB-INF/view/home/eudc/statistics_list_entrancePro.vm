@@ -1,0 +1,133 @@
+<!-- 입학정원 현황-->
+<table cellspacing="0" cellpadding="0" class="table_type1 st01 st02" summary="입학정원 대비 등록율 현황"><!-- table_type1 st01 Start -->
+	<caption>입학정원 대비 등록율 현황</caption>
+	<colgroup>
+		<col width="40%"><col width="12%"><col width="12%"><col width="12%"><col width="12%"><col width="12%">
+	</colgroup>
+	#set($maxYear = 0)  			##최고 학년
+	#set($minYear = 0)  			##최저 학년
+	#set($forUniversity = 0)  		##순환시 식별 대학교 아이디
+	#set($forYearNum = 0)   		##순환시 학년도 식별
+	#foreach($stt in $statisiticsList)
+		##첫항이고 합계항이 아닐시
+		#if($velocityCount == 1 && $stt.IS_TOTAL == 'N')
+			##순환값 저장 
+			#set($maxYear = $stt.YEAR_MAX)
+			#set($minYear = $stt.YEAR_MIN)
+			#set($forYearNum = $stt.YEAR_MIN)
+	<thead>
+		<tr>
+			<th scope="col" class="first">학년도</th>
+			##학년도 리스트 출력
+			#foreach($yearNum in [$minYear..$maxYear])
+			<th scope="col" rowspan="2">$yearNum</th>
+			#end
+		</tr>
+		<tr>
+			<th scope="col">대학명</th>
+		</tr>
+	</thead>	
+	<tbody>
+		##합계항이 아닐시
+		#elseif($stt.IS_TOTAL == 'N')
+			#if($forUniversity != $stt.UNIVERSITY_ID)
+				#if($velocityCount != 2 && $forYearNum != $minYear && $forYearNum != $maxYear + 1)
+					#foreach($yearNum1 in [$forYearNum..$maxYear])
+						<td>-</td>
+					#end
+					</tr>
+				#end
+				
+				#set($forYearNum = $minYear)				
+				#set($forUniversity = $stt.UNIVERSITY_ID)
+		<tr>
+			<th>$stt.UNIV_NAME</th>
+			#end
+			
+			##해당한년 데이터가 없을시 빈값
+			#if($stt.CLASS != $forYearNum)	
+				#set($year = $stt.CLASS - 1)						
+				#set($yearfor = $forYearNum)						
+				#foreach($forNum in [$yearfor..$year])
+					#set($forYearNum = $forYearNum + 1)
+					<td>-</td>
+				#end
+			#end
+			#if(!$stt.STUDENT_IN_CNT)
+				<td></td>
+			#else	
+				<td>$stt.STUDENT_IN_CNT</td>
+			#end
+			#set($forYearNum = $forYearNum + 1)	
+		## 합계부분 출력
+		#else 
+			#if($forYearNum == $maxYear + 1)
+		</tr>
+	</tbody>
+	<tfoot>
+		<tr class="even">
+			<th>합 계</th>
+				#set($forYearNum = $minYear)	
+			#end
+		
+			##해당한년 데이터가 없을시 빈값
+			#if($stt.CLASS != $forYearNum)				
+				#set($year = $stt.CLASS - 1)
+				#set($yearfor2 = $forYearNum)							
+				#foreach($yearfor3 in [$yearfor2..$year])
+					#set($forYearNum = $forYearNum + 1)		
+					<th #if($forYearNum == $maxYear) class="end" #end>-</th>
+				#end
+				#set($forYearNum = $forYearNum + 1)	
+			#end
+			<th #if($forYearNum == $maxYear) class="end" #end>$stt.STUDENT_IN_CNT</th>
+			#set($forYearNum = $forYearNum + 1)	
+		#end
+		
+	#end		
+	#if ($forYearNum <= $maxYear)
+		#foreach($yearNum2 in [$forYearNum..$maxYear])
+			<th #if($forYearNum == $maxYear) class="end" #end>-</th>
+		#end
+	#end
+		</tr>
+	</tfoot>
+</table><!-- list_type01 End -->
+
+<div class="graphWrap" id="chart_div" style="display: none;">	
+</div>
+
+<script type="text/javascript">   
+
+	google.load('visualization', '1', {packages: ['corechart']});
+	
+	function drawVisualization() {
+	  // Create and populate the data table.
+	  var data = google.visualization.arrayToDataTable([
+	    ['Year', '등록생', '입학정원']
+	    #foreach($stt in $statisiticsList)
+	    ,['$!stt.CLASS', $!stt.STUDENT_REGISTER_CNT_N, $!stt.STUDENT_IN_CNT_N]
+	    #end	   
+	  ]);
+
+	  
+	// Create and draw the visualization.
+	  new google.visualization.BarChart(document.getElementById('chart_div')).
+	      draw(data,
+	    		{width:775, height:400,
+	            vAxis: {fontName: "normal", fontSize: "11px"},
+	            hAxis: {title: "명(인원)", fontSize : "11px", fontName : "normal"},
+	            fontSize : "11px",
+	            fontName : "normal",
+	            fontweight: "normal",
+	            title: "정원연도",
+	            colors: ['#4169e1', '#f08080']
+	           }
+	      );
+	 }
+	
+	google.setOnLoadCallback(drawVisualization);
+	
+</script>			
+			
+		

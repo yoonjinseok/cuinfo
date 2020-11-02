@@ -1,0 +1,57 @@
+
+<table cellspacing="0" cellpadding="0" class="list_type01" summary="대표학과 조회수 통계"><!-- list_type01 Start -->
+	<caption>대표학과 조회수 통계</caption>
+	<colgroup>
+		<col width="5%" />
+		<col width="20%" />
+		<col width="*%" />
+		<col width="20%" />
+		<col width="20%" />
+	</colgroup>
+	<thead>
+		<tr>
+			<th scope="col">NO</th>
+			<th scope="col">대표 학과분야</th>
+			<th scope="col">대표 학과명</th>
+			<th scope="col">조회수</th>
+			<th scope="col">비율</th>
+		</tr>
+	</thead>
+	<tfoot>
+		<tr>
+			<th scope="col" colspan="3">합계</th>
+			<th scope="col">$!hitsTotal</th>							
+			<th scope="col"></th>
+		</tr>
+	</tfoot>
+	<tbody>
+		#foreach($ht in $hitsList)
+		<tr>
+			<td>$ht.rowNum</td>
+			<td class="t_left">$ht.className</td>
+			<td class="t_left">$ht.deptName</td>
+			<td>$ht.hitsCnt</td>
+			<td>$ht.hitsRate%</td>
+		</tr>
+		#end
+		
+		#set($cnt = $hitsList.size() + 1)
+		#if($cnt < $showCnt)
+		#foreach($blank in [$cnt..$showCnt])
+		<tr>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+		</tr>
+		#end
+		#end
+	</tbody>
+</table><!-- list_type01 End -->
+
+<script>
+	#if($hitsList)
+	setRecordCnt($totalCnt, $currPage, $totalPage, $showCnt);
+	#end
+</script>

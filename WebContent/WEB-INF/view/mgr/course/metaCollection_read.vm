@@ -1,0 +1,271 @@
+<head>
+	<base target="_self">
+	<title>메타데이터</title>
+	<script type="text/javascript" language="javascript">
+	function updateService()
+	{
+		jQuery.post('metaCollection_updateService.json', 
+		$("#modifyForm").formSerialize(), 
+		function(data) {
+			if(data.errors == true)
+			{
+				eval(data.message);
+			}
+			else
+			{
+				alert('이관승인 하였습니다.');
+				opener.goPage();
+				window.close();
+			}
+		});
+	}
+	
+	function updateUptToSvc()
+	{
+		if(confirm('변경강좌 메타데이터로 갱신됩니다.\n진행하시겠습니까?'))
+		{
+			jQuery.post('metaCollection_confirm.json', 
+    		$("#modifyForm").formSerialize(), 
+    		function(data) {
+    			if(data.errors == true)
+    			{
+    				eval(data.message);
+    			}
+    			else
+    			{
+    				alert('메타데이터가 갱신되었습니다.');
+					
+					opener.closePop();
+    			}
+    		});
+		}
+	}
+	
+	function mod()
+	{
+		document.location.href = 'metaCollection_modify.pop.action?courseId=$!course.courseId';
+	}
+	
+	function lecturedel()
+	{
+		jQuery.post('metaCollection_lecturedeletes.json?courseId=$!course.courseId', 
+		$("#listForm").formSerialize(), 
+		function(data) {
+			if(data.errors == true)
+			{
+				eval(data.message);
+			}
+			else
+			{
+				alert('선택삭제 하였습니다.');
+				lectureList();
+			}
+		});
+	}
+	function lectureadd()
+	{
+		document.location.href='metaCollection_lecturewrite.pop.action?courseId=$!course.courseId';
+	}
+	function lecturemod(courseId, lectureId)
+	{
+		document.location.href='metaCollection_lectureread.pop.action?courseId=' + courseId + '&lectureId=' + lectureId;
+	}
+	
+	function lectureList()
+	{
+		jQuery.post('metaCollection_lecturelist.ajax.action?courseId=$!course.courseId', 
+				function(data) {
+        			$("#lecturelist").html(data);
+		});
+	}
+	
+	function fileUpload()
+	{
+		showWin('$!uploadUrl','filewin', 900, 500);
+	}
+	
+	jQuery(document).ready(function () {
+		showCalendar($('#svcStart'), 'yymmdd');
+		showCalendar($('#svcEnd'), 'yymmdd');
+		
+		lectureList();
+    });
+
+	function insertRecommend(type){
+		var str = "";
+		
+		if(type == 1)
+			str = "맛보기";
+		else
+			str = "추천";
+		
+		jQuery.post("/mgr/course/checkRecommend.ajax.action",
+				{courseId:$("#courseId").val(),type:type},
+				function(data){
+					var cnt = data.length;
+					
+					if(cnt == 0){
+						if(confirm(str + " 강좌를 등록하시겠습니까?")){
+							jQuery.post("/mgr/course/insertRecommend.ajax.action",
+										{courseId:$("#courseId").val(),type:type},
+										function(data){
+											if(data == 1)
+												alert("등록 되었습니다.");
+											else
+												alert("오류가 발생 하였습니다.");
+										}
+							 );
+						}
+					}else{
+						if(confirm("이미 등록된 " + str + " 강좌가 있습니다.\n등록 해제 하시겠습니까?")){
+							jQuery.post("/mgr/course/deleteRecommend.ajax.action",
+										{courseId:$("#courseId").val(),type:type},
+										function(data){
+											if(data == 1)
+												alert("해제 되었습니다.");
+											else
+												alert("오류가 발생 하였습니다.");
+										}
+							 );
+						}
+					}
+				});
+	}
+	
+
+	</script>
+</head>
+<body>
+<div style="width:90%;padding-left:30px;padding-top:30px;">
+<form id="modifyForm" action="#" onsubmit="try{save();}catch(e){alert(e);}return false;">
+<input type="hidden" id="courseId" name="courseId" value="$!course.courseId"/>
+<h2>강좌정보 #if($!lockCourse == 'Y')<강좌 메타데이터 잠금상태입니다. <a href="javascript:updateUptToSvc();"><font color="red">메타데이터확정</font></a>>#end</h2>	
+<table cellspacing="0" cellpadding="0" class="form_type01" summary="메타데이터관리"><!-- list_type01 Start -->
+	<caption>메타데이터관리</caption>
+	<colgroup>
+		<col width="15%" />
+		<col width="35%" />
+		<col width="15%" />
+		<col width="35%" />
+	</colgroup>
+	<tbody>
+		<tr>
+			<th scope="row">식별자</th>
+			<td>
+				$!course.courseIdentifier
+			</td>
+		</tr>
+		<tr>
+			<th scope="row">강좌상태</th>
+			<td>
+				$!course.svcStatusName
+			</td>
+		</tr>
+		<tr>
+			<th scope="row">제목</th>
+			<td>
+				$!course.title
+			</td>
+		</tr>
+		<tr>
+			<th scope="row">교수언어</th>
+			<td>
+				$!course.languageName
+			</td>
+		</tr>
+		<tr>
+			<th scope="row">개설자</th>
+			<td>
+				$!course.manager
+			</td>
+		</tr>
+		<tr>
+			<th scope="row">학과정보</th>
+			<td>
+				$!course.department ($!course.departmentId)
+			</td>
+		</tr>
+		<tr>
+			<th scope="row">강의유형</th>
+			<td>
+				$!course.typeName
+			</td>
+		</tr>
+		<tr>
+			<th scope="row">인정학점</th>
+			<td>
+				$!course.credit
+			</td>
+		</tr>
+		<tr>
+			<th scope="row">권장이수학년</th>
+			<td>
+				$!course.gradYear 학년 / $!course.gradSemesterName
+			</td>
+		</tr>
+		<tr>
+			<th scope="row">학년도/학기</th>
+			<td>
+				$!course.termYearName / $!course.termSemesterName
+			</td>
+		</tr>
+		<tr>
+			<th scope="row">서비스일자</th>
+			<td>
+				$!course.svcStart ~ $!course.svcEnd
+			</td>
+		</tr>
+		<tr>
+			<th scope="row">상태</th>
+			<td>
+				$!course.svcStatusName
+			</td>
+		</tr>
+		<tr>
+			<th scope="row">등록정보</th>
+			<td>
+				$!{course.register}($datetimeformatter.print($!course.regDate, $!locale))
+			</td>
+		</tr>
+		<tr>
+			<th scope="row">수정정보</th>
+			<td>
+				$!{course.modifier}($datetimeformatter.print($!course.modDate, $!locale))
+			</td>
+		</tr>
+	</tbody>
+</table><!-- list_type01 End -->
+
+
+<div class="btn_box_type03" style="text-align:left;">
+	
+	#if($!lockCourse == 'N')
+	<a href="javascript:updateService();" id="saveBtn"><img src="/mgr/images/btn/btn_transferaccept.gif" /></a>
+	#end
+	<a href="javascript:mod();"><img src="/mgr/images/btn/btn_coursemodify.gif" /></a>
+	<a href="javascript:window.close();"><img src="/mgr/images/btn/btn_courseok.gif" /></a>
+	<!-- 맛보기, 추천강좌 등록 -->
+	<a href="javascript:insertRecommend(1);"><img src="/mgr/images/btn/recommend1.gif" /></a>
+	<a href="javascript:insertRecommend(2);"><img src="/mgr/images/btn/recommend2.gif" /></a>
+</div>
+
+</form>
+
+<h2>차시별강의정보</h2>	
+<form id="listForm" name="listForm" action="#" onsubmit="try{}catch(e){alert(e);}return false;">
+<div id="lecturelist">#parse('mgr/course/metaCollection_lecturelist.vm')</div>
+</form>
+<div class="btn_box_type03" style="text-align:left;">
+	#if($!lockCourse == 'N')
+	<div class="f_left" style="font-weight:bold;">
+		<a href="javascript:lectureadd();"><img src="/mgr/images/btn/enter.gif" alt="등록하기" /></a>
+    	<a href="javascript:lecturedel();"><img src="/mgr/images/btn/delete.gif" alt="삭제" /></a>
+		<a href="javascript:fileUpload();"><img src="/mgr/images/btn/allRegist.gif" alt="공개강의자료일괄등록" style="padding-bottom:1px"/></a>
+	</div>
+	#end
+</div>
+
+</div>
+
+</body>
+</html>

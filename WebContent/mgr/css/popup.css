@@ -1,0 +1,17 @@
+@charset"utf-8";
+@import url("/mgr/css/base.css");
+@import url("/mgr/css/board.css");
+@import url("/mgr/css/about.css");
+@import url("/mgr/css/common.css");
+
+/*********************** Layout Base Style ***********************/
+body{color:#666;padding:3px 3px 0 3px !important;background:#fff;}
+
+
+#header{position:relative;border:solid 1px #0088A9;border-bottom:none;background:url('/mgr/images/popup/bg_title.gif') repeat-x left top;}
+#header h1{padding:8px 0 0 20px;height:33px;font-size:16px;color:#fff;}
+#header a{position:absolute;right:0px;top:0px;}
+*:first-child+html #header a{position:absolute;right:0px;top:-1px;}
+
+
+#contents{padding:20px 20px 0 20px;border:solid 1px #0088A9;border-top:none;overflow:hidden;}

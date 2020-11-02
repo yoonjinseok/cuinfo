@@ -1,0 +1,148 @@
+<html>
+<head>
+	<title>저작권 신고</title>
+	<script type="text/javascript" language="javascript">
+	function save()
+	{
+		
+
+		jQuery.post('copyright_save.json', 
+				$("#writeForm").formSerialize(), 
+				function(data) {
+        			if(data.errors == true)
+        			{
+        				eval(data.message);
+        			}
+        			else
+        			{
+						alert("저장되었습니다.");
+						document.location.href ="/home/index.main.action";
+						
+        			}
+				
+		});
+	}
+	
+	function clr()
+	{
+		$("#qSubject").val("");
+		$("#qContents").val("");
+		$("#aSubject").val("");
+		$("#kId").val("");
+		$("#email").val("");
+		$("#telno1").val("");
+		$("#telno2").val("");
+		$("#telno3").val("");
+	}
+	</script>
+</head>
+
+<body>
+	<div id="contents">
+	<div id="location_box"><!-- MainCopyBox  Start -->
+		<h3><img src="/home/images/etc/title1.gif" alt="저작권 신고" /></h3>
+	<br><br>	
+	</div><!-- MainCopyBox  End -->
+    <ul>
+      <li class="s_text">저작권신고는 게시물 주소(URL)또는 작성자ID, 해당 게시물을 정확히 기재해 주셔야 조치가 가능합니다. </li>
+      <li class="s_text">답변을 메일로 받아 보시려면 이메일 주소를 꼭 기재해 주셔야 합니다. </li>
+	  
+    </ul>
+	<br><br>
+	<h4 class="s_title1"><img src="/home/images/etc/s_title1.gif" alt="신청자 정보"/> </h4>
+	
+	<form id="writeForm" action="#" onsubmit="try{modify();}catch(e){alert(e);}return false;">
+		
+    	<div class="p_l30">
+    
+    		<table cellspacing="0" cellpadding="0" class="form_type01" summary="신청자 정보" border="1"><!-- list_type01 Start -->
+                <br>
+				<caption></caption>
+                <colgroup>
+                	<col width="20%" />
+                	<col width="*%" />
+                </colgroup>
+            	<tbody>
+            		<tr>
+            			<th scope="row"><span class="s_text1">접수서식</span></th>
+            			<td>
+            				<label for="radio-1"><input type="radio" name="position" id="radio-1" value="1" checked/> 개인-본인접수</label>
+            				<label for="radio-2"><input type="radio" name="position" id="radio-2" value="2" /> 개인-대리접수</label>
+            				<label for="radio-3"><input type="radio" name="position" id="radio-3" value="3" /> 단체-본인접수</label>
+            				<label for="radio-4"><input type="radio" name="position" id="radio-4" value="4" /> 개인-대리접수</label>
+            			</td>
+            		</tr>
+            		<tr>
+            			<th scope="row"><span class="s_text1">리스 아이디</span></th>
+            			<td>
+            				<input type="text" size="25" id="kId" name="kId" title="리스아이디"/>
+            			</td>
+            		</tr>
+            		<tr>
+            			<th scope="row"><span class="s_text1">이메일</span></th>
+            			<td>
+            				<input type="text" size="45" id="email" name="email" title="이메일"/>
+            			</td>
+            		</tr>
+            		<tr>
+            			<th scope="row"><span class="s_text1">휴대폰</span></th>
+            			<td>
+            				<select	id="telno1" name="telno1">
+            					<option value="010">010</option>
+            					<option value="011">011</option>
+            					<option value="017">017</option>
+            					<option value="019">019</option>
+            				</select>
+            				- <input type="text" size="10" maxlength ="4" id="telno2" name="telno2" title="휴대폰앞자리" onkeyup="return numbersonly(this)"/>
+            				- <input type="text" size="10" maxlength ="4" id="telno3" name="telno3" title="휴대폰뒷자리" onkeyup="return numbersonly(this)"/>
+            			</td>
+            		</tr>
+    			</tbody>
+    
+    		</table><!-- list_type01 End -->
+    	</div> 
+		<br><br>
+    	<h4 class="s_title1"><img src="/home/images/etc/s_title2.gif" alt="요청내용과 근거자료"/> </h4>
+		<br>
+        <div class="p_l30">
+    		<table cellspacing="0" cellpadding="0" class="form_type01" summary="요청내용과 근거자료" border="1"><!-- list_type01 Start -->
+    			<caption></caption>
+    			<colgroup>
+    				<col width="20%" />
+    				<col width="*" />
+    			</colgroup>
+    			<tbody>
+    
+            		<tr>
+            			<th scope="row"><span class="s_text1">제목</span></th>
+            			<td>
+            				<input type="text" size="70" id="qSubject" name="qSubject" title="제목"/>
+            			</td>
+            		</tr>
+            		<tr>
+            			<th scope="row"><span class="s_text1">URL(게시판 위치)</span></th>
+            			<td>
+            				<input type="text" size="70" id="url" name="url" title="ULR(게시물 위치)"/>
+            			</td>
+            		</tr>
+            		<tr>
+            			<th scope="row"><span class="s_text1">요청사유 및 의견입력</span></th>
+            			<td>
+                            <textarea name="qContents" id="qContents" cols="70" rows="10" title="요청사유 및 의견 입력"> </textarea>
+            			</td>
+            		</tr>
+            	</tbody>
+            
+            </table><!-- list_type01 End -->
+    
+        </div>    
+    	<div class="t_center"><img src="/home/images/etc/box_text1.gif" width="800"/></div>
+    
+    	<div class="btn_box_type03 p_t30" align="center"><!-- page_num Start -->
+        	<a href="javascript:save();"><img src="/home/images/btn/making.gif" alt="보내기" /></a>
+        	<a href="javascript:clr();"><img src="/home/images/btn/re_write.gif" alt="다시쓰기" /></a>
+    	</div>
+    </form>
+	</div>
+</body>
+</html>

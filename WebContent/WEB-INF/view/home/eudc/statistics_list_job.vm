@@ -1,0 +1,128 @@
+<!-- 직업별 -->
+<table cellspacing="0" cellpadding="0" class="table_type1 st01 st02 th_2line" summary="직업별 등록생 비율 현황"><!-- table_type1 st01 Start -->
+	<caption>직업별 등록생 비율 현황</caption>
+	<colgroup>
+		<col width="8%">
+		<col width="%">
+		<col width="%">
+		<col width="%">
+		<col width="%">
+		<col width="%">
+		<col width="%">
+		<col width="%">
+		<col width="%">
+		<col width="%">
+		<col width="%">
+		<col width="%">
+		<col width="%">
+	</colgroup>
+	<thead>
+		<tr>
+			<th scope="col" rowspan="2" class="first bg02" style="background-color:#92afc5;">연도</th>
+			<th scope="col" rowspan="2" style="background-color:#92afc5;">등록인원<br />(명)</th>
+			<th scope="col" colspan="11" class="th_pad_10">직업별 등록생 분포 비율(%)</th>
+		</tr>
+		<tr>
+			<th scope="col" class="th_ln_02">관리자</th>
+			<th scope="col" class="th_ln_02">전문가 및 <br />관련 종사자</th>
+			<th scope="col" class="th_ln_02">사무 <br />종사자</th>
+			<th scope="col" class="th_ln_02">서비스 <br />종사자</th>
+			<th scope="col" class="th_ln_02">판매 <br />종사자</th>
+			<th scope="col" class="th_ln_02">농림어업 <br />종사자</th>
+			<th scope="col" class="th_ln_02">기능원 및 <br />기능 종사자</th>
+			<th scope="col" class="th_ln_02">장치,<br />기계조작 <br />및 조립  <br />종사자</th>
+			<th scope="col" class="th_ln_02">단순노무 <br />종사자</th>
+			<th scope="col" class="th_ln_02">군인</th>
+			<th scope="col" class="th_ln_02">무직</th>
+		</tr>
+	</thead>
+	<tbody>		
+		#foreach($stt in $statisiticsList)
+		<tr>
+			<td>$!stt.STT_YEAR</td>
+			<td>$!stt.TOTAL</td>
+			<td>$!stt.ADMIN_CNT</td>
+			<td>$!stt.EXPERT_CNT</td>
+			<td>$!stt.AFFAIRS_CNT</td>
+			<td>$!stt.SERVE_CNT</td>
+			<td>$!stt.MARKET_CNT</td>
+			<td>$!stt.AGRICULTURE_CNT</td>
+			<td>$!stt.TECHNICIAN_CNT</td>
+			<td>$!stt.MACHINERY_CNT</td>
+			<td>$!stt.LABOR_CNT</td>
+			<td>$!stt.SOLDIER_CNT</td>
+			<td>$!stt.UNEMPLOYED_CNT</td>
+		</tr>
+		#end		
+	</tbody>
+</table><!-- list_type01 End -->
+<div><p align="center">$!sttYear년</p></div>
+<div class="graphWrap" id="chart_div1" style="text-indent: 145px; padding-top:30px; padding-bottom:10px; display: none;">	
+직업
+</div>
+<div class="graphWrap" id="chart_div" style="display: none;">
+</div>
+<div class="graphWrap" id="chart_div2" style="padding-top:10px;text-align:center; display: none;">	
+백분율(%)
+</div>				
+<script>	
+
+	google.load('visualization', '1', {packages: ['corechart']});
+	function drawVisualization() {
+	  // Create and populate the data table.
+	  var data = google.visualization.arrayToDataTable([
+		['job', '분포 비율']                                          	  
+	    #foreach($stt in $statisiticsList)
+	    	###if($statisiticsList.size() == $velocityCount)
+	    	#if($velocityCount == 1)
+	    ,['관리자', $!stt.ADMIN_CNT]
+	    ,['전문가 및 관련 종사자', $!stt.EXPERT_CNT]
+	    ,['사무 종사자', $!stt.AFFAIRS_CNT]
+	    ,['서비스  종사자', $!stt.SERVE_CNT]
+	    ,['판매  종사자', $!stt.MARKET_CNT]
+	    ,['농림어업  종사자', $!stt.AGRICULTURE_CNT]
+	    ,['기능원 및  기능 종사자', $!stt.TECHNICIAN_CNT]
+	    ,['장치,기계조작  및 조립 종사자', $!stt.MACHINERY_CNT]
+	    ,['단순노무  종사자', $!stt.LABOR_CNT]
+	    ,['군인', $!stt.SOLDIER_CNT]
+	    ,['무직', $!stt.UNEMPLOYED_CNT]
+	 
+	  
+	  //  ,['$!stt.STT_YEAR', $!stt.ADMIN_CNT, $!stt.EXPERT_CNT, $!stt.AFFAIRS_CNT, $!stt.SERVE_CNT,
+		//     $!stt.MARKET_CNT, $!stt.AGRICULTURE_CNT, $!stt.TECHNICIAN_CNT, $!stt.MACHINERY_CNT, 
+		//     $!stt.LABOR_CNT, $!stt.SOLDIER_CNT, $!stt.UNEMPLOYED_CNT]
+
+	     
+			#end
+	    #end
+	  ]);
+
+	// Create and draw the visualization.
+	  new google.visualization.BarChart(document.getElementById('chart_div')).
+	      draw(data,
+	           {	           
+	    	    width:775, height:300,
+	            //title: "직업",
+	            fontName: "Verdana", 
+	    		fontSize: "12",
+	            //hAxis: {title: "백분율(%)", fontSize : "12", fontName : "Verdana", 
+          	 	//		titleTextStyle: {fontSize : "12", fontName : "Verdana"}},
+	            colors: ['#3CA7BB'],
+	            legend: {textStyle: {fontSize : "11", fontName : "Verdana"}},
+	            chartArea:{left:"20%",top:5,width:"60%",height:"90%"}
+        	            
+	           }
+	      );
+	 }
+	google.setOnLoadCallback(drawVisualization);
+	#if('$!statisiticsList' != '' && $!statisiticsList.size() != 0)
+		$("#chart_div").toggle();
+		$("#chart_div1").toggle();
+		$("#chart_div2").toggle();
+	#end
+
+</script>
+			
+			
+			
+		
